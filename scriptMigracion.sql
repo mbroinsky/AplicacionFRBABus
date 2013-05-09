@@ -1,8 +1,8 @@
-BEGIN
+BEGIN TRANSACTION
 
 -- Create Table: Encomienda
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.Encomienda
+CREATE TABLE Encomienda
 (
 	ENC_numEnc INT NOT NULL IDENTITY(1, 1)
 	,ENC_idViaje INT NOT NULL
@@ -10,7 +10,7 @@ CREATE TABLE dbo.Encomienda
 	,ENC_kilos DECIMAL(10, 2) NOT NULL 
 )
 ON [PRIMARY]
-ALTER TABLE dbo.Encomienda ADD CONSTRAINT
+ALTER TABLE Encomienda ADD CONSTRAINT
 PK_Encomienda PRIMARY KEY CLUSTERED (ENC_numEnc)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -18,7 +18,7 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: Butaca
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.Butaca
+CREATE TABLE Butaca
 (
 	BUT_numeroAsiento INT NOT NULL IDENTITY(1, 1)
 	,BUT_numMicro INT NOT NULL
@@ -27,7 +27,7 @@ CREATE TABLE dbo.Butaca
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.Butaca ADD CONSTRAINT
+ALTER TABLE Butaca ADD CONSTRAINT
 PK_Butaca PRIMARY KEY CLUSTERED (BUT_numeroAsiento)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -35,7 +35,7 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: Micro
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.Micro
+CREATE TABLE Micro
 (
 	MIC_numMicro INT NOT NULL IDENTITY(1, 1)
 	,MIC_patente VARCHAR(6) NOT NULL 
@@ -51,7 +51,7 @@ CREATE TABLE dbo.Micro
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.Micro ADD CONSTRAINT
+ALTER TABLE Micro ADD CONSTRAINT
 PK_Micro PRIMARY KEY CLUSTERED (MIC_numMicro)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -59,14 +59,14 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: Ciudad
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.Ciudad
+CREATE TABLE Ciudad
 (
 	CIU_idCiudad INT NOT NULL IDENTITY(1, 1)
 	,CIU_nombre VARCHAR(250) NOT NULL 
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.Ciudad ADD CONSTRAINT
+ALTER TABLE Ciudad ADD CONSTRAINT
 PK_Ciudad PRIMARY KEY CLUSTERED (CIU_idCiudad)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -74,7 +74,7 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: Viaje
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.Viaje
+CREATE TABLE Viaje
 (
 	VIA_numViaje INT NOT NULL IDENTITY(1, 1)
 	,VIA_numMicro INT NOT NULL
@@ -85,7 +85,7 @@ CREATE TABLE dbo.Viaje
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.Viaje ADD CONSTRAINT
+ALTER TABLE Viaje ADD CONSTRAINT
 PK_Viaje PRIMARY KEY CLUSTERED (VIA_numViaje)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -93,7 +93,7 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: Usuario
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.Usuario
+CREATE TABLE Usuario
 (
 	USR_idUsuario INT NOT NULL IDENTITY(1, 1)
 	,USR_idRol INT NOT NULL
@@ -105,7 +105,7 @@ CREATE TABLE dbo.Usuario
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.Usuario ADD CONSTRAINT
+ALTER TABLE Usuario ADD CONSTRAINT
 PK_Usuario PRIMARY KEY CLUSTERED (USR_idUsuario)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -113,14 +113,14 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: FuncionalidadXRol
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.FuncionalidadXRol
+CREATE TABLE FuncionalidadXRol
 (
 	FXR_idRol INT NOT NULL 
 	,FXR_idFuncionalidad INT NOT NULL
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.FuncionalidadXRol ADD CONSTRAINT
+ALTER TABLE FuncionalidadXRol ADD CONSTRAINT
 PK_FuncionalidadXRol PRIMARY KEY CLUSTERED (FXR_idRol)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -128,7 +128,7 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: Funcionalidad
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.Funcionalidad
+CREATE TABLE Funcionalidad
 (
 	FNC_idFuncionalidad INT NOT NULL IDENTITY(1, 1)
 	,FNC_nombre VARCHAR(50) NOT NULL 
@@ -136,7 +136,7 @@ CREATE TABLE dbo.Funcionalidad
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.Funcionalidad ADD CONSTRAINT
+ALTER TABLE Funcionalidad ADD CONSTRAINT
 PK_Funcionalidad PRIMARY KEY CLUSTERED (FNC_idFuncionalidad)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -144,7 +144,7 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: Pasaje
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.Pasaje
+CREATE TABLE Pasaje
 (
 	PAS_numPasaje INT NOT NULL IDENTITY(1, 1)
 	,PAS_idViaje INT NOT NULL 
@@ -153,7 +153,7 @@ CREATE TABLE dbo.Pasaje
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.Pasaje ADD CONSTRAINT
+ALTER TABLE Pasaje ADD CONSTRAINT
 PK_Pasaje PRIMARY KEY CLUSTERED (PAS_numPasaje)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -161,14 +161,14 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: Rol
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.Rol
+CREATE TABLE Rol
 (
 	ROL_idRol INT NOT NULL IDENTITY(1, 1)
 	,ROL_nombre VARCHAR(250) NOT NULL 
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.Rol ADD CONSTRAINT
+ALTER TABLE Rol ADD CONSTRAINT
 PK_Rol PRIMARY KEY CLUSTERED (ROL_idRol)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -176,14 +176,14 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: Empresa
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.Empresa
+CREATE TABLE Empresa
 (
 	EMP_idEmpresa INT NOT NULL IDENTITY(1, 1)
 	,EMP_nombreEmpresa VARCHAR(50) NOT NULL 
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.Empresa ADD CONSTRAINT
+ALTER TABLE Empresa ADD CONSTRAINT
 PK_Empresa PRIMARY KEY CLUSTERED (EMP_idEmpresa)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -191,7 +191,7 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: Cliente
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.Cliente
+CREATE TABLE Cliente
 (
 	CLI_idCliente INT NOT NULL IDENTITY(1, 1)
 	,CLI_nombre VARCHAR(30) NOT NULL 
@@ -204,7 +204,7 @@ CREATE TABLE dbo.Cliente
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.Cliente ADD CONSTRAINT
+ALTER TABLE Cliente ADD CONSTRAINT
 PK_Cliente PRIMARY KEY CLUSTERED (CLI_idCliente)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -212,14 +212,14 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: EncXVen
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.EncXVen
+CREATE TABLE EncXVen
 (
 	EXC_idVenta INT NOT NULL 
 	,EXC_numEnc INT NOT NULL 
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.EncXVen ADD CONSTRAINT
+ALTER TABLE EncXVen ADD CONSTRAINT
 PK_EncXVen PRIMARY KEY CLUSTERED (EXC_idVenta)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -227,7 +227,7 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: Venta
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.Venta
+CREATE TABLE Venta
 (
 	VEN_idVenta INT NOT NULL IDENTITY(1, 1)
 	,VEN_fecVenta DATETIME NOT NULL 
@@ -237,7 +237,7 @@ CREATE TABLE dbo.Venta
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.Venta ADD CONSTRAINT
+ALTER TABLE Venta ADD CONSTRAINT
 PK_Venta PRIMARY KEY CLUSTERED (VEN_idVenta)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -245,14 +245,14 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: PasXVen
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.PasXVen
+CREATE TABLE PasXVen
 (
 	PXV_idVenta INT NOT NULL 
 	,PXV_idPasaje INT NOT NULL 
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.PasXVen ADD CONSTRAINT
+ALTER TABLE PasXVen ADD CONSTRAINT
 PK_PasXVen PRIMARY KEY CLUSTERED (PXV_idVenta)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -260,14 +260,14 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: DevXPas
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.DevXPas
+CREATE TABLE DevXPas
 (
 	DXP_idDevolucion INT NOT NULL 
 	,DXP_idPasaje INT NOT NULL 
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.DevXPas ADD CONSTRAINT
+ALTER TABLE DevXPas ADD CONSTRAINT
 PK_DevXPas PRIMARY KEY CLUSTERED (DXP_idDevolucion)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -275,14 +275,14 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: DevXEnc
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.DevXEnc
+CREATE TABLE DevXEnc
 (
 	DXE_idDevolucion INT NOT NULL 
 	,DXE_idEncomienda INT NOT NULL 
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.DevXEnc ADD CONSTRAINT
+ALTER TABLE DevXEnc ADD CONSTRAINT
 PK_DevXEnc PRIMARY KEY CLUSTERED (DXE_idDevolucion)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -290,7 +290,7 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: Tarjeta
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.Tarjeta
+CREATE TABLE Tarjeta
 (
 	TAR_idTarjeta INT NOT NULL IDENTITY(1, 1)
 	,TAR_nroTarjeta VARCHAR(20) NOT NULL 
@@ -300,7 +300,7 @@ CREATE TABLE dbo.Tarjeta
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.Tarjeta ADD CONSTRAINT
+ALTER TABLE Tarjeta ADD CONSTRAINT
 PK_Tarjeta PRIMARY KEY CLUSTERED (TAR_idTarjeta)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -308,7 +308,7 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: DevolucionVenta
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.DevolucionVenta
+CREATE TABLE DevolucionVenta
 (
 	DEV_idDevolucion INT NOT NULL IDENTITY(1, 1)
 	,DEV_idVenta INT NOT NULL 
@@ -317,7 +317,7 @@ CREATE TABLE dbo.DevolucionVenta
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.DevolucionVenta ADD CONSTRAINT
+ALTER TABLE DevolucionVenta ADD CONSTRAINT
 PK_DevolucionVenta PRIMARY KEY CLUSTERED (DEV_idDevolucion)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -325,7 +325,7 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: Puntos
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.Puntos
+CREATE TABLE Puntos
 (
 	PTS_idCliente INT NOT NULL 
 	,PTS_idVenta INT NOT NULL 
@@ -334,7 +334,7 @@ CREATE TABLE dbo.Puntos
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.Puntos ADD CONSTRAINT
+ALTER TABLE Puntos ADD CONSTRAINT
 PK_Puntos PRIMARY KEY CLUSTERED (PTS_idCliente, PTS_idVenta)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -342,7 +342,7 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: Producto
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.Producto
+CREATE TABLE Producto
 (
 	PRO_idProd INT NOT NULL IDENTITY(1, 1)
 	,PRO_descripcion VARCHAR(60) NOT NULL 
@@ -351,7 +351,7 @@ CREATE TABLE dbo.Producto
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.Producto ADD CONSTRAINT
+ALTER TABLE Producto ADD CONSTRAINT
 PK_Producto PRIMARY KEY CLUSTERED (PRO_idProd)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -359,7 +359,7 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: TipoServicio
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.TipoServicio
+CREATE TABLE TipoServicio
 (
 	SRV_idTipoServicio INT NOT NULL IDENTITY(1, 1) 
 	,SRV_nombreServicio VARCHAR(50) NOT NULL 
@@ -367,14 +367,14 @@ CREATE TABLE dbo.TipoServicio
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.TipoServicio ADD CONSTRAINT
-PK_Canje PRIMARY KEY CLUSTERED (SRV_idTipoServicio)
+ALTER TABLE TipoServicio ADD CONSTRAINT
+PK_TipoServicio PRIMARY KEY CLUSTERED (SRV_idTipoServicio)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
 
 -- Create Table: Canje
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.Canje
+CREATE TABLE Canje
 (
 	CNJ_idCanje INT NOT NULL IDENTITY(1, 1)
 	,CNJ_idProducto INT NOT NULL 
@@ -382,7 +382,7 @@ CREATE TABLE dbo.Canje
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.Canje ADD CONSTRAINT
+ALTER TABLE Canje ADD CONSTRAINT
 PK_Canje PRIMARY KEY CLUSTERED (CNJ_idCanje)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -390,7 +390,7 @@ WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, A
 
 -- Create Table: Recorrido
 --------------------------------------------------------------------------------
-CREATE TABLE dbo.Recorrido
+CREATE TABLE Recorrido
 (
 	REC_idRecorrido INT NOT NULL IDENTITY(1, 1)
 	,REC_idTipoServicio INT NOT NULL 
@@ -403,7 +403,7 @@ CREATE TABLE dbo.Recorrido
 )
 ON [PRIMARY]
 
-ALTER TABLE dbo.Recorrido ADD CONSTRAINT
+ALTER TABLE Recorrido ADD CONSTRAINT
 PK_Recorrido PRIMARY KEY CLUSTERED (REC_idRecorrido)
 WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
@@ -708,6 +708,4 @@ ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
 
-COMMIT
-
-
+COMMIT transaction
