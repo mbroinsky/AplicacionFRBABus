@@ -1,5 +1,9 @@
 BEGIN TRANSACTION
 
+-- Para poder correr el Script limpio de principio a Fin, deberíamos agregar todos los drops de tablas antes.
+
+	
+
 -- Create Table: Encomienda
 --------------------------------------------------------------------------------
 CREATE TABLE Encomienda
@@ -10,11 +14,7 @@ CREATE TABLE Encomienda
 	,ENC_kilos DECIMAL(10, 2) NOT NULL 
 )
 ON [PRIMARY]
-ALTER TABLE Encomienda ADD CONSTRAINT
-PK_Encomienda PRIMARY KEY CLUSTERED (ENC_numEnc)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE Encomienda ADD CONSTRAINT PK_Encomienda PRIMARY KEY (ENC_numEnc)
 
 -- Create Table: Butaca
 --------------------------------------------------------------------------------
@@ -26,12 +26,7 @@ CREATE TABLE Butaca
 	,BUT_piso INT NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE Butaca ADD CONSTRAINT
-PK_Butaca PRIMARY KEY CLUSTERED (BUT_numeroAsiento)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE Butaca ADD CONSTRAINT PK_Butaca PRIMARY KEY (BUT_numeroAsiento)
 
 -- Create Table: Micro
 --------------------------------------------------------------------------------
@@ -50,12 +45,7 @@ CREATE TABLE Micro
 	,MIC_fecBaja DATETIME  NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE Micro ADD CONSTRAINT
-PK_Micro PRIMARY KEY CLUSTERED (MIC_numMicro)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE Micro ADD CONSTRAINT PK_Micro PRIMARY KEY (MIC_numMicro)
 
 -- Create Table: Ciudad
 --------------------------------------------------------------------------------
@@ -65,11 +55,7 @@ CREATE TABLE Ciudad
 	,CIU_nombre VARCHAR(250) NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE Ciudad ADD CONSTRAINT
-PK_Ciudad PRIMARY KEY CLUSTERED (CIU_idCiudad)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
+ALTER TABLE Ciudad ADD CONSTRAINT PK_Ciudad PRIMARY KEY (CIU_idCiudad)
 
 
 -- Create Table: Viaje
@@ -84,12 +70,7 @@ CREATE TABLE Viaje
 	,VIA_fecLlegadaEstimada DATETIME NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE Viaje ADD CONSTRAINT
-PK_Viaje PRIMARY KEY CLUSTERED (VIA_numViaje)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE Viaje ADD CONSTRAINT PK_Viaje PRIMARY KEY CLUSTERED (VIA_numViaje)
 
 -- Create Table: Usuario
 --------------------------------------------------------------------------------
@@ -104,12 +85,7 @@ CREATE TABLE Usuario
 	,USR_intentos SMALLINT NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE Usuario ADD CONSTRAINT
-PK_Usuario PRIMARY KEY CLUSTERED (USR_idUsuario)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE Usuario ADD CONSTRAINT PK_Usuario PRIMARY KEY CLUSTERED (USR_idUsuario)
 
 -- Create Table: FuncionalidadXRol
 --------------------------------------------------------------------------------
@@ -119,12 +95,7 @@ CREATE TABLE FuncionalidadXRol
 	,FXR_idFuncionalidad INT NOT NULL
 )
 ON [PRIMARY]
-
-ALTER TABLE FuncionalidadXRol ADD CONSTRAINT
-PK_FuncionalidadXRol PRIMARY KEY CLUSTERED (FXR_idRol)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE FuncionalidadXRol ADD CONSTRAINT PK_FuncionalidadXRol PRIMARY KEY (FXR_idRol, FXR_idFuncionalidad)
 
 -- Create Table: Funcionalidad
 --------------------------------------------------------------------------------
@@ -135,12 +106,7 @@ CREATE TABLE Funcionalidad
 	,FNC_formAsoc VARCHAR(50) NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE Funcionalidad ADD CONSTRAINT
-PK_Funcionalidad PRIMARY KEY CLUSTERED (FNC_idFuncionalidad)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE Funcionalidad ADD CONSTRAINT PK_Funcionalidad PRIMARY KEY (FNC_idFuncionalidad)
 
 -- Create Table: Pasaje
 --------------------------------------------------------------------------------
@@ -152,12 +118,7 @@ CREATE TABLE Pasaje
 	,PAS_numButaca INT NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE Pasaje ADD CONSTRAINT
-PK_Pasaje PRIMARY KEY CLUSTERED (PAS_numPasaje)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE Pasaje ADD CONSTRAINT PK_Pasaje PRIMARY KEY CLUSTERED (PAS_numPasaje)
 
 -- Create Table: Rol
 --------------------------------------------------------------------------------
@@ -167,12 +128,7 @@ CREATE TABLE Rol
 	,ROL_nombre VARCHAR(250) NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE Rol ADD CONSTRAINT
-PK_Rol PRIMARY KEY CLUSTERED (ROL_idRol)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE Rol ADD CONSTRAINT PK_Rol PRIMARY KEY (ROL_idRol)
 
 -- Create Table: Empresa
 --------------------------------------------------------------------------------
@@ -182,12 +138,7 @@ CREATE TABLE Empresa
 	,EMP_nombreEmpresa VARCHAR(50) NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE Empresa ADD CONSTRAINT
-PK_Empresa PRIMARY KEY CLUSTERED (EMP_idEmpresa)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE Empresa ADD CONSTRAINT PK_Empresa PRIMARY KEY (EMP_idEmpresa)
 
 -- Create Table: Cliente
 --------------------------------------------------------------------------------
@@ -203,12 +154,7 @@ CREATE TABLE Cliente
 	,CLI_fecNacimiento DATETIME NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE Cliente ADD CONSTRAINT
-PK_Cliente PRIMARY KEY CLUSTERED (CLI_idCliente)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE Cliente ADD CONSTRAINT PK_Cliente PRIMARY KEY CLUSTERED (CLI_idCliente)
 
 -- Create Table: EncXVen
 --------------------------------------------------------------------------------
@@ -218,12 +164,7 @@ CREATE TABLE EncXVen
 	,EXC_numEnc INT NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE EncXVen ADD CONSTRAINT
-PK_EncXVen PRIMARY KEY CLUSTERED (EXC_idVenta)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE EncXVen ADD CONSTRAINT PK_EncXVen PRIMARY KEY CLUSTERED (EXC_idVenta, EXC_numEnc)
 
 -- Create Table: Venta
 --------------------------------------------------------------------------------
@@ -236,12 +177,7 @@ CREATE TABLE Venta
 	,VEN_discapacitado BIT NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE Venta ADD CONSTRAINT
-PK_Venta PRIMARY KEY CLUSTERED (VEN_idVenta)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE Venta ADD CONSTRAINT PK_Venta PRIMARY KEY CLUSTERED (VEN_idVenta)
 
 -- Create Table: PasXVen
 --------------------------------------------------------------------------------
@@ -251,12 +187,7 @@ CREATE TABLE PasXVen
 	,PXV_idPasaje INT NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE PasXVen ADD CONSTRAINT
-PK_PasXVen PRIMARY KEY CLUSTERED (PXV_idVenta)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE PasXVen ADD CONSTRAINT PK_PasXVen PRIMARY KEY CLUSTERED (PXV_idVenta, PXV_idPasaje)
 
 -- Create Table: DevXPas
 --------------------------------------------------------------------------------
@@ -266,12 +197,7 @@ CREATE TABLE DevXPas
 	,DXP_idPasaje INT NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE DevXPas ADD CONSTRAINT
-PK_DevXPas PRIMARY KEY CLUSTERED (DXP_idDevolucion)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE DevXPas ADD CONSTRAINT PK_DevXPas PRIMARY KEY CLUSTERED (DXP_idDevolucion, DXP_idPasaje)
 
 -- Create Table: DevXEnc
 --------------------------------------------------------------------------------
@@ -281,12 +207,7 @@ CREATE TABLE DevXEnc
 	,DXE_idEncomienda INT NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE DevXEnc ADD CONSTRAINT
-PK_DevXEnc PRIMARY KEY CLUSTERED (DXE_idDevolucion)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE DevXEnc ADD CONSTRAINT PK_DevXEnc PRIMARY KEY CLUSTERED (DXE_idDevolucion, DXE_idEncomienda)
 
 -- Create Table: Tarjeta
 --------------------------------------------------------------------------------
@@ -299,12 +220,7 @@ CREATE TABLE Tarjeta
 	,TAR_codSeg SMALLINT NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE Tarjeta ADD CONSTRAINT
-PK_Tarjeta PRIMARY KEY CLUSTERED (TAR_idTarjeta)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE Tarjeta ADD CONSTRAINT PK_Tarjeta PRIMARY KEY (TAR_idTarjeta)
 
 -- Create Table: DevolucionVenta
 --------------------------------------------------------------------------------
@@ -316,12 +232,7 @@ CREATE TABLE DevolucionVenta
 	,DEV_motivo VARCHAR(250) NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE DevolucionVenta ADD CONSTRAINT
-PK_DevolucionVenta PRIMARY KEY CLUSTERED (DEV_idDevolucion)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE DevolucionVenta ADD CONSTRAINT PK_DevolucionVenta PRIMARY KEY (DEV_idDevolucion)
 
 -- Create Table: Puntos
 --------------------------------------------------------------------------------
@@ -333,12 +244,7 @@ CREATE TABLE Puntos
 	,PTS_idCanje INT NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE Puntos ADD CONSTRAINT
-PK_Puntos PRIMARY KEY CLUSTERED (PTS_idCliente, PTS_idVenta)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE Puntos ADD CONSTRAINT PK_Puntos PRIMARY KEY CLUSTERED (PTS_idCliente, PTS_idVenta)
 
 -- Create Table: Producto
 --------------------------------------------------------------------------------
@@ -350,12 +256,7 @@ CREATE TABLE Producto
 	,PRO_puntos INT NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE Producto ADD CONSTRAINT
-PK_Producto PRIMARY KEY CLUSTERED (PRO_idProd)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE Producto ADD CONSTRAINT PK_Producto PRIMARY KEY (PRO_idProd)
 
 -- Create Table: TipoServicio
 --------------------------------------------------------------------------------
@@ -366,11 +267,7 @@ CREATE TABLE TipoServicio
 	,SRV_porcentajeAdic DECIMAL(5, 2) NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE TipoServicio ADD CONSTRAINT
-PK_TipoServicio PRIMARY KEY CLUSTERED (SRV_idTipoServicio)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
+ALTER TABLE TipoServicio ADD CONSTRAINT PK_TipoServicio PRIMARY KEY (SRV_idTipoServicio)
 
 -- Create Table: Canje
 --------------------------------------------------------------------------------
@@ -381,12 +278,7 @@ CREATE TABLE Canje
 	,CNJ_fecCanje DATETIME NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE Canje ADD CONSTRAINT
-PK_Canje PRIMARY KEY CLUSTERED (CNJ_idCanje)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE Canje ADD CONSTRAINT PK_Canje PRIMARY KEY (CNJ_idCanje)
 
 -- Create Table: Recorrido
 --------------------------------------------------------------------------------
@@ -402,12 +294,7 @@ CREATE TABLE Recorrido
 	,REC_habilitado BIT NOT NULL 
 )
 ON [PRIMARY]
-
-ALTER TABLE Recorrido ADD CONSTRAINT
-PK_Recorrido PRIMARY KEY CLUSTERED (REC_idRecorrido)
-WITH(STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-
+ALTER TABLE Recorrido ADD CONSTRAINT PK_Recorrido PRIMARY KEY (REC_idRecorrido)
 
 -- Create Foreign Key: Recorrido.REC_idCiudadOrigen -> Ciudad.CIU_idCiudad
 ALTER TABLE [Recorrido] ADD CONSTRAINT
@@ -417,8 +304,6 @@ REFERENCES [Ciudad] ([CIU_idCiudad])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
-
-
 -- Create Foreign Key: Usuario.USR_idRol -> Rol.ROL_idRol
 ALTER TABLE [Usuario] ADD CONSTRAINT
 [FK_Usuario_USR_idRol_Rol_ROL_idRol]
@@ -427,8 +312,6 @@ REFERENCES [Rol] ([ROL_idRol])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
-
-
 -- Create Foreign Key: Micro.MIC_idEmpresa -> Empresa.EMP_idEmpresa
 ALTER TABLE [Micro] ADD CONSTRAINT
 [FK_Micro_MIC_idEmpresa_Empresa_EMP_idEmpresa]
@@ -436,8 +319,6 @@ FOREIGN KEY ([MIC_idEmpresa])
 REFERENCES [Empresa] ([EMP_idEmpresa])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
-
-
 
 -- Create Foreign Key: Viaje.VIA_numMicro -> Micro.MIC_numMicro
 ALTER TABLE [Viaje] ADD CONSTRAINT
@@ -708,4 +589,11 @@ ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
 
+--Acá se deberían agregar los SP
+
+--Acá se deberían correr los SP
+
+--Acá se deberían borrar los SP
+
+--FIN
 COMMIT transaction
