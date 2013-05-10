@@ -137,7 +137,7 @@ ALTER TABLE Encomienda ADD CONSTRAINT PK_Encomienda PRIMARY KEY (ENC_numEnc)
 --------------------------------------------------------------------------------
 CREATE TABLE Butaca
 (
-	BUT_numeroAsiento INT NOT NULL IDENTITY(1, 1)
+	BUT_numeroAsiento INT NOT NULL
 	,BUT_numMicro INT NOT NULL
 	,BUT_tipo VARCHAR(1) NOT NULL 
 	,BUT_piso INT NOT NULL 
@@ -714,12 +714,21 @@ CREATE PROCEDURE CargarTablasSecundarias
 AS 
 BEGIN
     INSERT INTO Ciudad (CIU_nombre)  
-		SELECT Distinct gd_esquema.maestra.Recorrido_Ciudad_Destino as nombreCiudad
+		SELECT Distinct Recorrido_Ciudad_Destino as nombreCiudad
 		FROM gd_esquema.Maestra
 		union
-		Select gd_esquema.Maestra.Recorrido_Ciudad_Origen as nombreCiudad
+		Select Recorrido_Ciudad_Origen as nombreCiudad
 		from gd_esquema.Maestra
-		order by nombreCiudad
+		order by nombreCiudad;
+		
+	INSERT INTO Empresa (EMP_nombreEmpresa)
+		SELECT DISTINCT Micro_Marca FROM gd_esquema.Maestra ORDER BY MICRO_MARCA;
+		
+	INSERT INTO TipoServicio (SRV_nombreServicio, SRV_porcentajeAdic)
+		SELECT tipo_servicio, AVG((Pasaje_Precio - Recorrido_Precio_BasePasaje) / Recorrido_Precio_BasePasaje)
+		FROM gd_esquema.Maestra WHERE Recorrido_Precio_BasePasaje <> 0
+		GROUP BY tipo_servicio
+		ORDER BY Tipo_Servicio;
 END
 GO
 
