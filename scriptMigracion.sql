@@ -705,14 +705,32 @@ REFERENCES [TipoServicio] ([SRV_idTipoServicio])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
+COMMIT transaction
+GO
 
 --Acá se deberían agregar los SP
 
-
+CREATE PROCEDURE CargarTablasSecundarias 
+AS 
+BEGIN
+    INSERT INTO Ciudad (CIU_nombre)  
+		SELECT Distinct gd_esquema.maestra.Recorrido_Ciudad_Destino as nombreCiudad
+		FROM gd_esquema.Maestra
+		union
+		Select gd_esquema.Maestra.Recorrido_Ciudad_Origen as nombreCiudad
+		from gd_esquema.Maestra
+		order by nombreCiudad
+END
+GO
 
 --Acá se deberían correr los SP
 
+EXECUTE CargarTablasSecundarias
+GO
+
 --Acá se deberían borrar los SP
 
+DROP PROCEDURE CargarTablasSecundarias
+GO
 --FIN
-COMMIT transaction
+
