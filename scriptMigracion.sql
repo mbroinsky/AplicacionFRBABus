@@ -91,9 +91,9 @@ BEGIN
     DROP TABLE Ciudad
 END
 
-IF OBJECT_ID(N'Empresa') IS NOT NULL
+IF OBJECT_ID(N'Marca') IS NOT NULL
 BEGIN
-    DROP TABLE Empresa
+    DROP TABLE Marca
 END
 
 IF OBJECT_ID(N'TipoServicio') IS NOT NULL
@@ -139,7 +139,7 @@ CREATE TABLE Butaca
 (
 	BUT_numeroAsiento INT NOT NULL
 	,BUT_numMicro INT NOT NULL
-	,BUT_tipo VARCHAR(1) NOT NULL 
+	,BUT_tipo VARCHAR(7) NOT NULL 
 	,BUT_piso INT NOT NULL 
 )
 ON [PRIMARY]
@@ -154,12 +154,13 @@ CREATE TABLE Micro
 	,MIC_idTipoServicio INT NOT NULL 
 	,MIC_kilosEncomiendas DECIMAL(10, 2) NOT NULL 
 	,MIC_habilitado BIT NOT NULL 
-	,MIC_idEmpresa INT NOT NULL 
+	,MIC_idMarca INT NOT NULL 
+        ,MIC_modelo VARCHAR(20) NULL
 	,MIC_fechaAlta DATETIME NOT NULL 
 	,MIC_fueraDeServicio BIT NOT NULL 
 	,MIC_fecFueraServ DATETIME  NULL 
 	,MIC_fecReinicioServ DATETIME  NULL 
-	,MIC_fecBaja DATETIME  NULL 
+	,MIC_fecBaja DATETIME  NULL
 )
 ON [PRIMARY]
 ALTER TABLE Micro ADD CONSTRAINT PK_Micro PRIMARY KEY (MIC_numMicro)
@@ -247,15 +248,15 @@ CREATE TABLE Rol
 ON [PRIMARY]
 ALTER TABLE Rol ADD CONSTRAINT PK_Rol PRIMARY KEY (ROL_idRol)
 
--- Create Table: Empresa
+-- Create Table: Marca
 --------------------------------------------------------------------------------
-CREATE TABLE Empresa
+CREATE TABLE Marca
 (
-	EMP_idEmpresa INT NOT NULL IDENTITY(1, 1)
-	,EMP_nombreEmpresa VARCHAR(50) NOT NULL 
+	MAR_idMarca INT NOT NULL IDENTITY(1, 1)
+	,MAR_nombreMarca VARCHAR(20) NOT NULL 
 )
 ON [PRIMARY]
-ALTER TABLE Empresa ADD CONSTRAINT PK_Empresa PRIMARY KEY (EMP_idEmpresa)
+ALTER TABLE Marca ADD CONSTRAINT PK_Marca PRIMARY KEY (MAR_idMarca)
 
 -- Create Table: Cliente
 --------------------------------------------------------------------------------
@@ -429,11 +430,11 @@ REFERENCES [Rol] ([ROL_idRol])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
--- Create Foreign Key: Micro.MIC_idEmpresa -> Empresa.EMP_idEmpresa
+-- Create Foreign Key: Micro.MIC_idMarca -> Marca.MAR_idMarca
 ALTER TABLE [Micro] ADD CONSTRAINT
-[FK_Micro_MIC_idEmpresa_Empresa_EMP_idEmpresa]
-FOREIGN KEY ([MIC_idEmpresa])
-REFERENCES [Empresa] ([EMP_idEmpresa])
+[FK_Micro_MIC_idMarca_Marca_MAR_idMarca]
+FOREIGN KEY ([MIC_idMarca])
+REFERENCES [Marca] ([MAR_idMarca])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
@@ -721,7 +722,7 @@ BEGIN
 		from gd_esquema.Maestra
 		order by nombreCiudad;
 		
-	INSERT INTO Empresa (EMP_nombreEmpresa)
+	INSERT INTO Marca (MAR_nombreMarca)
 		SELECT DISTINCT Micro_Marca FROM gd_esquema.Maestra ORDER BY MICRO_MARCA;
 		
 	INSERT INTO TipoServicio (SRV_nombreServicio, SRV_porcentajeAdic)
@@ -732,9 +733,33 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE CargarMicros
+AS
+BEGIN
+	INSERT INTO Micro (MIC_patente, MIC_idTipoServicio, MIC_kilosEncomiendas, MIC_habilitado 
+			, MIC_idMarca, MIC_modelo, MIC_fechaAlta,MIC_fueraDeServicio)
+		SELECT Micro_Patente, SRV_idTipoServicio, Micro_KG_Disponibles,
+                       True, MAR_idMarca, Micro_modelo, CURRENT_TIMESTAMP, False
+		FROM gd_Esquema.Maestra, Marca, TipoServicio
+		WHERE Tipo_Servicio = SRV_nombreServicio and Micro_Marca = MAR_nombreMarca;
+END
+GO
+
+CREATE PROCEDURE CargarButacas 
+AS 
+BEGIN
+    INSERT INTO Butaca (BUT_numeroAsiento, BUT_numMicro, BUT_tipo, BUT_piso)
+		SELECT Butaca_Nro, MIC_idMicro, Butaca_Tipo, Butaca_Piso
+		FROM gd_Esquema.Maestra, Micro
+		WHERE Micro_Patente = Micro.MIC_patente;
+END
+GO
+
 --Acá se deberían correr los SP
 
-EXECUTE CargarTablasSecundarias
+EXECUTE CargarTablasSecundarias;
+EXECUTE CargarMicros;
+EXECUTE CargarButacas;
 GO
 
 --Acá se deberían borrar los SP
