@@ -1,5 +1,14 @@
 BEGIN TRANSACTION
 
+IF OBJECT_ID(N'NOT_NULL') IS NOT NULL
+BEGIN
+	DROP SCHEMA NOT_NULL
+END
+
+CREATE SCHEMA NOT_NULL;
+
+USE SCHEMA NOT_NULL;
+
 -- Para poder correr el Script limpio de principio a Fin, deberíamos agregar todos los drops de tablas antes.
 IF OBJECT_ID(N'Usuario') IS NOT NULL
 BEGIN
@@ -706,6 +715,7 @@ BEGIN
 
 	INSERT INTO Usuario (USR_idRol, USR_nick, USR_password, USR_nombre,
 			     USR_apellido, USR_intentos) VALUES
+                            (@idRol, 'admin', HASHBYTES('SHA2_256','w23e'), 'Administrador', 'General', 0),
 			    (@idRol, 'mireya', HASHBYTES('SHA2_256','w23e'), 'Mireya', 'Mamani', 0),
 			    (@idRol, 'jesús', HASHBYTES('SHA2_256','w23e'), 'Jesús', 'Herrera', 0),
                     	    (@idRol, 'maxi', HASHBYTES('SHA2_256','w23e'), 'Maximiliano', 'Broinsky', 0);
