@@ -126,7 +126,8 @@ END
 CREATE TABLE Encomienda
 (
 	ENC_numEnc INT NOT NULL IDENTITY(1, 1)
-        ,ENC_codigo NOT NULL
+        ,ENC_idVenta INT NOT NULL
+	,ENC_codigo NOT NULL
 	,ENC_idViaje INT NOT NULL
 	,ENC_idCliente INT NOT NULL 
 	,ENC_kilos DECIMAL(10, 2) NOT NULL 
@@ -232,6 +233,7 @@ ALTER TABLE Funcionalidad ADD CONSTRAINT PK_Funcionalidad PRIMARY KEY (FNC_idFun
 CREATE TABLE Pasaje
 (
 	PAS_numPasaje INT NOT NULL IDENTITY(1, 1)
+	,PAS_idVenta INT NOT NULL
 	,PAS_codigo NOT NULL
 	,PAS_idViaje INT NOT NULL 
 	,PAS_idCliente INT NOT NULL 
@@ -277,16 +279,6 @@ CREATE TABLE Cliente
 ON [PRIMARY]
 ALTER TABLE Cliente ADD CONSTRAINT PK_Cliente PRIMARY KEY CLUSTERED (CLI_idCliente)
 
--- Create Table: EncXVen
---------------------------------------------------------------------------------
-CREATE TABLE EncXVen
-(
-	EXC_idVenta INT NOT NULL 
-	,EXC_numEnc INT NOT NULL 
-)
-ON [PRIMARY]
-ALTER TABLE EncXVen ADD CONSTRAINT PK_EncXVen PRIMARY KEY CLUSTERED (EXC_idVenta, EXC_numEnc)
-
 -- Create Table: Venta
 --------------------------------------------------------------------------------
 CREATE TABLE Venta
@@ -299,16 +291,6 @@ CREATE TABLE Venta
 )
 ON [PRIMARY]
 ALTER TABLE Venta ADD CONSTRAINT PK_Venta PRIMARY KEY CLUSTERED (VEN_idVenta)
-
--- Create Table: PasXVen
---------------------------------------------------------------------------------
-CREATE TABLE PasXVen
-(
-	PXV_idVenta INT NOT NULL 
-	,PXV_idPasaje INT NOT NULL 
-)
-ON [PRIMARY]
-ALTER TABLE PasXVen ADD CONSTRAINT PK_PasXVen PRIMARY KEY CLUSTERED (PXV_idVenta, PXV_idPasaje)
 
 -- Create Table: DevXPas
 --------------------------------------------------------------------------------
@@ -510,45 +492,22 @@ ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
 
-
--- Create Foreign Key: PasXVen.PXV_idVenta -> Venta.VEN_idVenta
-ALTER TABLE [PasXVen] ADD CONSTRAINT
-[FK_PasXVen_PXV_idVenta_Venta_VEN_idVenta]
-FOREIGN KEY ([PXV_idVenta])
+-- Create Foreign Key: Pasaje.PAS_idVenta -> Venta.VEN_idVenta
+ALTER TABLE [Pasasaje] ADD CONSTRAINT
+[FK_Pasaje_PAS_idVenta_Venta_VEN_idVenta]
+FOREIGN KEY ([PAS_idVenta])
 REFERENCES [Venta] ([VEN_idVenta])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
 
-
--- Create Foreign Key: PasXVen.PXV_idPasaje -> Pasaje.PAS_numPasaje
-ALTER TABLE [PasXVen] ADD CONSTRAINT
-[FK_PasXVen_PXV_idPasaje_Pasaje_PAS_numPasaje]
-FOREIGN KEY ([PXV_idPasaje])
-REFERENCES [Pasaje] ([PAS_numPasaje])
-ON UPDATE NO ACTION
-ON DELETE NO ACTION
-
-
-
--- Create Foreign Key: EncXVen.EXC_idVenta -> Venta.VEN_idVenta
-ALTER TABLE [EncXVen] ADD CONSTRAINT
-[FK_EncXVen_EXC_idVenta_Venta_VEN_idVenta]
-FOREIGN KEY ([EXC_idVenta])
+-- Create Foreign Key: Encomienda.ENC_idVenta -> Venta.VEN_idVenta
+ALTER TABLE [Encomienda] ADD CONSTRAINT
+[FK_Encomienda_ENC_idVenta_Venta_VEN_idVenta]
+FOREIGN KEY ([ENC_idVenta])
 REFERENCES [Venta] ([VEN_idVenta])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
-
-
-
--- Create Foreign Key: EncXVen.EXC_numEnc -> Encomienda.ENC_numEnc
-ALTER TABLE [EncXVen] ADD CONSTRAINT
-[FK_EncXVen_EXC_numEnc_Encomienda_ENC_numEnc]
-FOREIGN KEY ([EXC_numEnc])
-REFERENCES [Encomienda] ([ENC_numEnc])
-ON UPDATE NO ACTION
-ON DELETE NO ACTION
-
 
 
 -- Create Foreign Key: Venta.VEN_idTarjeta -> Tarjeta.TAR_idTarjeta
@@ -717,6 +676,8 @@ GO
 CREATE PROCEDURE CargarTablasSecundarias 
 AS 
 BEGIN
+	DECLARE @idRol INT;
+
     	INSERT INTO Ciudad (CIU_nombre)  
 		SELECT Distinct Recorrido_Ciudad_Destino as nombreCiudad
 		FROM gd_esquema.Maestra
@@ -738,6 +699,21 @@ BEGIN
 	                 CLI_telefono, CLI_mail, CLI_fecNacimiento)
 		SELECT 	Cli_Nombre, Cli_Apellido, Cli_Dni, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac
 		FROM gd_Esquema.Maestra;
+
+	INSERT INTO Rol (ROL_nombre) Values ('Administrador');
+
+	SELECT @idRol = ROL_idRol FROM Rol WHERE ROL_nombre = 'Administrador';
+
+	INSERT INTO Usuario (USR_idRol, USR_nick, USR_password, USR_nombre,
+			     USR_apellido, USR_intentos) VALUES
+			    (@idRol, 'mireya', HASHBYTES('SHA2_256','w23e'), 'Mireya', 'Mamani', 0),
+			    (@idRol, 'jesús', HASHBYTES('SHA2_256','w23e'), 'Jesús', 'Herrera', 0),
+                    	    (@idRol, 'maxi', HASHBYTES('SHA2_256','w23e'), 'Maximiliano', 'Broinsky', 0);
+
+	--INSERT INTO Funcionalidad(FUN_nombre, FUN_formAsociado)
+        
+	INSERT INTO FuncionalidadXRol (FXR_idRol, FXR_idFuncionalidad)
+		SELECT @idRol, FUN_idFuncionalidad FROM Funcionalidad;
 END
 GO
 
@@ -789,25 +765,36 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE CargarPasajes 
-AS 
-BEGIN
-    INSERT INTO Pasaje (PAS_codigo, PAS_idViaje, PAS_idCliente, PAS_numButaca, PAS_precio)
-		SELECT 	Pasaje_Codigo, VIA_idViaje, CLI_idCliente, Butaca_Numero, Pasaje_Precio
-		FROM gd_Esquema.Maestra, Viaje, Cliente, Recorrido
-		WHERE FechaSalida = VIA_fecSalida and VIA_idRecorrido = REC_idRecorrido and 
-			Recorrido_Codigo = REC_codRecorrido and gd_Esquema.Maestra.Cli_Dni = Cliente.CLI_Dni;
-END
-GO
+--CREATE PROCEDURE CargarVentas 
+--AS 
+--BEGIN
+--    INSERT INTO Ventas (PAS_idVenta, PAS_codigo, PAS_idViaje, PAS_idCliente, PAS_numButaca, PAS_precio)
+--		SELECT 	Pasaje_Codigo, VIA_idViaje, CLI_idCliente, Butaca_Numero, Pasaje_Precio
+--		FROM gd_Esquema.Maestra, Viaje, Cliente, Recorrido
+--		WHERE FechaSalida = VIA_fecSalida and VIA_idRecorrido = REC_idRecorrido and 
+--			Recorrido_Codigo = REC_codRecorrido and gd_Esquema.Maestra.Cli_Dni = Cliente.CLI_Dni;
+--END
+--GO
 
-CREATE PROCEDURE CargarEncomiendas 
-AS 
-BEGIN
-    INSERT INTO Encomienda (ENC_idViaje, ENC_idCliente, ENC_kilos)
-		SELECT 	Cli_Nombre, Cli_Apellido, Cli_Dni, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac
-		FROM gd_Esquema.Maestra;
-END
-GO
+--CREATE PROCEDURE CargarPasajes 
+--AS 
+--BEGIN
+--   INSERT INTO Pasaje (PAS_idVenta, PAS_codigo, PAS_idViaje, PAS_idCliente, PAS_numButaca, PAS_precio)
+--		SELECT 	Pasaje_Codigo, VIA_idViaje, CLI_idCliente, Butaca_Numero, Pasaje_Precio
+--		FROM gd_Esquema.Maestra, Viaje, Cliente, Recorrido
+--		WHERE FechaSalida = VIA_fecSalida and VIA_idRecorrido = REC_idRecorrido and 
+--			Recorrido_Codigo = REC_codRecorrido and gd_Esquema.Maestra.Cli_Dni = Cliente.CLI_Dni;
+--END
+--GO
+
+--CREATE PROCEDURE CargarEncomiendas 
+--AS 
+--BEGIN
+--    INSERT INTO Encomienda (ENC_idViaje, ENC_idCliente, ENC_kilos)
+--		SELECT 	Cli_Nombre, Cli_Apellido, Cli_Dni, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac
+--		FROM gd_Esquema.Maestra;
+--END
+--GO
 
 
 --Acá se deberían correr los SP
