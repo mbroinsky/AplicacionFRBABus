@@ -1,8 +1,124 @@
 BEGIN TRANSACTION
 
 -- Para poder correr el Script limpio de principio a Fin, deberíamos agregar todos los drops de tablas antes.
+IF OBJECT_ID(N'Usuario') IS NOT NULL
+BEGIN
+    DROP TABLE Usuario
+END
 
-	
+IF OBJECT_ID(N'FuncionalidadXRol') IS NOT NULL
+BEGIN
+    DROP TABLE FuncionalidadXRol
+END
+
+IF OBJECT_ID(N'Funcionalidad') IS NOT NULL
+BEGIN
+    DROP TABLE Funcionalidad
+END
+
+IF OBJECT_ID(N'Rol') IS NOT NULL
+BEGIN
+    DROP TABLE Rol
+END
+
+IF OBJECT_ID(N'EncXVen') IS NOT NULL
+BEGIN
+    DROP TABLE EncXVen
+END
+
+IF OBJECT_ID(N'PasXVen') IS NOT NULL
+BEGIN
+    DROP TABLE PasXVen
+END
+IF OBJECT_ID(N'DevXpas') IS NOT NULL
+BEGIN
+    DROP TABLE DevXPas
+END
+
+IF OBJECT_ID(N'DevXEnc') IS NOT NULL
+BEGIN
+    DROP TABLE DevXEnc
+END
+
+IF OBJECT_ID(N'DevolucionVenta') IS NOT NULL
+BEGIN
+    DROP TABLE DevolucionVenta
+END
+
+IF OBJECT_ID(N'Pasaje') IS NOT NULL
+BEGIN
+    DROP TABLE Pasaje
+END
+
+IF OBJECT_ID(N'Encomienda') IS NOT NULL
+BEGIN
+    DROP TABLE Encomienda
+END
+
+IF OBJECT_ID(N'Venta') IS NOT NULL
+BEGIN
+    DROP TABLE Venta
+END
+
+IF OBJECT_ID(N'Butaca') IS NOT NULL
+BEGIN
+    DROP TABLE Butaca
+END
+
+IF OBJECT_ID(N'Viaje') IS NOT NULL
+BEGIN
+    DROP TABLE Viaje
+END
+
+IF OBJECT_ID(N'Micro') IS NOT NULL
+BEGIN
+    DROP TABLE Micro
+END
+
+IF OBJECT_ID(N'Recorrido') IS NOT NULL
+BEGIN
+    DROP TABLE Recorrido
+END
+
+IF OBJECT_ID(N'Ciudad') IS NOT NULL
+BEGIN
+    DROP TABLE Ciudad
+END
+
+IF OBJECT_ID(N'Empresa') IS NOT NULL
+BEGIN
+    DROP TABLE Empresa
+END
+
+IF OBJECT_ID(N'Puntos') IS NOT NULL
+BEGIN
+    DROP TABLE Puntos
+END
+
+IF OBJECT_ID(N'TipoServicio') IS NOT NULL
+BEGIN
+    DROP TABLE TipoServicio
+END
+
+IF OBJECT_ID(N'Canje') IS NOT NULL
+BEGIN
+    DROP TABLE Canje
+END
+
+IF OBJECT_ID(N'Producto') IS NOT NULL
+BEGIN
+    DROP TABLE Producto
+END
+
+IF OBJECT_ID(N'Cliente') IS NOT NULL
+BEGIN
+    DROP TABLE Cliente
+END	
+
+IF OBJECT_ID(N'Tarjeta') IS NOT NULL
+BEGIN
+    DROP TABLE Tarjeta
+END
 
 -- Create Table: Encomienda
 --------------------------------------------------------------------------------
@@ -590,6 +706,8 @@ ON DELETE NO ACTION
 
 
 --Acá se deberían agregar los SP
+
+
 
 --Acá se deberían correr los SP
 
