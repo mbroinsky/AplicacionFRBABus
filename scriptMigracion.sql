@@ -126,6 +126,7 @@ END
 CREATE TABLE Encomienda
 (
 	ENC_numEnc INT NOT NULL IDENTITY(1, 1)
+        ,ENC_codigo NOT NULL
 	,ENC_idViaje INT NOT NULL
 	,ENC_idCliente INT NOT NULL 
 	,ENC_kilos DECIMAL(10, 2) NOT NULL 
@@ -231,9 +232,11 @@ ALTER TABLE Funcionalidad ADD CONSTRAINT PK_Funcionalidad PRIMARY KEY (FNC_idFun
 CREATE TABLE Pasaje
 (
 	PAS_numPasaje INT NOT NULL IDENTITY(1, 1)
+	,PAS_codigo NOT NULL
 	,PAS_idViaje INT NOT NULL 
 	,PAS_idCliente INT NOT NULL 
 	,PAS_numButaca INT NOT NULL 
+	,PAS_precio DECIMAL(10,2) NOT NULL
 )
 ON [PRIMARY]
 ALTER TABLE Pasaje ADD CONSTRAINT PK_Pasaje PRIMARY KEY CLUSTERED (PAS_numPasaje)
@@ -714,7 +717,7 @@ GO
 CREATE PROCEDURE CargarTablasSecundarias 
 AS 
 BEGIN
-    INSERT INTO Ciudad (CIU_nombre)  
+    	INSERT INTO Ciudad (CIU_nombre)  
 		SELECT Distinct Recorrido_Ciudad_Destino as nombreCiudad
 		FROM gd_esquema.Maestra
 		union
@@ -730,6 +733,11 @@ BEGIN
 		FROM gd_esquema.Maestra WHERE Recorrido_Precio_BasePasaje <> 0
 		GROUP BY tipo_servicio
 		ORDER BY Tipo_Servicio;
+
+    	INSERT INTO Cliente (CLI_nombre, CLI_apellido, CLI_dni, CLI_direccion,
+	                 CLI_telefono, CLI_mail, CLI_fecNacimiento)
+		SELECT 	Cli_Nombre, Cli_Apellido, Cli_Dni, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac
+		FROM gd_Esquema.Maestra;
 END
 GO
 
@@ -755,11 +763,61 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE CargarRecorridos 
+AS 
+BEGIN
+    INSERT INTO Recorrido (REC_idTipoServicio, REC_idCiudadOrigen,
+			REC_idCiudadDestino,REC_codRecorrido,REC_precioBase,REC_precioKilo
+                        ,REC_habilitado)
+		SELECT 	SRV_idTipoServicio, a.CIU_idCiudad, b.CIU_idCiudad, Recorrido_Codigo, 
+			Recorrido_Precio_BasePasaje, Recorrido_Precio_BaseKG, True
+		FROM gd_Esquema.Maestra, Ciudad as a, Ciudad as b, TipoServicio
+		WHERE Recorrido_Ciudad_Origen = a.CIU_nombreCiudad and
+  		      Recorrido_Ciudad_Destino = b.CIU_nombreCiudad and
+                      SRV_nombreServicio = Tipo_Servicio;
+END
+GO
+
+CREATE PROCEDURE CargarViajes 
+AS 
+BEGIN
+    INSERT INTO Viaje (	VIA_numMicro, VIA_idRecorrido, VIA_fecSalida, VIA_fecLlegada,VIA_fecLlegadaEstimada)
+		SELECT 	MIC_idMicro, REC_idRecorrido, FechaSalida, FechaLLegada, Fecha_LLegada_Estimada
+		FROM gd_Esquema.Maestra, Micro, Recorrido
+		WHERE Recorrido_Codigo = REC_codRecorrido and
+  		      Micro_Patente = MIC_patente;
+END
+GO
+
+CREATE PROCEDURE CargarPasajes 
+AS 
+BEGIN
+    INSERT INTO Pasaje (PAS_codigo, PAS_idViaje, PAS_idCliente, PAS_numButaca, PAS_precio)
+		SELECT 	Pasaje_Codigo, VIA_idViaje, CLI_idCliente, Butaca_Numero, Pasaje_Precio
+		FROM gd_Esquema.Maestra, Viaje, Cliente, Recorrido
+		WHERE FechaSalida = VIA_fecSalida and VIA_idRecorrido = REC_idRecorrido and 
+			Recorrido_Codigo = REC_codRecorrido and gd_Esquema.Maestra.Cli_Dni = Cliente.CLI_Dni;
+END
+GO
+
+CREATE PROCEDURE CargarEncomiendas 
+AS 
+BEGIN
+    INSERT INTO Encomienda (ENC_idViaje, ENC_idCliente, ENC_kilos)
+		SELECT 	Cli_Nombre, Cli_Apellido, Cli_Dni, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac
+		FROM gd_Esquema.Maestra;
+END
+GO
+
+
 --Acá se deberían correr los SP
 
 EXECUTE CargarTablasSecundarias;
 EXECUTE CargarMicros;
 EXECUTE CargarButacas;
+EXECUTE CargarRecorridos;
+EXECUTE CargarViajes;
+
 GO
 
 --Acá se deberían borrar los SP
