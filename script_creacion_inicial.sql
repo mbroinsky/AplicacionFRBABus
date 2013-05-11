@@ -143,18 +143,18 @@ CREATE TABLE NOT_NULL.Butaca
 (
 	BUT_numeroAsiento INT NOT NULL
 	,BUT_numMicro INT NOT NULL
-	,BUT_tipo VARCHAR(7) NOT NULL 
+	,BUT_tipo VARCHAR(10) NOT NULL 
 	,BUT_piso INT NOT NULL 
 )
 ON [PRIMARY]
-ALTER TABLE NOT_NULL.Butaca ADD CONSTRAINT PK_Butaca PRIMARY KEY (BUT_numeroAsiento)
+ALTER TABLE NOT_NULL.Butaca ADD CONSTRAINT PK_Butaca PRIMARY KEY (BUT_numeroAsiento, BUT_numMicro)
 
 -- Create Table: Micro
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Micro
 (
 	MIC_numMicro INT NOT NULL IDENTITY(1, 1)
-	,MIC_patente VARCHAR(6) NOT NULL 
+	,MIC_patente VARCHAR(7) NOT NULL 
 	,MIC_idTipoServicio INT NOT NULL 
 	,MIC_kilosEncomiendas DECIMAL(10, 2) NOT NULL 
 	,MIC_habilitado BIT NOT NULL 
@@ -186,7 +186,7 @@ CREATE TABLE NOT_NULL.Viaje
 (
 	VIA_numViaje INT NOT NULL IDENTITY(1, 1)
 	,VIA_numMicro INT NOT NULL
-	,VIA_idRecorrido INT NOT NULL
+	,VIA_codRecorrido NUMERIC(18,0) NOT NULL
 	,VIA_fecSalida DATETIME NOT NULL 
 	,VIA_fecLlegada DATETIME  NULL 
 	,VIA_fecLlegadaEstimada DATETIME NOT NULL 
@@ -201,7 +201,7 @@ CREATE TABLE NOT_NULL.Usuario
 	USR_idUsuario INT NOT NULL IDENTITY(1, 1)
 	,USR_idRol INT NOT NULL
 	,USR_nick VARCHAR(20) NOT NULL 
-	,USR_password VARCHAR(50) NOT NULL 
+	,USR_password VARCHAR(100) NOT NULL 
 	,USR_nombre VARCHAR(30) NOT NULL 
 	,USR_apellido VARCHAR(30) NOT NULL 
 	,USR_intentos SMALLINT NOT NULL 
@@ -240,6 +240,7 @@ CREATE TABLE NOT_NULL.Pasaje
 	,PAS_idViaje INT NOT NULL 
 	,PAS_idCliente INT NOT NULL 
 	,PAS_numButaca INT NOT NULL 
+	,PAS_numMicro INT NOT NULL
 	,PAS_precio DECIMAL(10,2) NOT NULL
 )
 ON [PRIMARY]
@@ -389,17 +390,16 @@ ALTER TABLE NOT_NULL.Canje ADD CONSTRAINT PK_Canje PRIMARY KEY (CNJ_idCanje)
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Recorrido
 (
-	REC_idRecorrido INT NOT NULL IDENTITY(1, 1)
-	,REC_idTipoServicio INT NOT NULL 
+     REC_codigo NUMERIC(18,0) NOT NULL
+    ,REC_idTipoServicio INT NOT NULL 
 	,REC_idCiudadOrigen INT NOT NULL 
 	,REC_idCiudadDestino INT NOT NULL 
-	,REC_codRecorrido VARCHAR(10) NOT NULL 
-	,REC_precioBase DECIMAL(10, 2) NOT NULL 
+ 	,REC_precioBase DECIMAL(10, 2) NOT NULL 
 	,REC_precioKilo DECIMAL(10, 2) NOT NULL 
 	,REC_habilitado BIT NOT NULL 
 )
 ON [PRIMARY]
-ALTER TABLE NOT_NULL.Recorrido ADD CONSTRAINT PK_Recorrido PRIMARY KEY (REC_idRecorrido)
+ALTER TABLE NOT_NULL.Recorrido ADD CONSTRAINT PK_Recorrido PRIMARY KEY (REC_codigo)
 
 -- Create Foreign Key: Recorrido.REC_idCiudadOrigen -> Ciudad.CIU_idCiudad
 ALTER TABLE NOT_NULL.[Recorrido] ADD CONSTRAINT
@@ -435,11 +435,11 @@ ON DELETE NO ACTION
 
 
 
--- Create Foreign Key: Viaje.VIA_idRecorrido -> Recorrido.REC_idRecorrido
+-- Create Foreign Key: Viaje.VIA_codRecorrido -> Recorrido.REC_codigo
 ALTER TABLE NOT_NULL.[Viaje] ADD CONSTRAINT
-[FK_Viaje_VIA_idRecorrido_Recorrido_REC_idRecorrido]
-FOREIGN KEY ([VIA_idRecorrido])
-REFERENCES NOT_NULL.[Recorrido] ([REC_idRecorrido])
+[FK_Viaje_VIA_codRecorrido_Recorrido_REC_codigo]
+FOREIGN KEY ([VIA_codRecorrido])
+REFERENCES NOT_NULL.[Recorrido] ([REC_codigo])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
@@ -486,10 +486,9 @@ ON DELETE NO ACTION
 
 
 -- Create Foreign Key: Pasaje.PAS_numButaca -> Butaca.BUT_numeroAsiento
-ALTER TABLE NOT_NULL.[Pasaje] ADD CONSTRAINT
-[FK_Pasaje_PAS_numButaca_Butaca_BUT_numeroAsiento]
-FOREIGN KEY ([PAS_numButaca])
-REFERENCES NOT_NULL.[Butaca] ([BUT_numeroAsiento])
+ALTER TABLE NOT_NULL.Pasaje ADD CONSTRAINT FK_Pasaje_PAS_numButaca_PAS_numMicro_Butaca_BUT_numeroAsiento_Butaca_BUT_numMicro
+FOREIGN KEY (PAS_numButaca, PAS_numMicro)
+REFERENCES NOT_NULL.Butaca(BUT_numeroAsiento, BUT_numMicro)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
@@ -708,10 +707,10 @@ BEGIN
 
 	INSERT INTO Usuario (USR_idRol, USR_nick, USR_password, USR_nombre,
 			     USR_apellido, USR_intentos) VALUES
-                (@idRol, 'admin', HASHBYTES('SHA1','w23e'), 'Administrador', 'General', 0),
-			    (@idRol, 'mireya', HASHBYTES('SHA1','w23e'), 'Mireya', 'Mamani', 0),
-			    (@idRol, 'jesús', HASHBYTES('SHA1','w23e'), 'Jesús', 'Herrera', 0),
-                (@idRol, 'maxi', HASHBYTES('SHA1','w23e'), 'Maximiliano', 'Broinsky', 0);
+                (@idRol, 'admin', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', 'Administrador', 'General', 0),
+			    (@idRol, 'mireya', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', 'Mireya', 'Mamani', 0),
+			    (@idRol, 'jesús', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', 'Jesús', 'Herrera', 0),
+                (@idRol, 'maxi', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', 'Maximiliano', 'Broinsky', 0);
 
 	--INSERT INTO Funcionalidad(FUN_nombre, FUN_formAsociado)
         
@@ -725,7 +724,7 @@ AS
 BEGIN
 	INSERT INTO Micro (MIC_patente, MIC_idTipoServicio, MIC_kilosEncomiendas, MIC_habilitado 
 			, MIC_idMarca, MIC_modelo, MIC_fechaAlta,MIC_fueraDeServicio)
-		SELECT DISTINCT Micro_Patente, SRV_idTipoServicio, Micro_KG_Disponibles,
+		SELECT DISTINCT left(Micro_Patente, 7), SRV_idTipoServicio, Micro_KG_Disponibles,
                        1, MAR_idMarca, Micro_modelo, CURRENT_TIMESTAMP, 0
 		FROM gd_Esquema.Maestra, Marca, TipoServicio
 		WHERE Tipo_Servicio = SRV_nombreServicio and Micro_Marca = MAR_nombreMarca;
@@ -738,7 +737,7 @@ BEGIN
     INSERT INTO Butaca (BUT_numeroAsiento, BUT_numMicro, BUT_tipo, BUT_piso)
 		SELECT DISTINCT Butaca_Nro, MIC_numMicro, Butaca_Tipo, Butaca_Piso
 		FROM gd_Esquema.Maestra, Micro
-		WHERE Micro_Patente = Micro.MIC_patente;
+		WHERE Micro_Patente = Micro.MIC_patente AND Butaca_Piso <> 0;
 END
 GO
 
@@ -746,25 +745,25 @@ CREATE PROCEDURE NOT_NULL.CargarRecorridos
 AS 
 BEGIN
     INSERT INTO Recorrido (REC_idTipoServicio, REC_idCiudadOrigen,
-			REC_idCiudadDestino,REC_codRecorrido,REC_precioBase,REC_precioKilo
+			REC_idCiudadDestino,REC_codigo,REC_precioBase,REC_precioKilo
                         ,REC_habilitado)
-		SELECT 	DISTINCT SRV_idTipoServicio, a.CIU_idCiudad, b.CIU_idCiudad, Recorrido_Codigo, 
-			Recorrido_Precio_BasePasaje, Recorrido_Precio_BaseKG, 'T'
+		SELECT SRV_idTipoServicio, a.CIU_idCiudad, b.CIU_idCiudad, Recorrido_Codigo, 
+			max(Recorrido_Precio_BasePasaje), max(Recorrido_Precio_BaseKG), 1
 		FROM gd_Esquema.Maestra, Ciudad as a, Ciudad as b, TipoServicio
 		WHERE Recorrido_Ciudad_Origen = a.CIU_nombre and
   		      Recorrido_Ciudad_Destino = b.CIU_nombre and
-                      SRV_nombreServicio = Tipo_Servicio;
+                      SRV_nombreServicio = Tipo_Servicio
+        Group by Recorrido_Codigo, a.CIU_idCiudad, b.CIU_idCiudad, SRV_idTipoServicio;
 END
 GO
 
 CREATE PROCEDURE NOT_NULL.CargarViajes 
 AS 
 BEGIN
-    INSERT INTO Viaje (	VIA_numMicro, VIA_idRecorrido, VIA_fecSalida, VIA_fecLlegada,VIA_fecLlegadaEstimada)
-		SELECT DISTINCT	MIC_numMicro, REC_idRecorrido, FechaSalida, FechaLLegada, Fecha_LLegada_Estimada
-		FROM gd_Esquema.Maestra, Micro, Recorrido
-		WHERE Recorrido_Codigo = REC_codRecorrido and
-  		      Micro_Patente = MIC_patente;
+    INSERT INTO Viaje (	VIA_numMicro, VIA_codRecorrido, VIA_fecSalida, VIA_fecLlegada,VIA_fecLlegadaEstimada)
+		SELECT DISTINCT	MIC_numMicro, Recorrido_Codigo, FechaSalida, FechaLLegada, Fecha_LLegada_Estimada
+		FROM gd_Esquema.Maestra, Micro
+		WHERE Micro_Patente = MIC_patente;
 END
 GO
 
