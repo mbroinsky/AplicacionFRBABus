@@ -1,7 +1,7 @@
 BEGIN TRANSACTION
-
+SET NOCOUNT ON
 -- Para poder correr el Script limpio de principio a Fin, deberíamos agregar todos los drops de tablas antes.
-IF OBJECT_ID(N'NOT_NULL.Usuario') IS NOT NULL
+IF OBJECT_ID('NOT_NULL.Usuario') IS NOT NULL
 BEGIN
     DROP TABLE NOT_NULL.Usuario
 END
@@ -112,6 +112,12 @@ BEGIN
 END
 GO
 
+IF OBJECT_ID(N'NOT_NULL.CargarButacas') IS NOT NULL
+BEGIN
+    DROP TABLE NOT_NULL.Tarjeta
+END
+GO
+
 IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'NOT_NULL')
 BEGIN
 	DROP SCHEMA NOT_NULL;
@@ -169,6 +175,8 @@ CREATE TABLE NOT_NULL.Micro
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Micro ADD CONSTRAINT PK_Micro PRIMARY KEY (MIC_numMicro)
 
+CREATE INDEX IDX_MICRO_PATENTE
+on NOT_NULL.Micro(MIC_patente)
 -- Create Table: Ciudad
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Ciudad
@@ -194,6 +202,8 @@ CREATE TABLE NOT_NULL.Viaje
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Viaje ADD CONSTRAINT PK_Viaje PRIMARY KEY CLUSTERED (VIA_numViaje)
 
+CREATE INDEX IDX_VIAJE_RECORRIDO
+on NOT_NULL.Viaje(VIA_codRecorrido)
 -- Create Table: Usuario
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Usuario
@@ -282,6 +292,8 @@ CREATE TABLE NOT_NULL.Cliente
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Cliente ADD CONSTRAINT PK_Cliente PRIMARY KEY CLUSTERED (CLI_idCliente)
 
+CREATE INDEX IDX_DNI_CLIENTE
+on NOT_NULL.Cliente(CLI_dni)
 -- Create Table: Venta
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Venta
@@ -347,7 +359,7 @@ CREATE TABLE NOT_NULL.Puntos
 	PTS_idCliente INT NOT NULL 
 	,PTS_idVenta INT NOT NULL 
 	,PTS_puntos INT NOT NULL 
-	,PTS_idCanje INT NOT NULL 
+	,PTS_idCanje INT 
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Puntos ADD CONSTRAINT PK_Puntos PRIMARY KEY CLUSTERED (PTS_idCliente, PTS_idVenta)
@@ -757,6 +769,7 @@ BEGIN
 END
 GO
 
+
 CREATE PROCEDURE NOT_NULL.CargarViajes 
 AS 
 BEGIN
@@ -767,16 +780,172 @@ BEGIN
 END
 GO
 
---CREATE PROCEDURE CargarVentas 
---AS 
---BEGIN
---    INSERT INTO Ventas (PAS_idVenta, PAS_codigo, PAS_idViaje, PAS_idCliente, PAS_numButaca, PAS_precio)
---		SELECT 	Pasaje_Codigo, VIA_idViaje, CLI_idCliente, Butaca_Numero, Pasaje_Precio
---		FROM gd_Esquema.Maestra, Viaje, Cliente, Recorrido
---		WHERE FechaSalida = VIA_fecSalida and VIA_idRecorrido = REC_idRecorrido and 
---			Recorrido_Codigo = REC_codRecorrido and gd_Esquema.Maestra.Cli_Dni = Cliente.CLI_Dni;
---END
---GO
+CREATE PROCEDURE NOT_NULL.cargarVentasPasajes
+AS
+DECLARE
+	@idVenta int,
+	@puntosObtenidos int,	
+	@pasajeCodigo int,
+	@pasajePrecio decimal(10,2),
+	@pasajeFechaCompra datetime,
+	@clienteDNI int,
+	@clienteId int,
+	@recorridoCodigo int,
+	@viajeId int,
+	@microPatente varchar (7),
+	@microId int,
+	@numeroButaca int
+
+DECLARE VENTAPASAJESCUR CURSOR 
+FOR
+SELECT DISTINCT 
+	Pasaje_Codigo,
+	Pasaje_Precio,
+	Pasaje_FechaCompra,
+	Cli_Dni,
+	Recorrido_codigo,
+	Micro_patente,
+	Butaca_Nro
+	
+FROM
+	gd_esquema.Maestra
+WHERE Pasaje_Codigo <> 0
+
+OPEN VENTAPASAJESCUR
+
+FETCH VENTAPASAJESCUR INTO	
+	@pasajeCodigo, 
+	@pasajePrecio,
+	@pasajeFechaCompra,
+	@clienteDNI,
+	@recorridoCodigo,
+	@microPatente,
+	@numeroButaca
+	
+	WHILE (@@FETCH_STATUS = 0 )
+
+	BEGIN
+
+		SELECT @clienteId = CLI_idCliente 
+		FROM  NOT_NULL.Cliente
+		WHERE @clienteDNI = CLI_dni
+
+		SELECT DISTINCT @viajeId = VIA_numViaje
+		FROM  NOT_NULL.Viaje
+		WHERE @recorridoCodigo = VIA_codRecorrido
+		
+		SELECT DISTINCT @microId = MIC_numMicro
+		FROM  NOT_NULL.Micro
+		WHERE @microPatente = MIC_patente
+
+	
+		INSERT INTO NOT_NULL.Venta(VEN_fecVenta, VEN_total, VEN_idTarjeta, VEN_discapacitado)
+		VALUES (@pasajeFechaCompra, @pasajePrecio, null, 0)
+		
+		SET @idVenta = @@IDENTITY
+		
+		
+		INSERT INTO NOT_NULL.Pasaje(PAS_idVenta, PAS_codigo, PAS_idViaje, PAS_idCliente, PAS_numButaca, PAS_numMicro, PAS_precio)
+		VALUES(@idVenta, @pasajeCodigo,@viajeId ,@clienteId, @numeroButaca, @microId, @pasajePrecio)
+		
+		SET @puntosObtenidos = FLOOR(@pasajePrecio/5)
+		
+		INSERT INTO NOT_NULL.Puntos (PTS_idCliente, PTS_idVenta, PTS_puntos)
+		VALUES (@clienteId, @idVenta, @puntosObtenidos)
+		
+		FETCH VENTAPASAJESCUR INTO	
+			@pasajeCodigo, 
+			@pasajePrecio,
+			@pasajeFechaCompra,
+			@clienteDNI,
+			@recorridoCodigo,
+			@microPatente,
+			@numeroButaca
+	END
+	
+
+	
+CLOSE VENTAPASAJESCUR
+DEALLOCATE VENTAPASAJESCUR;
+GO
+
+CREATE PROCEDURE NOT_NULL.cargarVentasEncomiendas
+AS
+DECLARE
+	@idVenta int,
+	@puntosObtenidos int,
+	@paqueteCodigo int,
+	@paquetePrecio decimal(10,2),
+	@paqueteFechaCompra datetime,
+	@clienteDNI int,
+	@clienteId int,
+	@recorridoCodigo int,
+	@viajeId int,
+	@paqueteKG int
+
+DECLARE VENTAENCOMIENDACUR CURSOR 
+FOR
+SELECT DISTINCT 
+	Paquete_Codigo,
+	Paquete_Precio,
+	Paquete_FechaCompra,
+	Cli_Dni,
+	Recorrido_codigo,
+	Paquete_KG
+	
+FROM
+	gd_esquema.Maestra
+WHERE Paquete_Codigo <> 0
+
+OPEN VENTAENCOMIENDACUR
+
+FETCH VENTAENCOMIENDACUR INTO	
+	@paqueteCodigo, 
+	@paquetePrecio,
+	@paqueteFechaCompra,
+	@clienteDNI,
+	@recorridoCodigo,
+	@paqueteKG
+	
+	WHILE (@@FETCH_STATUS = 0 )
+
+	BEGIN
+
+		SELECT @clienteId = CLI_idCliente 
+		FROM  NOT_NULL.Cliente
+		WHERE @clienteDNI = CLI_dni
+
+		SELECT DISTINCT @viajeId = VIA_numViaje
+		FROM  NOT_NULL.Viaje
+		WHERE @recorridoCodigo = VIA_codRecorrido
+	
+		INSERT INTO NOT_NULL.Venta(VEN_fecVenta, VEN_total, VEN_idTarjeta, VEN_discapacitado)
+		VALUES (@paqueteFechaCompra, @paquetePrecio, null, 0)
+		
+		SET @idVenta = @@IDENTITY
+		
+		INSERT INTO NOT_NULL.Encomienda(ENC_idVenta, ENC_codigo, ENC_idViaje, ENC_idCliente, ENC_kilos)
+		VALUES(@@IDENTITY, @paqueteCodigo, @viajeId ,@clienteId, @paqueteKG)
+		
+		SET @puntosObtenidos = FLOOR(@paquetePrecio/5)
+		
+		INSERT INTO NOT_NULL.Puntos (PTS_idCliente, PTS_idVenta, PTS_puntos)
+		VALUES (@clienteId, @idVenta, @puntosObtenidos)
+		
+		FETCH VENTAENCOMIENDACUR INTO	
+			@paqueteCodigo, 
+			@paquetePrecio,
+			@paqueteFechaCompra,
+			@clienteDNI,
+			@recorridoCodigo,
+			@paqueteKG
+	END
+	
+
+	
+CLOSE VENTAENCOMIENDACUR
+DEALLOCATE VENTAENCOMIENDACUR;
+GO
 
 --CREATE PROCEDURE CargarPasajes 
 --AS 
@@ -806,7 +975,8 @@ EXECUTE NOT_NULL.CargarMicros;
 EXECUTE NOT_NULL.CargarButacas;
 EXECUTE NOT_NULL.CargarRecorridos;
 EXECUTE NOT_NULL.CargarViajes;
-
+EXECUTE NOT_NULL.cargarVentasPasajes;
+EXECUTE NOT_NULL.cargarVentasEncomiendas;
 GO
 
 --Acá se deberían borrar los SP
@@ -816,8 +986,11 @@ DROP PROCEDURE NOT_NULL.CargarMicros;
 DROP PROCEDURE NOT_NULL.CargarButacas;
 DROP PROCEDURE NOT_NULL.CargarRecorridos;
 DROP PROCEDURE NOT_NULL.CargarViajes;
+DROP PROCEDURE NOT_NULL.cargarVentasPasajes;
+DROP PROCEDURE NOT_NULL.cargarVentasEncomiendas;
 
 GO
 --FIN
+SET NOCOUNT OFF
 COMMIT transaction
 
