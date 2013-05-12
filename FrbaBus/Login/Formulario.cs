@@ -9,11 +9,21 @@ using System.Windows.Forms;
 
 namespace FrbaBus.Login
 {
-    public partial class Form1 : Form
+    public partial class Formulario : Form
     {
-        public Form1()
+        public Formulario()
         {
             InitializeComponent();
+        }
+
+        private void Acceder_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Volver_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
