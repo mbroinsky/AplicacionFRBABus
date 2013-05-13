@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Data.SqlClient;
+using System.Data.OleDb;
 using System.Security.Cryptography;  
 
 namespace FrbaBus.Login
@@ -32,12 +32,12 @@ namespace FrbaBus.Login
                 return;
             }
 
-            SqlConnection con = new SqlConnection();
+            OleDbConnection con = new OleDbConnection();
 
-            con.ConnectionString = "Server=" +
+            con.ConnectionString = "Provider=SQLOLEDB;Data Source=" +
                  Configuracion.Instance().getServidorBase() +
-                 ";Database=" + Configuracion.Instance().getBaseDatos() +
-                 ";User Id=" + Configuracion.Instance().getUsuario() +
+                 ";Initial Catalog=" + Configuracion.Instance().getBaseDatos() +
+                 ";User ID=" + Configuracion.Instance().getUsuario() +
                  ";Password=" + Configuracion.Instance().getClave() + ";";
 
             con.Open();
