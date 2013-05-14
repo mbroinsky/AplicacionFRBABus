@@ -38,12 +38,22 @@ namespace FrbaBus.Login
 
             if (usuario.Rows.Count > 0)
             {
-                //if (usuario.Rows[0]["USR_intentos"] > 2)
+                if ((Int16)usuario.Rows[0]["USR_intentos"] > 2)
+                {
+                    MessageBox.Show("Máxima cantidad de intentos alcanzada");
+                    Usuario.Text = "";
+                    Password.Text = "";
 
+                    return;
+                }
 
                 if (usuario.Rows[0]["USR_password"].ToString() != SHA256Encrypt(this.Password.Text))
                 {
-                    //Incrementa
+                    MessageBox.Show("Usuario o password erróneo");
+                    Usuario.Text = "";
+                    Password.Text = "";
+                    //TODO: Incrementar contador
+                    return;
                 }
             }     
         }
