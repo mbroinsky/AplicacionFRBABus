@@ -22,7 +22,7 @@ namespace AccesoADatos
 		    cmd.Transaction = transaccion;
 	    }
 
-        public Dataset getUsuario(String usuario)
+        public DataSet getUsuario(String usuario)
         {
             return getDataSet("select * from NOT_NULL.usuario where USR_nick = '" + usuario + "';");
         }

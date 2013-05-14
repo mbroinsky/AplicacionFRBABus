@@ -34,14 +34,14 @@ namespace FrbaBus.Login
                 return;
             }
 
-            usuario = Globals.Instance().cons.getUsuario(this.Usuario.Text).Table[0];
+            usuario = Globals.Instance().cons.getUsuario(this.Usuario.Text).Tables[0];
 
             if (usuario.Rows.Count > 0)
             {
                 //if (usuario.Rows[0]["USR_intentos"] > 2)
 
 
-                if (usuario.Rows[0]["USR_password"] != SHA256Encrypt(this.Password.Text))
+                if (usuario.Rows[0]["USR_password"].ToString() != SHA256Encrypt(this.Password.Text))
                 {
                     //Incrementa
                 }

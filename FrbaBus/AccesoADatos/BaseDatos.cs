@@ -20,7 +20,7 @@ namespace AccesoADatos
             cmd = null;
         }
 
-        protected override void Finalize()
+        ~ BaseDatos()
         {
             baseDatos.Close();
         }
