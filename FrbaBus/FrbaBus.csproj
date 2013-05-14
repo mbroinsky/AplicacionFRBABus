@@ -66,17 +66,14 @@
     <Compile Include="Abm Micro\ABM_Butacas.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Abm Micro\ABM_Butacas.Designer.cs">
+      <DependentUpon>ABM_Butacas.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Micro\AM_Micro.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Abm Micro\AM_Micro.Designer.cs">
       <DependentUpon>AM_Micro.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Abm Micro\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Abm Micro\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Permisos\Form1.cs">
       <SubType>Form</SubType>
