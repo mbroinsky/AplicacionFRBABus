@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -13,8 +12,7 @@ namespace AccesoADatos
     {
         public Actualizador(string connection) : base()
 	    {
-
-		    //Inicializo objetos
+            //Inicializo objetos
 		    baseDatos = new OleDbConnection(connection);
 
             cmd = new OleDbCommand();
