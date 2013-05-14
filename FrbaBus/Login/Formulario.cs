@@ -20,6 +20,8 @@ namespace FrbaBus.Login
 
         private void Acceder_Click(object sender, EventArgs e)
         {
+            DataTable usuario = null;
+
             if (this.Usuario.Text == "")
             {
                 MessageBox.Show("Debe ingresar un usuario");
@@ -32,22 +34,18 @@ namespace FrbaBus.Login
                 return;
             }
 
-            OleDbConnection con = new OleDbConnection();
+            usuario = Globals.Instance().cons.getUsuario(this.Usuario.Text).Table[0];
 
-            con.ConnectionString = "Provider=SQLOLEDB;Data Source=" +
-                 Configuracion.Instance().getServidorBase() +
-                 ";Initial Catalog=" + Configuracion.Instance().getBaseDatos() +
-                 ";User ID=" + Configuracion.Instance().getUsuario() +
-                 ";Password=" + Configuracion.Instance().getClave() + ";";
+            if (usuario.Rows.Count > 0)
+            {
+                //if (usuario.Rows[0]["USR_intentos"] > 2)
 
-            con.Open();
 
-            SqlCommand cmd = new SqlCommand("select * from NOT_NULL.usuario where USR_nombre = '" +
-                    this.Usuario.Text + "' and usr_password = '" + SHA256Encrypt(this.Password.Text) + "';",
-                    con);
-
-            Int16 i = Int16.Parse(cmd.ExecuteScalar().ToString());
-                     
+                if (usuario.Rows[0]["USR_password"] != SHA256Encrypt(this.Password.Text))
+                {
+                    //Incrementa
+                }
+            }     
         }
 
         private string SHA256Encrypt(string input)

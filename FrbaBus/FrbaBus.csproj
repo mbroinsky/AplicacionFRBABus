@@ -81,6 +81,9 @@
     <Compile Include="Abm Recorrido\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="AccesoADatos\Actualizador.cs" />
+    <Compile Include="AccesoADatos\BaseDatos.cs" />
+    <Compile Include="AccesoADatos\Consultas.cs" />
     <Compile Include="Cancelar Viaje\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,6 +121,7 @@
     <Compile Include="GenerarViaje\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Globals.cs" />
     <Compile Include="Login\Formulario.cs">
       <SubType>Form</SubType>
     </Compile>
