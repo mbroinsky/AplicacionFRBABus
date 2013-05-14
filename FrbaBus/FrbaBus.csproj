@@ -63,6 +63,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abm Micro\ABM_Butacas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Micro\AM_Micro.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Micro\AM_Micro.Designer.cs">
+      <DependentUpon>AM_Micro.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Micro\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,6 +139,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Abm Micro\ABM_Butacas.resx">
+      <DependentUpon>ABM_Butacas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Micro\AM_Micro.resx">
+      <DependentUpon>AM_Micro.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AccesoSistema.resx">
       <DependentUpon>AccesoSistema.cs</DependentUpon>
     </EmbeddedResource>
