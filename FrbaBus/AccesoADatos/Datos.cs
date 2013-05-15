@@ -5,105 +5,51 @@ namespace AccesoADatos
 {
     public abstract class Datos
     {
-        #region "Declaración de Variables"
+        protected IDbConnection _Conexion;
  
-        protected string MServidor = "";
-        protected string MBase = "";
-        protected string MUsuario = "";
-        protected string MPassword = "";
-        protected string MCadenaConexion = "";
-        protected IDbConnection MConexion;
+        public abstract string CadenaConexion { get; set; }
  
-        #endregion
- 
-        #region "Setters y Getters"
- 
-        // Nombre del equipo servidor de datos. 
-        public string Servidor
-        {
-            get { return MServidor; }
-            set { MServidor = value; }
-        } // end Servidor
- 
-        // Nombre de la base de datos a utilizar.
-        public string Base
-        {
-            get { return MBase; }
-            set { MBase = value; }
-        } // end Base
- 
-        // Nombre del Usuario de la BD. 
-        public string Usuario
-        {
-            get { return MUsuario; }
-            set { MUsuario = value; }
-        } // end Usuario
- 
-        // Password del Usuario de la BD. 
-        public string Password
-        {
-            get { return MPassword; }
-            set { MPassword = value; }
-        } // end Password
- 
-        // Cadena de conexión completa a la base.
-        public abstract string CadenaConexion
-        { get; set; }
- 
-        #endregion
- 
-        #region "Privadas"
- 
-        // Crea u obtiene un objeto para conectarse a la base de datos. 
         protected IDbConnection Conexion
         {
             get
             {
-                // si aun no tiene asignada la cadena de conexion lo hace
-                if (MConexion == null)
-                    MConexion = CrearConexion(CadenaConexion);
+               if (_Conexion == null)
+                   _Conexion = CrearConexion(CadenaConexion);
  
-                // si no esta abierta aun la conexion, lo abre
-                if (MConexion.State != ConnectionState.Open)
-                    MConexion.Open();
+                if (_Conexion.State != ConnectionState.Open)
+                    _Conexion.Open();
  
-                // retorna la conexion en modo interfaz, para que se adapte a cualquier implementacion de los distintos fabricantes de motores de bases de datos
-                return MConexion;
-            } // end get
-        } // end Conexion
+                return _Conexion;
+            } 
+        } 
  
-        #endregion
- 
-        #region "Lecturas"
- 
-        // Obtiene un DataSet a partir de un Procedimiento Almacenado.
-        public DataSet TraerDataSet(string procedimientoAlmacenado)
+        public DataSet EjecutarStoreProcedure(string storeProcedure)
         {
-            var mDataSet = new DataSet();
-            CrearDataAdapter(procedimientoAlmacenado).Fill(mDataSet);
-            return mDataSet;
-        } // end TraerDataset
+            var datos = new DataSet();
+            
+            CrearDataAdapter(storeProcedure).Fill(datos);
+            
+            return datos;
+        }
  
- 
-        //Obtiene un DataSet a partir de un Procedimiento Almacenado y sus parámetros. 
-        public DataSet TraerDataSet(string procedimientoAlmacenado, params Object[] args)
+        public DataSet EjecutarStoreProcedure(string storeProcedure, params Object[] args)
         {
-            var mDataSet = new DataSet();
-            CrearDataAdapter(procedimientoAlmacenado, args).Fill(mDataSet);
-            return mDataSet;
-        } // end TraerDataset
+            var datos = new DataSet();
+            
+            CrearDataAdapter(storeProcedure, args).Fill(datos);
+            
+            return datos;
+        }
  
-        // Obtiene un DataSet a partir de un Query Sql.
-        public DataSet TraerDataSetSql(string comandoSql)
+        public DataSet EjecutarComando(string sql)
         {
             var mDataSet = new DataSet();
             CrearDataAdapterSql(comandoSql).Fill(mDataSet);
             return mDataSet;
         } // end TraerDataSetSql
  
-        // Obtiene un DataTable a partir de un Procedimiento Almacenado.
         public DataTable TraerDataTable(string procedimientoAlmacenado)
-        { return TraerDataSet(procedimientoAlmacenado).Tables[0].Copy(); } // end TraerDataTable
+        { return TraerDataSet(procedimientoAlmacenado).Tables[0].Copy(); }
  
  
         //Obtiene un DataSet a partir de un Procedimiento Almacenado y sus parámetros. 
