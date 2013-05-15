@@ -7,13 +7,10 @@ namespace FrbaBus
 {
     public class Globales
     {
-        public static Globals oInstance;
+        public static Globales oInstance;
         public AccesoADatos.Consultas cons;
         public AccesoADatos.Actualizador act;
-        private String usuario {get; set;};
-        private String nombreUsr {get; set;};
-        private String rol {get; set;};
-        private ArrayList permisos {get; set;};
+        public Usuario usr;
         
         private Globales()
         {
@@ -25,14 +22,14 @@ namespace FrbaBus
 
             cons = new AccesoADatos.Consultas(strCon);
             act = new AccesoADatos.Actualizador(strCon);
-            permisos = new ArrayList();
+            usr = new Usuario();
         }
 
         public static Globales Instance()
         {
 
             if (oInstance == null)
-                oInstance = new Globals();
+                oInstance = new Globales();
 
             return oInstance;
         }

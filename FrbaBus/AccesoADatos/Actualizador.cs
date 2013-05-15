@@ -21,5 +21,20 @@ namespace AccesoADatos
 
 		    cmd.Transaction = transaccion;
 	    }
+
+        public bool InsertarMicro()
+        {
+            return true;
+        }
+
+        public bool InsertarButacas()
+        {
+            return true;
+        }
+
+        public bool IncrementarFalloUsuario(int idUsuario)
+        {
+            return true;
+        }
     }
 }

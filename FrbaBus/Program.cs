@@ -13,7 +13,7 @@ namespace FrbaBus
         [STAThread]
         static void Main()
         {
-            Globals.Instance();
+            Globales.Instance();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new AccesoSistema());

@@ -34,7 +34,7 @@ namespace FrbaBus.Login
                 return;
             }
 
-            usuario = Globals.Instance().cons.getUsuario(this.Usuario.Text).Tables[0];
+            usuario = Globales.Instance().cons.getUsuario(this.Usuario.Text).Tables[0];
 
             if (usuario.Rows.Count > 0)
             {
@@ -55,6 +55,10 @@ namespace FrbaBus.Login
                     //TODO: Incrementar contador
                     return;
                 }
+
+                Globales.Instance().usr.NombreUsr = usuario.Rows[0]["USR_Nombre"] + " " + usuario.Rows[0]["USR_Apellido"];
+                Globales.Instance().usr.Id = (Int16)usuario.Rows[0]["USR_idUsuario"];
+                Globales.Instance().usr.Rol = (String)usuario.Rows[0]["USR_idRol"];
             }     
         }
 
