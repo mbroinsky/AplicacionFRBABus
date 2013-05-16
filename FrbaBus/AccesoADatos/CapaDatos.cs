@@ -38,58 +38,69 @@ namespace AccesoADatos
             } 
         }
  
- 
- 
-        protected override void CargarParametros(System.Data.IDbCommand com, Object[] args)
+         protected override void CargarParametros(System.Data.IDbCommand com, Object[] args)
         {
             for (int i = 1; i < com.Parameters.Count; i++)
             {
-                var p = (System.Data.SqlClient.SqlParameter)com.Parameters[i];
+                var p = (SqlParameter)com.Parameters[i];
+                
                 p.Value = i <= args.Length ? args[i - 1] ?? DBNull.Value  : null;
             } 
         } 
  
         protected override System.Data.IDbCommand Comando(string procedimientoAlmacenado)
         {
-            System.Data.SqlClient.SqlCommand com;
+            SqlCommand com;
+            
             if (ColComandos.Contains(procedimientoAlmacenado))
-                com = (System.Data.SqlClient.SqlCommand)ColComandos[procedimientoAlmacenado];
+                com = (SqlCommand)ColComandos[procedimientoAlmacenado];
             else
             {
-                var con2 = new System.Data.SqlClient.SqlConnection(CadenaConexion);
+                var con2 = new SqlConnection(CadenaConexion);
+                
                 con2.Open();
-                com = new System.Data.SqlClient.SqlCommand(procedimientoAlmacenado, con2) { CommandType = System.Data.CommandType.StoredProcedure };
-                System.Data.SqlClient.SqlCommandBuilder.DeriveParameters(com);
+                
+                com = new SqlCommand(procedimientoAlmacenado, con2){ CommandType = System.Data.CommandType.StoredProcedure };
+                
+                SqlCommandBuilder.DeriveParameters(com);
+                
                 con2.Close();
                 con2.Dispose();
+                
                 ColComandos.Add(procedimientoAlmacenado, com);
-            }//end else
-            com.Connection = (System.Data.SqlClient.SqlConnection)Conexion;
-            com.Transaction = (System.Data.SqlClient.SqlTransaction)_Transaccion;
+            }
+            
+            com.Connection = (SqlConnection)Conexion;
+            com.Transaction = (SqlTransaction)_Transaccion;
+            
             return com;
         }
  
         protected override System.Data.IDbCommand ComandoSql(string comandoSql)
         {
-            var com = new System.Data.SqlClient.SqlCommand(comandoSql, (System.Data.SqlClient.SqlConnection)Conexion, (System.Data.SqlClient.SqlTransaction)_Transaccion);
+            var com = new SqlCommand(comandoSql, (SqlConnection)Conexion, (SqlTransaction)_Transaccion);
             return com;
         }
  
  
         protected override System.Data.IDbConnection CrearConexion(string cadenaConexion)
-        { return new System.Data.SqlClient.SqlConnection(cadenaConexion); }
+        { 
+         return new SqlConnection(cadenaConexion); 
+        }
  
         protected override System.Data.IDataAdapter CrearDataAdapter(string procedimientoAlmacenado, params Object[] args)
         {
-            var da = new System.Data.SqlClient.SqlDataAdapter((System.Data.SqlClient.SqlCommand)Comando(procedimientoAlmacenado));
+            var da = new SqlDataAdapter((SqlCommand)Comando(procedimientoAlmacenado));
+            
             if (args.Length != 0)
                 CargarParametros(da.SelectCommand, args);
+                
             return da;
         }
  
         protected override System.Data.IDataAdapter CrearDataAdapterSql(string comandoSql)
         {
-            var da = new System.Data.SqlClient.SqlDataAdapter((System.Data.SqlClient.SqlCommand)ComandoSql(comandoSql));
+            var da = new SqlDataAdapter((SqlCommand)ComandoSql(comandoSql));
             return da;
         } 
 
@@ -98,6 +109,8 @@ namespace AccesoADatos
         }
  
         public CapaDatos(string cadenaConexion)
-        { CadenaConexion = cadenaConexion; }
+        { 
+           CadenaConexion = cadenaConexion; 
+        }
     }
 }
