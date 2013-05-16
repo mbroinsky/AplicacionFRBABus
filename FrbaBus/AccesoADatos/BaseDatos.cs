@@ -5,18 +5,21 @@ namespace AccesoADatos
 {
     public abstract class BaseDatos
     {
-        protected IDbConnection _Conexion;
+        //Atributos Heredables
+        protected IDbConnection  _Conexion;
         protected IDbTransaction _Transaccion;
-        protected bool _EnTransaccion;
- 
+        protected bool           _EnTransaccion;
         public abstract string CadenaConexion { get; set; }
 
+ 
+        //Metodos abstractos que se deben definir en quien herede
         protected abstract IDbConnection CrearConexion(string cadena);
         protected abstract IDbCommand Comando(string procedimientoAlmacenado);
         protected abstract IDbCommand ComandoSql(string comandoSql);
         protected abstract IDataAdapter CrearDataAdapter(string procedimientoAlmacenado, params Object[] args);
         protected abstract IDataAdapter CrearDataAdapterSql(string comandoSql);
         protected abstract void CargarParametros(IDbCommand comando, Object[] args);
+ 
  
         protected IDbConnection Conexion
         {
@@ -53,7 +56,9 @@ namespace AccesoADatos
         public DataSet EjecutarComando(string sql)
         {
             var datos = new DataSet();
+            
             CrearDataAdapterSql(sql).Fill(datos);
+            
             return datos;
         } 
  
@@ -173,7 +178,6 @@ namespace AccesoADatos
         //    return com.ExecuteScalar();
         //} // end TraerValorEscalarSql
  
-
 
         public bool AbrirConexion()
         {
