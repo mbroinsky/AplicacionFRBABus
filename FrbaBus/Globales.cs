@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AccesoADatos.ORM;
+using AccesoADatos.Orm;
 
 namespace FrbaBus
 {
@@ -13,12 +13,11 @@ namespace FrbaBus
         
         private Globales()
         {
-            String strCon = "Provider=SQLOLEDB;Data Source=" +
-                 Configuracion.Instance().getServidorBase() +
-                 ";Initial Catalog=" + Configuracion.Instance().getBaseDatos() +
-                 ";User ID=" + Configuracion.Instance().getUsuario() +
-                 ";Password=" + Configuracion.Instance().getClave() + ";";
-
+            //String strCon = "Provider=SQLOLEDB;Data Source=" +
+            //     Configuracion.Instance().getServidorBase() +
+            //     ";Initial Catalog=" + Configuracion.Instance().getBaseDatos() +
+            //     ";User ID=" + Configuracion.Instance().getUsuario() +
+            //     ";Password=" + Configuracion.Instance().getClave() + ";";
             usr = new Usuario();
         }
 
@@ -30,6 +29,5 @@ namespace FrbaBus
 
             return oInstance;
         }
-
     }
 }
