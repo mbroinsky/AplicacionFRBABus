@@ -32,7 +32,7 @@ namespace AccesoADatos.Orm
             return Permisos.Contains(formulario);
         }
 
-        public bool getUsuario(String nick)
+        public bool TraerUsuario(String nick)
         {
             DataTable dt = Conector.Datos.EjecutarComandoADataTable("select * from NOT_NULL.usuario, " +
                        " NOT_NULL.rol where USR_nick = '" + nick + "' AND USR_idRol = ROL_id;");
