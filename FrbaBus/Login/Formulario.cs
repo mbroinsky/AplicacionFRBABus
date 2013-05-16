@@ -20,8 +20,6 @@ namespace FrbaBus.Login
 
         private void Acceder_Click(object sender, EventArgs e)
         {
-            DataTable usuario = null;
-
             if (this.Usuario.Text == "")
             {
                 MessageBox.Show("Debe ingresar un usuario");
@@ -33,33 +31,34 @@ namespace FrbaBus.Login
                 MessageBox.Show("Debe ingresar una clave");
                 return;
             }
+            
+            if (usr.TraerUsuario(this.Usuario.Text))
+            {
+                if (usr.CantIntentos > 2)
+                {
+                    MessageBox.Show("Máxima cantidad de intentos alcanzada");
+                    Usuario.Text = "";
+                    Password.Text = "";
 
-            //usuario = Globales.Instance().cons.getUsuario(this.Usuario.Text).Tables[0];
-
-            //if (usuario.Rows.Count > 0)
-            //{
-            //    if ((Int16)usuario.Rows[0]["USR_intentos"] > 2)
-            //    {
-            //        MessageBox.Show("Máxima cantidad de intentos alcanzada");
-            //        Usuario.Text = "";
-            //        Password.Text = "";
-
-            //        return;
-            //    }
-
-            //    if (usuario.Rows[0]["USR_password"].ToString() != SHA256Encrypt(this.Password.Text))
-            //    {
-            //        MessageBox.Show("Usuario o password erróneo");
-            //        Usuario.Text = "";
-            //        Password.Text = "";
-            //        //TODO: Incrementar contador
-            //        return;
-            //    }
-
-            //    Globales.Instance().usr.NombreUsr = usuario.Rows[0]["USR_Nombre"] + " " + usuario.Rows[0]["USR_Apellido"];
-            //    Globales.Instance().usr.Id = (Int16)usuario.Rows[0]["USR_idUsuario"];
-            //    Globales.Instance().usr.Rol = (String)usuario.Rows[0]["USR_idRol"];
-            //}     
+                    return;
+                }
+                
+                if (usr.Password != SHA256Encrypt(this.Password.Text))
+                {
+                    MessageBox.Show("Usuario o password erróneo");
+                    Usuario.Text = "";
+                    Password.Text = "";
+                    
+                    usr.IncrementarIntentos();
+                    return;
+                }
+            } 
+            else
+            {
+                MessageBox.Show("Usuario o password erróneo");
+                Usuario.Text = "";
+                Password.Text = "";
+            }
         }
 
         private string SHA256Encrypt(string input)
