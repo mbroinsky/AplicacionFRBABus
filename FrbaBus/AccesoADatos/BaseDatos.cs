@@ -1,88 +1,258 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using System.Data;
-using System.Diagnostics;
-using System.Data.OleDb;
-using System.Data.SqlClient;
-
+ 
 namespace AccesoADatos
 {
-    public class BaseDatos
+    public abstract class BaseDatos
     {
-        protected OleDbConnection baseDatos;
-        protected OleDbCommand cmd;
-        protected OleDbTransaction transaccion;
+        protected IDbConnection _Conexion;
+        protected IDbTransaction _Transaccion;
+        protected bool _EnTransaccion;
+ 
+        public abstract string CadenaConexion { get; set; }
 
-        public BaseDatos()
+        protected abstract IDbConnection CrearConexion(string cadena);
+        protected abstract IDbCommand Comando(string procedimientoAlmacenado);
+        protected abstract IDbCommand ComandoSql(string comandoSql);
+        protected abstract IDataAdapter CrearDataAdapter(string procedimientoAlmacenado, params Object[] args);
+        protected abstract IDataAdapter CrearDataAdapterSql(string comandoSql);
+        protected abstract void CargarParametros(IDbCommand comando, Object[] args);
+ 
+        protected IDbConnection Conexion
         {
-            baseDatos = null;
-            cmd = null;
+            get
+            {
+               if (_Conexion == null)
+                   _Conexion = CrearConexion(CadenaConexion);
+ 
+                if (_Conexion.State != ConnectionState.Open)
+                    _Conexion.Open();
+ 
+                return _Conexion;
+            } 
+        } 
+ 
+        public DataSet EjecutarProcedure(string storeProcedure)
+        {
+            var datos = new DataSet();
+            
+            CrearDataAdapter(storeProcedure).Fill(datos);
+            
+            return datos;
+        }
+ 
+        public DataSet EjecutarProcedure(string storeProcedure, params Object[] args)
+        {
+            var datos = new DataSet();
+            
+            CrearDataAdapter(storeProcedure, args).Fill(datos);
+            
+            return datos;
+        }
+ 
+        public DataSet EjecutarComando(string sql)
+        {
+            var datos = new DataSet();
+            CrearDataAdapterSql(sql).Fill(datos);
+            return datos;
+        } 
+ 
+        public DataTable EjecutarProcedureADataTable(string storeProcedure)
+        { 
+            return EjecutarProcedure(storeProcedure).Tables[0].Copy(); 
+        }
+  
+        public DataTable EjecutarProcedureADataTable(string storeProcedure, params Object[] args)
+        { 
+            return EjecutarProcedure(storeProcedure, args).Tables[0].Copy(); 
+        }
+ 
+        public DataTable EjecutarComandoADataTable(string sql)
+        { 
+            return EjecutarComando(sql).Tables[0].Copy(); 
+        } 
+        
+        //public IDataReader TraerDataReader(string procedimientoAlmacenado)
+        //{
+        //    var com = Comando(procedimientoAlmacenado);
+        //    return com.ExecuteReader();
+        //} 
+ 
+ 
+        //// Obtiene un DataReader a partir de un Procedimiento Almacenado y sus parámetros. 
+        //public IDataReader TraerDataReader(string procedimientoAlmacenado, params object[] args)
+        //{
+        //    var com = Comando(procedimientoAlmacenado);
+        //    CargarParametros(com, args);
+        //    return com.ExecuteReader();
+        //} // end TraerDataReader
+ 
+        //// Obtiene un DataReader a partir de un Procedimiento Almacenado. 
+        //public IDataReader TraerDataReaderSql(string comandoSql)
+        //{
+        //    var com = ComandoSql(comandoSql);
+        //    return com.ExecuteReader();
+        //} // end TraerDataReaderSql 
+ 
+       //public object TraerValorOutput(string procedimientoAlmacenado)
+       // {
+       //     // asignar el string sql al command
+       //     var com = Comando(procedimientoAlmacenado);
+       //     // ejecutar el command
+       //     com.ExecuteNonQuery();
+       //     // declarar variable de retorno
+       //     Object resp = null;
+ 
+       //     // recorrer los parametros del SP
+       //     foreach (IDbDataParameter par in com.Parameters)
+       //         // si tiene parametros de tipo IO/Output retornar ese valor
+       //         if (par.Direction == ParameterDirection.InputOutput || par.Direction == ParameterDirection.Output)
+       //             resp = par.Value;
+       //     return resp;
+       // } // end TraerValor
+ 
+ 
+       // // Obtiene un Valor a partir de un Procedimiento Almacenado, y sus parámetros. 
+       // public object TraerValorOutput(string procedimientoAlmacenado, params Object[] args)
+       // {
+       //     // asignar el string sql al command
+       //     var com = Comando(procedimientoAlmacenado);
+       //     // cargar los parametros del SP
+       //     CargarParametros(com, args);
+       //     // ejecutar el command
+       //     com.ExecuteNonQuery();
+       //     // declarar variable de retorno
+       //     Object resp = null;
+ 
+       //     // recorrer los parametros del SP
+       //     foreach (IDbDataParameter par in com.Parameters)
+       //         // si tiene parametros de tipo IO/Output retornar ese valor
+       //         if (par.Direction == ParameterDirection.InputOutput || par.Direction == ParameterDirection.Output)
+       //             resp = par.Value;
+       //     return resp;
+       // } // end TraerValor
+ 
+       // // Obtiene un Valor Escalar a partir de un Procedimiento Almacenado. 
+       // public object TraerValorOutputSql(string comadoSql)
+       // {
+       //     // asignar el string sql al command
+       //     var com = ComandoSql(comadoSql);
+       //     // ejecutar el command
+       //     com.ExecuteNonQuery();
+       //     // declarar variable de retorno
+       //     Object resp = null;
+ 
+       //     // recorrer los parametros del Query (uso tipico envio de varias sentencias sql en el mismo command)
+       //     foreach (IDbDataParameter par in com.Parameters)
+       //         // si tiene parametros de tipo IO/Output retornar ese valor
+       //         if (par.Direction == ParameterDirection.InputOutput || par.Direction == ParameterDirection.Output)
+       //             resp = par.Value;
+       //     return resp;
+       // } // end TraerValor
+ 
+ 
+        //// Obtiene un Valor de una funcion Escalar a partir de un Procedimiento Almacenado. 
+        //public object TraerValorEscalar(string procedimientoAlmacenado)
+        //{
+        //    var com = Comando(procedimientoAlmacenado);
+        //    return com.ExecuteScalar();
+        //} // end TraerValorEscalar
+ 
+        ///// Obtiene un Valor de una funcion Escalar a partir de un Procedimiento Almacenado, con Params de Entrada
+        //public Object TraerValorEscalar(string procedimientoAlmacenado, params object[] args)
+        //{
+        //    var com = Comando(procedimientoAlmacenado);
+        //    CargarParametros(com, args);
+        //    return com.ExecuteScalar();
+        //} // end TraerValorEscalar
+ 
+        //// Obtiene un Valor de una funcion Escalar a partir de un Query SQL
+        //public object TraerValorEscalarSql(string comandoSql)
+        //{
+        //    var com = ComandoSql(comandoSql);
+        //    return com.ExecuteScalar();
+        //} // end TraerValorEscalarSql
+ 
+
+
+        public bool AbrirConexion()
+        {
+            if (_Conexion.State != ConnectionState.Open)
+                _Conexion.Open();
+            return true;
+        }
+         
+        public void CerrarConexion()
+        {
+            if (_Conexion.State != ConnectionState.Closed)
+                _Conexion.Close();
+        }
+  
+        public int Ejecutar(string storeProcedure)
+        { 
+            return Comando(storeProcedure).ExecuteNonQuery(); 
         }
 
-        ~ BaseDatos()
+        public int EjecutarSql(string sql)
         {
-            baseDatos.Close();
-        }
-
-        public string formatearHora(System.DateTime datHora)
+            return ComandoSql(sql).ExecuteNonQuery(); 
+        } 
+ 
+        public int Ejecutar(string storeProcedure, params  Object[] args)
         {
-            return string.Format("{0:HH:mm:ss}", datHora);
-        }
-
-        public string formatearFecHora(System.DateTime datFec, System.DateTime datHora)
+            var com = Comando(storeProcedure);
+            
+            CargarParametros(com, args);
+            
+            var resp = com.ExecuteNonQuery();
+            
+            for (var i = 0; i < com.Parameters.Count; i++)
+            {
+                var par = (IDbDataParameter)com.Parameters[i];
+                if (par.Direction == ParameterDirection.InputOutput || par.Direction == ParameterDirection.Output)
+                    args.SetValue(par.Value, i - 1);
+            }
+            
+            return resp;
+        } 
+        
+        public void IniciarTransaccion()
         {
-            return string.Format("{0:yyyy-mm-dd} {1:HH:mm:ss}", datFec, datHora);
+            try
+            {
+                _Transaccion = Conexion.BeginTransaction();
+                _EnTransaccion = true;
+            }
+            catch
+            { 
+                _EnTransaccion = false; 
+            }
         }
-
-        public string formatearFecha(System.DateTime datFecha)
+ 
+        public void TerminarTransaccion()
         {
-            return string.Format("{0:yyyy-MM-dd}", datFecha);
+            try
+            { 
+                _Transaccion.Commit(); 
+            }
+            finally
+            {
+                _Transaccion = null;
+                _EnTransaccion = false;
+            }
         }
-
-        public string datetimeToDate(ref string strCampo)
+ 
+        public void AbortarTransaccion()
         {
-            return "DATE_FORMAT(" + strCampo + ", '%Y-%m-%d')";
+            try
+            { 
+                _Transaccion.Rollback(); 
+            }
+            finally
+            {
+                _Transaccion = null;
+                _EnTransaccion = false;
+            }
         }
-
-        public string to24Horas(ref string strCampo)
-        {
-            return "TIME_FORMAT(" + strCampo + ", '%H:%i:%s')";
-        }
-
-        public DataSet getDataSet(string sql)
-        {
-            DataSet dt = new DataSet();
-
-            cmd.CommandText = sql;
-
-            OleDbDataAdapter da = new OleDbDataAdapter(cmd);
-
-            da.Fill(dt);
-
-            return dt;
-        }
-
-#region "Manejo Base"
-        public void begin()
-        {
-            baseDatos.Open();
-            transaccion = baseDatos.BeginTransaction();
-        }
-
-        public void commit()
-        {
-            transaccion.Commit();
-            cmd.Parameters.Clear();
-            baseDatos.Close();
-        }
-
-        public void rollback()
-        {
-            transaccion.Rollback();
-            cmd.Parameters.Clear();
-            baseDatos.Close();
-        }
-#endregion
     }
 }

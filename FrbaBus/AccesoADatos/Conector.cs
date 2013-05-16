@@ -2,17 +2,17 @@ namespace AccesoADatos
 {
     public class Conector
     {
-        public static Datos Datos;
-        public static bool IniciarSesion(string nombreServidor, string baseDatos, string usuario, string password)
+        public static CapaDatos Datos;
+        
+        public static bool IniciarSesion()
         {
-            Datos = new SqlServer(nombreServidor, baseDatos, usuario, password);
-            return Datos.Autenticar();
+            Datos = new CapaDatos();
+            return Datos.AbrirConexion();
         } 
  
         public static void FinalizarSesion()
         {
             Datos.CerrarConexion();
         } 
- 
-    }
+     }
 }

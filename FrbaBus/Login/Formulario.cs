@@ -34,32 +34,32 @@ namespace FrbaBus.Login
                 return;
             }
 
-            usuario = Globales.Instance().cons.getUsuario(this.Usuario.Text).Tables[0];
+            //usuario = Globales.Instance().cons.getUsuario(this.Usuario.Text).Tables[0];
 
-            if (usuario.Rows.Count > 0)
-            {
-                if ((Int16)usuario.Rows[0]["USR_intentos"] > 2)
-                {
-                    MessageBox.Show("Máxima cantidad de intentos alcanzada");
-                    Usuario.Text = "";
-                    Password.Text = "";
+            //if (usuario.Rows.Count > 0)
+            //{
+            //    if ((Int16)usuario.Rows[0]["USR_intentos"] > 2)
+            //    {
+            //        MessageBox.Show("Máxima cantidad de intentos alcanzada");
+            //        Usuario.Text = "";
+            //        Password.Text = "";
 
-                    return;
-                }
+            //        return;
+            //    }
 
-                if (usuario.Rows[0]["USR_password"].ToString() != SHA256Encrypt(this.Password.Text))
-                {
-                    MessageBox.Show("Usuario o password erróneo");
-                    Usuario.Text = "";
-                    Password.Text = "";
-                    //TODO: Incrementar contador
-                    return;
-                }
+            //    if (usuario.Rows[0]["USR_password"].ToString() != SHA256Encrypt(this.Password.Text))
+            //    {
+            //        MessageBox.Show("Usuario o password erróneo");
+            //        Usuario.Text = "";
+            //        Password.Text = "";
+            //        //TODO: Incrementar contador
+            //        return;
+            //    }
 
-                Globales.Instance().usr.NombreUsr = usuario.Rows[0]["USR_Nombre"] + " " + usuario.Rows[0]["USR_Apellido"];
-                Globales.Instance().usr.Id = (Int16)usuario.Rows[0]["USR_idUsuario"];
-                Globales.Instance().usr.Rol = (String)usuario.Rows[0]["USR_idRol"];
-            }     
+            //    Globales.Instance().usr.NombreUsr = usuario.Rows[0]["USR_Nombre"] + " " + usuario.Rows[0]["USR_Apellido"];
+            //    Globales.Instance().usr.Id = (Int16)usuario.Rows[0]["USR_idUsuario"];
+            //    Globales.Instance().usr.Rol = (String)usuario.Rows[0]["USR_idRol"];
+            //}     
         }
 
         private string SHA256Encrypt(string input)
