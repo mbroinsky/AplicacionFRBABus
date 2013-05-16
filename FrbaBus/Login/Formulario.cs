@@ -32,9 +32,11 @@ namespace FrbaBus.Login
                 return;
             }
             
-            if (usr.TraerUsuario(this.Usuario.Text))
+            Usuario user = Globales.Instance().usr;
+            
+            if (user.TraerUsuario(this.Usuario.Text))
             {
-                if (usr.CantIntentos > 2)
+                if (user.CantIntentos > 2)
                 {
                     MessageBox.Show("Máxima cantidad de intentos alcanzada");
                     Usuario.Text = "";
@@ -43,13 +45,13 @@ namespace FrbaBus.Login
                     return;
                 }
                 
-                if (usr.Password != SHA256Encrypt(this.Password.Text))
+                if (user.Password != SHA256Encrypt(this.Password.Text))
                 {
                     MessageBox.Show("Usuario o password erróneo");
                     Usuario.Text = "";
                     Password.Text = "";
                     
-                    usr.IncrementarIntentos();
+                    user.IncrementarIntentos();
                     return;
                 }
             } 
