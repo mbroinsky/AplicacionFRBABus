@@ -59,5 +59,11 @@ namespace AccesoADatos.Orm
                 return false;
             }
         }
+        
+        public bool IncrementarIntentos(int usrId)
+        {
+            Conector.Datos.EjecutarComando("update NOT_NULL.usuario, " +
+                       " set USR_intentos = USR_intentos + 1 where USR_id = '" + Convert.ToString(usrId) + "';");
+        }
     }
 }
