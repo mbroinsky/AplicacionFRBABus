@@ -6,13 +6,14 @@ namespace AccesoADatos
     public abstract class BaseDatos
     {
         //Atributos Heredables
-        protected IDbConnection  _Conexion;
-        protected IDbTransaction _Transaccion;
-        protected bool           _EnTransaccion;
+        protected IDbConnection     _Conexion;
+        protected IDbTransaction    _Transaccion;
+        protected bool              _EnTransaccion;
+        protected string            _CadenaConexion = "";
+
         public abstract string CadenaConexion { get; set; }
 
- 
-        //Metodos abstractos que se deben definir en quien herede
+         //Metodos abstractos que se deben definir en quien herede
         protected abstract IDbConnection CrearConexion(string cadena);
         protected abstract IDbCommand Comando(string procedimientoAlmacenado);
         protected abstract IDbCommand ComandoSql(string comandoSql);
@@ -181,14 +182,18 @@ namespace AccesoADatos
 
         public bool AbrirConexion()
         {
-            if (_Conexion.State != ConnectionState.Open)
-                _Conexion.Open();
+
+
+            _Conexion = CrearConexion(CadenaConexion);
+            
+            _Conexion.Open();
+            
             return true;
         }
          
         public void CerrarConexion()
         {
-            if (_Conexion.State != ConnectionState.Closed)
+            if (Conexion.State != ConnectionState.Closed)
                 _Conexion.Close();
         }
   

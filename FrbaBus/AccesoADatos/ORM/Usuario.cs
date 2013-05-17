@@ -13,10 +13,10 @@ namespace AccesoADatos.Orm
         public String NombreUsr { get; set; }
         public String Password { get; set; }
         public String Rol { get; set; }
+        public Int16 CantIntentos { get; set; }
         public ArrayList Permisos { get; set; }
         private Int16 IdRol;
-
-
+        
         public Usuario()
         {
             Permisos = new ArrayList();
@@ -35,19 +35,20 @@ namespace AccesoADatos.Orm
         public bool TraerUsuario(String nick)
         {
             DataTable dt = Conector.Datos.EjecutarComandoADataTable("select * from NOT_NULL.usuario, " +
-                       " NOT_NULL.rol where USR_nick = '" + nick + "' AND USR_idRol = ROL_id;");
+                       " NOT_NULL.rol where USR_nick = '" + nick + "' AND USR_idRol = ROL_idRol;");
 
             if (dt.Rows.Count > 0)
             {
                 Id = Convert.ToInt16(dt.Rows[0]["USR_idUsuario"]);
                 NombreUsr = dt.Rows[0]["USR_Nombre"] + " " + dt.Rows[0]["USR_Apellido"];
-                Password = dt.Rows[0]["USR_Clave"];
-                Rol = dt.Rows[0]["ROL_nombre"];
-                IdRol = Convert.ToInt16(dt.Rows[0]["ROL_id"]);
+                Password = dt.Rows[0]["USR_Password"].ToString();
+                Rol = dt.Rows[0]["ROL_nombre"].ToString();
+                IdRol = Convert.ToInt16(dt.Rows[0]["ROL_idRol"]);
+                CantIntentos = Convert.ToInt16(dt.Rows[0]["USR_intentos"]);
                 
-                dt = Conector.Datos.EjecutarComandoADataTable("select * from NOT_NULL.funcXRol, " + 
+                dt = Conector.Datos.EjecutarComandoADataTable("select * from NOT_NULL.funcionalidadXRol, " + 
                        " NOT_NULL.funcionalidad where FXR_idRol = '" + IdRol.ToString() + 
-                       "' AND FXR_idFunc = FUN_id;");
+                       "' AND FXR_idFuncionalidad = FNC_idFuncionalidad;");
                        
                 for(int i = 0; i < dt.Rows.Count; i++)
                     Permisos.Add(dt.Rows[i]["FUN_nombre"]);
@@ -62,8 +63,18 @@ namespace AccesoADatos.Orm
         
         public bool IncrementarIntentos(int usrId)
         {
-            Conector.Datos.EjecutarComando("update NOT_NULL.usuario, " +
-                       " set USR_intentos = USR_intentos + 1 where USR_id = '" + Convert.ToString(usrId) + "';");
+            try
+            {
+                Conector.Datos.EjecutarComando("update NOT_NULL.usuario, " +
+                       " set USR_intentos = USR_intentos + 1 where USR_id = '" +
+                       Convert.ToString(usrId) + "';");
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

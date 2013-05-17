@@ -102,7 +102,7 @@
     <Compile Include="Canje de Ptos\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="AccesoADatos\ORM\Usuario.cs" />
+    <Compile Include="AccesoADatos\Orm\Usuario.cs" />
     <Compile Include="Configuracion.cs" />
     <Compile Include="Compra de Pasajes\Form1.cs">
       <SubType>Form</SubType>
