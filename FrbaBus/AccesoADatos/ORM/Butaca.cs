@@ -7,43 +7,25 @@ using System.Data;
 
 namespace AccesoADatos.Orm
 {
-    public class Usuario
+    public class Butaca
     {
-        public Int16 Id { get; set; }
-        public String NombreUsr { get; set; }
-        public String Password { get; set; }
-        public String Rol { get; set; }
-        public ArrayList Permisos { get; set; }
-        private Int16 IdRol;
-
-
-        public Usuario()
+        public Int16 Numero { get; set; }
+        public Int16 MicroId { get; set; }
+        public String Piso { get; set; }
+        public String Tipo { get; set; }
+        
+        public bool TraerButacaPorClave(int numero, int microId)
         {
-            Permisos = new ArrayList();
-        }
-
-        public void AgregarPermiso(String formulario)
-        {
-            Permisos.Add(formulario);
-        }
-
-        public bool TienePermiso(String formulario)
-        {
-            return Permisos.Contains(formulario);
-        }
-
-        public bool TraerUsuario(String nick)
-        {
-            DataTable dt = Conector.Datos.EjecutarComandoADataTable("select * from NOT_NULL.usuario, " +
-                       " NOT_NULL.rol where USR_nick = '" + nick + "' AND USR_idRol = ROL_id;");
+            DataTable dt = Conector.Datos.EjecutarComandoADataTable("select * from NOT_NULL.butaca " +
+                       " where BUT_numero = '" + Convert.ToString(numero) + "' AND But_Microid = '" + 
+                        Convert.ToString(microId) + "';");
 
             if (dt.Rows.Count > 0)
             {
-                Id = Convert.ToInt16(dt.Rows[0]["USR_idUsuario"]);
-                NombreUsr = dt.Rows[0]["USR_Nombre"] + " " + dt.Rows[0]["USR_Apellido"];
-                Password = dt.Rows[0]["USR_Clave"];
-                Rol = dt.Rows[0]["ROL_nombre"];
-                IdRol = Convert.ToInt16(dt.Rows[0]["ROL_id"]);
+                Numero = Convert.ToInt16(dt.Rows[0]["BUT_numero"]);
+                MicroId = Convert.ToInt16(dt.Rows[0]["BUT_MicroId"]);
+                Piso = dt.Rows[0]["USR_Clave"];
+                Tipo = dt.Rows[0]["BUT_Tipo"];
                 
                 dt = Conector.Datos.EjecutarComandoADataTable("select * from NOT_NULL.funcXRol, " + 
                        " NOT_NULL.funcionalidad where FXR_idRol = '" + IdRol.ToString() + 
