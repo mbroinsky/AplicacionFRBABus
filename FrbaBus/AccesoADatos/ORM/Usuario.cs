@@ -65,9 +65,11 @@ namespace AccesoADatos.Orm
         {
             try
             {
-                Conector.Datos.EjecutarComando("update NOT_NULL.usuario, " +
-                       " set USR_intentos = USR_intentos + 1 where USR_id = '" +
-                       Convert.ToString(usrId) + "';");
+                string sql = "update NOT_NULL.usuario " +
+                       " set USR_intentos = USR_intentos + 1 where USR_idUsuario = '" +
+                       Convert.ToString(usrId) + "';";
+
+                Conector.Datos.EjecutarComando(sql);
             }
             catch
             {

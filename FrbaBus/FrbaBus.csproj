@@ -90,6 +90,8 @@
     <Compile Include="AccesoADatos\Conector.cs" />
     <Compile Include="AccesoADatos\CapaDatos.cs" />
     <Compile Include="AccesoADatos\BaseDatos.cs" />
+    <Compile Include="AccesoADatos\Orm\Butaca.cs" />
+    <Compile Include="AccesoADatos\Orm\Micro.cs" />
     <Compile Include="Cancelar Viaje\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
