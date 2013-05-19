@@ -75,11 +75,11 @@
     <Compile Include="Abm Micro\AM_Micro.Designer.cs">
       <DependentUpon>AM_Micro.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Permisos\Form1.cs">
+    <Compile Include="Abm Permisos\ABMPermisos.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Permisos\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Abm Permisos\ABMPermisos.Designer.cs">
+      <DependentUpon>ABMPermisos.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Recorrido\Form1.cs">
       <SubType>Form</SubType>
@@ -124,6 +124,12 @@
     <Compile Include="AccesoSistema.Designer.cs">
       <DependentUpon>AccesoSistema.cs</DependentUpon>
     </Compile>
+    <Compile Include="Menu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Menu.Designer.cs">
+      <DependentUpon>Menu.cs</DependentUpon>
+    </Compile>
     <Compile Include="GenerarViaje\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -145,8 +151,14 @@
     <EmbeddedResource Include="Abm Micro\AM_Micro.resx">
       <DependentUpon>AM_Micro.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Abm Permisos\ABMPermisos.resx">
+      <DependentUpon>ABMPermisos.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AccesoSistema.resx">
       <DependentUpon>AccesoSistema.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Menu.resx">
+      <DependentUpon>Menu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login\Formulario.resx">
       <DependentUpon>Formulario.cs</DependentUpon>

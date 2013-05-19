@@ -1,6 +1,6 @@
 ﻿namespace FrbaBus.Abm_Permisos
 {
-    partial class Form1
+    partial class ABMPermisos
     {
         /// <summary>
         /// Required designer variable.
@@ -28,9 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // ABMPermisos
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(344, 401);
+            this.Name = "ABMPermisos";
+            this.Text = "ABM de Rol";
+            this.ResumeLayout(false);
+
         }
 
         #endregion

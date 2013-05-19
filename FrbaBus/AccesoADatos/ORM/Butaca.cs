@@ -10,7 +10,7 @@ namespace AccesoADatos.Orm
     public class Butaca
     {
         public Int16 Numero { get; set; }
-        public Int16 MicroId { get; set; }
+        public Int32 MicroId { get; set; }
         public Int16 Piso { get; set; }
         public String Tipo { get; set; }
         
@@ -23,7 +23,7 @@ namespace AccesoADatos.Orm
             if (dt.Rows.Count > 0)
             {
                 Numero = Convert.ToInt16(dt.Rows[0]["BUT_numeroAsiento"]);
-                MicroId = Convert.ToInt16(dt.Rows[0]["BUT_numMicro"]);
+                MicroId = Convert.ToInt32(dt.Rows[0]["BUT_numMicro"]);
                 Piso = Convert.ToInt16(dt.Rows[0]["BUT_Piso"]);
                 Tipo = dt.Rows[0]["BUT_Tipo"].ToString();
                             
@@ -37,12 +37,22 @@ namespace AccesoADatos.Orm
         
         public bool InsertarButaca(int numero, int microId, int piso, string tipo)
         {
+            this.MicroId = Convert.ToInt32(microId);
+            this.Numero = Convert.ToInt16(numero);
+            this.Piso = Convert.ToInt16(piso);
+            this.Tipo = tipo;
+
+            return InsertarButaca();
+        }
+
+        public bool InsertarButaca()
+        {
             try
             {
                 Conector.Datos.EjecutarComando("insert into NOT_NULL.butaca " +
                        " (BUT_numeroAsiento, BUT_microId, BUT_piso, BUT_tipo) values ('" +
-                       Convert.ToString(numero) + "', '" + Convert.ToString(microId) +
-                       "', '" + Convert.ToString(piso) + "', '" + tipo + "');");
+                       Convert.ToString(this.Numero) + "', '" + Convert.ToString(this.MicroId) +
+                       "', '" + Convert.ToString(this.Piso) + "', '" + this.Tipo + "');");
 
                 return true;
             }

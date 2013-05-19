@@ -53,6 +53,11 @@ namespace FrbaBus.Login
                     user.IncrementarIntentos(user.Id);
                     return;
                 }
+
+                var mnu = new FrbaBus.Menu();
+
+                this.Close();
+                mnu.Show();
             } 
             else
             {
@@ -79,7 +84,11 @@ namespace FrbaBus.Login
 
         private void Volver_Click(object sender, EventArgs e)
         {
+            var acceso = new AccesoSistema();
+
             this.Close();
+
+            acceso.Show();
         }
     }
 }

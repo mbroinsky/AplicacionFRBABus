@@ -20,11 +20,9 @@ namespace FrbaBus
         {
             Login.Formulario log = new Login.Formulario();
 
-            this.SetVisibleCore(false);
+            this.Close();
 
-            log.ShowDialog();
-
-            this.SetVisibleCore(true);
+            log.Show();
         }
 
         private void ComprarPasajes_Click(object sender, EventArgs e)
