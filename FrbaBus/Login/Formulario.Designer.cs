@@ -81,6 +81,7 @@
             // 
             // Volver
             // 
+            this.Volver.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Volver.Location = new System.Drawing.Point(169, 103);
             this.Volver.Name = "Volver";
             this.Volver.Size = new System.Drawing.Size(75, 23);
@@ -91,8 +92,10 @@
             // 
             // Formulario
             // 
+            this.AcceptButton = this.Acceder;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.Volver;
             this.ClientSize = new System.Drawing.Size(292, 147);
             this.ControlBox = false;
             this.Controls.Add(this.Volver);

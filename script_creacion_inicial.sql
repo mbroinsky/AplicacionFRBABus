@@ -1,5 +1,7 @@
-BEGIN TRANSACTION
 SET NOCOUNT ON
+
+BEGIN TRAN
+
 -- Para poder correr el Script limpio de principio a Fin, deberíamos agregar todos los drops de tablas antes.
 IF OBJECT_ID('NOT_NULL.Usuario') IS NOT NULL
 BEGIN
@@ -110,13 +112,46 @@ IF OBJECT_ID(N'NOT_NULL.Tarjeta') IS NOT NULL
 BEGIN
     DROP TABLE NOT_NULL.Tarjeta
 END
-GO
+
+IF OBJECT_ID(N'NOT_NULL.ListarRoles') IS NOT NULL
+BEGIN
+    DROP PROCEDURE NOT_NULL.ListarRoles
+END
+
+IF OBJECT_ID(N'NOT_NULL.CargarTablasSecundarias') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.CargarTablasSecundarias;
+END
+
+IF OBJECT_ID(N'NOT_NULL.CargarMicros') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.CargarMicros;
+END
 
 IF OBJECT_ID(N'NOT_NULL.CargarButacas') IS NOT NULL
 BEGIN
-    DROP TABLE NOT_NULL.Tarjeta
+	DROP PROCEDURE NOT_NULL.CargarButacas;
 END
-GO
+
+IF OBJECT_ID(N'NOT_NULL.CargarRecorridos') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.CargarRecorridos;
+END
+
+IF OBJECT_ID(N'NOT_NULL.CargarViajes') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.CargarViajes;
+END
+
+IF OBJECT_ID(N'NOT_NULL.CargarVentasPasajes') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.CargarVentasPasajes;
+END
+
+IF OBJECT_ID(N'NOT_NULL.CargarVentasEncomiendas') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.CargarVentasEncomiendas;
+END
 
 IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'NOT_NULL')
 BEGIN
@@ -126,8 +161,6 @@ GO
 
 CREATE SCHEMA NOT_NULL;
 GO
-
-
 
 -- Create Table: Encomienda
 --------------------------------------------------------------------------------
@@ -261,7 +294,8 @@ ALTER TABLE NOT_NULL.Pasaje ADD CONSTRAINT PK_Pasaje PRIMARY KEY CLUSTERED (PAS_
 CREATE TABLE NOT_NULL.Rol
 (
 	ROL_idRol INT NOT NULL IDENTITY(1, 1)
-	,ROL_nombre VARCHAR(250) NOT NULL 
+	,ROL_nombre VARCHAR(20) NOT NULL
+	,ROL_habilitado BIT NOT NULL DEFAULT 1
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Rol ADD CONSTRAINT PK_Rol PRIMARY KEY (ROL_idRol)
@@ -486,8 +520,6 @@ REFERENCES NOT_NULL.[Viaje] ([VIA_numViaje])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
-
-
 -- Create Foreign Key: Pasaje.PAS_idCliente -> Cliente.CLI_idCliente
 ALTER TABLE NOT_NULL.[Pasaje] ADD CONSTRAINT
 [FK_Pasaje_PAS_idCliente_Cliente_CLI_idCliente]
@@ -495,8 +527,6 @@ FOREIGN KEY ([PAS_idCliente])
 REFERENCES NOT_NULL.[Cliente] ([CLI_idCliente])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
-
-
 
 -- Create Foreign Key: Pasaje.PAS_numButaca -> Butaca.BUT_numeroAsiento
 ALTER TABLE NOT_NULL.Pasaje ADD CONSTRAINT FK_Pasaje_PAS_numButaca_PAS_numMicro_Butaca_BUT_numeroAsiento_Butaca_BUT_numMicro
@@ -781,7 +811,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NOT_NULL.cargarVentasPasajes
+CREATE PROCEDURE NOT_NULL.CargarVentasPasajes
 AS
 DECLARE
 	@idVenta int,
@@ -870,7 +900,7 @@ CLOSE VENTAPASAJESCUR
 DEALLOCATE VENTAPASAJESCUR;
 GO
 
-CREATE PROCEDURE NOT_NULL.cargarVentasEncomiendas
+CREATE PROCEDURE NOT_NULL.CargarVentasEncomiendas
 AS
 DECLARE
 	@idVenta int,
@@ -948,28 +978,7 @@ CLOSE VENTAENCOMIENDACUR
 DEALLOCATE VENTAENCOMIENDACUR;
 GO
 
---CREATE PROCEDURE CargarPasajes 
---AS 
---BEGIN
---   INSERT INTO Pasaje (PAS_idVenta, PAS_codigo, PAS_idViaje, PAS_idCliente, PAS_numButaca, PAS_precio)
---		SELECT 	Pasaje_Codigo, VIA_idViaje, CLI_idCliente, Butaca_Numero, Pasaje_Precio
---		FROM gd_Esquema.Maestra, Viaje, Cliente, Recorrido
---		WHERE FechaSalida = VIA_fecSalida and VIA_idRecorrido = REC_idRecorrido and 
---			Recorrido_Codigo = REC_codRecorrido and gd_Esquema.Maestra.Cli_Dni = Cliente.CLI_Dni;
---END
---GO
-
---CREATE PROCEDURE CargarEncomiendas 
---AS 
---BEGIN
---    INSERT INTO Encomienda (ENC_idViaje, ENC_idCliente, ENC_kilos)
---		SELECT 	Cli_Nombre, Cli_Apellido, Cli_Dni, Cli_Dir, Cli_Telefono, Cli_Mail, Cli_Fecha_Nac
---		FROM gd_Esquema.Maestra;
---END
---GO
-
-
---Acá se deberían correr los SP
+--Acá se deben correr los SP de migracion
 
 EXECUTE NOT_NULL.CargarTablasSecundarias;
 EXECUTE NOT_NULL.CargarMicros;
@@ -980,18 +989,42 @@ EXECUTE NOT_NULL.cargarVentasPasajes;
 EXECUTE NOT_NULL.cargarVentasEncomiendas;
 GO
 
---Acá se deberían borrar los SP
+--Acá se deben borrar los SP de migracion
 
 DROP PROCEDURE NOT_NULL.CargarTablasSecundarias;
 DROP PROCEDURE NOT_NULL.CargarMicros;
 DROP PROCEDURE NOT_NULL.CargarButacas;
 DROP PROCEDURE NOT_NULL.CargarRecorridos;
 DROP PROCEDURE NOT_NULL.CargarViajes;
-DROP PROCEDURE NOT_NULL.cargarVentasPasajes;
-DROP PROCEDURE NOT_NULL.cargarVentasEncomiendas;
+DROP PROCEDURE NOT_NULL.CargarVentasPasajes;
+DROP PROCEDURE NOT_NULL.CargarVentasEncomiendas;
 
 GO
---FIN
-SET NOCOUNT OFF
-COMMIT transaction
 
+--Acá creamos los SP de Aplicacion
+CREATE PROCEDURE NOT_NULL.ListarRoles
+	@ID int = NULL,
+	@NOMBRE nvarchar(20) = NULL 
+AS 
+BEGIN
+    DECLARE @WHERE varchar(500)
+    DECLARE @SQL varchar(500)
+    
+    SET @WHERE = '';
+	
+	IF (@ID IS NOT NULL)
+		SET @WHERE = 'ROL_idRol = ''' + CONVERT(varchar,@ID) + ''' AND ';
+	
+	IF (@NOMBRE IS NOT NULL)
+		SET @WHERE = 'ROL_nombre LIKE ''%' + @NOMBRE + '%'' AND ';
+	
+	SET @SQL = 'SELECT ROL_idRol AS ID, ROL_nombre AS Nombre, ROL_habilitado AS Habilitado FROM NOT_NULL.ROL WHERE ' + @WHERE + ' 1=1;'
+        
+	EXEC (@SQL);
+END
+GO
+
+--FIN
+COMMIT;
+
+SET NOCOUNT OFF

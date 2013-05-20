@@ -12,8 +12,12 @@ namespace FrbaBus.Login
 {
     public partial class Formulario : Form
     {
+        public Boolean LoginOk { get; set; } 
+
         public Formulario()
         {
+            LoginOk = false;
+
             InitializeComponent();
         }
 
@@ -54,16 +58,16 @@ namespace FrbaBus.Login
                     return;
                 }
 
-                var mnu = new FrbaBus.Menu();
+                LoginOk = true;
 
                 this.Close();
-                mnu.Show();
             } 
             else
             {
                 MessageBox.Show("Usuario o password erróneo");
                 Usuario.Text = "";
                 Password.Text = "";
+                return;
             }
         }
 

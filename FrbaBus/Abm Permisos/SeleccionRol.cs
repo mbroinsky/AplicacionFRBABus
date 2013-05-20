@@ -6,14 +6,17 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using AccesoADatos.Orm;
 
 namespace FrbaBus.Abm_Permisos
 {
-    public partial class ABMPermisos : Form
+    public partial class SeleccionRol : Form
     {
-        public ABMPermisos()
+        public SeleccionRol()
         {
             InitializeComponent();
+
+            Roles.DataSource = Rol.Listar();
         }
     }
 }

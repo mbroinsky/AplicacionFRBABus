@@ -18,11 +18,20 @@ namespace FrbaBus
 
         private void Login_Click(object sender, EventArgs e)
         {
-            Login.Formulario log = new Login.Formulario();
+            var log = new Login.Formulario();
 
-            this.Close();
+            this.SetVisibleCore(false);
 
-            log.Show();
+            log.ShowDialog();
+
+            if (log.LoginOk)
+            {
+                var mnu = new FrbaBus.Menu();
+
+                mnu.ShowDialog();
+            }
+
+            this.SetVisibleCore(true);
         }
 
         private void ComprarPasajes_Click(object sender, EventArgs e)

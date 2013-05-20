@@ -34,7 +34,7 @@
             // 
             // AMicro
             // 
-            this.AMicro.Location = new System.Drawing.Point(12, 79);
+            this.AMicro.Location = new System.Drawing.Point(12, 114);
             this.AMicro.Name = "AMicro";
             this.AMicro.Size = new System.Drawing.Size(75, 23);
             this.AMicro.TabIndex = 0;
@@ -43,23 +43,27 @@
             // 
             // ABMRol
             // 
-            this.ABMRol.Location = new System.Drawing.Point(105, 78);
+            this.ABMRol.Location = new System.Drawing.Point(93, 114);
             this.ABMRol.Name = "ABMRol";
             this.ABMRol.Size = new System.Drawing.Size(75, 23);
             this.ABMRol.TabIndex = 1;
             this.ABMRol.Text = "ABM Rol";
             this.ABMRol.UseVisualStyleBackColor = true;
+            this.ABMRol.Click += new System.EventHandler(this.ABMRol_Click);
             // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(292, 273);
+            this.ClientSize = new System.Drawing.Size(685, 149);
             this.ControlBox = false;
             this.Controls.Add(this.ABMRol);
             this.Controls.Add(this.AMicro);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Menu";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FRBABus Menu Principal";
+            this.Load += new System.EventHandler(this.Menu_Load);
             this.ResumeLayout(false);
 
         }
