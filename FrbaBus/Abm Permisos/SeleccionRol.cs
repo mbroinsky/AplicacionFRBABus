@@ -20,6 +20,20 @@ namespace FrbaBus.Abm_Permisos
         private void Buscar_Click(object sender, EventArgs e)
         {
             Roles.DataSource = Rol.Listar(Nombre.Text);
+            
+            var btn = New DataGridViewButtonColumn();
+            
+            Roles.Columns.Add(btn);
+            //btn.HeaderText = ""
+            btn.Text = "Modificar";
+            btn.Name = "Modificar";
+            btn.UseColumnTextForButtonValue = true;
+        }
+        
+        private void Roles_CellClick(object sender, EventArgs e)
+        {
+            if (e.ColumnIndex = Roles.Columns.Count)
+                var mod = new ABMRol();    
         }
 
         private void Salir_Click(object sender, EventArgs e)
