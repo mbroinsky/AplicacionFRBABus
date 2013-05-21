@@ -30,6 +30,7 @@
         {
             this.AMicro = new System.Windows.Forms.Button();
             this.ABMRol = new System.Windows.Forms.Button();
+            this.Salir = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // AMicro
@@ -51,6 +52,16 @@
             this.ABMRol.UseVisualStyleBackColor = true;
             this.ABMRol.Click += new System.EventHandler(this.ABMRol_Click);
             // 
+            // Salir
+            // 
+            this.Salir.Location = new System.Drawing.Point(150, 114);
+            this.Salir.Name = "Salir";
+            this.Salir.Size = new System.Drawing.Size(75, 23);
+            this.Salir.TabIndex = 2;
+            this.Salir.Text = "Salir";
+            this.Salir.UseVisualStyleBackColor = true;
+            this.Salir.Click += new System.EventHandler(this.Salir_Click);    
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -59,6 +70,7 @@
             this.ControlBox = false;
             this.Controls.Add(this.ABMRol);
             this.Controls.Add(this.AMicro);
+            this.Controls.Add(this.Salir);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Menu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -72,5 +84,6 @@
 
         private System.Windows.Forms.Button AMicro;
         private System.Windows.Forms.Button ABMRol;
+        private System.Windows.Forms.Button Salir;
     }
 }
