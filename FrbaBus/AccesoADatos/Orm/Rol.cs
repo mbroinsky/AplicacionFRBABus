@@ -45,19 +45,19 @@ namespace AccesoADatos.Orm
             }
         }
 
-        //public static DataTable Listar(int idRol)
-        //{
-        //    try
-        //    {
-        //        DataTable dt = Conector.Datos.EjecutarComandoADataTable("select ROL_id as ID, ROL_nombre as Nombre, ROL_habilitado as Habilitado from NOT_NULL.ROL;");
+        public static DataTable Listar(string nombreRol)
+        {
+            try
+            {
+                DataTable dt = Conector.Datos.EjecutarProcedureADataTable("NOT_NULL.ListarRoles", DBNull.Value, nombreRol);
 
-        //        return dt;
-        //    }
-        //    catch
-        //    {
-        //        return null;
-        //    }
-        //}
+                return dt;
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
         //public bool InsertarRol(int numero, int microId, int piso, string tipo)
         //{

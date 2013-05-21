@@ -15,8 +15,16 @@ namespace FrbaBus.Abm_Permisos
         public SeleccionRol()
         {
             InitializeComponent();
+        }
 
-            Roles.DataSource = Rol.Listar();
+        private void Buscar_Click(object sender, EventArgs e)
+        {
+            Roles.DataSource = Rol.Listar(Nombre.Text);
+        }
+
+        private void Salir_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

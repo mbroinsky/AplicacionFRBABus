@@ -1015,7 +1015,7 @@ BEGIN
 	IF (@ID IS NOT NULL)
 		SET @WHERE = 'ROL_idRol = ''' + CONVERT(varchar,@ID) + ''' AND ';
 	
-	IF (@NOMBRE IS NOT NULL)
+	IF (@NOMBRE IS NOT NULL OR @NOMBRE = '')
 		SET @WHERE = 'ROL_nombre LIKE ''%' + @NOMBRE + '%'' AND ';
 	
 	SET @SQL = 'SELECT ROL_idRol AS ID, ROL_nombre AS Nombre, ROL_habilitado AS Habilitado FROM NOT_NULL.ROL WHERE ' + @WHERE + ' 1=1;'
