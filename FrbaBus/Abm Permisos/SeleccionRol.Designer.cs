@@ -34,6 +34,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblNombre = new System.Windows.Forms.Label();
             this.Salir = new System.Windows.Forms.Button();
+            this.Agregar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Roles)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -42,9 +43,9 @@
             // 
             this.Roles.AllowUserToAddRows = false;
             this.Roles.AllowUserToDeleteRows = false;
-            this.Roles.AllowUserToResizeColumns = false;
-            this.Roles.AllowUserToResizeRows = false;
-            this.Roles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.Roles.AllowUserToOrderColumns = true;
+            this.Roles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            this.Roles.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.Roles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.Roles.Location = new System.Drawing.Point(12, 73);
             this.Roles.MultiSelect = false;
@@ -53,12 +54,13 @@
             this.Roles.RowHeadersVisible = false;
             this.Roles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.Roles.ShowEditingIcon = false;
-            this.Roles.Size = new System.Drawing.Size(370, 269);
+            this.Roles.Size = new System.Drawing.Size(336, 269);
             this.Roles.TabIndex = 0;
+            this.Roles.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Roles_CellContentClick);
             // 
             // Buscar
             // 
-            this.Buscar.Location = new System.Drawing.Point(289, 17);
+            this.Buscar.Location = new System.Drawing.Point(242, 17);
             this.Buscar.Name = "Buscar";
             this.Buscar.Size = new System.Drawing.Size(75, 23);
             this.Buscar.TabIndex = 1;
@@ -70,7 +72,7 @@
             // 
             this.Nombre.Location = new System.Drawing.Point(90, 19);
             this.Nombre.Name = "Nombre";
-            this.Nombre.Size = new System.Drawing.Size(182, 20);
+            this.Nombre.Size = new System.Drawing.Size(134, 20);
             this.Nombre.TabIndex = 2;
             // 
             // groupBox1
@@ -80,7 +82,7 @@
             this.groupBox1.Controls.Add(this.Buscar);
             this.groupBox1.Location = new System.Drawing.Point(12, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(370, 64);
+            this.groupBox1.Size = new System.Drawing.Size(336, 64);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Búsqueda";
@@ -97,7 +99,7 @@
             // Salir
             // 
             this.Salir.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Salir.Location = new System.Drawing.Point(307, 366);
+            this.Salir.Location = new System.Drawing.Point(273, 353);
             this.Salir.Name = "Salir";
             this.Salir.Size = new System.Drawing.Size(75, 23);
             this.Salir.TabIndex = 4;
@@ -105,17 +107,29 @@
             this.Salir.UseVisualStyleBackColor = true;
             this.Salir.Click += new System.EventHandler(this.Salir_Click);
             // 
+            // Agregar
+            // 
+            this.Agregar.Location = new System.Drawing.Point(12, 354);
+            this.Agregar.Name = "Agregar";
+            this.Agregar.Size = new System.Drawing.Size(80, 21);
+            this.Agregar.TabIndex = 5;
+            this.Agregar.Text = "Agregar...";
+            this.Agregar.UseVisualStyleBackColor = true;
+            this.Agregar.Click += new System.EventHandler(this.Agregar_Click);
+            // 
             // SeleccionRol
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Salir;
-            this.ClientSize = new System.Drawing.Size(394, 401);
+            this.ClientSize = new System.Drawing.Size(361, 388);
             this.ControlBox = false;
+            this.Controls.Add(this.Agregar);
             this.Controls.Add(this.Salir);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.Roles);
             this.Name = "SeleccionRol";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Seleccion de Rol";
             ((System.ComponentModel.ISupportInitialize)(this.Roles)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -132,5 +146,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label lblNombre;
         private System.Windows.Forms.Button Salir;
+        private System.Windows.Forms.Button Agregar;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
+using System.Windows.Forms;
 
 namespace AccesoADatos.Orm
 {
@@ -11,6 +12,13 @@ namespace AccesoADatos.Orm
         public Int32 Id { get; set; }
         public Boolean Habilitado { get; set; }
         public String Nombre { get; set; }
+
+        public Rol(DataGridViewRow fila)
+        {
+            Id = Convert.ToInt32(fila.Cells["Id"].Value);
+            Habilitado = Convert.ToBoolean(fila.Cells["Habilitado"].Value);
+            Nombre = fila.Cells["Nombre"].Value.ToString();            
+        }
    
         public bool TraerRolPorClave(int id)
         {

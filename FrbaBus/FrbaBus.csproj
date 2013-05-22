@@ -75,6 +75,12 @@
     <Compile Include="Abm Micro\AM_Micro.Designer.cs">
       <DependentUpon>AM_Micro.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Permisos\ABMRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Permisos\ABMRol.Designer.cs">
+      <DependentUpon>ABMRol.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Permisos\SeleccionRol.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +97,7 @@
     <Compile Include="AccesoADatos\CapaDatos.cs" />
     <Compile Include="AccesoADatos\BaseDatos.cs" />
     <Compile Include="AccesoADatos\Orm\Butaca.cs" />
+    <Compile Include="AccesoADatos\Orm\Funcionalidad.cs" />
     <Compile Include="AccesoADatos\Orm\Rol.cs" />
     <Compile Include="AccesoADatos\Orm\Micro.cs" />
     <Compile Include="Cancelar Viaje\Form1.cs">
@@ -151,6 +158,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Micro\AM_Micro.resx">
       <DependentUpon>AM_Micro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Permisos\ABMRol.resx">
+      <DependentUpon>ABMRol.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Permisos\SeleccionRol.resx">
       <DependentUpon>SeleccionRol.cs</DependentUpon>

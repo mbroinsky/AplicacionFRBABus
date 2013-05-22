@@ -51,7 +51,7 @@ namespace AccesoADatos.Orm
                        "' AND FXR_idFuncionalidad = FNC_idFuncionalidad;");
                        
                 for(int i = 0; i < dt.Rows.Count; i++)
-                    Permisos.Add(dt.Rows[i]["FUN_nombre"]);
+                    Permisos.Add(dt.Rows[i]["FNC_formAsoc"]);
                             
                 return true;
             }

@@ -26,6 +26,12 @@ namespace FrbaBus
         {
             var selRol = new SeleccionRol();
 
+            if (!Globales.oInstance.usr.TienePermiso(selRol.Name))
+            {
+                MessageBox.Show("Ud. no tiene permiso para acceder a la pantalla solicitada");
+                return;
+            }
+
             selRol.ShowDialog();
         }
         

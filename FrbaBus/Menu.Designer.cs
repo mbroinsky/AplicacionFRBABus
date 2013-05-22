@@ -54,13 +54,13 @@
             // 
             // Salir
             // 
-            this.Salir.Location = new System.Drawing.Point(150, 114);
+            this.Salir.Location = new System.Drawing.Point(598, 114);
             this.Salir.Name = "Salir";
             this.Salir.Size = new System.Drawing.Size(75, 23);
             this.Salir.TabIndex = 2;
             this.Salir.Text = "Salir";
             this.Salir.UseVisualStyleBackColor = true;
-            this.Salir.Click += new System.EventHandler(this.Salir_Click);    
+            this.Salir.Click += new System.EventHandler(this.Salir_Click);
             // 
             // Menu
             // 
