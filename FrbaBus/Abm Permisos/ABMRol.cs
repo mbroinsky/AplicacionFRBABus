@@ -43,5 +43,15 @@ namespace FrbaBus.Abm_Permisos
             denegados.Columns["Id"].Visible = false;
             denegados.Columns["Funcionalidad"].Width = denegados.Width;
         }
+
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void Guardar_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

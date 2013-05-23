@@ -39,5 +39,19 @@ namespace FrbaBus
         {
             this.Close();
         }
+
+        private void AMicro_Click(object sender, EventArgs e)
+        {
+            var selGestionMicros = new FrbaBus.Abm_Micro.ABMMicro();
+
+            if (!Globales.oInstance.usr.TienePermiso(selGestionMicros.Name))
+            {
+                MessageBox.Show("Ud. no tiene permiso para acceder a la pantalla solicitada");
+                return;
+            }
+
+            selGestionMicros.ShowDialog();
+
+        }
     }
 }
