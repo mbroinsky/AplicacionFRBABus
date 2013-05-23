@@ -41,6 +41,7 @@
             this.AMicro.TabIndex = 0;
             this.AMicro.Text = "ABM Micros";
             this.AMicro.UseVisualStyleBackColor = true;
+            this.AMicro.Click += new System.EventHandler(this.AMicro_Click);
             // 
             // ABMRol
             // 

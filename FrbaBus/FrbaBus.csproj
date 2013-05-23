@@ -75,6 +75,12 @@
     <Compile Include="Abm Micro\AM_Micro.Designer.cs">
       <DependentUpon>AM_Micro.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Micro\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Micro\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Permisos\ABMRol.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -158,6 +164,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Micro\AM_Micro.resx">
       <DependentUpon>AM_Micro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Micro\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Permisos\ABMRol.resx">
       <DependentUpon>ABMRol.cs</DependentUpon>
