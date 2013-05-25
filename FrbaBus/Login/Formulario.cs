@@ -36,7 +36,7 @@ namespace FrbaBus.Login
                 return;
             }
             
-            Usuario user = Globales.Instance().usr;
+            var user = Globales.Instance().usr;
             
             if (user.TraerUsuario(this.Usuario.Text))
             {
@@ -55,7 +55,7 @@ namespace FrbaBus.Login
                     Usuario.Text = "";
                     Password.Text = "";
                     
-                    user.IncrementarIntentos();
+                    user.IncrementarIntentos(user.Id);
                     return;
                 }
 
