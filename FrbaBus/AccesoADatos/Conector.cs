@@ -2,7 +2,7 @@ namespace AccesoADatos
 {
     public class Conector
     {
-        public static BaseDatos Datos;
+        public static CapaDatos Datos;
         
         public static bool IniciarSesion()
         {

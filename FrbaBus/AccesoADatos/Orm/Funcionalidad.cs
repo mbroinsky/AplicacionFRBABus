@@ -18,7 +18,41 @@ namespace FrbaBus.AccesoADatos.Orm
             try
             {
                 DataTable dt = Conector.Datos.EjecutarComandoADataTable("select FNC_idFuncionalidad as Id, FNC_nombre as Funcionalidad from NOT_NULL.Funcionalidad order by FNC_nombre;");
-                
+
+                return dt;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static DataTable ListarPermitidasPorRol(int idRol)
+        {
+            try
+            {
+                DataTable dt = Conector.Datos.EjecutarComandoADataTable("select FNC_idFuncionalidad as Id, " +
+                    " FNC_nombre as Funcionalidad from NOT_NULL.Funcionalidad " +
+                    " where FNC_idFuncionalidad in (select FXR_idFuncionalidad from NOT_NULL.FuncionalidadXRol " +
+                    " where FXR_idRol = '" + Convert.ToString(idRol) + "') order by FNC_nombre;");
+
+                return dt;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static DataTable ListarDenegadasPorRol(int idRol)
+        {
+            try
+            {
+                DataTable dt = Conector.Datos.EjecutarComandoADataTable("select FNC_idFuncionalidad as Id, " +
+                    " FNC_nombre as Funcionalidad from NOT_NULL.Funcionalidad " +
+                    " where FNC_idFuncionalidad not in (select FXR_idFuncionalidad from NOT_NULL.FuncionalidadXRol " +
+                    " where FXR_idRol = '" + Convert.ToString(idRol) + "') order by FNC_nombre;");
+
                 return dt;
             }
             catch
@@ -28,3 +62,5 @@ namespace FrbaBus.AccesoADatos.Orm
         }
     }
 }
+
+

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Data.OleDb;
 using System.Security.Cryptography;  
 
 namespace FrbaBus.Login
@@ -35,7 +36,7 @@ namespace FrbaBus.Login
                 return;
             }
             
-            var user = Globales.Instance().usr;
+            Usuario user = Globales.Instance().usr;
             
             if (user.TraerUsuario(this.Usuario.Text))
             {
@@ -54,7 +55,7 @@ namespace FrbaBus.Login
                     Usuario.Text = "";
                     Password.Text = "";
                     
-                    user.IncrementarIntentos(user.Id);
+                    user.IncrementarIntentos();
                     return;
                 }
 

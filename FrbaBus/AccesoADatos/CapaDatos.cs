@@ -8,11 +8,11 @@ namespace AccesoADatos
     {
         static readonly System.Collections.Hashtable ColComandos = new System.Collections.Hashtable();
   
-        public override string CadenaConexion
+        public override sealed string CadenaConexion
         {
             get
             {
-                if (_CadenaConexion.Length == 0)
+                if (CadenaConexion.Length == 0)
                 {
                     var sCadena = new System.Text.StringBuilder("");
                     sCadena.Append("data source=<SERVIDOR>;");
@@ -24,15 +24,17 @@ namespace AccesoADatos
                     sCadena.Replace("<USER>", Configuracion.Instance().getUsuario());
                     sCadena.Replace("<PASSWORD>", Configuracion.Instance().getClave());
 
+                    CadenaConexion = sCadena.ToString();
+
                     return sCadena.ToString();
                 }
                 
-                return _CadenaConexion = CadenaConexion;
+                return CadenaConexion;
  
             }
             set
             { 
-                _CadenaConexion = value; 
+                CadenaConexion = value; 
             } 
         }
  
@@ -83,7 +85,7 @@ namespace AccesoADatos
  
         protected override System.Data.IDbConnection CrearConexion(string cadenaConexion)
         { 
-            return new SqlConnection(cadenaConexion); 
+         return new SqlConnection(cadenaConexion); 
         }
  
         protected override System.Data.IDataAdapter CrearDataAdapter(string procedimientoAlmacenado, params Object[] args)
