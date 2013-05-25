@@ -75,6 +75,8 @@
             // 
             // denegados
             // 
+            this.denegados.AllowUserToAddRows = false;
+            this.denegados.AllowUserToDeleteRows = false;
             this.denegados.AllowUserToResizeColumns = false;
             this.denegados.AllowUserToResizeRows = false;
             this.denegados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
@@ -92,6 +94,8 @@
             // 
             // otorgados
             // 
+            this.otorgados.AllowUserToAddRows = false;
+            this.otorgados.AllowUserToDeleteRows = false;
             this.otorgados.AllowUserToResizeColumns = false;
             this.otorgados.AllowUserToResizeRows = false;
             this.otorgados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;

@@ -38,12 +38,24 @@ namespace FrbaBus.Abm_Permisos
             Nombre.Text = _Rol.Nombre;
             Habilitado.Checked = _Rol.Habilitado;
 
-            denegados.DataSource = Funcionalidad.ListarDenegadasPorRol(_Rol.Id);
+            var temp = Funcionalidad.ListarDenegadasPorRol(_Rol.Id);
+
+            denegados.Columns.Add("Id", "Id");
+            denegados.Columns.Add("Funcionalidad", "Funcionalidad");
+
+            foreach (DataRow fila in temp.Rows)
+                denegados.Rows.Add(fila["Id"], fila["Funcionalidad"]);
 
             denegados.Columns["Id"].Visible = false;
             denegados.Columns["Funcionalidad"].Width = denegados.Width;
 
-            otorgados.DataSource = Funcionalidad.ListarPermitidasPorRol(_Rol.Id);
+            temp = Funcionalidad.ListarPermitidasPorRol(_Rol.Id);
+            
+            otorgados.Columns.Add("Id", "Id");
+            otorgados.Columns.Add("Funcionalidad", "Funcionalidad");
+
+            foreach (DataRow fila in temp.Rows)
+                otorgados.Rows.Add(fila["Id"], fila["Funcionalidad"]);
 
             otorgados.Columns["Id"].Visible = false;
             otorgados.Columns["Funcionalidad"].Width = otorgados.Width;
@@ -51,49 +63,38 @@ namespace FrbaBus.Abm_Permisos
 
         private void Agregar_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < denegados.SelectedRows.Count - 1; i++)
-            {
-                otorgados.Rows.Add(denegados.SelectedRows[i]);
-                denegados.Rows.Remove(denegados.SelectedRows[i]);
-            }
-
-            otorgados.Sort(otorgados.Columns["Nombre"], ListSortDirection.Ascending);
+            MoverFilas(denegados, otorgados);
         }
 
         private void Quitar_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i <= otorgados.SelectedRows.Count - 1; i++)
-            {
-                denegados.Rows.Add(otorgados.SelectedRows[i]);
-                otorgados.Rows.Remove(otorgados.SelectedRows[i]);
-            }
-
-            denegados.Sort(denegados.Columns["Funcionalidad"], ListSortDirection.Ascending);
+            MoverFilas(otorgados, denegados);
         }
 
         private void QuitarTodo_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < otorgados.Rows.Count - 1; i++)
-            {
-                denegados.Rows.Add(otorgados.Rows[i]);
-                otorgados.Rows.Remove(otorgados.Rows[i]);
-            }
+            otorgados.SelectAll();
 
-            denegados.Sort(denegados.Columns["Nombre"], ListSortDirection.Ascending);
+            MoverFilas(otorgados, denegados);
         }
 
         private void AgregarTodo_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < denegados.Rows.Count - 1; i++)
-            {
-                otorgados.Rows.Add(denegados.Rows[i]);
-                denegados.Rows.Remove(denegados.Rows[i]);
-            }
+            denegados.SelectAll();
 
-            otorgados.Sort(otorgados.Columns["Nombre"], ListSortDirection.Ascending);
+            MoverFilas(denegados, otorgados);
         }
 
+        private void MoverFilas(DataGridView origen, DataGridView destino)
+        {
+            foreach (DataGridViewRow fila in origen.SelectedRows)
+            {
+                destino.Rows.Add(fila.Cells["Id"].Value, fila.Cells["Funcionalidad"].Value);
+                origen.Rows.Remove(fila);
+            }
 
+            destino.Sort(destino.Columns["Funcionalidad"], ListSortDirection.Ascending);
+        }
 
     }
 }
