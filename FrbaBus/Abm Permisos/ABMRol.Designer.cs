@@ -32,7 +32,7 @@
             this.Guardar = new System.Windows.Forms.Button();
             this.Cancelar = new System.Windows.Forms.Button();
             this.denegados = new System.Windows.Forms.DataGridView();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.otorgados = new System.Windows.Forms.DataGridView();
             this.Quitar = new System.Windows.Forms.Button();
             this.Agregar = new System.Windows.Forms.Button();
             this.QuitarTodo = new System.Windows.Forms.Button();
@@ -42,7 +42,7 @@
             this.lblDenegados = new System.Windows.Forms.Label();
             this.lblOtorgados = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.denegados)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.otorgados)).BeginInit();
             this.SuspendLayout();
             // 
             // lblNombre
@@ -85,18 +85,28 @@
             this.denegados.Name = "denegados";
             this.denegados.RowHeadersVisible = false;
             this.denegados.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.denegados.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.denegados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.denegados.ShowEditingIcon = false;
             this.denegados.Size = new System.Drawing.Size(128, 192);
             this.denegados.TabIndex = 3;
             // 
-            // dataGridView2
+            // otorgados
             // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(181, 60);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(125, 192);
-            this.dataGridView2.TabIndex = 4;
+            this.otorgados.AllowUserToAddRows = false;
+            this.otorgados.AllowUserToDeleteRows = false;
+            this.otorgados.AllowUserToResizeColumns = false;
+            this.otorgados.AllowUserToResizeRows = false;
+            this.otorgados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.otorgados.ColumnHeadersVisible = false;
+            this.otorgados.Location = new System.Drawing.Point(181, 60);
+            this.otorgados.Name = "otorgados";
+            this.otorgados.RowHeadersVisible = false;
+            this.otorgados.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.otorgados.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.otorgados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.otorgados.Size = new System.Drawing.Size(125, 192);
+            this.otorgados.TabIndex = 4;
             // 
             // Quitar
             // 
@@ -106,6 +116,7 @@
             this.Quitar.TabIndex = 5;
             this.Quitar.Text = "<";
             this.Quitar.UseVisualStyleBackColor = true;
+            this.Quitar.Click += new System.EventHandler(this.Quitar_Click);
             // 
             // Agregar
             // 
@@ -115,6 +126,7 @@
             this.Agregar.TabIndex = 6;
             this.Agregar.Text = ">";
             this.Agregar.UseVisualStyleBackColor = true;
+            this.Agregar.Click += new System.EventHandler(this.Agregar_Click);
             // 
             // QuitarTodo
             // 
@@ -124,6 +136,7 @@
             this.QuitarTodo.TabIndex = 7;
             this.QuitarTodo.Text = "<<";
             this.QuitarTodo.UseVisualStyleBackColor = true;
+            this.QuitarTodo.Click += new System.EventHandler(this.QuitarTodo_Click);
             // 
             // AgregarTodo
             // 
@@ -133,6 +146,7 @@
             this.AgregarTodo.TabIndex = 8;
             this.AgregarTodo.Text = ">>";
             this.AgregarTodo.UseVisualStyleBackColor = true;
+            this.AgregarTodo.Click += new System.EventHandler(this.AgregarTodo_Click);
             // 
             // Nombre
             // 
@@ -184,7 +198,7 @@
             this.Controls.Add(this.QuitarTodo);
             this.Controls.Add(this.Agregar);
             this.Controls.Add(this.Quitar);
-            this.Controls.Add(this.dataGridView2);
+            this.Controls.Add(this.otorgados);
             this.Controls.Add(this.denegados);
             this.Controls.Add(this.Cancelar);
             this.Controls.Add(this.Guardar);
@@ -193,7 +207,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ABM de Rol";
             ((System.ComponentModel.ISupportInitialize)(this.denegados)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.otorgados)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -205,7 +219,7 @@
         private System.Windows.Forms.Button Guardar;
         private System.Windows.Forms.Button Cancelar;
         private System.Windows.Forms.DataGridView denegados;
-        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.DataGridView otorgados;
         private System.Windows.Forms.Button Quitar;
         private System.Windows.Forms.Button Agregar;
         private System.Windows.Forms.Button QuitarTodo;
