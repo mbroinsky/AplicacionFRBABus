@@ -75,12 +75,11 @@
             // 
             // denegados
             // 
-            this.denegados.AllowUserToAddRows = false;
-            this.denegados.AllowUserToDeleteRows = false;
             this.denegados.AllowUserToResizeColumns = false;
             this.denegados.AllowUserToResizeRows = false;
             this.denegados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.denegados.ColumnHeadersVisible = false;
+            this.denegados.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.denegados.Location = new System.Drawing.Point(6, 60);
             this.denegados.Name = "denegados";
             this.denegados.RowHeadersVisible = false;
@@ -93,12 +92,11 @@
             // 
             // otorgados
             // 
-            this.otorgados.AllowUserToAddRows = false;
-            this.otorgados.AllowUserToDeleteRows = false;
             this.otorgados.AllowUserToResizeColumns = false;
             this.otorgados.AllowUserToResizeRows = false;
             this.otorgados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.otorgados.ColumnHeadersVisible = false;
+            this.otorgados.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.otorgados.Location = new System.Drawing.Point(181, 60);
             this.otorgados.Name = "otorgados";
             this.otorgados.RowHeadersVisible = false;

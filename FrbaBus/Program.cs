@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using AccesoADatos;
 
 namespace FrbaBus
 {
@@ -14,9 +15,11 @@ namespace FrbaBus
         static void Main()
         {
             Globales.Instance();
+            Conector.IniciarSesion();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new AccesoSistema());
         }
     }
 }
+
