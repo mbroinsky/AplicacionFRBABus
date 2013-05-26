@@ -172,14 +172,24 @@ namespace AccesoADatos
         //    return com.ExecuteScalar();
         //} // end TraerValorEscalar
 
-        //// Obtiene un Valor de una funcion Escalar a partir de un Query SQL
-        //public object TraerValorEscalarSql(string comandoSql)
-        //{
-        //    var com = ComandoSql(comandoSql);
-        //    return com.ExecuteScalar();
-        //} // end TraerValorEscalarSql
+        public object TraerEscalarDeComando(string sql)
+        {
+            var com = ComandoSql(sql);
+            return com.ExecuteScalar();
+        }
 
-
+        public int TraerUltimoId()
+        {
+            try
+            {
+                return Convert.ToInt32(TraerEscalarDeComando("SELECT @@identity AS id;"));
+            }
+            catch
+            {
+                throw new Exception("No se puede obtener la última fila insertada");
+            }
+        }
+        
         public bool AbrirConexion()
         {
 

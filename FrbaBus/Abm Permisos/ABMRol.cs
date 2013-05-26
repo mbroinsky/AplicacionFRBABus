@@ -22,9 +22,22 @@ namespace FrbaBus.Abm_Permisos
 
             _Modificacion = false;
 
-            denegados.DataSource = Funcionalidad.Listar();
+            var temp = Funcionalidad.Listar();
 
-            denegados.Columns["Id"].Visible = false;
+            foreach (DataColumn columna in temp.Columns)
+            {
+                denegados.Columns.Add(columna.ColumnName, columna.ColumnName);
+                otorgados.Columns.Add(columna.ColumnName, columna.ColumnName);
+            }
+
+            foreach (DataRow fila in temp.Rows)
+                denegados.Rows.Add(fila[0], fila[1]);
+
+            denegados.Columns[0].Visible = false;
+            denegados.Columns[1].Width = denegados.Width;
+
+            otorgados.Columns[0].Visible = false;
+            otorgados.Columns[1].Width = otorgados.Width;
         }
 
         public ABMRol(Rol rolMod)
@@ -40,25 +53,25 @@ namespace FrbaBus.Abm_Permisos
 
             var temp = Funcionalidad.ListarDenegadasPorRol(_Rol.Id);
 
-            denegados.Columns.Add("Id", "Id");
-            denegados.Columns.Add("Funcionalidad", "Funcionalidad");
-
+            foreach(DataColumn columna in temp.Columns)
+                denegados.Columns.Add(columna.ColumnName, columna.ColumnName);
+            
             foreach (DataRow fila in temp.Rows)
-                denegados.Rows.Add(fila["Id"], fila["Funcionalidad"]);
+                denegados.Rows.Add(fila[0], fila[1]);
 
-            denegados.Columns["Id"].Visible = false;
-            denegados.Columns["Funcionalidad"].Width = denegados.Width;
+            denegados.Columns[0].Visible = false;
+            denegados.Columns[1].Width = denegados.Width;
 
             temp = Funcionalidad.ListarPermitidasPorRol(_Rol.Id);
-            
-            otorgados.Columns.Add("Id", "Id");
-            otorgados.Columns.Add("Funcionalidad", "Funcionalidad");
+
+            foreach (DataColumn columna in temp.Columns)
+                otorgados.Columns.Add(columna.ColumnName, columna.ColumnName);
 
             foreach (DataRow fila in temp.Rows)
-                otorgados.Rows.Add(fila["Id"], fila["Funcionalidad"]);
+                otorgados.Rows.Add(fila[0], fila[1]);
 
-            otorgados.Columns["Id"].Visible = false;
-            otorgados.Columns["Funcionalidad"].Width = otorgados.Width;
+            otorgados.Columns[0].Visible = false;
+            otorgados.Columns[1].Width = otorgados.Width;
         }
 
         private void Agregar_Click(object sender, EventArgs e)
@@ -89,11 +102,42 @@ namespace FrbaBus.Abm_Permisos
         {
             foreach (DataGridViewRow fila in origen.SelectedRows)
             {
-                destino.Rows.Add(fila.Cells["Id"].Value, fila.Cells["Funcionalidad"].Value);
+                destino.Rows.Add(fila.Cells[0].Value, fila.Cells[1].Value);
                 origen.Rows.Remove(fila);
             }
 
-            destino.Sort(destino.Columns["Funcionalidad"], ListSortDirection.Ascending);
+            destino.Sort(destino.Columns[1], ListSortDirection.Ascending);
+        }
+
+        private void Guardar_Click(object sender, EventArgs e)
+        {
+            if (Nombre.Text == "")
+            {
+                MessageBox.Show("El nombre no puede quedar vacío");
+                return;
+            }
+
+            if (_Modificacion)
+            {
+                if (!_Rol.Modificar(Nombre.Text, Habilitado.Checked, otorgados.Rows))
+                {
+                    MessageBox.Show("Ocurrió un error de actualización");
+                    return;
+                }
+            }
+            else
+            {
+                _Rol = new Rol();
+
+                if (!_Rol.Insertar(Nombre.Text, Habilitado.Checked, otorgados.Rows))
+                {
+                    MessageBox.Show("Ocurrió un error de actualización");
+                    return;
+                }
+ 
+            }
+
+            this.Close();
         }
 
     }

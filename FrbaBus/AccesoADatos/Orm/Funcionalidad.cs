@@ -13,6 +13,12 @@ namespace FrbaBus.AccesoADatos.Orm
         public String Nombre { get; set; }
         public String FormularioAsoc { get; set; }
 
+        public Funcionalidad(int id, string nombre)
+        {
+            Id = id;
+            Nombre = nombre;
+        }
+
         public static DataTable Listar()
         {
             try
@@ -58,6 +64,32 @@ namespace FrbaBus.AccesoADatos.Orm
             catch
             {
                 return null;
+            }
+        }
+
+        public static void BorrarFuncXRol(int idRol)
+        {
+            try
+            {
+                Conector.Datos.EjecutarComando("delete from NOT_NULL.funcionalidadxrol " +
+                    "where FXR_idRol = '" + Convert.ToString(idRol) + "';");
+            }
+            catch
+            {
+                throw new Exception("No se pueden borrar la tabla de permisos");
+            }
+        }
+
+        public void InsertarFuncXRol(int idRol)
+        {
+            try
+            {
+                Conector.Datos.EjecutarComando("insert into NOT_NULL.funcionalidadxrol values ('" +
+                    Convert.ToString(idRol) + "', '" + Convert.ToString(Id) + "');");
+            }
+            catch
+            {
+                throw new Exception("No se puede insertar en la tabla de permisos");
             }
         }
     }

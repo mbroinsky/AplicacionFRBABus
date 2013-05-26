@@ -19,6 +19,7 @@ namespace FrbaBus.Abm_Permisos
 
         private void Buscar_Click(object sender, EventArgs e)
         {
+            Roles.Columns.Clear(); 
             Roles.DataSource = Rol.Listar(Nombre.Text);
             
             var btn = new DataGridViewButtonColumn();
@@ -49,6 +50,9 @@ namespace FrbaBus.Abm_Permisos
                 var mod = new ABMRol(new Rol(fila));
 
                 mod.ShowDialog();
+
+                Roles.DataSource = null;
+                Roles.Columns.Clear();
             }
         }
 
@@ -57,6 +61,9 @@ namespace FrbaBus.Abm_Permisos
             var alta = new ABMRol();
 
             alta.ShowDialog();
+
+            Roles.DataSource = null;
+            Roles.Columns.Clear();
         }
     }
 }

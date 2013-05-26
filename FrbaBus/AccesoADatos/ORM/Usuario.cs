@@ -35,7 +35,8 @@ namespace AccesoADatos.Orm
         public bool TraerUsuario(String nick)
         {
             DataTable dt = Conector.Datos.EjecutarComandoADataTable("select * from NOT_NULL.usuario, " +
-                       " NOT_NULL.rol where USR_nick = '" + nick + "' AND USR_idRol = ROL_idRol;");
+                       " NOT_NULL.rol where USR_nick = '" + nick + "' AND USR_idRol = ROL_idRol AND " +
+                       " ROL_habilitado = '1';");
 
             if (dt.Rows.Count > 0)
             {
