@@ -136,6 +136,7 @@ namespace FrbaBus.Abm_Permisos
                 }
  
             }
+            
 
             this.Close();
         }
@@ -143,3 +144,4 @@ namespace FrbaBus.Abm_Permisos
     }
 }
 
+//probando..
