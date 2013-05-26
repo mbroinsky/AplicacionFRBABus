@@ -49,6 +49,12 @@ namespace FrbaBus.Abm_Permisos
 
                 var mod = new ABMRol(new Rol(fila));
 
+                if (!Globales.oInstance.usr.TienePermiso(mod.Name))
+                {
+                    MessageBox.Show("Ud. no tiene permiso para acceder a la pantalla solicitada");
+                    return;
+                }
+
                 mod.ShowDialog();
 
                 Roles.DataSource = null;
@@ -59,6 +65,12 @@ namespace FrbaBus.Abm_Permisos
         private void Agregar_Click(object sender, EventArgs e)
         {
             var alta = new ABMRol();
+
+            if (!Globales.oInstance.usr.TienePermiso(alta.Name))
+            {
+                MessageBox.Show("Ud. no tiene permiso para acceder a la pantalla solicitada");
+                return;
+            }
 
             alta.ShowDialog();
 

@@ -21,6 +21,14 @@ namespace AccesoADatos.Orm
             Permisos = new ArrayList();
         }
 
+        public Rol(int id, bool habilitado, string nombre)
+        {
+            Id = id;
+            Habilitado = habilitado;
+            Nombre = nombre;
+            Permisos = Funcionalidad.FuncionalidadesPermitidasPorRol(id);
+        }
+
         public Rol(DataGridViewRow fila)
         {
             Id = Convert.ToInt32(fila.Cells["Id"].Value);
@@ -28,6 +36,17 @@ namespace AccesoADatos.Orm
             Nombre = fila.Cells["Nombre"].Value.ToString();
 
             Permisos = new ArrayList();
+        }
+
+        public bool TienePermiso(string formAsoc)
+        {
+            foreach (Funcionalidad fun in Permisos)
+            {
+                if (fun.FormularioAsoc == formAsoc)
+                    return true;
+            }
+
+            return false;
         }
    
         public bool TraerRolPorClave(int id)
@@ -84,7 +103,7 @@ namespace AccesoADatos.Orm
 
             foreach (DataGridViewRow fila in permisos)
             {
-                var permiso = new Funcionalidad(Convert.ToInt32(fila.Cells["Id"].Value), Convert.ToString(fila.Cells["funcionalidad"].Value));
+                var permiso = new Funcionalidad(Convert.ToInt32(fila.Cells["Id"].Value), Convert.ToString(fila.Cells["funcionalidad"].Value), "");
 
                 this.Permisos.Add(permiso);
             }
@@ -136,7 +155,7 @@ namespace AccesoADatos.Orm
 
             foreach (DataGridViewRow fila in permisos)
             {
-                var permiso = new Funcionalidad(Convert.ToInt32(fila.Cells["Id"].Value), Convert.ToString(fila.Cells["funcionalidad"].Value));
+                var permiso = new Funcionalidad(Convert.ToInt32(fila.Cells["Id"].Value), Convert.ToString(fila.Cells["funcionalidad"].Value), "");
 
                 this.Permisos.Add(permiso);
             }

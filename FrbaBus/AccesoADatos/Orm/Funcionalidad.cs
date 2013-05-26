@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using AccesoADatos;
+using System.Collections;
 
 namespace FrbaBus.AccesoADatos.Orm
 {
@@ -13,10 +14,11 @@ namespace FrbaBus.AccesoADatos.Orm
         public String Nombre { get; set; }
         public String FormularioAsoc { get; set; }
 
-        public Funcionalidad(int id, string nombre)
+        public Funcionalidad(int id, string nombre, string formAsoc)
         {
             Id = id;
             Nombre = nombre;
+            FormularioAsoc = formAsoc;
         }
 
         public static DataTable Listar()
@@ -43,6 +45,31 @@ namespace FrbaBus.AccesoADatos.Orm
                     " where FXR_idRol = '" + Convert.ToString(idRol) + "') order by FNC_nombre;");
 
                 return dt;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static ArrayList FuncionalidadesPermitidasPorRol(int idRol)
+        {
+            var funcionalidades = new ArrayList();
+
+            try
+            {
+                DataTable dt = Conector.Datos.EjecutarComandoADataTable("select FNC_idFuncionalidad, " +
+                    " FNC_nombre, FNC_formAsoc from NOT_NULL.Funcionalidad " +
+                    " where FNC_idFuncionalidad in (select FXR_idFuncionalidad from NOT_NULL.FuncionalidadXRol " +
+                    " where FXR_idRol = '" + Convert.ToString(idRol) + "') order by FNC_nombre;");
+
+                foreach (DataRow fila in dt.Rows)
+                {
+                    funcionalidades.Add(new Funcionalidad(Convert.ToInt32(fila["FNC_idFuncionalidad"]),
+                            fila["FNC_nombre"].ToString(), fila["FNC_formAsoc"].ToString()));
+                }
+
+                return funcionalidades;
             }
             catch
             {

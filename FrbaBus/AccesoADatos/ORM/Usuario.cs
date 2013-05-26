@@ -12,27 +12,19 @@ namespace AccesoADatos.Orm
         public Int16 Id { get; set; }
         public String NombreUsr { get; set; }
         public String Password { get; set; }
-        public String Rol { get; set; }
+        public Rol UsuarioRol { get; set; }
         public Int16 CantIntentos { get; set; }
-        public ArrayList Permisos { get; set; }
-        private Int16 IdRol;
         
         public Usuario()
         {
-            Permisos = new ArrayList();
         }
 
-        public void AgregarPermiso(String formulario)
+        public bool TienePermiso(string formulario)
         {
-            Permisos.Add(formulario);
+            return UsuarioRol.TienePermiso(formulario);
         }
 
-        public bool TienePermiso(String formulario)
-        {
-            return Permisos.Contains(formulario);
-        }
-
-        public bool TraerUsuario(String nick)
+        public bool TraerUsuario(string nick)
         {
             DataTable dt = Conector.Datos.EjecutarComandoADataTable("select * from NOT_NULL.usuario, " +
                        " NOT_NULL.rol where USR_nick = '" + nick + "' AND USR_idRol = ROL_idRol AND " +
@@ -43,17 +35,11 @@ namespace AccesoADatos.Orm
                 Id = Convert.ToInt16(dt.Rows[0]["USR_idUsuario"]);
                 NombreUsr = dt.Rows[0]["USR_Nombre"] + " " + dt.Rows[0]["USR_Apellido"];
                 Password = dt.Rows[0]["USR_Password"].ToString();
-                Rol = dt.Rows[0]["ROL_nombre"].ToString();
-                IdRol = Convert.ToInt16(dt.Rows[0]["ROL_idRol"]);
                 CantIntentos = Convert.ToInt16(dt.Rows[0]["USR_intentos"]);
-                
-                dt = Conector.Datos.EjecutarComandoADataTable("select * from NOT_NULL.funcionalidadXRol, " + 
-                       " NOT_NULL.funcionalidad where FXR_idRol = '" + IdRol.ToString() + 
-                       "' AND FXR_idFuncionalidad = FNC_idFuncionalidad;");
-                       
-                for(int i = 0; i < dt.Rows.Count; i++)
-                    Permisos.Add(dt.Rows[i]["FNC_formAsoc"]);
-                            
+
+                UsuarioRol = new Rol(Convert.ToInt16(dt.Rows[0]["ROL_idRol"]), 
+                    Convert.ToBoolean(dt.Rows[0]["ROL_habilitado"]), dt.Rows[0]["ROL_nombre"].ToString());
+                          
                 return true;
             }
             else
