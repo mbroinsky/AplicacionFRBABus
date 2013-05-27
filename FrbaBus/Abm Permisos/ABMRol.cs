@@ -141,6 +141,11 @@ namespace FrbaBus.Abm_Permisos
             this.Close();
         }
 
+        private void denegados_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
     }
 }
 

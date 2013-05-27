@@ -29,20 +29,19 @@
         private void InitializeComponent()
         {
             this.label2 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.idServicio = new System.Windows.Forms.ComboBox();
             this.Matrícula = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.matricula = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.idModelo = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.capacidad = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.idMarca = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.button2 = new System.Windows.Forms.Button();
+            this.Buscar = new System.Windows.Forms.Button();
+            this.Micros = new System.Windows.Forms.DataGridView();
             this.matricula_grid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.servicio_grid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.capacidad_grid = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -53,8 +52,9 @@
             this.fuera_de_servicio_grid = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.fecha_reinicio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fecha_baja = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button2 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Micros)).BeginInit();
             this.SuspendLayout();
             // 
             // label2
@@ -66,21 +66,22 @@
             this.label2.TabIndex = 19;
             this.label2.Text = "Capacidad (KG):";
             // 
-            // comboBox1
+            // idServicio
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(265, 27);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 17;
+            this.idServicio.FormattingEnabled = true;
+            this.idServicio.Location = new System.Drawing.Point(265, 27);
+            this.idServicio.Name = "idServicio";
+            this.idServicio.Size = new System.Drawing.Size(121, 21);
+            this.idServicio.TabIndex = 17;
             // 
             // Matrícula
             // 
             this.Matrícula.Location = new System.Drawing.Point(78, 27);
-            this.Matrícula.MaxLength = 6;
+            this.Matrícula.MaxLength = 7;
             this.Matrícula.Name = "Matrícula";
             this.Matrícula.Size = new System.Drawing.Size(68, 20);
             this.Matrícula.TabIndex = 15;
+            this.Matrícula.TextChanged += new System.EventHandler(this.Matrícula_TextChanged);
             // 
             // label5
             // 
@@ -109,13 +110,13 @@
             this.button3.Text = "Agregar butacas";
             this.button3.UseVisualStyleBackColor = true;
             // 
-            // comboBox2
+            // idModelo
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(465, 27);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 21);
-            this.comboBox2.TabIndex = 24;
+            this.idModelo.FormattingEnabled = true;
+            this.idModelo.Location = new System.Drawing.Point(465, 27);
+            this.idModelo.Name = "idModelo";
+            this.idModelo.Size = new System.Drawing.Size(121, 21);
+            this.idModelo.TabIndex = 24;
             // 
             // label1
             // 
@@ -126,12 +127,12 @@
             this.label1.TabIndex = 18;
             this.label1.Text = "Tipo de servicio:";
             // 
-            // textBox1
+            // capacidad
             // 
-            this.textBox1.Location = new System.Drawing.Point(900, 27);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(37, 20);
-            this.textBox1.TabIndex = 26;
+            this.capacidad.Location = new System.Drawing.Point(900, 27);
+            this.capacidad.Name = "capacidad";
+            this.capacidad.Size = new System.Drawing.Size(37, 20);
+            this.capacidad.TabIndex = 26;
             // 
             // label4
             // 
@@ -142,27 +143,27 @@
             this.label4.TabIndex = 21;
             this.label4.Text = "Marca:";
             // 
-            // comboBox3
+            // idMarca
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(660, 27);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(121, 21);
-            this.comboBox3.TabIndex = 25;
+            this.idMarca.FormattingEnabled = true;
+            this.idMarca.Location = new System.Drawing.Point(660, 27);
+            this.idMarca.Name = "idMarca";
+            this.idMarca.Size = new System.Drawing.Size(121, 21);
+            this.idMarca.TabIndex = 25;
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.comboBox3);
+            this.groupBox1.Controls.Add(this.Buscar);
+            this.groupBox1.Controls.Add(this.idMarca);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.capacidad);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.comboBox2);
+            this.groupBox1.Controls.Add(this.idModelo);
             this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.matricula);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.Matrícula);
-            this.groupBox1.Controls.Add(this.comboBox1);
+            this.groupBox1.Controls.Add(this.idServicio);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
@@ -172,20 +173,20 @@
             this.groupBox1.Text = "Micros";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // button1
+            // Buscar
             // 
-            this.button1.Location = new System.Drawing.Point(943, 27);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 27;
-            this.button1.Text = "Buscar";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.Buscar.Location = new System.Drawing.Point(962, 25);
+            this.Buscar.Name = "Buscar";
+            this.Buscar.Size = new System.Drawing.Size(75, 23);
+            this.Buscar.TabIndex = 27;
+            this.Buscar.Text = "Buscar";
+            this.Buscar.UseVisualStyleBackColor = true;
+            this.Buscar.Click += new System.EventHandler(this.button1_Click);
             // 
-            // dataGridView1
+            // Micros
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Micros.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Micros.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.matricula_grid,
             this.servicio_grid,
             this.capacidad_grid,
@@ -196,21 +197,11 @@
             this.fuera_de_servicio_grid,
             this.fecha_reinicio,
             this.fecha_baja});
-            this.dataGridView1.Location = new System.Drawing.Point(12, 82);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(1043, 267);
-            this.dataGridView1.TabIndex = 28;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(980, 355);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 28;
-            this.button2.Text = "Agregar";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.Micros.Location = new System.Drawing.Point(12, 82);
+            this.Micros.Name = "Micros";
+            this.Micros.Size = new System.Drawing.Size(1043, 267);
+            this.Micros.TabIndex = 28;
+            this.Micros.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // matricula_grid
             // 
@@ -272,20 +263,30 @@
             this.fecha_baja.Name = "fecha_baja";
             this.fecha_baja.ReadOnly = true;
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(980, 355);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 28;
+            this.button2.Text = "Agregar";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // ABMMicro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 390);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.Micros);
             this.Controls.Add(this.groupBox1);
             this.Name = "ABMMicro";
             this.Text = "Gestión de Micros";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Micros)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -293,19 +294,18 @@
         #endregion
 
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox idServicio;
         private System.Windows.Forms.TextBox Matrícula;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label matricula;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox idModelo;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox capacidad;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox idMarca;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView Micros;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.DataGridViewTextBoxColumn matricula_grid;
         private System.Windows.Forms.DataGridViewTextBoxColumn servicio_grid;
@@ -317,5 +317,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn fuera_de_servicio_grid;
         private System.Windows.Forms.DataGridViewTextBoxColumn fecha_reinicio;
         private System.Windows.Forms.DataGridViewTextBoxColumn fecha_baja;
+        private System.Windows.Forms.Button Buscar;
     }
 }

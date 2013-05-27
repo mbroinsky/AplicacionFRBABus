@@ -92,6 +92,7 @@
             this.denegados.ShowEditingIcon = false;
             this.denegados.Size = new System.Drawing.Size(128, 192);
             this.denegados.TabIndex = 3;
+            this.denegados.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.denegados_CellContentClick);
             // 
             // otorgados
             // 

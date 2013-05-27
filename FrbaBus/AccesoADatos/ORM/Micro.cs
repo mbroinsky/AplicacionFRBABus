@@ -11,10 +11,18 @@ namespace AccesoADatos.Orm
     {
         public Int16 Id { get; set; }
         public String Patente { get; set; }
-        //public String Password { get; set; }
-        //public String Rol { get; set; }
+        public Int16 IdTipoDeServicio { get; set; }
+        public Int16 KilosEncomiendas { get; set; }
+        public bool Habilitado { get; set; }
+        public Int16 IdMarca { get; set; }
+        public Int16 IdModelo { get; set; }
+        public DateTime FechaAlta { get; set; }
+        public bool FueraDeServicio { get; set; }
+        public DateTime FechaFueraDeServicio { get; set; }
+        public DateTime FechaReinicioServicio { get; set; }
+        public DateTime FechaDeBaja { get; set; }
+        
         public ArrayList Butacas { get; set; }
-        //private Int16 IdRol;
 
 
         public Micro()
@@ -55,6 +63,45 @@ namespace AccesoADatos.Orm
             //}
             return false;
         }
+
+        public static DataTable BuscarMicro(String patenteABuscar, String idtipoDeServicio, String idModelo, String idMarca, String Capacidad)
+        {
+
+            String query = "select * from NOT_NULL.Micro";
+
+            if (patenteABuscar.Length != 0) { query += "where MIC_patente = " + patenteABuscar + " and "; };
+            if (idtipoDeServicio.Length != 0) { query += "MIC_idTipoServicio = " + idtipoDeServicio + " and"; };
+            if (idModelo.Length != 0) { query += "MIC_modelo = " + idModelo + " and "; };
+            if (idMarca.Length != 0) { query += "MIC_idMarca = " + idMarca + " and "; };
+            if (Capacidad.Length != 0) { query += "MIC_kilosEncomiendas = " + Capacidad ; };
+
+            DataTable dt = Conector.Datos.EjecutarComandoADataTable(query);
+            
+            if (dt.Rows.Count > 0)
+            {
+                /*
+                Id = Convert.ToInt16(dt.Rows[0]["MIC_numMicro"]);
+                Patente = Convert.ToString(dt.Rows[0]["MIC_patente"]);
+                IdTipoDeServicio = Convert.ToInt16(dt.Rows[0]["MIC_idTipoServicio"]);
+                KilosEncomiendas = Convert.ToInt16(dt.Rows[0]["MIC_kilosEncomiendas"]);
+                Habilitado = Convert.ToBoolean(dt.Rows[0]["MIC_habilitado"]);
+                IdMarca = Convert.ToInt16(dt.Rows[0]["MIC_idMarca"]);
+                iIdModelo = Convert.ToInt16(dt.Rows[0]["MIC_modelo"]);
+                FechaAlta = Convert.ToDateTime(dt.Rows[0]["MIC_fechaAlta"]);
+                FueraDeServicio = Convert.ToBoolean(dt.Rows[0]["MIC_fueraDeServicio"]);
+                FechaFueraDeServicio = Convert.ToDateTime(dt.Rows[0]["MIC_fecFueraServ"]);
+                FechaReinicioServicio = Convert.ToDateTime(dt.Rows[0]["MIC_fecReinicioServ"]);
+                FechaDeBaja = Convert.ToDateTime(dt.Rows[0]["MIC_fecBaja"]);
+                Butacas = null;
+            */
+                return dt;
+            }
+            else
+            {
+                return null;
+            }
+        }
+       
         
         public bool InsertarMicro()
         {
