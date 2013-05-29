@@ -147,11 +147,11 @@
     <Compile Include="Menu.Designer.cs">
       <DependentUpon>Menu.cs</DependentUpon>
     </Compile>
-    <Compile Include="GenerarViaje\Form1.cs">
+    <Compile Include="GenerarViaje\GenerarViaje.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GenerarViaje\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="GenerarViaje\GenerarViaje.Designer.cs">
+      <DependentUpon>GenerarViaje.cs</DependentUpon>
     </Compile>
     <Compile Include="Globales.cs" />
     <Compile Include="Login\Formulario.cs">
@@ -179,6 +179,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AccesoSistema.resx">
       <DependentUpon>AccesoSistema.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GenerarViaje\GenerarViaje.resx">
+      <DependentUpon>GenerarViaje.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Menu.resx">
       <DependentUpon>Menu.cs</DependentUpon>
