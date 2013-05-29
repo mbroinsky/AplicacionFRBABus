@@ -55,9 +55,14 @@ namespace FrbaBus.Login
                     Usuario.Text = "";
                     Password.Text = "";
                     
-                    user.IncrementarIntentos(user.Id);
+                    user.CambiarCantIntentos(user.Id, usr.CantIntentos + 1);
                     return;
                 }
+
+                //Si el usuario tiene cantidad de intentos fallidos mayor que 0 y el último intento fue
+                //ok, se debe volver a 0
+                if (usr.CantIntentos > 0)
+                    user.CambiarCantIntentos(user.Id, 0);
 
                 LoginOk = true;
 
