@@ -51,8 +51,7 @@ namespace AccesoADatos.Orm
    
         public bool TraerRolPorClave(int id)
         {
-            DataTable dt = Conector.Datos.EjecutarComandoADataTable("select * from NOT_NULL.ROL " +
-                       " where ROL_idRol = '" + Convert.ToString(id) + "';");
+            DataTable dt = Conector.Datos.EjecutarProcedureADataTable("NOT_NULL.ListarRoles", id, DBNull.Value);
 
             if (dt.Rows.Count > 0)
             {
