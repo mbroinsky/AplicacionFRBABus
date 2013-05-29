@@ -48,12 +48,17 @@ namespace AccesoADatos.Orm
             }
         }
         
-        public bool IncrementarIntentos(int usrId)
+        /// <summary>
+        ///  Cambia la cantidad de intentos fallidos en la tabla Usuario.
+        /// </summary>
+        /// <param name="usrId">Id del usuario a modificar</param>
+        /// <param name="cant">Cantidad de intentos fallidos</param>
+        public bool CambiarCantIntentos(int usrId, int cant)
         {
             try
             {
                 string sql = "update NOT_NULL.usuario " +
-                       " set USR_intentos = USR_intentos + 1 where USR_idUsuario = '" +
+                       " set USR_intentos = '" + Convert.ToString(cant) + "' where USR_idUsuario = '" +
                        Convert.ToString(usrId) + "';";
 
                 Conector.Datos.EjecutarComando(sql);
