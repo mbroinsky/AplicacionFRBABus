@@ -756,7 +756,10 @@ BEGIN
                 (@idRol, 'maxi', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', 'Maximiliano', 'Broinsky', 0);
 
 	INSERT INTO Funcionalidad(FNC_nombre, FNC_formAsoc) VALUES
-				('ABM Rol', 'ABMRol'), ('Listado de Roles', 'SeleccionRol'), ('ABM Micro', 'ABMMicro');
+				('ABM Rol', 'ABMRol'),
+				('Listado de Roles', 'SeleccionRol'),
+				('ABM Micro', 'ABMMicro'),
+				('Generar Viaje', 'GenerarViaje');
 
         
 	INSERT INTO FuncionalidadXRol (FXR_idRol, FXR_idFuncionalidad)

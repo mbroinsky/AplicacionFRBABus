@@ -14,6 +14,9 @@ namespace FrbaBus.GenerarViaje
         public GenerarViaje()
         {
             InitializeComponent();
+            FechaSalida.Value = DateTime.Now;
+            FechaLlegada.Value = DateTime.Now;
         }
+
     }
 }
