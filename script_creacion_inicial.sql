@@ -251,6 +251,7 @@ CREATE TABLE NOT_NULL.Usuario
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Usuario ADD CONSTRAINT PK_Usuario PRIMARY KEY CLUSTERED (USR_idUsuario)
+ALTER TABLE NOT_NULL.Usuario ADD CONSTRAINT UQ_Nick UNIQUE (USR_nick)
 
 -- Create Table: FuncionalidadXRol
 --------------------------------------------------------------------------------
