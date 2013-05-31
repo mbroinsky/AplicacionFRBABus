@@ -101,6 +101,29 @@ namespace AccesoADatos.Orm
                 return null;
             }
         }
+
+        public static DataTable TraerDisponiblesCombo(int idRecorrido, DateTime fecSalida)
+        {
+            try
+            {
+                var sql = "select MIC_numMicro as id, MIC_patente " +
+                    " from NOT_NULL.Micro, NOT_NULL.Recorrido " +
+                    " where MIC_idTipoServicio = REC_idTipoServicio AND " +
+                    " REC_id = " + Convert.ToString(idRecorrido) + " AND " +
+                    " MIC_Habilitado = 1 AND " +
+                    " (MIC_fueraDeServicio = 0 OR MIC_fecReinicioServ < '" + Convert.ToString(fecSalida) + "') AND" +
+                    " MIC_numMicro NOT IN (SELECT VIA_numMicro from NOT_NULL.Viaje WHERE " +
+                    " datediff(hour, VIA_fecSalida, '" + Convert.ToString(fecSalida) + "') > 24)";
+
+                DataTable dt = Conector.Datos.EjecutarComandoADataTable(sql);
+
+                return dt;
+            }
+            catch
+            {
+                return null;
+            }
+        }
        
         
         public bool InsertarMicro()

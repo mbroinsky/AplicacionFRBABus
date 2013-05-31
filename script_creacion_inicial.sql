@@ -227,7 +227,7 @@ CREATE TABLE NOT_NULL.Viaje
 (
 	VIA_numViaje INT NOT NULL IDENTITY(1, 1)
 	,VIA_numMicro INT NOT NULL
-	,VIA_codRecorrido NUMERIC(18,0) NOT NULL
+	,VIA_codRecorrido INT NOT NULL
 	,VIA_fecSalida DATETIME NOT NULL 
 	,VIA_fecLlegada DATETIME  NULL 
 	,VIA_fecLlegadaEstimada DATETIME NOT NULL 
@@ -438,7 +438,8 @@ ALTER TABLE NOT_NULL.Canje ADD CONSTRAINT PK_Canje PRIMARY KEY (CNJ_idCanje)
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Recorrido
 (
-     REC_codigo NUMERIC(18,0) NOT NULL
+	REC_id INT NOT NULL IDENTITY(1, 1)
+    ,REC_codigo NUMERIC(18,0) NOT NULL
     ,REC_idTipoServicio INT NOT NULL 
 	,REC_idCiudadOrigen INT NOT NULL 
 	,REC_idCiudadDestino INT NOT NULL 
@@ -447,7 +448,7 @@ CREATE TABLE NOT_NULL.Recorrido
 	,REC_habilitado BIT NOT NULL 
 )
 ON [PRIMARY]
-ALTER TABLE NOT_NULL.Recorrido ADD CONSTRAINT PK_Recorrido PRIMARY KEY (REC_codigo)
+ALTER TABLE NOT_NULL.Recorrido ADD CONSTRAINT PK_Recorrido PRIMARY KEY (REC_id)
 
 -- Create Foreign Key: Recorrido.REC_idCiudadOrigen -> Ciudad.CIU_idCiudad
 ALTER TABLE NOT_NULL.[Recorrido] ADD CONSTRAINT
@@ -485,9 +486,9 @@ ON DELETE NO ACTION
 
 -- Create Foreign Key: Viaje.VIA_codRecorrido -> Recorrido.REC_codigo
 ALTER TABLE NOT_NULL.[Viaje] ADD CONSTRAINT
-[FK_Viaje_VIA_codRecorrido_Recorrido_REC_codigo]
+[FK_Viaje_VIA_codRecorrido_Recorrido_REC_id]
 FOREIGN KEY ([VIA_codRecorrido])
-REFERENCES NOT_NULL.[Recorrido] ([REC_codigo])
+REFERENCES NOT_NULL.[Recorrido] ([REC_id])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
@@ -811,9 +812,9 @@ CREATE PROCEDURE NOT_NULL.CargarViajes
 AS 
 BEGIN
     INSERT INTO Viaje (	VIA_numMicro, VIA_codRecorrido, VIA_fecSalida, VIA_fecLlegada,VIA_fecLlegadaEstimada)
-		SELECT DISTINCT	MIC_numMicro, Recorrido_Codigo, FechaSalida, FechaLLegada, Fecha_LLegada_Estimada
-		FROM gd_Esquema.Maestra, Micro
-		WHERE Micro_Patente = MIC_patente;
+		SELECT DISTINCT	MIC_numMicro, REC_id, FechaSalida, FechaLLegada, Fecha_LLegada_Estimada
+		FROM gd_Esquema.Maestra, Micro, Recorrido
+		WHERE Micro_Patente = MIC_patente AND Recorrido_Codigo = REC_Codigo;
 END
 GO
 
@@ -840,13 +841,15 @@ SELECT DISTINCT
 	Pasaje_Precio,
 	Pasaje_FechaCompra,
 	Cli_Dni,
-	Recorrido_codigo,
+	REC_id,
 	Micro_patente,
 	Butaca_Nro
 	
 FROM
-	gd_esquema.Maestra
-WHERE Pasaje_Codigo <> 0
+	gd_esquema.Maestra,
+	NOT_NULL.recorrido
+WHERE Pasaje_Codigo <> 0 AND
+	REC_Codigo = Recorrido_codigo
 
 OPEN VENTAPASAJESCUR
 
@@ -927,12 +930,13 @@ SELECT DISTINCT
 	Paquete_Precio,
 	Paquete_FechaCompra,
 	Cli_Dni,
-	Recorrido_codigo,
+	REC_id,
 	Paquete_KG
-	
 FROM
-	gd_esquema.Maestra
-WHERE Paquete_Codigo <> 0
+	gd_esquema.Maestra,
+	NOT_NULL.Recorrido
+WHERE Paquete_Codigo <> 0 AND
+	REC_Codigo = Recorrido_Codigo
 
 OPEN VENTAENCOMIENDACUR
 

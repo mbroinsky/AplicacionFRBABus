@@ -19,6 +19,7 @@ namespace AccesoADatos
         protected abstract IDbCommand ComandoSql(string comandoSql);
         protected abstract IDataAdapter CrearDataAdapter(string procedimientoAlmacenado, params Object[] args);
         protected abstract IDataAdapter CrearDataAdapterSql(string comandoSql);
+        protected abstract IDataAdapter CrearDataAdapterSql(string comandoSql, params Object[] args);
         protected abstract void CargarParametros(IDbCommand comando, Object[] args);
 
 
@@ -63,6 +64,15 @@ namespace AccesoADatos
             return datos;
         }
 
+        public DataSet EjecutarComando(string sql, params Object[] args)
+        {
+            var datos = new DataSet();
+
+            CrearDataAdapterSql(sql, args).Fill(datos);
+
+            return datos;
+        }
+
         public DataTable EjecutarProcedureADataTable(string storeProcedure)
         {
             return EjecutarProcedure(storeProcedure).Tables[0].Copy();
@@ -76,6 +86,11 @@ namespace AccesoADatos
         public DataTable EjecutarComandoADataTable(string sql)
         {
             return EjecutarComando(sql).Tables[0].Copy();
+        }
+
+        public DataTable EjecutarComandoADataTable(string sql, params Object[] args)
+        {
+            return EjecutarComando(sql, args).Tables[0].Copy();
         }
 
         //public IDataReader TraerDataReader(string procedimientoAlmacenado)

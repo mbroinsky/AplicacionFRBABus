@@ -80,7 +80,6 @@ namespace AccesoADatos
             return com;
         }
 
-
         protected override System.Data.IDbConnection CrearConexion(string cadenaConexion)
         {
             return new SqlConnection(cadenaConexion);
@@ -99,6 +98,16 @@ namespace AccesoADatos
         protected override System.Data.IDataAdapter CrearDataAdapterSql(string comandoSql)
         {
             var da = new SqlDataAdapter((SqlCommand)ComandoSql(comandoSql));
+            return da;
+        }
+
+        protected override System.Data.IDataAdapter CrearDataAdapterSql(string comandoSql, params Object[] args)
+        {
+            var da = new SqlDataAdapter((SqlCommand)ComandoSql(comandoSql));
+            
+            if (args.Length != 0)
+                CargarParametros(da.SelectCommand, args);
+
             return da;
         }
 

@@ -103,6 +103,7 @@
     <Compile Include="AccesoADatos\CapaDatos.cs" />
     <Compile Include="AccesoADatos\BaseDatos.cs" />
     <Compile Include="AccesoADatos\Orm\Butaca.cs" />
+    <Compile Include="AccesoADatos\Orm\Recorrido.cs" />
     <Compile Include="AccesoADatos\Orm\Funcionalidad.cs" />
     <Compile Include="AccesoADatos\Orm\Marca.cs" />
     <Compile Include="AccesoADatos\Orm\Modelo.cs" />

@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using FrbaBus.AccesoADatos.Orm;
+using AccesoADatos.Orm;
 
 namespace FrbaBus.GenerarViaje
 {
@@ -14,9 +16,50 @@ namespace FrbaBus.GenerarViaje
         public GenerarViaje()
         {
             InitializeComponent();
-            FechaSalida.Value = DateTime.Now;
-            FechaLlegada.Value = DateTime.Now;
+            fechaSalida.Value = DateTime.Now;
+            fechaLlegada.Value = DateTime.Now;
+
+            recorridos.DataSource = Recorrido.ListarCombo();
+            recorridos.ValueMember = ((DataTable)recorridos.DataSource).Columns[0].ColumnName;
+            recorridos.DisplayMember = ((DataTable)recorridos.DataSource).Columns[1].ColumnName;
         }
+
+        private void buscar_Click(object sender, EventArgs e)
+        {
+            if (recorridos.SelectedIndex == -1)
+            {
+                MessageBox.Show("Debe seleccionar un recorrido");
+                return;
+            }
+
+            if (fechaSalida.Value <= DateTime.Now)
+            {
+                MessageBox.Show("Debe seleccionar una fecha mayor a hoy");
+                return;
+            }
+
+            if (fechaLlegada.Value < fechaSalida.Value)
+            {
+                MessageBox.Show("La fecha de llegada no puede ser menor a la fecha de salida");
+                return;
+            }
+
+            if(fechaLlegada.Value.Subtract(fechaSalida.Value).Days > 1)
+            {
+                MessageBox.Show("Un viaje no puede tardar más de 24 horas");
+                return;
+            }
+
+            grpMicros.Enabled = true;
+
+            grpPreseleccion.Enabled = false;
+
+            microsDisp.DataSource = Micro.TraerDisponiblesCombo(Convert.ToInt32(recorridos.SelectedValue), fechaSalida.Value);
+            microsDisp.ValueMember = ((DataTable)microsDisp.DataSource).Columns[0].ColumnName;
+            microsDisp.DisplayMember = ((DataTable)microsDisp.DataSource).Columns[1].ColumnName;
+        }
+
+
 
     }
 }
