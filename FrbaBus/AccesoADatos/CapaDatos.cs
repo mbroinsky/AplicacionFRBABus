@@ -1,6 +1,7 @@
 using System;
 using System.Data.SqlClient;
 using FrbaBus;
+using System.Collections;
 
 namespace AccesoADatos
 {
@@ -101,13 +102,15 @@ namespace AccesoADatos
             return da;
         }
 
-        protected override System.Data.IDataAdapter CrearDataAdapterSql(string comandoSql, params Object[] args)
+        protected override System.Data.IDataAdapter CrearDataAdapterSql(string comandoSql, Hashtable args)
         {
-            var da = new SqlDataAdapter((SqlCommand)ComandoSql(comandoSql));
-            
-            if (args.Length != 0)
-                CargarParametros(da.SelectCommand, args);
+            SqlCommand com = (SqlCommand)ComandoSql(comandoSql);
 
+            foreach (DictionaryEntry item in args)
+                com.Parameters.AddWithValue(item.Key.ToString(), item.Value);
+            
+            var da = new SqlDataAdapter(com);
+            
             return da;
         }
 

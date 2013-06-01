@@ -102,20 +102,25 @@ namespace AccesoADatos.Orm
             }
         }
 
-        public static DataTable TraerDisponiblesCombo(int idRecorrido, DateTime fecSalida)
+        public static DataTable TraerDisponiblesCombo(Int32 idRecorrido, DateTime fecSalida)
         {
             try
             {
+                Hashtable parametros = new Hashtable();
+
                 var sql = "select MIC_numMicro as id, MIC_patente " +
                     " from NOT_NULL.Micro, NOT_NULL.Recorrido " +
                     " where MIC_idTipoServicio = REC_idTipoServicio AND " +
-                    " REC_id = " + Convert.ToString(idRecorrido) + " AND " +
+                    " REC_id = @idRecorrido AND " +
                     " MIC_Habilitado = 1 AND " +
-                    " (MIC_fueraDeServicio = 0 OR MIC_fecReinicioServ < '" + Convert.ToString(fecSalida) + "') AND" +
+                    " (MIC_fueraDeServicio = 0 OR MIC_fecReinicioServ < @fecSalida) AND" +
                     " MIC_numMicro NOT IN (SELECT VIA_numMicro from NOT_NULL.Viaje WHERE " +
-                    " datediff(hour, VIA_fecSalida, '" + Convert.ToString(fecSalida) + "') > 24)";
+                    " datediff(hour, VIA_fecSalida, @fecSalida) < 24)";
 
-                DataTable dt = Conector.Datos.EjecutarComandoADataTable(sql);
+                parametros.Add("@idRecorrido", idRecorrido);
+                parametros.Add("@fecSalida", fecSalida.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                DataTable dt = Conector.Datos.EjecutarComandoADataTable(sql, parametros);
 
                 return dt;
             }

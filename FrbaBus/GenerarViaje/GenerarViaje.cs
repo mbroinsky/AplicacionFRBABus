@@ -22,6 +22,8 @@ namespace FrbaBus.GenerarViaje
             recorridos.DataSource = Recorrido.ListarCombo();
             recorridos.ValueMember = ((DataTable)recorridos.DataSource).Columns[0].ColumnName;
             recorridos.DisplayMember = ((DataTable)recorridos.DataSource).Columns[1].ColumnName;
+
+            generar.Enabled = false;
         }
 
         private void buscar_Click(object sender, EventArgs e)
@@ -51,12 +53,32 @@ namespace FrbaBus.GenerarViaje
             }
 
             grpMicros.Enabled = true;
-
             grpPreseleccion.Enabled = false;
 
+            volver.Enabled = true;
+            buscar.Enabled = false;
+            generar.Enabled = true;
+            
             microsDisp.DataSource = Micro.TraerDisponiblesCombo(Convert.ToInt32(recorridos.SelectedValue), fechaSalida.Value);
             microsDisp.ValueMember = ((DataTable)microsDisp.DataSource).Columns[0].ColumnName;
             microsDisp.DisplayMember = ((DataTable)microsDisp.DataSource).Columns[1].ColumnName;
+        }
+
+        private void volver_Click(object sender, EventArgs e)
+        {
+            grpMicros.Enabled = false;
+            grpPreseleccion.Enabled = true;
+
+            volver.Enabled = false;
+            buscar.Enabled = true;
+            generar.Enabled = false;
+
+            microsDisp.DataSource = null;
+        }
+
+        private void generar_Click(object sender, EventArgs e)
+        {
+
         }
 
 

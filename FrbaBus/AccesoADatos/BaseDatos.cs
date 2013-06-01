@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Collections;
 
 namespace AccesoADatos
 {
@@ -19,7 +20,7 @@ namespace AccesoADatos
         protected abstract IDbCommand ComandoSql(string comandoSql);
         protected abstract IDataAdapter CrearDataAdapter(string procedimientoAlmacenado, params Object[] args);
         protected abstract IDataAdapter CrearDataAdapterSql(string comandoSql);
-        protected abstract IDataAdapter CrearDataAdapterSql(string comandoSql, params Object[] args);
+        protected abstract IDataAdapter CrearDataAdapterSql(string comandoSql, Hashtable args);
         protected abstract void CargarParametros(IDbCommand comando, Object[] args);
 
 
@@ -64,7 +65,7 @@ namespace AccesoADatos
             return datos;
         }
 
-        public DataSet EjecutarComando(string sql, params Object[] args)
+        public DataSet EjecutarComando(string sql, Hashtable args)
         {
             var datos = new DataSet();
 
@@ -88,7 +89,7 @@ namespace AccesoADatos
             return EjecutarComando(sql).Tables[0].Copy();
         }
 
-        public DataTable EjecutarComandoADataTable(string sql, params Object[] args)
+        public DataTable EjecutarComandoADataTable(string sql, Hashtable args)
         {
             return EjecutarComando(sql, args).Tables[0].Copy();
         }
