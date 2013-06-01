@@ -110,6 +110,7 @@
     <Compile Include="AccesoADatos\Orm\Rol.cs" />
     <Compile Include="AccesoADatos\Orm\Micro.cs" />
     <Compile Include="AccesoADatos\Orm\Servicio.cs" />
+    <Compile Include="AccesoADatos\Orm\Viaje.cs" />
     <Compile Include="Cancelar Viaje\Form1.cs">
       <SubType>Form</SubType>
     </Compile>

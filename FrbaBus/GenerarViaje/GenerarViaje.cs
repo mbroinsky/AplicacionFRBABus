@@ -78,10 +78,23 @@ namespace FrbaBus.GenerarViaje
 
         private void generar_Click(object sender, EventArgs e)
         {
+            if (microsDisp.SelectedIndex == -1)
+            {
+                MessageBox.Show("Debe seleccionar un micro de la lista");
+                return;
+            }
 
+            var viaje = new Viaje(Convert.ToInt32(microsDisp.SelectedValue),
+                                Convert.ToInt32(recorridos.SelectedValue),
+                                fechaSalida.Value, fechaLlegada.Value);
+
+            if (!viaje.Insertar())
+            {
+                MessageBox.Show("Ocurrió un error al insertar el viaje");
+                return;
+            }
+
+            this.Close();
         }
-
-
-
     }
 }
