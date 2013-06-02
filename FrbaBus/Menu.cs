@@ -46,5 +46,10 @@ namespace FrbaBus
 
             dialogo.ShowDialog();
         }
+
+        private void registrarLlegadas_Click(object sender, EventArgs e)
+        {
+            AbrirDialogo(new FrbaBus.Registrar_LLegada_Micro.RegistrarLlegada());
+        }
     }
 }

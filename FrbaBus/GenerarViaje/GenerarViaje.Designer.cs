@@ -31,7 +31,6 @@
             this.generar = new System.Windows.Forms.Button();
             this.cancelar = new System.Windows.Forms.Button();
             this.grpMicros = new System.Windows.Forms.GroupBox();
-            this.microsDisp = new System.Windows.Forms.ListBox();
             this.buscar = new System.Windows.Forms.Button();
             this.grpPreseleccion = new System.Windows.Forms.GroupBox();
             this.lblRecorrido = new System.Windows.Forms.Label();
@@ -41,6 +40,7 @@
             this.fechaLlegada = new System.Windows.Forms.DateTimePicker();
             this.fechaSalida = new System.Windows.Forms.DateTimePicker();
             this.volver = new System.Windows.Forms.Button();
+            this.microsDisp = new System.Windows.Forms.ComboBox();
             this.grpMicros.SuspendLayout();
             this.grpPreseleccion.SuspendLayout();
             this.SuspendLayout();
@@ -75,14 +75,6 @@
             this.grpMicros.TabIndex = 11;
             this.grpMicros.TabStop = false;
             this.grpMicros.Text = "Micros Disponibles";
-            // 
-            // microsDisp
-            // 
-            this.microsDisp.FormattingEnabled = true;
-            this.microsDisp.Location = new System.Drawing.Point(83, 25);
-            this.microsDisp.Name = "microsDisp";
-            this.microsDisp.Size = new System.Drawing.Size(113, 160);
-            this.microsDisp.TabIndex = 11;
             // 
             // buscar
             // 
@@ -172,6 +164,15 @@
             this.volver.UseVisualStyleBackColor = true;
             this.volver.Click += new System.EventHandler(this.volver_Click);
             // 
+            // microsDisp
+            // 
+            this.microsDisp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.microsDisp.FormattingEnabled = true;
+            this.microsDisp.Location = new System.Drawing.Point(92, 19);
+            this.microsDisp.Name = "microsDisp";
+            this.microsDisp.Size = new System.Drawing.Size(121, 163);
+            this.microsDisp.TabIndex = 12;
+            // 
             // GenerarViaje
             // 
             this.AcceptButton = this.generar;
@@ -202,7 +203,6 @@
         private System.Windows.Forms.Button generar;
         private System.Windows.Forms.Button cancelar;
         private System.Windows.Forms.GroupBox grpMicros;
-        private System.Windows.Forms.ListBox microsDisp;
         private System.Windows.Forms.Button buscar;
         private System.Windows.Forms.GroupBox grpPreseleccion;
         private System.Windows.Forms.Label lblRecorrido;
@@ -212,5 +212,6 @@
         private System.Windows.Forms.DateTimePicker fechaLlegada;
         private System.Windows.Forms.DateTimePicker fechaSalida;
         private System.Windows.Forms.Button volver;
+        private System.Windows.Forms.ComboBox microsDisp;
     }
 }

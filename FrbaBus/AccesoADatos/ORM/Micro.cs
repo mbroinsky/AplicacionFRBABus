@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 using System.Data;
+using System.Windows.Forms;
 
 namespace AccesoADatos.Orm
 {
@@ -102,7 +103,7 @@ namespace AccesoADatos.Orm
             }
         }
 
-        public static DataTable TraerDisponiblesCombo(Int32 idRecorrido, DateTime fecSalida)
+        public static void LlenarComboDisponibles(Int32 idRecorrido, DateTime fecSalida, ComboBox micros)
         {
             try
             {
@@ -120,13 +121,17 @@ namespace AccesoADatos.Orm
                 parametros.Add("@idRecorrido", idRecorrido);
                 parametros.Add("@fecSalida", fecSalida.ToString("yyyy-MM-dd HH:mm:ss"));
 
-                DataTable dt = Conector.Datos.EjecutarComandoADataTable(sql, parametros);
+                micros.DataSource = Conector.Datos.EjecutarComandoADataTable(sql, parametros);
+                micros.ValueMember = "id";
+                micros.DisplayMember = "MIC_patente";
 
-                return dt;
+                return;
             }
             catch
             {
-                return null;
+                MessageBox.Show("No se pueden mostrar los micros disponibles");
+
+                return;
             }
         }
        

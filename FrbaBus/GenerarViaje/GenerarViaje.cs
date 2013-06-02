@@ -59,9 +59,7 @@ namespace FrbaBus.GenerarViaje
             buscar.Enabled = false;
             generar.Enabled = true;
             
-            microsDisp.DataSource = Micro.TraerDisponiblesCombo(Convert.ToInt32(recorridos.SelectedValue), fechaSalida.Value);
-            microsDisp.ValueMember = ((DataTable)microsDisp.DataSource).Columns[0].ColumnName;
-            microsDisp.DisplayMember = ((DataTable)microsDisp.DataSource).Columns[1].ColumnName;
+            Micro.LlenarComboDisponibles(Convert.ToInt32(recorridos.SelectedValue), fechaSalida.Value, microsDisp);
         }
 
         private void volver_Click(object sender, EventArgs e)

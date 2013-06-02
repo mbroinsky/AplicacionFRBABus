@@ -28,21 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.AMicro = new System.Windows.Forms.Button();
+            this.ABMMicro = new System.Windows.Forms.Button();
             this.ABMRol = new System.Windows.Forms.Button();
             this.Salir = new System.Windows.Forms.Button();
-            this.GenerarViaje = new System.Windows.Forms.Button();
+            this.generarViaje = new System.Windows.Forms.Button();
+            this.registrarLlegadas = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // AMicro
+            // ABMMicro
             // 
-            this.AMicro.Location = new System.Drawing.Point(12, 92);
-            this.AMicro.Name = "AMicro";
-            this.AMicro.Size = new System.Drawing.Size(75, 45);
-            this.AMicro.TabIndex = 0;
-            this.AMicro.Text = "ABM Micros";
-            this.AMicro.UseVisualStyleBackColor = true;
-            this.AMicro.Click += new System.EventHandler(this.AMicro_Click);
+            this.ABMMicro.Location = new System.Drawing.Point(12, 92);
+            this.ABMMicro.Name = "ABMMicro";
+            this.ABMMicro.Size = new System.Drawing.Size(75, 45);
+            this.ABMMicro.TabIndex = 0;
+            this.ABMMicro.Text = "ABM Micros";
+            this.ABMMicro.UseVisualStyleBackColor = true;
+            this.ABMMicro.Click += new System.EventHandler(this.AMicro_Click);
             // 
             // ABMRol
             // 
@@ -56,23 +57,33 @@
             // 
             // Salir
             // 
-            this.Salir.Location = new System.Drawing.Point(598, 114);
+            this.Salir.Location = new System.Drawing.Point(598, 92);
             this.Salir.Name = "Salir";
-            this.Salir.Size = new System.Drawing.Size(75, 23);
+            this.Salir.Size = new System.Drawing.Size(75, 44);
             this.Salir.TabIndex = 2;
             this.Salir.Text = "Salir";
             this.Salir.UseVisualStyleBackColor = true;
             this.Salir.Click += new System.EventHandler(this.Salir_Click);
             // 
-            // GenerarViaje
+            // generarViaje
             // 
-            this.GenerarViaje.Location = new System.Drawing.Point(175, 92);
-            this.GenerarViaje.Name = "GenerarViaje";
-            this.GenerarViaje.Size = new System.Drawing.Size(75, 45);
-            this.GenerarViaje.TabIndex = 3;
-            this.GenerarViaje.Text = "Generar Viaje";
-            this.GenerarViaje.UseVisualStyleBackColor = true;
-            this.GenerarViaje.Click += new System.EventHandler(this.GenerarViaje_Click);
+            this.generarViaje.Location = new System.Drawing.Point(175, 92);
+            this.generarViaje.Name = "generarViaje";
+            this.generarViaje.Size = new System.Drawing.Size(75, 45);
+            this.generarViaje.TabIndex = 3;
+            this.generarViaje.Text = "Generar Viaje";
+            this.generarViaje.UseVisualStyleBackColor = true;
+            this.generarViaje.Click += new System.EventHandler(this.GenerarViaje_Click);
+            // 
+            // registrarLlegadas
+            // 
+            this.registrarLlegadas.Location = new System.Drawing.Point(256, 93);
+            this.registrarLlegadas.Name = "registrarLlegadas";
+            this.registrarLlegadas.Size = new System.Drawing.Size(75, 44);
+            this.registrarLlegadas.TabIndex = 4;
+            this.registrarLlegadas.Text = "Registrar Llegadas";
+            this.registrarLlegadas.UseVisualStyleBackColor = true;
+            this.registrarLlegadas.Click += new System.EventHandler(this.registrarLlegadas_Click);
             // 
             // Menu
             // 
@@ -80,9 +91,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(685, 149);
             this.ControlBox = false;
-            this.Controls.Add(this.GenerarViaje);
+            this.Controls.Add(this.registrarLlegadas);
+            this.Controls.Add(this.generarViaje);
             this.Controls.Add(this.ABMRol);
-            this.Controls.Add(this.AMicro);
+            this.Controls.Add(this.ABMMicro);
             this.Controls.Add(this.Salir);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Menu";
@@ -94,9 +106,10 @@
 
         #endregion
 
-        private System.Windows.Forms.Button AMicro;
+        private System.Windows.Forms.Button ABMMicro;
         private System.Windows.Forms.Button ABMRol;
         private System.Windows.Forms.Button Salir;
-        private System.Windows.Forms.Button GenerarViaje;
+        private System.Windows.Forms.Button generarViaje;
+        private System.Windows.Forms.Button registrarLlegadas;
     }
 }

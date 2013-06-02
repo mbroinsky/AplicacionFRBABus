@@ -761,7 +761,8 @@ BEGIN
 				('ABM Rol', 'ABMRol'),
 				('Listado de Roles', 'SeleccionRol'),
 				('ABM Micro', 'ABMMicro'),
-				('Generar Viaje', 'GenerarViaje');
+				('Generar Viaje', 'GenerarViaje'),
+				('Registrar Llegadas', 'RegistrarLlegada');
 
         
 	INSERT INTO FuncionalidadXRol (FXR_idRol, FXR_idFuncionalidad)
