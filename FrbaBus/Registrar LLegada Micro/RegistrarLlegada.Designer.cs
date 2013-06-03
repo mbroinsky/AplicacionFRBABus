@@ -1,4 +1,4 @@
-﻿namespace FrbaBus.Registrar_LLegada_Micro
+﻿namespace Registrar_LLegada_Micro
 {
     partial class RegistrarLlegada
     {
@@ -28,72 +28,73 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.LlegadasCargadas = new System.Windows.Forms.DataGridView();
-            this.Micro = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Origen = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Destino = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.llegadasCargadas = new System.Windows.Forms.DataGridView();
+            this.patenteMicro = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ciudadOrigen = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ciudadDestino = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.FecLlegada = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.idMicro = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.idOrigen = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.idDestino = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idMicro = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fechaLlegada = new System.Windows.Forms.DateTimePicker();
-            this.ciudadOrigen = new System.Windows.Forms.ComboBox();
+            this.ciudadesOrigen = new System.Windows.Forms.ComboBox();
             this.cancelar = new System.Windows.Forms.Button();
             this.cargar = new System.Windows.Forms.Button();
-            this.ciudadDestino = new System.Windows.Forms.ComboBox();
-            this.patenteMicro = new System.Windows.Forms.ComboBox();
+            this.ciudadesDestino = new System.Windows.Forms.ComboBox();
+            this.patentesMicros = new System.Windows.Forms.ComboBox();
             this.agregar = new System.Windows.Forms.Button();
             this.lblFecha = new System.Windows.Forms.Label();
             this.lblCiudadOri = new System.Windows.Forms.Label();
             this.lblCiudadDest = new System.Windows.Forms.Label();
             this.lblPatente = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.LlegadasCargadas)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.llegadasCargadas)).BeginInit();
             this.SuspendLayout();
             // 
-            // LlegadasCargadas
+            // llegadasCargadas
             // 
-            this.LlegadasCargadas.AllowUserToAddRows = false;
-            this.LlegadasCargadas.AllowUserToDeleteRows = false;
-            this.LlegadasCargadas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            this.LlegadasCargadas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.LlegadasCargadas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Micro,
-            this.Origen,
-            this.Destino,
+            this.llegadasCargadas.AllowUserToAddRows = false;
+            this.llegadasCargadas.AllowUserToDeleteRows = false;
+            this.llegadasCargadas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.llegadasCargadas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.llegadasCargadas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.patenteMicro,
+            this.ciudadOrigen,
+            this.ciudadDestino,
             this.FecLlegada,
+            this.idMicro,
             this.idOrigen,
-            this.idDestino,
-            this.idMicro});
-            this.LlegadasCargadas.Location = new System.Drawing.Point(12, 169);
-            this.LlegadasCargadas.Name = "LlegadasCargadas";
-            this.LlegadasCargadas.RowHeadersVisible = false;
-            this.LlegadasCargadas.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.LlegadasCargadas.Size = new System.Drawing.Size(362, 203);
-            this.LlegadasCargadas.TabIndex = 0;
+            this.idDestino});
+            this.llegadasCargadas.Location = new System.Drawing.Point(12, 169);
+            this.llegadasCargadas.Name = "llegadasCargadas";
+            this.llegadasCargadas.ReadOnly = true;
+            this.llegadasCargadas.RowHeadersVisible = false;
+            this.llegadasCargadas.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.llegadasCargadas.Size = new System.Drawing.Size(362, 203);
+            this.llegadasCargadas.TabIndex = 0;
             // 
-            // Micro
+            // patenteMicro
             // 
-            this.Micro.Frozen = true;
-            this.Micro.HeaderText = "Micro";
-            this.Micro.Name = "Micro";
-            this.Micro.ReadOnly = true;
-            this.Micro.Width = 58;
+            this.patenteMicro.Frozen = true;
+            this.patenteMicro.HeaderText = "Micro";
+            this.patenteMicro.Name = "patenteMicro";
+            this.patenteMicro.ReadOnly = true;
+            this.patenteMicro.Width = 58;
             // 
-            // Origen
+            // ciudadOrigen
             // 
-            this.Origen.Frozen = true;
-            this.Origen.HeaderText = "Origen";
-            this.Origen.Name = "Origen";
-            this.Origen.ReadOnly = true;
-            this.Origen.Width = 63;
+            this.ciudadOrigen.Frozen = true;
+            this.ciudadOrigen.HeaderText = "Origen";
+            this.ciudadOrigen.Name = "ciudadOrigen";
+            this.ciudadOrigen.ReadOnly = true;
+            this.ciudadOrigen.Width = 63;
             // 
-            // Destino
+            // ciudadDestino
             // 
-            this.Destino.Frozen = true;
-            this.Destino.HeaderText = "Destino";
-            this.Destino.Name = "Destino";
-            this.Destino.ReadOnly = true;
-            this.Destino.Width = 68;
+            this.ciudadDestino.Frozen = true;
+            this.ciudadDestino.HeaderText = "Destino";
+            this.ciudadDestino.Name = "ciudadDestino";
+            this.ciudadDestino.ReadOnly = true;
+            this.ciudadDestino.Width = 68;
             // 
             // FecLlegada
             // 
@@ -103,6 +104,15 @@
             this.FecLlegada.ReadOnly = true;
             this.FecLlegada.Width = 95;
             // 
+            // idMicro
+            // 
+            this.idMicro.Frozen = true;
+            this.idMicro.HeaderText = "idMicro";
+            this.idMicro.Name = "idMicro";
+            this.idMicro.ReadOnly = true;
+            this.idMicro.Visible = false;
+            this.idMicro.Width = 66;
+            // 
             // idOrigen
             // 
             this.idOrigen.Frozen = true;
@@ -110,6 +120,7 @@
             this.idOrigen.Name = "idOrigen";
             this.idOrigen.ReadOnly = true;
             this.idOrigen.Visible = false;
+            this.idOrigen.Width = 71;
             // 
             // idDestino
             // 
@@ -118,14 +129,7 @@
             this.idDestino.Name = "idDestino";
             this.idDestino.ReadOnly = true;
             this.idDestino.Visible = false;
-            // 
-            // idMicro
-            // 
-            this.idMicro.Frozen = true;
-            this.idMicro.HeaderText = "idMicro";
-            this.idMicro.Name = "idMicro";
-            this.idMicro.ReadOnly = true;
-            this.idMicro.Visible = false;
+            this.idDestino.Width = 76;
             // 
             // fechaLlegada
             // 
@@ -136,13 +140,14 @@
             this.fechaLlegada.Size = new System.Drawing.Size(155, 20);
             this.fechaLlegada.TabIndex = 1;
             // 
-            // ciudadOrigen
+            // ciudadesOrigen
             // 
-            this.ciudadOrigen.FormattingEnabled = true;
-            this.ciudadOrigen.Location = new System.Drawing.Point(154, 39);
-            this.ciudadOrigen.Name = "ciudadOrigen";
-            this.ciudadOrigen.Size = new System.Drawing.Size(200, 21);
-            this.ciudadOrigen.TabIndex = 2;
+            this.ciudadesOrigen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ciudadesOrigen.FormattingEnabled = true;
+            this.ciudadesOrigen.Location = new System.Drawing.Point(154, 39);
+            this.ciudadesOrigen.Name = "ciudadesOrigen";
+            this.ciudadesOrigen.Size = new System.Drawing.Size(200, 21);
+            this.ciudadesOrigen.TabIndex = 2;
             // 
             // cancelar
             // 
@@ -163,21 +168,23 @@
             this.cargar.Text = "Cargar";
             this.cargar.UseVisualStyleBackColor = true;
             // 
-            // ciudadDestino
+            // ciudadesDestino
             // 
-            this.ciudadDestino.FormattingEnabled = true;
-            this.ciudadDestino.Location = new System.Drawing.Point(154, 66);
-            this.ciudadDestino.Name = "ciudadDestino";
-            this.ciudadDestino.Size = new System.Drawing.Size(200, 21);
-            this.ciudadDestino.TabIndex = 5;
+            this.ciudadesDestino.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ciudadesDestino.FormattingEnabled = true;
+            this.ciudadesDestino.Location = new System.Drawing.Point(154, 66);
+            this.ciudadesDestino.Name = "ciudadesDestino";
+            this.ciudadesDestino.Size = new System.Drawing.Size(200, 21);
+            this.ciudadesDestino.TabIndex = 5;
             // 
-            // patenteMicro
+            // patentesMicros
             // 
-            this.patenteMicro.FormattingEnabled = true;
-            this.patenteMicro.Location = new System.Drawing.Point(154, 93);
-            this.patenteMicro.Name = "patenteMicro";
-            this.patenteMicro.Size = new System.Drawing.Size(200, 21);
-            this.patenteMicro.TabIndex = 6;
+            this.patentesMicros.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.patentesMicros.FormattingEnabled = true;
+            this.patentesMicros.Location = new System.Drawing.Point(154, 93);
+            this.patentesMicros.Name = "patentesMicros";
+            this.patentesMicros.Size = new System.Drawing.Size(200, 21);
+            this.patentesMicros.TabIndex = 6;
             // 
             // agregar
             // 
@@ -187,6 +194,7 @@
             this.agregar.TabIndex = 7;
             this.agregar.Text = "Agregar";
             this.agregar.UseVisualStyleBackColor = true;
+            this.agregar.Click += new System.EventHandler(this.agregar_Click);
             // 
             // lblFecha
             // 
@@ -218,7 +226,7 @@
             // lblPatente
             // 
             this.lblPatente.AutoSize = true;
-            this.lblPatente.Location = new System.Drawing.Point(15, 100);
+            this.lblPatente.Location = new System.Drawing.Point(12, 96);
             this.lblPatente.Name = "lblPatente";
             this.lblPatente.Size = new System.Drawing.Size(89, 13);
             this.lblPatente.TabIndex = 11;
@@ -237,17 +245,17 @@
             this.Controls.Add(this.lblCiudadOri);
             this.Controls.Add(this.lblFecha);
             this.Controls.Add(this.agregar);
-            this.Controls.Add(this.patenteMicro);
-            this.Controls.Add(this.ciudadDestino);
+            this.Controls.Add(this.patentesMicros);
+            this.Controls.Add(this.ciudadesDestino);
             this.Controls.Add(this.cargar);
             this.Controls.Add(this.cancelar);
-            this.Controls.Add(this.ciudadOrigen);
+            this.Controls.Add(this.ciudadesOrigen);
             this.Controls.Add(this.fechaLlegada);
-            this.Controls.Add(this.LlegadasCargadas);
+            this.Controls.Add(this.llegadasCargadas);
             this.Name = "RegistrarLlegada";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Registro de llegadas";
-            ((System.ComponentModel.ISupportInitialize)(this.LlegadasCargadas)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.llegadasCargadas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -255,24 +263,24 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView LlegadasCargadas;
+        private System.Windows.Forms.DataGridView llegadasCargadas;
         private System.Windows.Forms.DateTimePicker fechaLlegada;
-        private System.Windows.Forms.ComboBox ciudadOrigen;
+        private System.Windows.Forms.ComboBox ciudadesOrigen;
         private System.Windows.Forms.Button cancelar;
         private System.Windows.Forms.Button cargar;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Micro;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Origen;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Destino;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FecLlegada;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idOrigen;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idDestino;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idMicro;
-        private System.Windows.Forms.ComboBox ciudadDestino;
-        private System.Windows.Forms.ComboBox patenteMicro;
+        private System.Windows.Forms.ComboBox ciudadesDestino;
+        private System.Windows.Forms.ComboBox patentesMicros;
         private System.Windows.Forms.Button agregar;
         private System.Windows.Forms.Label lblFecha;
         private System.Windows.Forms.Label lblCiudadOri;
         private System.Windows.Forms.Label lblCiudadDest;
         private System.Windows.Forms.Label lblPatente;
+        private System.Windows.Forms.DataGridViewTextBoxColumn patenteMicro;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ciudadOrigen;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ciudadDestino;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FecLlegada;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idMicro;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idOrigen;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idDestino;
     }
 }

@@ -135,7 +135,29 @@ namespace AccesoADatos.Orm
                 return;
             }
         }
-       
+
+        public static void LlenarCombo(ComboBox micros)
+        {
+            try
+            {
+                Hashtable parametros = new Hashtable();
+
+                var sql = "select MIC_numMicro as id, MIC_patente " +
+                    " from NOT_NULL.Micro order by MIC_patente";
+
+                micros.DataSource = Conector.Datos.EjecutarComandoADataTable(sql, parametros);
+                micros.ValueMember = "id";
+                micros.DisplayMember = "MIC_patente";
+
+                return;
+            }
+            catch
+            {
+                MessageBox.Show("No se pueden mostrar los micros");
+
+                return;
+            }
+        }
         
         public bool InsertarMicro()
         {

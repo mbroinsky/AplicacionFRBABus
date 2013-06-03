@@ -6,7 +6,7 @@ using System.Data;
 using AccesoADatos;
 using System.Windows.Forms;
 
-namespace FrbaBus.AccesoADatos.Orm
+namespace AccesoADatos.Orm
 {
     class Ciudad
     {
