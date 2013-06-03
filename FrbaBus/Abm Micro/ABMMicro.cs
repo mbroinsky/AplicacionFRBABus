@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using AccesoADatos.Orm;
+using FrbaBus.AccesoADatos.Orm;
 
 
 namespace FrbaBus.Abm_Micro
@@ -17,18 +18,38 @@ namespace FrbaBus.Abm_Micro
         {
             InitializeComponent();
 
+
+            idServicio.DataSource = Servicio.ListarComboServicio();
+            idServicio.ValueMember = ((DataTable)idServicio.DataSource).Columns[0].ColumnName;
+            idServicio.DisplayMember = ((DataTable)idServicio.DataSource).Columns[1].ColumnName;
+
+            idMarca.DataSource = Marca.ListarComboMarca();
+            idMarca.ValueMember = ((DataTable)idMarca.DataSource).Columns[0].ColumnName;
+            idMarca.DisplayMember = ((DataTable)idMarca.DataSource).Columns[1].ColumnName;
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             Micros.Columns.Clear();
-            Micros.DataSource = Micro.BuscarMicro(Matrícula.Text, "", "", "", "");
+            Micros.DataSource = Micro.BuscarMicro(campoMatricula.Text, idServicio.SelectedIndex, idMarca.SelectedIndex, 0, capacidad.Text);
             Micros.ClearSelection();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            var log = new Abm_Micro.AM_Micro();
 
+            this.SetVisibleCore(false);
+
+            log.ShowDialog();
+
+            this.SetVisibleCore(true);
+        }
+
+        private void AbrirDialogo(ABMMicro aBMMicro)
+        {
+            throw new NotImplementedException();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -57,6 +78,16 @@ namespace FrbaBus.Abm_Micro
         }
 
         private void Matrícula_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void idServicio_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Micros_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

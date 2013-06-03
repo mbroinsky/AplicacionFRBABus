@@ -65,16 +65,32 @@ namespace AccesoADatos.Orm
             return false;
         }
 
-        public static DataTable BuscarMicro(String patenteABuscar, String idtipoDeServicio, String idModelo, String idMarca, String Capacidad)
+        public static DataTable BuscarMicro(String patenteABuscar, int idtipoDeServicio, int idMarca, int idModelo, String Capacidad)
         {
 
-            String query = "select * from NOT_NULL.Micro";
-
-            if (patenteABuscar.Length != 0) { query += "where MIC_patente = " + patenteABuscar + " and "; };
-            if (idtipoDeServicio.Length != 0) { query += "MIC_idTipoServicio = " + idtipoDeServicio + " and"; };
-            if (idModelo.Length != 0) { query += "MIC_modelo = " + idModelo + " and "; };
-            if (idMarca.Length != 0) { query += "MIC_idMarca = " + idMarca + " and "; };
-            if (Capacidad.Length != 0) { query += "MIC_kilosEncomiendas = " + Capacidad ; };
+            String query = "select MIC_numMicro as 'ID', " +
+                                  "MIC_patente as 'Matrícula', " +
+                                  "SRV_nombreServicio as 'Tipo de Serv.', " +
+                                  "MIC_kilosEncomiendas as 'Capacidad', " +
+                                  "MIC_habilitado as 'Habilitado', " +
+                                  "MAR_nombreMarca as 'Marca', " +
+                                  "MIC_modelo as 'Modelo', " +
+                                  "MIC_fechaAlta as 'Fec. Alta', " +
+                                  "MIC_fueraDeServicio as 'Fuera de Servicio', " +
+                                  "MIC_fecFueraServ as 'Fec. Fuera de Serv.', " +
+                                  "MIC_fecReinicioServ as 'Fec. Reinicio Serv.', " +
+                                  "MIC_fecBaja as 'Baja definitiva' " +
+                                  "from NOT_NULL.Micro, NOT_NULL.Marca, NOT_NULL.TipoServicio where " +
+                                  "MIC_idMarca = MAR_idMarca and " +
+                                  "MIC_idTipoServicio = SRV_idTipoServicio and ";
+             
+            if (patenteABuscar.Length != 0) { query += " MIC_patente = '" + patenteABuscar + "' and "; };
+            if (++idtipoDeServicio != 0) { query += "MIC_idTipoServicio = " + idtipoDeServicio + " and "; };
+            if (idModelo != 0) { query += "MIC_modelo = " + idModelo + " and "; };
+            if (++idMarca != 0) { query += "MIC_idMarca = " + idMarca + " and "; };
+            if (Capacidad.Length != 0) { query += "MIC_kilosEncomiendas = " + Capacidad + " and" ; };
+            
+            query += " 1=1";
 
             DataTable dt = Conector.Datos.EjecutarComandoADataTable(query);
             
