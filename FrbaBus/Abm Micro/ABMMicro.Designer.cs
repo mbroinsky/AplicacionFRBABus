@@ -63,6 +63,7 @@
             this.idServicio.Name = "idServicio";
             this.idServicio.Size = new System.Drawing.Size(121, 21);
             this.idServicio.TabIndex = 17;
+            this.idServicio.SelectedIndexChanged += new System.EventHandler(this.idServicio_SelectedIndexChanged_1);
             // 
             // campoMatricula
             // 
@@ -195,6 +196,7 @@
             this.salir.TabIndex = 30;
             this.salir.Text = "Salir";
             this.salir.UseVisualStyleBackColor = true;
+            this.salir.Click += new System.EventHandler(this.salir_Click);
             // 
             // ABMMicro
             // 

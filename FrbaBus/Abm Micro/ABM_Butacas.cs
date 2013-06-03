@@ -10,10 +10,23 @@ using System.Windows.Forms;
 namespace FrbaBus.Abm_Micro
 {
     public partial class ABM_Butacas : Form
+
+
     {
+        DataTable dt = new DataTable();
+
+
         public ABM_Butacas()
         {
             InitializeComponent();
+
+            dt.Clear();
+
+            dt.Columns.Add("idMicro");
+            dt.Columns.Add("Piso");
+            dt.Columns.Add("Nro. Asiento");
+            dt.Columns.Add("tipoButaca");
+            
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -38,22 +51,17 @@ namespace FrbaBus.Abm_Micro
 
         private void button1_Click(object sender, EventArgs e)
         {
-            for (int i = 1; i <=  Int32.Parse(cantidad.Text); i++)
+            if (cantidad.Text.Length > 0 && piso.Text.Length > 0)
             {
-                RadioButton dynamicRadioButton = new RadioButton();
-                dynamicRadioButton.Left = 20;
-                dynamicRadioButton.Top = 100;
-                dynamicRadioButton.Width = 300;
-                dynamicRadioButton.Height = 30;
+                int asientos;
+                for (asientos = 1; asientos <= Convert.ToInt32(cantidad.Text); asientos++)
+                {
+                    dt.Rows.Add(new object[] { 0, Convert.ToInt32(piso.Text), asientos, 0});
 
-                dynamicRadioButton.BackColor = Color.Orange;
-                dynamicRadioButton.ForeColor = Color.Black;
+                }
 
-                dynamicRadioButton.Text = "I am a Dynamic RadioButton";
-                dynamicRadioButton.Name = "DynamicRadioButton";
-                dynamicRadioButton.Font = new Font("Georgia", 12);
-                
-            } 
+                Butacas.DataSource = dt;
+            }
     
         }
 

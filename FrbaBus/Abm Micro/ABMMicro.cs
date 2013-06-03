@@ -17,8 +17,7 @@ namespace FrbaBus.Abm_Micro
         public ABMMicro()
         {
             InitializeComponent();
-
-
+            
             idServicio.DataSource = Servicio.ListarComboServicio();
             idServicio.ValueMember = ((DataTable)idServicio.DataSource).Columns[0].ColumnName;
             idServicio.DisplayMember = ((DataTable)idServicio.DataSource).Columns[1].ColumnName;
@@ -32,7 +31,7 @@ namespace FrbaBus.Abm_Micro
         private void button1_Click(object sender, EventArgs e)
         {
             Micros.Columns.Clear();
-            Micros.DataSource = Micro.BuscarMicro(campoMatricula.Text, idServicio.SelectedIndex, idMarca.SelectedIndex, 0, capacidad.Text);
+            Micros.DataSource = Micro.BuscarMicro(campoMatricula.Text, Convert.ToString(idServicio.SelectedValue), Convert.ToString(idMarca.SelectedValue), "", capacidad.Text);
             Micros.ClearSelection();
         }
 
@@ -88,6 +87,16 @@ namespace FrbaBus.Abm_Micro
         }
 
         private void Micros_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void idServicio_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void salir_Click(object sender, EventArgs e)
         {
 
         }

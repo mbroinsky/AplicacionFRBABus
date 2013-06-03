@@ -65,9 +65,9 @@ namespace AccesoADatos.Orm
             return false;
         }
 
-        public static DataTable BuscarMicro(String patenteABuscar, int idtipoDeServicio, int idMarca, int idModelo, String Capacidad)
+        public static DataTable BuscarMicro(String patenteABuscar, String idtipoDeServicio, String idMarca, String idModelo, String Capacidad)
         {
-
+            //MODIFICAR USANDO HASH TABLE DE PARÁMETROS
             String query = "select MIC_numMicro as 'ID', " +
                                   "MIC_patente as 'Matrícula', " +
                                   "SRV_nombreServicio as 'Tipo de Serv.', " +
@@ -85,11 +85,10 @@ namespace AccesoADatos.Orm
                                   "MIC_idTipoServicio = SRV_idTipoServicio and ";
              
             if (patenteABuscar.Length != 0) { query += " MIC_patente = '" + patenteABuscar + "' and "; };
-            if (++idtipoDeServicio != 0) { query += "MIC_idTipoServicio = " + idtipoDeServicio + " and "; };
-            if (idModelo != 0) { query += "MIC_modelo = " + idModelo + " and "; };
-            if (++idMarca != 0) { query += "MIC_idMarca = " + idMarca + " and "; };
-            if (Capacidad.Length != 0) { query += "MIC_kilosEncomiendas = " + Capacidad + " and" ; };
-            
+            if (idtipoDeServicio.Length != 0) { query += "MIC_idTipoServicio = " + idtipoDeServicio + " and "; };
+            if (idModelo.Length != 0) { query += "MIC_modelo = " + idModelo + " and "; };
+            if (idMarca.Length != 0) { query += "MIC_idMarca = " + idMarca + " and "; };
+            if (Capacidad.Length != 0) { query += "MIC_kilosEncomiendas = " + Capacidad + " and " ; };
             query += " 1=1";
 
             DataTable dt = Conector.Datos.EjecutarComandoADataTable(query);
