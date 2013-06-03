@@ -33,16 +33,16 @@
             this.campoMatricula = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.matricula = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
             this.idModelo = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.capacidad = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.idMarca = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.Buscar = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.buscar = new System.Windows.Forms.Button();
+            this.agregar = new System.Windows.Forms.Button();
             this.Micros = new System.Windows.Forms.DataGridView();
+            this.salir = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Micros)).BeginInit();
             this.SuspendLayout();
@@ -91,15 +91,6 @@
             this.matricula.TabIndex = 16;
             this.matricula.Text = "Matrícula:";
             // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(155, 206);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(121, 23);
-            this.button3.TabIndex = 0;
-            this.button3.Text = "Agregar butacas";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
             // idModelo
             // 
             this.idModelo.FormattingEnabled = true;
@@ -143,14 +134,13 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.Buscar);
+            this.groupBox1.Controls.Add(this.buscar);
             this.groupBox1.Controls.Add(this.idMarca);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.idModelo);
             this.groupBox1.Controls.Add(this.capacidad);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.matricula);
             this.groupBox1.Controls.Add(this.campoMatricula);
             this.groupBox1.Controls.Add(this.idServicio);
@@ -163,42 +153,59 @@
             this.groupBox1.Text = "Micros";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // Buscar
+            // buscar
             // 
-            this.Buscar.Location = new System.Drawing.Point(962, 25);
-            this.Buscar.Name = "Buscar";
-            this.Buscar.Size = new System.Drawing.Size(75, 23);
-            this.Buscar.TabIndex = 27;
-            this.Buscar.Text = "Buscar";
-            this.Buscar.UseVisualStyleBackColor = true;
-            this.Buscar.Click += new System.EventHandler(this.button1_Click);
+            this.buscar.Location = new System.Drawing.Point(962, 25);
+            this.buscar.Name = "buscar";
+            this.buscar.Size = new System.Drawing.Size(75, 23);
+            this.buscar.TabIndex = 27;
+            this.buscar.Text = "Buscar";
+            this.buscar.UseVisualStyleBackColor = true;
+            this.buscar.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // agregar
             // 
-            this.button2.Location = new System.Drawing.Point(980, 355);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 28;
-            this.button2.Text = "Agregar";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.agregar.Location = new System.Drawing.Point(903, 355);
+            this.agregar.Name = "agregar";
+            this.agregar.Size = new System.Drawing.Size(75, 23);
+            this.agregar.TabIndex = 28;
+            this.agregar.Text = "Agregar";
+            this.agregar.UseVisualStyleBackColor = true;
+            this.agregar.Click += new System.EventHandler(this.button2_Click);
             // 
             // Micros
             // 
-            this.Micros.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Micros.AllowUserToAddRows = false;
+            this.Micros.AllowUserToDeleteRows = false;
+            this.Micros.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.Micros.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.Micros.Location = new System.Drawing.Point(12, 82);
             this.Micros.Name = "Micros";
+            this.Micros.RowHeadersVisible = false;
             this.Micros.Size = new System.Drawing.Size(1043, 267);
             this.Micros.TabIndex = 29;
             this.Micros.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Micros_CellContentClick);
+            // 
+            // salir
+            // 
+            this.salir.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.salir.Location = new System.Drawing.Point(984, 355);
+            this.salir.Name = "salir";
+            this.salir.Size = new System.Drawing.Size(75, 23);
+            this.salir.TabIndex = 30;
+            this.salir.Text = "Salir";
+            this.salir.UseVisualStyleBackColor = true;
             // 
             // ABMMicro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.salir;
             this.ClientSize = new System.Drawing.Size(1067, 390);
+            this.ControlBox = false;
+            this.Controls.Add(this.salir);
             this.Controls.Add(this.Micros);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.agregar);
             this.Controls.Add(this.groupBox1);
             this.Name = "ABMMicro";
             this.Text = "Gestión de Micros";
@@ -217,15 +224,15 @@
         private System.Windows.Forms.TextBox campoMatricula;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label matricula;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ComboBox idModelo;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox capacidad;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox idMarca;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button Buscar;
+        private System.Windows.Forms.Button agregar;
+        private System.Windows.Forms.Button buscar;
         private System.Windows.Forms.DataGridView Micros;
+        private System.Windows.Forms.Button salir;
     }
 }
