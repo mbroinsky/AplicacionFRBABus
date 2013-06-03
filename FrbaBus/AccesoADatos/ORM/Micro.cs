@@ -96,21 +96,6 @@ namespace AccesoADatos.Orm
             
             if (dt.Rows.Count > 0)
             {
-                /*
-                Id = Convert.ToInt16(dt.Rows[0]["MIC_numMicro"]);
-                Patente = Convert.ToString(dt.Rows[0]["MIC_patente"]);
-                IdTipoDeServicio = Convert.ToInt16(dt.Rows[0]["MIC_idTipoServicio"]);
-                KilosEncomiendas = Convert.ToInt16(dt.Rows[0]["MIC_kilosEncomiendas"]);
-                Habilitado = Convert.ToBoolean(dt.Rows[0]["MIC_habilitado"]);
-                IdMarca = Convert.ToInt16(dt.Rows[0]["MIC_idMarca"]);
-                iIdModelo = Convert.ToInt16(dt.Rows[0]["MIC_modelo"]);
-                FechaAlta = Convert.ToDateTime(dt.Rows[0]["MIC_fechaAlta"]);
-                FueraDeServicio = Convert.ToBoolean(dt.Rows[0]["MIC_fueraDeServicio"]);
-                FechaFueraDeServicio = Convert.ToDateTime(dt.Rows[0]["MIC_fecFueraServ"]);
-                FechaReinicioServicio = Convert.ToDateTime(dt.Rows[0]["MIC_fecReinicioServ"]);
-                FechaDeBaja = Convert.ToDateTime(dt.Rows[0]["MIC_fecBaja"]);
-                Butacas = null;
-            */
                 return dt;
             }
             else

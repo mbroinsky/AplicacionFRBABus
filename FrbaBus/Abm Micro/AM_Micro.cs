@@ -77,5 +77,16 @@ namespace FrbaBus.Abm_Micro
         {
 
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var log = new Abm_Micro.ABM_Butacas();
+
+            this.SetVisibleCore(false);
+
+            log.ShowDialog();
+
+            this.SetVisibleCore(true);
+        }
     }
 }

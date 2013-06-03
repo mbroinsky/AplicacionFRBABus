@@ -1,6 +1,6 @@
 ﻿namespace FrbaBus.Abm_Micro
 {
-    partial class Form2
+    partial class ABM_Butacas
     {
         /// <summary>
         /// Variable del diseñador requerida.
@@ -142,14 +142,14 @@
             this.tipo.HeaderText = "Ubicación";
             this.tipo.Name = "tipo";
             // 
-            // Form2
+            // ABM_Butacas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(401, 338);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.groupBox1);
-            this.Name = "Form2";
+            this.Name = "ABM_Butacas";
             this.Text = "Butacas";
             this.Load += new System.EventHandler(this.Form2_Load);
             this.groupBox1.ResumeLayout(false);

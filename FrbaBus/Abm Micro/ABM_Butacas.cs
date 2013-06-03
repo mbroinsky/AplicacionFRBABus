@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace FrbaBus.Abm_Micro
 {
-    public partial class Form2 : Form
+    public partial class ABM_Butacas : Form
     {
-        public Form2()
+        public ABM_Butacas()
         {
             InitializeComponent();
         }
