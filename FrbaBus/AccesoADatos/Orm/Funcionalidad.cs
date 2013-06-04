@@ -6,7 +6,7 @@ using System.Data;
 using AccesoADatos;
 using System.Collections;
 
-namespace FrbaBus.AccesoADatos.Orm
+namespace AccesoADatos.Orm
 {
     class Funcionalidad
     {

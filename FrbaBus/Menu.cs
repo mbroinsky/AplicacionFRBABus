@@ -49,7 +49,7 @@ namespace FrbaBus
 
         private void registrarLlegadas_Click(object sender, EventArgs e)
         {
-            AbrirDialogo(new FrbaBus.Registrar_LLegada_Micro.RegistrarLlegada());
+            AbrirDialogo(new Registrar_LLegada_Micro.RegistrarLlegada());
         }
     }
 }
