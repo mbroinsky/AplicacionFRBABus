@@ -22,20 +22,21 @@ namespace AccesoADatos.Orm
         public DateTime FechaFueraDeServicio { get; set; }
         public DateTime FechaReinicioServicio { get; set; }
         public DateTime FechaDeBaja { get; set; }
-        
-        public ArrayList Butacas { get; set; }
+
+        public DataTable Butacas { get; set; }
 
 
         public Micro()
         {
-            Butacas = new ArrayList();
+            Butacas = new DataTable();
         }
 
+       /*
         public void AgregarButaca(Butaca but)
         {
             Butacas.Add(but);
         }
-
+        */
         public bool TraerMicro(int idMicro)
         {
             //DataTable dt = Conector.Datos.EjecutarComandoADataTable("select * from NOT_NULL.usuario, " +

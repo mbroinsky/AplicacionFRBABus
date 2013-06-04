@@ -6,14 +6,18 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using AccesoADatos.Orm;
 
 namespace FrbaBus.Abm_Micro
 {
     public partial class AM_Micro : Form
     {
+        public Micro micro{get; set;}
+
         public AM_Micro()
         {
             InitializeComponent();
+            micro = new Micro(); 
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -81,6 +85,8 @@ namespace FrbaBus.Abm_Micro
         private void button3_Click(object sender, EventArgs e)
         {
             var log = new Abm_Micro.ABM_Butacas();
+
+            //log.butacas = this.micro.Butacas;
 
             this.SetVisibleCore(false);
 

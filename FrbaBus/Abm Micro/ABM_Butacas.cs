@@ -10,22 +10,42 @@ using System.Windows.Forms;
 namespace FrbaBus.Abm_Micro
 {
     public partial class ABM_Butacas : Form
-
-
     {
-        DataTable dt = new DataTable();
-
-
+        DataTable butacas = new DataTable();
+         
+                 
         public ABM_Butacas()
         {
+            
+            DataTable PasilloVentana = new DataTable();
+            DataGridViewComboBoxColumn comboBoxPasilloVentana = new DataGridViewComboBoxColumn();     
             InitializeComponent();
+            this.Butacas.EditMode = DataGridViewEditMode.EditOnEnter;
 
-            dt.Clear();
+            
+            butacas.Clear();
 
-            dt.Columns.Add("idMicro");
-            dt.Columns.Add("Piso");
-            dt.Columns.Add("Nro. Asiento");
-            dt.Columns.Add("tipoButaca");
+            /*Genero el combo box para el Datagridview*/
+            PasilloVentana.Columns.Add(new DataColumn("Value", typeof(string)));
+            PasilloVentana.Columns.Add(new DataColumn("Description", typeof(string)));
+            PasilloVentana.Rows.Add("0", "Pasillo");
+            PasilloVentana.Rows.Add("1", "Ventana");
+
+            comboBoxPasilloVentana.HeaderText = "Tipo de Asiento";
+            comboBoxPasilloVentana.DataSource = PasilloVentana;
+            comboBoxPasilloVentana.ValueMember = "Value";
+            comboBoxPasilloVentana.DisplayMember = "Description";
+
+            comboBoxPasilloVentana.DefaultCellStyle.NullValue = "Pasillo";
+            
+            /*Preparo las columnas de la tabla butacas*/            
+            butacas.Columns.Add("idMicro");
+            butacas.Columns.Add("Piso");
+            butacas.Columns.Add("Nro. Asiento");
+            Butacas.DataSource = butacas;
+            Butacas.Columns["idMicro"].Visible = false;
+            Butacas.Columns.Add(comboBoxPasilloVentana);
+
             
         }
 
@@ -51,18 +71,27 @@ namespace FrbaBus.Abm_Micro
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (cantidad.Text.Length > 0 && piso.Text.Length > 0)
+            if (Validador.esNumericoEnteroPositivo(cantidad.Text) && Validador.esNumericoEnteroPositivo(piso.Text))
             {
-                int asientos;
-                for (asientos = 1; asientos <= Convert.ToInt32(cantidad.Text); asientos++)
+                if (cantidad.Text.Length > 0 && piso.Text.Length > 0)
                 {
-                    dt.Rows.Add(new object[] { 0, Convert.ToInt32(piso.Text), asientos, 0});
-
+                    int asientos;
+                    for (asientos = 1; asientos <= Convert.ToInt32(cantidad.Text); asientos++)
+                    {
+                        butacas.Rows.Add(new object[] { 0, Convert.ToInt32(piso.Text), asientos });
+                    }
                 }
-
-                Butacas.DataSource = dt;
+                else
+                {
+                    MessageBox.Show("Los valores ingresados deben ser mayores a cero");
+                    return;
+                }
             }
-    
+            else
+            {
+                MessageBox.Show("Los valores ingresados deben ser numéricos");
+                return;
+            }
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -121,6 +150,26 @@ namespace FrbaBus.Abm_Micro
         }
 
         private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void limpiar_Click(object sender, EventArgs e)
+        {
+            butacas.Clear();
+        }
+
+        private void Butacas_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void piso_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void aceptar_Click(object sender, EventArgs e)
         {
 
         }

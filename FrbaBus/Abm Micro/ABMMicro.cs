@@ -25,6 +25,8 @@ namespace FrbaBus.Abm_Micro
             idMarca.DataSource = Marca.ListarComboMarca();
             idMarca.ValueMember = ((DataTable)idMarca.DataSource).Columns[0].ColumnName;
             idMarca.DisplayMember = ((DataTable)idMarca.DataSource).Columns[1].ColumnName;
+
+            DataTable butacas = new DataTable();
             
         }
 
