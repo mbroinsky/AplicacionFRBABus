@@ -1,4 +1,4 @@
-SET NOCOUNT ON
+﻿SET NOCOUNT ON
 
 BEGIN TRAN
 
@@ -151,6 +151,16 @@ END
 IF OBJECT_ID(N'NOT_NULL.CargarVentasEncomiendas') IS NOT NULL
 BEGIN
 	DROP PROCEDURE NOT_NULL.CargarVentasEncomiendas;
+END
+
+IF OBJECT_ID(N'NOT_NULL.RegistrarLlegadas') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.RegistrarLlegadas;
+END
+
+IF OBJECT_ID(N'NOT_NULL.Llegadas') IS NOT NULL
+BEGIN
+	DROP TYPE NOT_NULL.Llegadas;
 END
 
 IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'NOT_NULL')
@@ -393,12 +403,11 @@ ALTER TABLE NOT_NULL.DevolucionVenta ADD CONSTRAINT PK_DevolucionVenta PRIMARY K
 CREATE TABLE NOT_NULL.Puntos
 (
 	PTS_idCliente INT NOT NULL 
-	,PTS_idVenta INT NOT NULL 
+	,PTS_fecVencimiento DATETIME NOT NULL 
 	,PTS_puntos INT NOT NULL 
-	,PTS_idCanje INT 
 )
 ON [PRIMARY]
-ALTER TABLE NOT_NULL.Puntos ADD CONSTRAINT PK_Puntos PRIMARY KEY CLUSTERED (PTS_idCliente, PTS_idVenta)
+ALTER TABLE NOT_NULL.Puntos ADD CONSTRAINT PK_Puntos PRIMARY KEY CLUSTERED (PTS_idCliente, PTS_fecVencimiento)
 
 -- Create Table: Producto
 --------------------------------------------------------------------------------
@@ -428,6 +437,7 @@ ALTER TABLE NOT_NULL.TipoServicio ADD CONSTRAINT PK_TipoServicio PRIMARY KEY (SR
 CREATE TABLE NOT_NULL.Canje
 (
 	CNJ_idCanje INT NOT NULL IDENTITY(1, 1)
+	,CNJ_idCliente INT NOT NULL
 	,CNJ_idProducto INT NOT NULL 
 	,CNJ_fecCanje DATETIME NOT NULL 
 )
@@ -644,28 +654,6 @@ REFERENCES NOT_NULL.[Micro] ([MIC_numMicro])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
-
-
--- Create Foreign Key: Puntos.PTS_idVenta -> Venta.VEN_idVenta
-ALTER TABLE NOT_NULL.[Puntos] ADD CONSTRAINT
-[FK_Puntos_PTS_idVenta_Venta_VEN_idVenta]
-FOREIGN KEY ([PTS_idVenta])
-REFERENCES NOT_NULL.[Venta] ([VEN_idVenta])
-ON UPDATE NO ACTION
-ON DELETE NO ACTION
-
-
-
--- Create Foreign Key: Puntos.PTS_idCanje -> Canje.CNJ_idCanje
-ALTER TABLE NOT_NULL.[Puntos] ADD CONSTRAINT
-[FK_Puntos_PTS_idCanje_Canje_CNJ_idCanje]
-FOREIGN KEY ([PTS_idCanje])
-REFERENCES NOT_NULL.[Canje] ([CNJ_idCanje])
-ON UPDATE NO ACTION
-ON DELETE NO ACTION
-
-
-
 -- Create Foreign Key: Micro.MIC_idTipoServicio -> TipoServicio.SRV_idTipoServicio
 ALTER TABLE NOT_NULL.[Micro] ADD CONSTRAINT
 [FK_Micro_MIC_idTipoServicio_TipoServicio_SRV_idTipoServicio]
@@ -704,6 +692,13 @@ REFERENCES NOT_NULL.[Producto] ([PRO_idProd])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
+-- Create Foreign Key: Canje.CNJ_idProducto -> Producto.PRO_idProd
+ALTER TABLE NOT_NULL.[Canje] ADD CONSTRAINT
+[FK_Canje_CNJ_idCliente_Cliente_CLI_idCliente]
+FOREIGN KEY ([CNJ_idCliente])
+REFERENCES NOT_NULL.[Cliente] ([CLI_idCliente])
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
 
 
 -- Create Foreign Key: Recorrido.REC_idTipoServicio -> TipoServicio.SRV_idTipoServicio
@@ -714,7 +709,16 @@ REFERENCES NOT_NULL.[TipoServicio] ([SRV_idTipoServicio])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
+GO
 
+
+CREATE TYPE NOT_NULL.Llegadas AS TABLE
+(
+    ID_MICRO         INT,
+    ID_CIU_ORI       INT,
+    ID_CIU_DEST      INT,
+    FECHA_LLEG       DATETIME
+)
 GO
 
 --Acá se deberían agregar los SP
@@ -821,6 +825,7 @@ GO
 
 CREATE PROCEDURE NOT_NULL.CargarVentasPasajes
 AS
+BEGIN
 DECLARE
 	@idVenta int,
 	@puntosObtenidos int,	
@@ -833,7 +838,9 @@ DECLARE
 	@viajeId int,
 	@microPatente varchar (7),
 	@microId int,
-	@numeroButaca int
+	@numeroButaca int,
+	@fechaLlegada datetime,
+	@fechaSalida datetime
 
 DECLARE VENTAPASAJESCUR CURSOR 
 FOR
@@ -844,8 +851,9 @@ SELECT DISTINCT
 	Cli_Dni,
 	REC_id,
 	Micro_patente,
-	Butaca_Nro
-	
+	Butaca_Nro,
+	FechaSalida,
+	FechaLlegada
 FROM
 	gd_esquema.Maestra,
 	NOT_NULL.recorrido
@@ -861,7 +869,9 @@ FETCH VENTAPASAJESCUR INTO
 	@clienteDNI,
 	@recorridoCodigo,
 	@microPatente,
-	@numeroButaca
+	@numeroButaca,
+	@fechaSalida,
+	@fechaLlegada
 	
 	WHILE (@@FETCH_STATUS = 0 )
 
@@ -869,30 +879,31 @@ FETCH VENTAPASAJESCUR INTO
 
 		SELECT @clienteId = CLI_idCliente 
 		FROM  NOT_NULL.Cliente
-		WHERE @clienteDNI = CLI_dni
-
-		SELECT DISTINCT @viajeId = VIA_numViaje
-		FROM  NOT_NULL.Viaje
-		WHERE @recorridoCodigo = VIA_codRecorrido
+		WHERE @clienteDNI = CLI_dni;
 		
 		SELECT DISTINCT @microId = MIC_numMicro
 		FROM  NOT_NULL.Micro
-		WHERE @microPatente = MIC_patente
+		WHERE @microPatente = MIC_patente;
 
-	
+		SELECT DISTINCT @viajeId = VIA_numViaje
+		FROM  NOT_NULL.Viaje
+		WHERE @recorridoCodigo = VIA_codRecorrido AND 
+		      VIA_numMicro = @microId AND 
+		      VIA_fecSalida = @fechaSalida;
+		      		
+
 		INSERT INTO NOT_NULL.Venta(VEN_fecVenta, VEN_total, VEN_idTarjeta, VEN_discapacitado)
 		VALUES (@pasajeFechaCompra, @pasajePrecio, null, 0)
 		
 		SET @idVenta = @@IDENTITY
-		
 		
 		INSERT INTO NOT_NULL.Pasaje(PAS_idVenta, PAS_codigo, PAS_idViaje, PAS_idCliente, PAS_numButaca, PAS_numMicro, PAS_precio)
 		VALUES(@idVenta, @pasajeCodigo,@viajeId ,@clienteId, @numeroButaca, @microId, @pasajePrecio)
 		
 		SET @puntosObtenidos = FLOOR(@pasajePrecio/5)
 		
-		INSERT INTO NOT_NULL.Puntos (PTS_idCliente, PTS_idVenta, PTS_puntos)
-		VALUES (@clienteId, @idVenta, @puntosObtenidos)
+		INSERT INTO NOT_NULL.Puntos (PTS_idCliente, PTS_puntos, PTS_fecVencimiento)
+		VALUES (@clienteId, @puntosObtenidos, DATEADD(YEAR, 1, @fechaLlegada))
 		
 		FETCH VENTAPASAJESCUR INTO	
 			@pasajeCodigo, 
@@ -901,17 +912,19 @@ FETCH VENTAPASAJESCUR INTO
 			@clienteDNI,
 			@recorridoCodigo,
 			@microPatente,
-			@numeroButaca
+			@numeroButaca,
+			@fechaSalida,
+			@fechaLlegada
 	END
-	
-
 	
 CLOSE VENTAPASAJESCUR
 DEALLOCATE VENTAPASAJESCUR;
+END
 GO
 
 CREATE PROCEDURE NOT_NULL.CargarVentasEncomiendas
 AS
+BEGIN
 DECLARE
 	@idVenta int,
 	@puntosObtenidos int,
@@ -922,7 +935,12 @@ DECLARE
 	@clienteId int,
 	@recorridoCodigo int,
 	@viajeId int,
-	@paqueteKG int
+	@paqueteKG int,
+	@idEncomienda int,
+	@fechaLlegada datetime,
+	@fechaSalida datetime,
+	@microPatente varchar(7),
+	@microId int
 
 DECLARE VENTAENCOMIENDACUR CURSOR 
 FOR
@@ -932,7 +950,10 @@ SELECT DISTINCT
 	Paquete_FechaCompra,
 	Cli_Dni,
 	REC_id,
-	Paquete_KG
+	Paquete_KG,
+	Micro_Patente,
+	FechaLlegada,
+	FechaSalida
 FROM
 	gd_esquema.Maestra,
 	NOT_NULL.Recorrido
@@ -947,7 +968,10 @@ FETCH VENTAENCOMIENDACUR INTO
 	@paqueteFechaCompra,
 	@clienteDNI,
 	@recorridoCodigo,
-	@paqueteKG
+	@paqueteKG,
+	@microPatente,
+	@fechaLlegada,
+	@fechaSalida
 	
 	WHILE (@@FETCH_STATUS = 0 )
 
@@ -956,10 +980,16 @@ FETCH VENTAENCOMIENDACUR INTO
 		SELECT @clienteId = CLI_idCliente 
 		FROM  NOT_NULL.Cliente
 		WHERE @clienteDNI = CLI_dni
+		
+		SELECT DISTINCT @microId = MIC_numMicro
+		FROM  NOT_NULL.Micro
+		WHERE @microPatente = MIC_patente;
 
 		SELECT DISTINCT @viajeId = VIA_numViaje
 		FROM  NOT_NULL.Viaje
-		WHERE @recorridoCodigo = VIA_codRecorrido
+		WHERE @recorridoCodigo = VIA_codRecorrido AND 
+		      VIA_numMicro = @microId AND 
+		      VIA_fecSalida = @fechaSalida;
 	
 		INSERT INTO NOT_NULL.Venta(VEN_fecVenta, VEN_total, VEN_idTarjeta, VEN_discapacitado)
 		VALUES (@paqueteFechaCompra, @paquetePrecio, null, 0)
@@ -971,8 +1001,8 @@ FETCH VENTAENCOMIENDACUR INTO
 		
 		SET @puntosObtenidos = FLOOR(@paquetePrecio/5)
 		
-		INSERT INTO NOT_NULL.Puntos (PTS_idCliente, PTS_idVenta, PTS_puntos)
-		VALUES (@clienteId, @idVenta, @puntosObtenidos)
+		INSERT INTO NOT_NULL.Puntos (PTS_idCliente, PTS_puntos, PTS_fecVencimiento)
+		VALUES (@clienteId, @puntosObtenidos, DATEADD(YEAR, 1, @fechaLlegada))
 		
 		FETCH VENTAENCOMIENDACUR INTO	
 			@paqueteCodigo, 
@@ -980,13 +1010,15 @@ FETCH VENTAENCOMIENDACUR INTO
 			@paqueteFechaCompra,
 			@clienteDNI,
 			@recorridoCodigo,
-			@paqueteKG
+			@paqueteKG,
+			@microPatente,
+			@fechaLlegada,
+			@fechaSalida
 	END
-	
-
-	
+		
 CLOSE VENTAENCOMIENDACUR
 DEALLOCATE VENTAENCOMIENDACUR;
+END
 GO
 
 --Acá se deben correr los SP de migracion
@@ -1032,6 +1064,14 @@ BEGIN
 	SET @SQL = 'SELECT ROL_idRol AS ID, ROL_nombre AS Nombre, ROL_habilitado AS Habilitado FROM NOT_NULL.ROL WHERE ' + @WHERE + ' 1=1;'
         
 	EXEC (@SQL);
+END
+GO
+
+CREATE PROCEDURE NOT_NULL.RegistrarLlegadas
+    @TablaLlegadas NOT_NULL.Llegadas READONLY
+AS 
+BEGIN
+    SELECT * FROM @TablaLlegadas;
 END
 GO
 
