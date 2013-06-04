@@ -158,7 +158,7 @@ BEGIN
 	DROP PROCEDURE NOT_NULL.RegistrarLlegadas;
 END
 
-IF OBJECT_ID(N'NOT_NULL.Llegadas') IS NOT NULL
+IF EXISTS (SELECT * FROM sys.types WHERE name = 'Llegadas')
 BEGIN
 	DROP TYPE NOT_NULL.Llegadas;
 END
@@ -245,8 +245,11 @@ CREATE TABLE NOT_NULL.Viaje
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Viaje ADD CONSTRAINT PK_Viaje PRIMARY KEY CLUSTERED (VIA_numViaje)
 
+--CREATE INDEX IDX_VIAJE_RECORRIDO
+--on NOT_NULL.Viaje(VIA_codRecorrido)
+
 CREATE INDEX IDX_VIAJE_RECORRIDO
-on NOT_NULL.Viaje(VIA_codRecorrido)
+on NOT_NULL.Viaje(VIA_codRecorrido, VIA_numMicro, VIA_fecSalida)
 -- Create Table: Usuario
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Usuario
@@ -361,7 +364,7 @@ CREATE TABLE NOT_NULL.DevXPas
 	,DXP_idPasaje INT NOT NULL 
 )
 ON [PRIMARY]
-ALTER TABLE NOT_NULL.DevXPas ADD CONSTRAINT PK_DevXPas PRIMARY KEY CLUSTERED (DXP_idDevolucion, DXP_idPasaje)
+ALTER TABLE NOT_NULL.DevXPas ADD CONSTRAINT PK_DevXPas PRIMARY KEY (DXP_idDevolucion, DXP_idPasaje)
 
 -- Create Table: DevXEnc
 --------------------------------------------------------------------------------
@@ -371,7 +374,7 @@ CREATE TABLE NOT_NULL.DevXEnc
 	,DXE_idEncomienda INT NOT NULL 
 )
 ON [PRIMARY]
-ALTER TABLE NOT_NULL.DevXEnc ADD CONSTRAINT PK_DevXEnc PRIMARY KEY CLUSTERED (DXE_idDevolucion, DXE_idEncomienda)
+ALTER TABLE NOT_NULL.DevXEnc ADD CONSTRAINT PK_DevXEnc PRIMARY KEY (DXE_idDevolucion, DXE_idEncomienda)
 
 -- Create Table: Tarjeta
 --------------------------------------------------------------------------------
@@ -401,13 +404,14 @@ ALTER TABLE NOT_NULL.DevolucionVenta ADD CONSTRAINT PK_DevolucionVenta PRIMARY K
 -- Create Table: Puntos
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Puntos
-(
-	PTS_idCliente INT NOT NULL 
+(	
+	PTS_idPunto INT NOT NULL IDENTITY(1,1)
+	,PTS_idCliente INT NOT NULL 
 	,PTS_fecVencimiento DATETIME NOT NULL 
 	,PTS_puntos INT NOT NULL 
 )
 ON [PRIMARY]
-ALTER TABLE NOT_NULL.Puntos ADD CONSTRAINT PK_Puntos PRIMARY KEY CLUSTERED (PTS_idCliente, PTS_fecVencimiento)
+ALTER TABLE NOT_NULL.Puntos ADD CONSTRAINT PK_Puntos PRIMARY KEY (PTS_idPunto)
 
 -- Create Table: Producto
 --------------------------------------------------------------------------------
