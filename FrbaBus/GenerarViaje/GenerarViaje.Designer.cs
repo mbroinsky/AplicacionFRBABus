@@ -31,6 +31,7 @@
             this.generar = new System.Windows.Forms.Button();
             this.cancelar = new System.Windows.Forms.Button();
             this.grpMicros = new System.Windows.Forms.GroupBox();
+            this.microsDisp = new System.Windows.Forms.ComboBox();
             this.buscar = new System.Windows.Forms.Button();
             this.grpPreseleccion = new System.Windows.Forms.GroupBox();
             this.lblRecorrido = new System.Windows.Forms.Label();
@@ -40,7 +41,6 @@
             this.fechaLlegada = new System.Windows.Forms.DateTimePicker();
             this.fechaSalida = new System.Windows.Forms.DateTimePicker();
             this.volver = new System.Windows.Forms.Button();
-            this.microsDisp = new System.Windows.Forms.ComboBox();
             this.grpMicros.SuspendLayout();
             this.grpPreseleccion.SuspendLayout();
             this.SuspendLayout();
@@ -75,6 +75,15 @@
             this.grpMicros.TabIndex = 11;
             this.grpMicros.TabStop = false;
             this.grpMicros.Text = "Micros Disponibles";
+            // 
+            // microsDisp
+            // 
+            this.microsDisp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.microsDisp.FormattingEnabled = true;
+            this.microsDisp.Location = new System.Drawing.Point(92, 19);
+            this.microsDisp.Name = "microsDisp";
+            this.microsDisp.Size = new System.Drawing.Size(121, 163);
+            this.microsDisp.TabIndex = 12;
             // 
             // buscar
             // 
@@ -134,6 +143,7 @@
             this.recorridos.Name = "recorridos";
             this.recorridos.Size = new System.Drawing.Size(200, 21);
             this.recorridos.TabIndex = 12;
+            this.recorridos.SelectedIndexChanged += new System.EventHandler(this.recorridos_SelectedIndexChanged);
             // 
             // fechaLlegada
             // 
@@ -163,15 +173,6 @@
             this.volver.Text = "Volver a seleccionar";
             this.volver.UseVisualStyleBackColor = true;
             this.volver.Click += new System.EventHandler(this.volver_Click);
-            // 
-            // microsDisp
-            // 
-            this.microsDisp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
-            this.microsDisp.FormattingEnabled = true;
-            this.microsDisp.Location = new System.Drawing.Point(92, 19);
-            this.microsDisp.Name = "microsDisp";
-            this.microsDisp.Size = new System.Drawing.Size(121, 163);
-            this.microsDisp.TabIndex = 12;
             // 
             // GenerarViaje
             // 

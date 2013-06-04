@@ -28,30 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.button1 = new System.Windows.Forms.Button();
+            this.agregarButacas = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.piso = new System.Windows.Forms.TextBox();
             this.cantidad = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Piso = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nro_asiento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tipo = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Butacas = new System.Windows.Forms.DataGridView();
+            this.cancelar = new System.Windows.Forms.Button();
+            this.aceptar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Butacas)).BeginInit();
             this.SuspendLayout();
             // 
-            // button1
+            // agregarButacas
             // 
-            this.button1.Location = new System.Drawing.Point(296, 18);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Agregar";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.agregarButacas.Location = new System.Drawing.Point(296, 18);
+            this.agregarButacas.Name = "agregarButacas";
+            this.agregarButacas.Size = new System.Drawing.Size(75, 23);
+            this.agregarButacas.TabIndex = 0;
+            this.agregarButacas.Text = "Agregar";
+            this.agregarButacas.UseVisualStyleBackColor = true;
+            this.agregarButacas.Click += new System.EventHandler(this.button1_Click);
             // 
             // label1
             // 
@@ -63,12 +61,12 @@
             this.label1.Text = "Piso";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
-            // textBox1
+            // piso
             // 
-            this.textBox1.Location = new System.Drawing.Point(39, 20);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(26, 20);
-            this.textBox1.TabIndex = 2;
+            this.piso.Location = new System.Drawing.Point(39, 20);
+            this.piso.Name = "piso";
+            this.piso.Size = new System.Drawing.Size(26, 20);
+            this.piso.TabIndex = 2;
             // 
             // cantidad
             // 
@@ -92,9 +90,9 @@
             // 
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.cantidad);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.piso);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.agregarButacas);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(377, 54);
@@ -103,74 +101,69 @@
             this.groupBox1.Text = "Butacas";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // dataGridView1
+            // Butacas
             // 
-            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Piso,
-            this.nro_asiento,
-            this.tipo});
-            this.dataGridView1.Location = new System.Drawing.Point(12, 86);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(377, 240);
-            this.dataGridView1.TabIndex = 16;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick_1);
+            this.Butacas.AllowUserToAddRows = false;
+            this.Butacas.AllowUserToDeleteRows = false;
+            this.Butacas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.Butacas.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.Butacas.Location = new System.Drawing.Point(12, 72);
+            this.Butacas.Name = "Butacas";
+            this.Butacas.RowHeadersVisible = false;
+            this.Butacas.Size = new System.Drawing.Size(377, 254);
+            this.Butacas.TabIndex = 30;
             // 
-            // Piso
+            // cancelar
             // 
-            this.Piso.HeaderText = "Piso";
-            this.Piso.Name = "Piso";
-            this.Piso.ReadOnly = true;
+            this.cancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancelar.Location = new System.Drawing.Point(308, 332);
+            this.cancelar.Name = "cancelar";
+            this.cancelar.Size = new System.Drawing.Size(75, 23);
+            this.cancelar.TabIndex = 32;
+            this.cancelar.Text = "Cancelar";
+            this.cancelar.UseVisualStyleBackColor = true;
             // 
-            // nro_asiento
+            // aceptar
             // 
-            this.nro_asiento.HeaderText = "Nro. de Asiento";
-            this.nro_asiento.Name = "nro_asiento";
-            this.nro_asiento.ReadOnly = true;
-            // 
-            // tipo
-            // 
-            this.tipo.HeaderText = "Ubicación";
-            this.tipo.Name = "tipo";
+            this.aceptar.Location = new System.Drawing.Point(229, 332);
+            this.aceptar.Name = "aceptar";
+            this.aceptar.Size = new System.Drawing.Size(75, 23);
+            this.aceptar.TabIndex = 31;
+            this.aceptar.Text = "Aceptar";
+            this.aceptar.UseVisualStyleBackColor = true;
             // 
             // ABM_Butacas
             // 
+            this.AcceptButton = this.aceptar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(401, 338);
-            this.Controls.Add(this.dataGridView1);
+            this.CancelButton = this.cancelar;
+            this.ClientSize = new System.Drawing.Size(401, 366);
+            this.Controls.Add(this.cancelar);
+            this.Controls.Add(this.aceptar);
+            this.Controls.Add(this.Butacas);
             this.Controls.Add(this.groupBox1);
             this.Name = "ABM_Butacas";
             this.Text = "Butacas";
             this.Load += new System.EventHandler(this.Form2_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Butacas)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button agregarButacas;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox piso;
         private System.Windows.Forms.TextBox cantidad;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Piso;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nro_asiento;
-        private System.Windows.Forms.DataGridViewComboBoxColumn tipo;
+        private System.Windows.Forms.DataGridView Butacas;
+        private System.Windows.Forms.Button cancelar;
+        private System.Windows.Forms.Button aceptar;
 
 
 
