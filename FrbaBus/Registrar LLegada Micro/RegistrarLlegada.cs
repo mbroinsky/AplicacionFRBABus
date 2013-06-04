@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using AccesoADatos.Orm;
+using AccesoADatos;
 
 namespace Registrar_LLegada_Micro
 {
@@ -48,6 +49,28 @@ namespace Registrar_LLegada_Micro
             patentesMicros.SelectedIndex = 0;
         }
 
+        private void cargar_Click(object sender, EventArgs e)
+        {
+            Conector.Datos.IniciarTransaccion();
 
+            foreach (DataGridViewRow fila in llegadasCargadas.Rows)
+            {
+                try
+                {
+                    Conector.Datos.EjecutarProcedure("NOT_NULL.RegistrarLlegadas", fila.Cells["fecLlegada"].Value,
+                        fila.Cells["idMicro"].Value, fila.Cells["idOrigen"].Value, fila.Cells["idDestino"].Value);
+                }
+                catch
+                {
+                    MessageBox.Show("Ocurrió un error al registrar las llegadas, por favor intente nuevamente");
+                    Conector.Datos.AbortarTransaccion();
+                    return;
+                }
+            }
+
+            Conector.Datos.TerminarTransaccion();
+
+            this.Close();
+        }
     }
 }

@@ -167,6 +167,7 @@
             this.cargar.TabIndex = 4;
             this.cargar.Text = "Cargar";
             this.cargar.UseVisualStyleBackColor = true;
+            this.cargar.Click += new System.EventHandler(this.cargar_Click);
             // 
             // ciudadesDestino
             // 

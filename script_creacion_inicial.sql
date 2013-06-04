@@ -182,6 +182,7 @@ CREATE TABLE NOT_NULL.Encomienda
 	,ENC_idViaje INT NOT NULL
 	,ENC_idCliente INT NOT NULL 
 	,ENC_kilos DECIMAL(10, 2) NOT NULL 
+	,ENC_precio DECIMAL(10, 2) NOT NULL
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Encomienda ADD CONSTRAINT PK_Encomienda PRIMARY KEY (ENC_numEnc)
@@ -715,16 +716,6 @@ ON DELETE NO ACTION
 
 GO
 
-
-CREATE TYPE NOT_NULL.Llegadas AS TABLE
-(
-    ID_MICRO         INT,
-    ID_CIU_ORI       INT,
-    ID_CIU_DEST      INT,
-    FECHA_LLEG       DATETIME
-)
-GO
-
 --Acá se deberían agregar los SP
 
 CREATE PROCEDURE NOT_NULL.CargarTablasSecundarias 
@@ -1000,8 +991,8 @@ FETCH VENTAENCOMIENDACUR INTO
 		
 		SET @idVenta = @@IDENTITY
 		
-		INSERT INTO NOT_NULL.Encomienda(ENC_idVenta, ENC_codigo, ENC_idViaje, ENC_idCliente, ENC_kilos)
-		VALUES(@@IDENTITY, @paqueteCodigo, @viajeId ,@clienteId, @paqueteKG)
+		INSERT INTO NOT_NULL.Encomienda(ENC_idVenta, ENC_codigo, ENC_idViaje, ENC_idCliente, ENC_kilos, ENC_precio)
+		VALUES(@@IDENTITY, @paqueteCodigo, @viajeId ,@clienteId, @paqueteKG, @paquetePrecio)
 		
 		SET @puntosObtenidos = FLOOR(@paquetePrecio/5)
 		
@@ -1072,10 +1063,46 @@ END
 GO
 
 CREATE PROCEDURE NOT_NULL.RegistrarLlegadas
-    @TablaLlegadas NOT_NULL.Llegadas READONLY
+    @fecLlegada DATETIME,
+    @idMicro INT,
+    @idCiuOri INT,
+    @idCiuDest INT 
 AS 
 BEGIN
-    SELECT * FROM @TablaLlegadas;
+	DECLARE @idViaje INT,
+			@idRecorrido INT,
+			@idTipServicio INT
+
+	SELECT @idTipServicio = MIC_idTipoServicio FROM
+		NOT_NULL.Micro WHERE @idMicro = MIC_numMicro;
+	
+	SELECT @idRecorrido = REC_id FROM
+		NOT_NULL.Recorrido WHERE 
+		REC_idCiudadOrigen = @idCiuOri AND
+		REC_idCiudadDestino = @idCiuDest AND
+		REC_idTipoServicio = @idTipServicio;
+	
+	SELECT @idViaje = VIA_numViaje FROM
+		NOT_NULL.Viaje WHERE VIA_numMicro = @idMicro AND
+		VIA_codRecorrido = @idRecorrido AND
+		VIA_fecLlegada IS NULL AND DATEDIFF(day, VIA_fecSalida, @fecLlegada) < 1;
+	
+	IF @idViaje IS NOT NULL
+	BEGIN
+		-- Registra llegada
+		UPDATE NOT_NULL.Viaje SET VIA_fecLlegada = @fecLlegada WHERE VIA_numViaje = @idViaje;
+			
+		-- Inserta Puntos
+		INSERT INTO NOT_NULL.Puntos (PTS_idCliente, PTS_puntos, PTS_fecVencimiento) 
+		SELECT PAS_idCliente, FLOOR(PAS_precio/5), DATEADD(YEAR, 1, @fecLlegada)	 
+		FROM NOT_NULL.Pasaje
+		WHERE PAS_idViaje = @idViaje;
+			
+		INSERT INTO NOT_NULL.Puntos (PTS_idCliente, PTS_puntos, PTS_fecVencimiento) 
+		SELECT ENC_idCliente, FLOOR(ENC_precio / 5), DATEADD(YEAR, 1, @fecLlegada)	 
+		FROM NOT_NULL.Encomienda
+		WHERE ENC_idViaje = @idViaje;
+	END 
 END
 GO
 
