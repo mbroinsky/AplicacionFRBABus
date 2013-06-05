@@ -11,12 +11,10 @@ namespace FrbaBus.Abm_Micro
 {
     public partial class ABM_Butacas : Form
     {
-        DataTable butacas = new DataTable();
-         
+        DataTable butacas = new DataTable();     
                  
         public ABM_Butacas()
         {
-            
             DataTable PasilloVentana = new DataTable();
             DataGridViewComboBoxColumn comboBoxPasilloVentana = new DataGridViewComboBoxColumn();     
             InitializeComponent();
@@ -42,6 +40,7 @@ namespace FrbaBus.Abm_Micro
             butacas.Columns.Add("idMicro");
             butacas.Columns.Add("Piso");
             butacas.Columns.Add("Nro. Asiento");
+
             Butacas.DataSource = butacas;
             Butacas.Columns["idMicro"].Visible = false;
             Butacas.Columns.Add(comboBoxPasilloVentana);
@@ -155,7 +154,7 @@ namespace FrbaBus.Abm_Micro
         }
 
         private void limpiar_Click(object sender, EventArgs e)
-        {
+         {
             butacas.Clear();
         }
 
@@ -171,7 +170,7 @@ namespace FrbaBus.Abm_Micro
 
         private void aceptar_Click(object sender, EventArgs e)
         {
-
+            this.SetVisibleCore(false);
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using AccesoADatos.Orm;
+using FrbaBus.AccesoADatos.Orm;
 
 namespace FrbaBus.Abm_Micro
 {
@@ -17,7 +18,17 @@ namespace FrbaBus.Abm_Micro
         public AM_Micro()
         {
             InitializeComponent();
+
+            servicio.DataSource = Servicio.ListarComboServicio();
+            servicio.ValueMember = ((DataTable)servicio.DataSource).Columns[0].ColumnName;
+            servicio.DisplayMember = ((DataTable)servicio.DataSource).Columns[1].ColumnName;
+
+            marca.DataSource = Marca.ListarComboMarca();
+            marca.ValueMember = ((DataTable)marca.DataSource).Columns[0].ColumnName;
+            marca.DisplayMember = ((DataTable)marca.DataSource).Columns[1].ColumnName;
+
             micro = new Micro(); 
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -62,11 +73,37 @@ namespace FrbaBus.Abm_Micro
 
         private void button1_Click(object sender, EventArgs e)
         {
-            String query = "INSERT INTO ";
+         if (Validador.esPantenteValida(patente.Text))
+         {
+              if (Validador.esNumericoEnteroPositivo(capacidad.Text))
+              {
+                  if(micro.Butacas.Rows.Count > 1)
+                  {
+                      micro.Patente = patente.Text;
+                      micro.IdTipoDeServicio = Convert.ToInt16(servicio.SelectedValue);
+                      micro.KilosEncomiendas = Convert.ToInt16(capacidad.Text);
+                      micro.Habilitado = hibilitado.Checked;
+                      micro.IdMarca = Convert.ToInt16(marca.SelectedValue);
 
-
+                      if (micro.Insertar()) { this.Close(); }
+                      else { MessageBox.Show("Se produjo un error al insertar el Micro"); }
+                     
+                  }
+                  else
+                  {
+                      MessageBox.Show("El micro que desea insertar no contiene butacas");
+                  }
+              }
+              else
+              {
+                  MessageBox.Show("La capacidad debe ser un valor numerico entero");
+              }
+         }
+         else
+         {
+             MessageBox.Show("El formato de la patente debe ser AAA-999");
+         }
         }
-
         private void button2_Click(object sender, EventArgs e)
         {
 
@@ -86,13 +123,22 @@ namespace FrbaBus.Abm_Micro
         {
             var log = new Abm_Micro.ABM_Butacas();
 
-            //log.butacas = this.micro.Butacas;
-
             this.SetVisibleCore(false);
-
             log.ShowDialog();
-
+            
+            this.micro.Butacas = (DataTable)log.Butacas.DataSource;
+            log.Close();
             this.SetVisibleCore(true);
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

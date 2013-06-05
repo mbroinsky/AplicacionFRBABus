@@ -158,10 +158,36 @@ namespace AccesoADatos.Orm
                 return;
             }
         }
-        
-        public bool InsertarMicro()
+
+
+        public bool Insertar()
         {
-            return true;
+            try
+            {
+                Hashtable parametros = new Hashtable();
+
+                parametros.Add("@Patente", this.Patente);
+                parametros.Add("@IdTipoServicio", this.IdTipoDeServicio);
+                parametros.Add("@KilosEncomiendas", this.KilosEncomiendas);
+                parametros.Add("@Habilitado", this.Habilitado);
+                parametros.Add("@IdMarca", this.IdMarca);
+                parametros.Add("@IdModelo", this.IdModelo);
+                parametros.Add("@fueraDeServicio", false);
+
+                Conector.Datos.EjecutarComando( "insert into NOT_NULL.Micro " +
+                                                " (MIC_patente, MIC_idTipoServicio, MIC_kilosEncomiendas, MIC_habilitado, MIC_idMarca, MIC_modelo, MIC_fechaAlta, MIC_fueraDeServicio) " +
+                                                " values (@Patente, @IdTipoServicio, @KilosEncomiendas, @Habilitado, @IdMarca, @IdModelo, GETDATE (), @fueraDeServicio);", parametros);
+
+
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
+        
+
     }
 }

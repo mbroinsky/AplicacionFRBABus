@@ -174,11 +174,11 @@
         private System.Windows.Forms.TextBox piso;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.DataGridView Butacas;
         private System.Windows.Forms.Button cancelar;
         private System.Windows.Forms.Button aceptar;
         private System.Windows.Forms.Button limpiar;
         private System.Windows.Forms.TextBox cantidad;
+        public System.Windows.Forms.DataGridView Butacas;
 
 
 

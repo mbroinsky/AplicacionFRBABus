@@ -16,7 +16,7 @@ namespace FrbaBus
 
         internal static bool esPantenteValida(String text)
         {
-            Regex regex = new Regex("[[A-Z]{3}|-|[0-9]{3}");
+            Regex regex = new Regex("[A-Z]{3}-[0-9]{3}");
             return regex.IsMatch(text);
         }
     }

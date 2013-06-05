@@ -28,18 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.Matrícula = new System.Windows.Forms.TextBox();
+            this.patente = new System.Windows.Forms.TextBox();
             this.matricula = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.servicio = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.hibilitado = new System.Windows.Forms.CheckBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.marca = new System.Windows.Forms.ComboBox();
+            this.capacidad = new System.Windows.Forms.TextBox();
             this.aceptar = new System.Windows.Forms.Button();
             this.cancelar = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -47,14 +47,15 @@
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // Matrícula
+            // patente
             // 
-            this.Matrícula.Location = new System.Drawing.Point(170, 45);
-            this.Matrícula.MaxLength = 6;
-            this.Matrícula.Name = "Matrícula";
-            this.Matrícula.Size = new System.Drawing.Size(100, 20);
-            this.Matrícula.TabIndex = 0;
-            this.Matrícula.TextChanged += new System.EventHandler(this.Matrícula_TextChanged);
+            this.patente.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.patente.Location = new System.Drawing.Point(170, 45);
+            this.patente.MaxLength = 7;
+            this.patente.Name = "patente";
+            this.patente.Size = new System.Drawing.Size(100, 20);
+            this.patente.TabIndex = 0;
+            this.patente.TextChanged += new System.EventHandler(this.Matrícula_TextChanged);
             // 
             // matricula
             // 
@@ -66,13 +67,14 @@
             this.matricula.Text = "Matrícula:";
             this.matricula.Click += new System.EventHandler(this.label1_Click);
             // 
-            // comboBox1
+            // servicio
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(170, 74);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 2;
+            this.servicio.FormattingEnabled = true;
+            this.servicio.Location = new System.Drawing.Point(170, 74);
+            this.servicio.Name = "servicio";
+            this.servicio.Size = new System.Drawing.Size(121, 21);
+            this.servicio.TabIndex = 2;
+            this.servicio.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -122,15 +124,15 @@
             this.label5.TabIndex = 7;
             this.label5.Text = "Modelo:";
             // 
-            // checkBox1
+            // hibilitado
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(170, 135);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(15, 14);
-            this.checkBox1.TabIndex = 8;
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.hibilitado.AutoSize = true;
+            this.hibilitado.Location = new System.Drawing.Point(170, 135);
+            this.hibilitado.Name = "hibilitado";
+            this.hibilitado.Size = new System.Drawing.Size(15, 14);
+            this.hibilitado.TabIndex = 8;
+            this.hibilitado.UseVisualStyleBackColor = true;
+            this.hibilitado.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // comboBox2
             // 
@@ -139,21 +141,22 @@
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(121, 21);
             this.comboBox2.TabIndex = 9;
+            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
-            // comboBox3
+            // marca
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(170, 190);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(121, 21);
-            this.comboBox3.TabIndex = 10;
+            this.marca.FormattingEnabled = true;
+            this.marca.Location = new System.Drawing.Point(170, 190);
+            this.marca.Name = "marca";
+            this.marca.Size = new System.Drawing.Size(121, 21);
+            this.marca.TabIndex = 10;
             // 
-            // textBox1
+            // capacidad
             // 
-            this.textBox1.Location = new System.Drawing.Point(170, 106);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 11;
+            this.capacidad.Location = new System.Drawing.Point(170, 106);
+            this.capacidad.Name = "capacidad";
+            this.capacidad.Size = new System.Drawing.Size(100, 20);
+            this.capacidad.TabIndex = 11;
             // 
             // aceptar
             // 
@@ -206,18 +209,18 @@
             this.ClientSize = new System.Drawing.Size(367, 297);
             this.Controls.Add(this.cancelar);
             this.Controls.Add(this.aceptar);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.comboBox3);
+            this.Controls.Add(this.capacidad);
+            this.Controls.Add(this.marca);
             this.Controls.Add(this.comboBox2);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.hibilitado);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.servicio);
             this.Controls.Add(this.matricula);
-            this.Controls.Add(this.Matrícula);
+            this.Controls.Add(this.patente);
             this.Controls.Add(this.groupBox1);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "AM_Micro";
@@ -231,21 +234,21 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox Matrícula;
+        private System.Windows.Forms.TextBox patente;
         private System.Windows.Forms.Label matricula;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox servicio;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ComboBox marca;
+        private System.Windows.Forms.TextBox capacidad;
         private System.Windows.Forms.Button aceptar;
         private System.Windows.Forms.Button cancelar;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button agregarButacas;
+        private System.Windows.Forms.CheckBox hibilitado;
     }
 }

@@ -61,5 +61,18 @@ namespace AccesoADatos.Orm
                 return false;
             }
         }
+
+        public bool InsertarTablaDeButacas()
+        {
+            try
+            {
+                Conector.Datos.EjecutarComando(" ");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
