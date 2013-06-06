@@ -148,7 +148,7 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1043, 64);
+            this.groupBox1.Size = new System.Drawing.Size(1327, 64);
             this.groupBox1.TabIndex = 27;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Micros";
@@ -166,7 +166,7 @@
             // 
             // agregar
             // 
-            this.agregar.Location = new System.Drawing.Point(903, 355);
+            this.agregar.Location = new System.Drawing.Point(1183, 355);
             this.agregar.Name = "agregar";
             this.agregar.Size = new System.Drawing.Size(75, 23);
             this.agregar.TabIndex = 28;
@@ -178,19 +178,19 @@
             // 
             this.Micros.AllowUserToAddRows = false;
             this.Micros.AllowUserToDeleteRows = false;
-            this.Micros.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.Micros.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.Micros.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.Micros.Location = new System.Drawing.Point(12, 82);
             this.Micros.Name = "Micros";
             this.Micros.RowHeadersVisible = false;
-            this.Micros.Size = new System.Drawing.Size(1043, 267);
+            this.Micros.Size = new System.Drawing.Size(1327, 267);
             this.Micros.TabIndex = 29;
             this.Micros.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Micros_CellContentClick);
             // 
             // salir
             // 
             this.salir.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.salir.Location = new System.Drawing.Point(984, 355);
+            this.salir.Location = new System.Drawing.Point(1264, 355);
             this.salir.Name = "salir";
             this.salir.Size = new System.Drawing.Size(75, 23);
             this.salir.TabIndex = 30;
@@ -203,7 +203,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.salir;
-            this.ClientSize = new System.Drawing.Size(1067, 390);
+            this.ClientSize = new System.Drawing.Size(1351, 390);
             this.ControlBox = false;
             this.Controls.Add(this.salir);
             this.Controls.Add(this.Micros);

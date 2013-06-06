@@ -9,10 +9,6 @@ namespace FrbaBus.AccesoADatos.Orm
 {
     class Servicio
     {
-        Int16 idTipoServicio;
-        String nombreServicio;
-        Double porcentajeAdicional;
-
         public static DataTable ListarComboServicio()
         {
             try

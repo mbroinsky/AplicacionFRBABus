@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Collections;
 using System.Data;
 using System.Windows.Forms;
@@ -80,7 +77,7 @@ namespace AccesoADatos.Orm
                                   "MIC_fueraDeServicio as 'Fuera de Servicio', " +
                                   "MIC_fecFueraServ as 'Fec. Fuera de Serv.', " +
                                   "MIC_fecReinicioServ as 'Fec. Reinicio Serv.', " +
-                                  "MIC_fecBaja as 'Baja definitiva' " +
+                                  "MIC_fecBaja as 'Fec. Baja definitiva' " +
                                   "from NOT_NULL.Micro, NOT_NULL.Marca, NOT_NULL.TipoServicio where " +
                                   "MIC_idMarca = MAR_idMarca and " +
                                   "MIC_idTipoServicio = SRV_idTipoServicio and ";
@@ -177,8 +174,70 @@ namespace AccesoADatos.Orm
                 Conector.Datos.EjecutarComando( "insert into NOT_NULL.Micro " +
                                                 " (MIC_patente, MIC_idTipoServicio, MIC_kilosEncomiendas, MIC_habilitado, MIC_idMarca, MIC_modelo, MIC_fechaAlta, MIC_fueraDeServicio) " +
                                                 " values (@Patente, @IdTipoServicio, @KilosEncomiendas, @Habilitado, @IdMarca, @IdModelo, GETDATE (), @fueraDeServicio);", parametros);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool InhabilitarMicro(int numMicro) 
+        {
+            try
+            {
+                Hashtable parametros = new Hashtable();
+                parametros.Add("@numMicro", numMicro);
+
+                Conector.Datos.EjecutarComando("UPDATE NOT_NULL.Micro SET MIC_habilitado = 0 where MIC_numMicro = @numMicro", parametros);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
 
+
+        internal static bool cambiarHabilitado(int numMicro, int estado)
+        {
+            try
+            {
+                Hashtable parametros = new Hashtable();
+                parametros.Add("@numMicro", numMicro);
+
+                if (estado == 0)
+                {
+                    Conector.Datos.EjecutarComando("UPDATE NOT_NULL.Micro SET MIC_habilitado = 1 where MIC_numMicro = @numMicro", parametros);
+                }
+                else
+                {
+                    Conector.Datos.EjecutarComando("UPDATE NOT_NULL.Micro SET MIC_habilitado = 0 where MIC_numMicro = @numMicro", parametros);
+                }
+
+                 return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        internal static bool cambiarEstado(int numMicro, int estado)
+        {
+            try
+            {
+                Hashtable parametros = new Hashtable();
+                parametros.Add("@numMicro", numMicro);
+
+                if (estado == 0)
+                {
+                    Conector.Datos.EjecutarComando("UPDATE NOT_NULL.Micro SET MIC_fueraDeServicio = 1, MIC_fecFueraServ = GETDATE() where MIC_numMicro = @numMicro", parametros);
+                }
+                else
+                {
+                    Conector.Datos.EjecutarComando("UPDATE NOT_NULL.Micro SET MIC_fueraDeServicio = 0,  MIC_fecReinicioServ = GETDATE() where MIC_numMicro = @numMicro", parametros);
+                }
 
                 return true;
             }
@@ -187,7 +246,12 @@ namespace AccesoADatos.Orm
                 return false;
             }
         }
-        
 
+        internal static void bajaDefinitiva(int numMicro)
+        {
+          Hashtable parametros = new Hashtable();
+          parametros.Add("@numMicro", numMicro);
+          Conector.Datos.EjecutarComando("UPDATE NOT_NULL.Micro SET MIC_fecBaja = GETDATE() where MIC_numMicro = @numMicro", parametros);
+        }
     }
 }
