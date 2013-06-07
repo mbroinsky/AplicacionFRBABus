@@ -26,9 +26,7 @@ namespace FrbaBus.Abm_Micro
             marca.DataSource = Marca.ListarComboMarca();
             marca.ValueMember = ((DataTable)marca.DataSource).Columns[0].ColumnName;
             marca.DisplayMember = ((DataTable)marca.DataSource).Columns[1].ColumnName;
-
-            micro = new Micro(); 
-
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)

@@ -122,6 +122,16 @@ namespace FrbaBus.Abm_Micro
                 Micros.Columns.Clear();
             }
 
+
+            if (e.ColumnIndex == Micros.Columns.Count - 3)
+            {
+                var fila = Micros.Rows[e.RowIndex];
+
+                Micro.cambiarEstado(Convert.ToInt32(fila.Cells["id"].Value), Convert.ToInt32(fila.Cells["Fuera de Servicio"].Value));
+
+                Micros.Columns.Clear();
+            }
+
             this.cargarGrilla();
         }
 
@@ -141,6 +151,11 @@ namespace FrbaBus.Abm_Micro
             Micros.DataSource = Micro.BuscarMicro(campoMatricula.Text, Convert.ToString(idServicio.SelectedValue), Convert.ToString(idMarca.SelectedValue), "", capacidad.Text);
             /*Columnas para los botones*/
 
+            DataGridViewColumn Modificar = new DataGridViewButtonColumn();
+            Modificar.HeaderText = "Modificar";
+            Modificar.Name = "Modificar";
+            Modificar.Visible = true;
+
             DataGridViewColumn enServicio = new DataGridViewButtonColumn();
             enServicio.HeaderText = "Estado del servicio";
             enServicio.Name = "Estado del servicio";
@@ -156,6 +171,7 @@ namespace FrbaBus.Abm_Micro
             BajaDefinitiva.Name = "Baja Definitiva";
             BajaDefinitiva.Visible = true;
 
+            Micros.Columns.Add(Modificar);
             Micros.Columns.Add(enServicio);
             Micros.Columns.Add(Habilitar);
             Micros.Columns.Add(BajaDefinitiva);
@@ -164,6 +180,10 @@ namespace FrbaBus.Abm_Micro
 
             foreach (DataGridViewRow row in Micros.Rows)
             {
+                DataGridViewButtonCell btnModificar = new DataGridViewButtonCell();
+                btnModificar.UseColumnTextForButtonValue = false;
+                btnModificar.Value = "Modificar";
+
                 DataGridViewButtonCell btnEstado = new DataGridViewButtonCell();
                 btnEstado.UseColumnTextForButtonValue = false;
 
@@ -193,9 +213,17 @@ namespace FrbaBus.Abm_Micro
                     btnHabilitar.Value = "Deshabilitar";
                 }
 
+                row.Cells["Modificar"] = btnModificar;
                 row.Cells["Estado del servicio"] = btnEstado;
                 row.Cells["Habilitar"] = btnHabilitar;
                 row.Cells["Baja Definitiva"] = btnBajaDefinitiva;
+
+                /*
+                if (Convert.ToString(row.Cells["Fec. Baja definitiva"].Value).Length != 0)
+                {
+                 
+                }
+                */
 
             }
 
