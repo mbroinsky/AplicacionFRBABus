@@ -45,6 +45,11 @@ namespace FrbaBus.Abm_Permisos
         {
             if (e.ColumnIndex == Roles.Columns.Count - 1)
             {
+                if (Roles.SelectedRows.Count = 0)
+                {
+                    return;                    
+                }
+                
                 var fila = Roles.SelectedRows[0];
 
                 var mod = new ABMRol(new Rol(fila));
