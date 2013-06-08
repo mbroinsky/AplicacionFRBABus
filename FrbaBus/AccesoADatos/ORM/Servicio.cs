@@ -5,7 +5,7 @@ using System.Text;
 using System.Data;
 using AccesoADatos;
 
-namespace FrbaBus.AccesoADatos.Orm
+namespace AccesoADatos.Orm
 {
     class Servicio
     {

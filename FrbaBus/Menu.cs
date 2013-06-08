@@ -51,5 +51,10 @@ namespace FrbaBus
         {
             AbrirDialogo(new Registrar_LLegada_Micro.RegistrarLlegada());
         }
+
+        private void abmRecorridos_Click(object sender, EventArgs e)
+        {
+            AbrirDialogo(new Abm_Recorrido.SeleccionRecorrido());
+        }
     }
 }

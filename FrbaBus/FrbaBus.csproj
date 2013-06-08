@@ -93,11 +93,17 @@
     <Compile Include="Abm Permisos\SeleccionRol.Designer.cs">
       <DependentUpon>SeleccionRol.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Recorrido\Form1.cs">
+    <Compile Include="Abm Recorrido\ABMRecorrido.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Recorrido\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Abm Recorrido\ABMRecorrido.Designer.cs">
+      <DependentUpon>ABMRecorrido.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Recorrido\SeleccionRecorrido.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Recorrido\SeleccionRecorrido.Designer.cs">
+      <DependentUpon>SeleccionRecorrido.cs</DependentUpon>
     </Compile>
     <Compile Include="AccesoADatos\Conector.cs" />
     <Compile Include="AccesoADatos\CapaDatos.cs" />
@@ -179,6 +185,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Permisos\SeleccionRol.resx">
       <DependentUpon>SeleccionRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Recorrido\ABMRecorrido.resx">
+      <DependentUpon>ABMRecorrido.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Recorrido\SeleccionRecorrido.resx">
+      <DependentUpon>SeleccionRecorrido.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AccesoSistema.resx">
       <DependentUpon>AccesoSistema.cs</DependentUpon>

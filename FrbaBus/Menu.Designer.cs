@@ -33,6 +33,7 @@
             this.Salir = new System.Windows.Forms.Button();
             this.generarViaje = new System.Windows.Forms.Button();
             this.registrarLlegadas = new System.Windows.Forms.Button();
+            this.abmRecorridos = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ABMMicro
@@ -85,12 +86,23 @@
             this.registrarLlegadas.UseVisualStyleBackColor = true;
             this.registrarLlegadas.Click += new System.EventHandler(this.registrarLlegadas_Click);
             // 
+            // abmRecorridos
+            // 
+            this.abmRecorridos.Location = new System.Drawing.Point(338, 93);
+            this.abmRecorridos.Name = "abmRecorridos";
+            this.abmRecorridos.Size = new System.Drawing.Size(75, 44);
+            this.abmRecorridos.TabIndex = 5;
+            this.abmRecorridos.Text = "ABM Recorridos";
+            this.abmRecorridos.UseVisualStyleBackColor = true;
+            this.abmRecorridos.Click += new System.EventHandler(this.abmRecorridos_Click);
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(685, 149);
             this.ControlBox = false;
+            this.Controls.Add(this.abmRecorridos);
             this.Controls.Add(this.registrarLlegadas);
             this.Controls.Add(this.generarViaje);
             this.Controls.Add(this.ABMRol);
@@ -111,5 +123,6 @@
         private System.Windows.Forms.Button Salir;
         private System.Windows.Forms.Button generarViaje;
         private System.Windows.Forms.Button registrarLlegadas;
+        private System.Windows.Forms.Button abmRecorridos;
     }
 }

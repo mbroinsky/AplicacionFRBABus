@@ -19,8 +19,8 @@ namespace FrbaBus.Abm_Permisos
 
         private void Buscar_Click(object sender, EventArgs e)
         {
-            Roles.Columns.Clear(); 
-            Roles.DataSource = Rol.Listar(Nombre.Text);
+            roles.Columns.Clear(); 
+            roles.DataSource = Rol.Listar(nombre.Text);
             
             var btn = new DataGridViewButtonColumn();
 
@@ -31,9 +31,9 @@ namespace FrbaBus.Abm_Permisos
             btn.FlatStyle = FlatStyle.Standard;
             btn.CellTemplate.Style.BackColor = Color.Honeydew;
 
-            Roles.Columns.Add(btn);
+            roles.Columns.Add(btn);
 
-            Roles.ClearSelection();
+            roles.ClearSelection();
         }
         
         private void Salir_Click(object sender, EventArgs e)
@@ -43,14 +43,14 @@ namespace FrbaBus.Abm_Permisos
 
         private void Roles_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == Roles.Columns.Count - 1)
+            if (e.ColumnIndex == roles.Columns.Count - 1)
             {
-                if (Roles.SelectedRows.Count = 0)
+                if (roles.SelectedRows.Count == 0)
                 {
                     return;                    
                 }
                 
-                var fila = Roles.SelectedRows[0];
+                var fila = roles.SelectedRows[0];
 
                 var mod = new ABMRol(new Rol(fila));
 
@@ -62,8 +62,8 @@ namespace FrbaBus.Abm_Permisos
 
                 mod.ShowDialog();
 
-                Roles.DataSource = null;
-                Roles.Columns.Clear();
+                roles.DataSource = null;
+                roles.Columns.Clear();
             }
         }
 
@@ -79,8 +79,13 @@ namespace FrbaBus.Abm_Permisos
 
             alta.ShowDialog();
 
-            Roles.DataSource = null;
-            Roles.Columns.Clear();
+            roles.DataSource = null;
+            roles.Columns.Clear();
+        }
+
+        private void Nombre_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

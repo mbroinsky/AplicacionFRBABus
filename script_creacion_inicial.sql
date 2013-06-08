@@ -763,7 +763,8 @@ BEGIN
 				('Listado de Roles', 'SeleccionRol'),
 				('ABM Micro', 'ABMMicro'),
 				('Generar Viaje', 'GenerarViaje'),
-				('Registrar Llegadas', 'RegistrarLlegada');
+				('Registrar Llegadas', 'RegistrarLlegada'),
+				('Listado de Recorridos', 'SeleccionRecorrido');
 
         
 	INSERT INTO FuncionalidadXRol (FXR_idRol, FXR_idFuncionalidad)
@@ -1059,6 +1060,32 @@ BEGIN
 		SET @WHERE = 'ROL_nombre LIKE ''%' + @NOMBRE + '%'' AND ';
 	
 	SET @SQL = 'SELECT ROL_idRol AS ID, ROL_nombre AS Nombre, ROL_habilitado AS Habilitado FROM NOT_NULL.ROL WHERE ' + @WHERE + ' 1=1;'
+        
+	EXEC (@SQL);
+END
+GO
+
+--Acá creamos los SP de Aplicacion
+CREATE PROCEDURE NOT_NULL.ListarRecorridos
+	@ID int = NULL,
+	@CODIGO nvarchar(20) = NULL,
+	@ID_TIPO_SERV int = NULL,
+	@ID_CIU_ORIGEN int = NULL,
+	@ID_CIU_DESTINO int = NULL 
+AS 
+BEGIN
+    DECLARE @WHERE varchar(500)
+    DECLARE @SQL varchar(500)
+    
+    SET @WHERE = '';
+	
+	IF (@ID IS NOT NULL)
+		SET @WHERE = 'REC_id = ''' + CONVERT(varchar,@ID) + ''' AND ';
+	
+	IF (@CODIGO IS NOT NULL OR @CODIGO = '')
+		SET @WHERE = 'REC_CODIGO LIKE ''%' + @CODIGO + '%'' AND ';
+	
+	SET @SQL = 'SELECT REC_id AS ID, REC_codigo AS Codigo FROM NOT_NULL.ROL WHERE ' + @WHERE + ' 1=1;'
         
 	EXEC (@SQL);
 END

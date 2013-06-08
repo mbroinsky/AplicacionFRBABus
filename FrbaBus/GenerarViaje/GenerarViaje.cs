@@ -19,9 +19,7 @@ namespace FrbaBus.GenerarViaje
             fechaSalida.Value = DateTime.Now;
             fechaLlegada.Value = DateTime.Now;
 
-            recorridos.DataSource = Recorrido.ListarCombo();
-            recorridos.ValueMember = ((DataTable)recorridos.DataSource).Columns[0].ColumnName;
-            recorridos.DisplayMember = ((DataTable)recorridos.DataSource).Columns[1].ColumnName;
+            Recorrido.ListarCombo(recorridos);
 
             generar.Enabled = false;
         }
