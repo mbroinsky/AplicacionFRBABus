@@ -60,16 +60,27 @@ namespace Abm_Recorrido
 
             if (((DataTable)recorridos.DataSource).Rows.Count > 0)
             {
-                var btn = new DataGridViewButtonColumn();
+                var btnMod = new DataGridViewButtonColumn();
 
-                btn.Text = "Modificar";
-                btn.Name = "Modificar";
-                btn.UseColumnTextForButtonValue = true;
-                btn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                btn.FlatStyle = FlatStyle.Standard;
-                btn.CellTemplate.Style.BackColor = Color.Honeydew;
+                btnMod.Text = "Modificar";
+                btnMod.Name = "Modificar";
+                btnMod.UseColumnTextForButtonValue = true;
+                btnMod.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                btnMod.FlatStyle = FlatStyle.Standard;
+                btnMod.CellTemplate.Style.BackColor = Color.Honeydew;
 
-                recorridos.Columns.Add(btn);
+                recorridos.Columns.Add(btnMod);
+
+                var btnHab = new DataGridViewButtonColumn();
+
+                btnHab.Text = "Habilitar/Deshabilitar";
+                btnHab.Name = "Habilitar/Deshabilitar";
+                btnHab.UseColumnTextForButtonValue = true;
+                btnHab.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                btnHab.FlatStyle = FlatStyle.Standard;
+                btnHab.CellTemplate.Style.BackColor = Color.Honeydew;
+
+                recorridos.Columns.Add(btnHab);
 
                 recorridos.ClearSelection();
             }
@@ -82,22 +93,22 @@ namespace Abm_Recorrido
 
         private void Roles_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == recorridos.Columns.Count - 1)
+            if (e.ColumnIndex == recorridos.Columns["Modificar"].Index)
             {
                 var fila = recorridos.SelectedRows[0];
 
-                //var mod = new ABMRecorrido(new Recorrido(fila));
+                var mod = new ABMRecorrido(Convert.ToInt32(fila.Cells["ID"].Value));
 
-                //if (!Globales.oInstance.usr.TienePermiso(mod.Name))
-                //{
-                //    MessageBox.Show("Ud. no tiene permiso para acceder a la pantalla solicitada");
-                //    return;
-                //}
+                if (!Globales.oInstance.usr.TienePermiso(mod.Name))
+                {
+                    MessageBox.Show("Ud. no tiene permiso para acceder a la pantalla solicitada");
+                    return;
+                }
 
-                //mod.ShowDialog();
+                mod.ShowDialog();
 
-                //recorridos.DataSource = null;
-                //recorridos.Columns.Clear();
+                recorridos.DataSource = null;
+                recorridos.Columns.Clear();
             }
         }
 

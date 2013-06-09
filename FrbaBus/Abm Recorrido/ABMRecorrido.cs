@@ -32,8 +32,8 @@ namespace Abm_Recorrido
 
             _Recorrido = new Recorrido(idRec);
 
-            //codigo.Text = _Recorrido.Codigo;
-            //habilitado.Checked = _Recorrido.Habilitado;
+            codigo.Text = _Recorrido.Codigo;
+            habilitado.Checked = _Recorrido.Habilitado;
         }
 
 
@@ -78,11 +78,8 @@ namespace Abm_Recorrido
  
             }
             
-
             this.Close();
         }
-
-
     }
 }
 

@@ -13,6 +13,7 @@ namespace FrbaBus
         private String BaseDatos;
         private String Usuario;
         private String Clave;
+        private DateTime FechaSistema;
 
         protected Configuracion()
         {
@@ -24,7 +25,7 @@ namespace FrbaBus
 
             XmlNodeList opc = Config[0].ChildNodes;
 
-            foreach (XmlElement nodo in opc)
+            foreach (XmlNode nodo in opc)
             {
                 if (nodo.Name.CompareTo("ServidorDatos") == 0)
                     ServidorBase = nodo.InnerText;
@@ -34,6 +35,17 @@ namespace FrbaBus
                     Usuario = nodo.InnerText;
                 else if (nodo.Name.CompareTo("Clave") == 0)
                     Clave = nodo.InnerText;
+                else if (nodo.Name.CompareTo("FechaSistema") == 0)
+                {
+                    try
+                    {
+                        FechaSistema = DateTime.Parse(nodo.InnerText.ToString());
+                    }
+                    catch
+                    {
+                        FechaSistema = DateTime.Now;
+                    }
+                }
             }
         }
 

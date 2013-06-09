@@ -54,20 +54,20 @@
             this.recorridos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
             this.recorridos.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.recorridos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.recorridos.Location = new System.Drawing.Point(12, 138);
+            this.recorridos.Location = new System.Drawing.Point(12, 103);
             this.recorridos.MultiSelect = false;
             this.recorridos.Name = "recorridos";
             this.recorridos.ReadOnly = true;
             this.recorridos.RowHeadersVisible = false;
             this.recorridos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.recorridos.ShowEditingIcon = false;
-            this.recorridos.Size = new System.Drawing.Size(637, 301);
+            this.recorridos.Size = new System.Drawing.Size(836, 336);
             this.recorridos.TabIndex = 0;
             this.recorridos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Roles_CellContentClick);
             // 
             // Buscar
             // 
-            this.Buscar.Location = new System.Drawing.Point(556, 100);
+            this.Buscar.Location = new System.Drawing.Point(754, 59);
             this.Buscar.Name = "Buscar";
             this.Buscar.Size = new System.Drawing.Size(75, 23);
             this.Buscar.TabIndex = 1;
@@ -96,14 +96,14 @@
             this.groupBox1.Controls.Add(this.Buscar);
             this.groupBox1.Location = new System.Drawing.Point(12, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(637, 129);
+            this.groupBox1.Size = new System.Drawing.Size(836, 94);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Búsqueda";
             // 
             // limpiar
             // 
-            this.limpiar.Location = new System.Drawing.Point(475, 100);
+            this.limpiar.Location = new System.Drawing.Point(663, 59);
             this.limpiar.Name = "limpiar";
             this.limpiar.Size = new System.Drawing.Size(75, 23);
             this.limpiar.TabIndex = 10;
@@ -114,7 +114,7 @@
             // lblDestino
             // 
             this.lblDestino.AutoSize = true;
-            this.lblDestino.Location = new System.Drawing.Point(283, 64);
+            this.lblDestino.Location = new System.Drawing.Point(6, 64);
             this.lblDestino.Name = "lblDestino";
             this.lblDestino.Size = new System.Drawing.Size(43, 13);
             this.lblDestino.TabIndex = 9;
@@ -123,7 +123,7 @@
             // lblOrigen
             // 
             this.lblOrigen.AutoSize = true;
-            this.lblOrigen.Location = new System.Drawing.Point(6, 64);
+            this.lblOrigen.Location = new System.Drawing.Point(584, 22);
             this.lblOrigen.Name = "lblOrigen";
             this.lblOrigen.Size = new System.Drawing.Size(38, 13);
             this.lblOrigen.TabIndex = 8;
@@ -132,7 +132,7 @@
             // lblTipoServ
             // 
             this.lblTipoServ.AutoSize = true;
-            this.lblTipoServ.Location = new System.Drawing.Point(283, 22);
+            this.lblTipoServ.Location = new System.Drawing.Point(266, 22);
             this.lblTipoServ.Name = "lblTipoServ";
             this.lblTipoServ.Size = new System.Drawing.Size(84, 13);
             this.lblTipoServ.TabIndex = 7;
@@ -141,7 +141,7 @@
             // tipoServicio
             // 
             this.tipoServicio.FormattingEnabled = true;
-            this.tipoServicio.Location = new System.Drawing.Point(382, 19);
+            this.tipoServicio.Location = new System.Drawing.Point(356, 19);
             this.tipoServicio.Name = "tipoServicio";
             this.tipoServicio.Size = new System.Drawing.Size(207, 21);
             this.tipoServicio.TabIndex = 6;
@@ -149,7 +149,7 @@
             // ciudadDestino
             // 
             this.ciudadDestino.FormattingEnabled = true;
-            this.ciudadDestino.Location = new System.Drawing.Point(382, 61);
+            this.ciudadDestino.Location = new System.Drawing.Point(61, 61);
             this.ciudadDestino.Name = "ciudadDestino";
             this.ciudadDestino.Size = new System.Drawing.Size(207, 21);
             this.ciudadDestino.TabIndex = 5;
@@ -157,7 +157,7 @@
             // ciudadOrigen
             // 
             this.ciudadOrigen.FormattingEnabled = true;
-            this.ciudadOrigen.Location = new System.Drawing.Point(60, 61);
+            this.ciudadOrigen.Location = new System.Drawing.Point(640, 19);
             this.ciudadOrigen.Name = "ciudadOrigen";
             this.ciudadOrigen.Size = new System.Drawing.Size(189, 21);
             this.ciudadOrigen.TabIndex = 4;
@@ -174,7 +174,7 @@
             // Salir
             // 
             this.Salir.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Salir.Location = new System.Drawing.Point(568, 445);
+            this.Salir.Location = new System.Drawing.Point(773, 448);
             this.Salir.Name = "Salir";
             this.Salir.Size = new System.Drawing.Size(75, 23);
             this.Salir.TabIndex = 4;
@@ -184,7 +184,7 @@
             // 
             // Agregar
             // 
-            this.Agregar.Location = new System.Drawing.Point(12, 445);
+            this.Agregar.Location = new System.Drawing.Point(12, 450);
             this.Agregar.Name = "Agregar";
             this.Agregar.Size = new System.Drawing.Size(80, 21);
             this.Agregar.TabIndex = 5;
@@ -197,7 +197,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Salir;
-            this.ClientSize = new System.Drawing.Size(655, 480);
+            this.ClientSize = new System.Drawing.Size(853, 483);
             this.ControlBox = false;
             this.Controls.Add(this.Agregar);
             this.Controls.Add(this.Salir);
