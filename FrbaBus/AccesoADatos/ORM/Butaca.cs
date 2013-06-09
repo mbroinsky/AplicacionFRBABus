@@ -13,11 +13,11 @@ namespace AccesoADatos.Orm
         public Int32 MicroId { get; set; }
         public Int16 Piso { get; set; }
         public String Tipo { get; set; }
-        
+
         public bool TraerButacaPorClave(int numero, int microId)
         {
             DataTable dt = Conector.Datos.EjecutarComandoADataTable("select * from NOT_NULL.butaca " +
-                       " where BUT_numeroAsiento = '" + Convert.ToString(numero) + "' AND But_numMicro = '" + 
+                       " where BUT_numeroAsiento = '" + Convert.ToString(numero) + "' AND But_numMicro = '" +
                         Convert.ToString(microId) + "';");
 
             if (dt.Rows.Count > 0)
@@ -26,7 +26,7 @@ namespace AccesoADatos.Orm
                 MicroId = Convert.ToInt32(dt.Rows[0]["BUT_numMicro"]);
                 Piso = Convert.ToInt16(dt.Rows[0]["BUT_Piso"]);
                 Tipo = dt.Rows[0]["BUT_Tipo"].ToString();
-                            
+
                 return true;
             }
             else
@@ -34,7 +34,7 @@ namespace AccesoADatos.Orm
                 return false;
             }
         }
-        
+
         public bool InsertarButaca(int numero, int microId, int piso, string tipo)
         {
             this.MicroId = Convert.ToInt32(microId);
@@ -74,5 +74,25 @@ namespace AccesoADatos.Orm
                 return false;
             }
         }
+
+        public static DataTable TraerButacasPorMicro(int microId)
+        {
+            //MODIFICAR USANDO HASH TABLE DE PARÁMETROS
+
+            String query = "SELECT BUT_numMicro as 'idMicro', BUT_piso as 'Piso', BUT_numeroAsiento as 'Nro. Asiento', BUT_tipo as 'Tipo de Asiento' FROM NOT_NULL.Butaca where BUT_numMicro = " + microId;
+
+            DataTable dt = Conector.Datos.EjecutarComandoADataTable(query);
+
+            if (dt.Rows.Count > 0)
+            {
+                return dt;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
+
+    
 }

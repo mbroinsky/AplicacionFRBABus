@@ -14,19 +14,55 @@ namespace FrbaBus.Abm_Micro
     public partial class AM_Micro : Form
     {
         public Micro micro{get; set;}
+        public bool esModificacion{get; set;}
 
         public AM_Micro()
         {
             InitializeComponent();
 
+            micro = new Micro();
+
+            esModificacion = false;
+
+            cargarDropDowns();
+
+            if (esModificacion) { cargarValoresMicro(); };
+                       
+        }
+
+        public AM_Micro(Micro microAModificar)
+
+        {
+            micro = new Micro();
+            micro = microAModificar;
+
+            esModificacion = true;
+
+            InitializeComponent();
+            cargarDropDowns();
+
+            cargarValoresMicro();
+        }
+
+        private void cargarDropDowns()
+        {
             servicio.DataSource = Servicio.ListarComboServicio();
             servicio.ValueMember = ((DataTable)servicio.DataSource).Columns[0].ColumnName;
             servicio.DisplayMember = ((DataTable)servicio.DataSource).Columns[1].ColumnName;
 
             marca.DataSource = Marca.ListarComboMarca();
             marca.ValueMember = ((DataTable)marca.DataSource).Columns[0].ColumnName;
-            marca.DisplayMember = ((DataTable)marca.DataSource).Columns[1].ColumnName;
-            
+            marca.DisplayMember = ((DataTable)marca.DataSource).Columns[1].ColumnName; ;
+        }
+
+        private void cargarValoresMicro()
+        {
+            this.patente.Text           = micro.Patente;
+            this.servicio.SelectedValue = micro.IdTipoDeServicio;
+            this.modelo.SelectedValue   = micro.IdModelo;
+            this.marca.SelectedValue    = micro.IdMarca;
+            this.capacidad.Text         = Convert.ToString(micro.KilosEncomiendas);
+            this.hibilitado.Checked     = micro.Habilitado;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -83,9 +119,17 @@ namespace FrbaBus.Abm_Micro
                       micro.Habilitado = hibilitado.Checked;
                       micro.IdMarca = Convert.ToInt16(marca.SelectedValue);
 
-                      if (micro.Insertar()) { this.Close(); }
-                      else { MessageBox.Show("Se produjo un error al insertar el Micro"); }
-                     
+                      if (esModificacion)
+                      {
+                          if (micro.Modificar()) { this.Close(); }
+                          else { MessageBox.Show("Se produjo un error al insertar el Micro"); }
+                      }
+                      else
+                      {
+                          if (micro.Insertar()) { this.Close(); }
+                          else { MessageBox.Show("Se produjo un error al insertar el Micro"); }
+                      }
+                   
                   }
                   else
                   {
@@ -118,12 +162,13 @@ namespace FrbaBus.Abm_Micro
         }
 
         private void button3_Click(object sender, EventArgs e)
-        {
-            var log = new Abm_Micro.ABM_Butacas();
 
+        {
+            ABM_Butacas log;
+            if (esModificacion) { log = new Abm_Micro.ABM_Butacas(micro.Butacas); }
+            else { log = new Abm_Micro.ABM_Butacas(); };
             this.SetVisibleCore(false);
             log.ShowDialog();
-            
             this.micro.Butacas = (DataTable)log.Butacas.DataSource;
             log.Close();
             this.SetVisibleCore(true);

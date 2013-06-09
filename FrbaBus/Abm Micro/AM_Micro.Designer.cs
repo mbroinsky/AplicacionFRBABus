@@ -37,7 +37,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.hibilitado = new System.Windows.Forms.CheckBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.modelo = new System.Windows.Forms.ComboBox();
             this.marca = new System.Windows.Forms.ComboBox();
             this.capacidad = new System.Windows.Forms.TextBox();
             this.aceptar = new System.Windows.Forms.Button();
@@ -134,14 +134,14 @@
             this.hibilitado.UseVisualStyleBackColor = true;
             this.hibilitado.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
-            // comboBox2
+            // modelo
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(170, 161);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 21);
-            this.comboBox2.TabIndex = 9;
-            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
+            this.modelo.FormattingEnabled = true;
+            this.modelo.Location = new System.Drawing.Point(170, 161);
+            this.modelo.Name = "modelo";
+            this.modelo.Size = new System.Drawing.Size(121, 21);
+            this.modelo.TabIndex = 9;
+            this.modelo.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // marca
             // 
@@ -211,7 +211,7 @@
             this.Controls.Add(this.aceptar);
             this.Controls.Add(this.capacidad);
             this.Controls.Add(this.marca);
-            this.Controls.Add(this.comboBox2);
+            this.Controls.Add(this.modelo);
             this.Controls.Add(this.hibilitado);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -242,7 +242,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox modelo;
         private System.Windows.Forms.ComboBox marca;
         private System.Windows.Forms.TextBox capacidad;
         private System.Windows.Forms.Button aceptar;

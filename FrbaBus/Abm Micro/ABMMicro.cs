@@ -123,13 +123,17 @@ namespace FrbaBus.Abm_Micro
             }
 
 
-            if (e.ColumnIndex == Micros.Columns.Count - 3)
+            if (e.ColumnIndex == Micros.Columns.Count - 4)
             {
                 var fila = Micros.Rows[e.RowIndex];
 
-                Micro.cambiarEstado(Convert.ToInt32(fila.Cells["id"].Value), Convert.ToInt32(fila.Cells["Fuera de Servicio"].Value));
+                var log = new Abm_Micro.AM_Micro(Micro.BuscarMicroPorId(Convert.ToInt32(fila.Cells["id"].Value)));
 
-                Micros.Columns.Clear();
+                this.SetVisibleCore(false);
+
+                log.ShowDialog();
+
+                this.SetVisibleCore(true);
             }
 
             this.cargarGrilla();

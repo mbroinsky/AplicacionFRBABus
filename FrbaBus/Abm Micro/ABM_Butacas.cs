@@ -8,44 +8,37 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace FrbaBus.Abm_Micro
+
+
 {
     public partial class ABM_Butacas : Form
     {
-        DataTable butacas = new DataTable();     
-                 
+        public DataTable butacas{get;set;}
+        public DataGridViewComboBoxColumn comboBoxPasilloVentana;
+
         public ABM_Butacas()
         {
-            DataTable PasilloVentana = new DataTable();
-            DataGridViewComboBoxColumn comboBoxPasilloVentana = new DataGridViewComboBoxColumn();     
             InitializeComponent();
-            this.Butacas.EditMode = DataGridViewEditMode.EditOnEnter;
-
-            
-            butacas.Clear();
-
-            /*Genero el combo box para el Datagridview*/
-            PasilloVentana.Columns.Add(new DataColumn("Value", typeof(string)));
-            PasilloVentana.Columns.Add(new DataColumn("Description", typeof(string)));
-            PasilloVentana.Rows.Add("0", "Pasillo");
-            PasilloVentana.Rows.Add("1", "Ventana");
-
-            comboBoxPasilloVentana.HeaderText = "Tipo de Asiento";
-            comboBoxPasilloVentana.DataSource = PasilloVentana;
-            comboBoxPasilloVentana.ValueMember = "Value";
-            comboBoxPasilloVentana.DisplayMember = "Description";
-
-            comboBoxPasilloVentana.DefaultCellStyle.NullValue = "Pasillo";
-            
-            /*Preparo las columnas de la tabla butacas*/            
+            butacas = new DataTable();
             butacas.Columns.Add("idMicro");
             butacas.Columns.Add("Piso");
             butacas.Columns.Add("Nro. Asiento");
-
-            Butacas.DataSource = butacas;
-            Butacas.Columns["idMicro"].Visible = false;
-            Butacas.Columns.Add(comboBoxPasilloVentana);
+            butacas.Columns.Add("Tipo de Asiento");
+            prepararGrilla();
 
             
+           // Butacas.Columns["idMicro"].Visible = false;
+        }
+
+        public ABM_Butacas(DataTable butacasMicro)
+        {
+            InitializeComponent();
+            butacas = new DataTable(); 
+            this.butacas = butacasMicro;
+            prepararGrilla();
+           
+            //Butacas.Columns["idMicro"].Visible = false;
+
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -77,7 +70,7 @@ namespace FrbaBus.Abm_Micro
                     int asientos;
                     for (asientos = 1; asientos <= Convert.ToInt32(cantidad.Text); asientos++)
                     {
-                        butacas.Rows.Add(new object[] { 0, Convert.ToInt32(piso.Text), asientos });
+                        butacas.Rows.Add(new object[] { 0, Convert.ToInt32(piso.Text), asientos, "Pasillo" });
                     }
                 }
                 else
@@ -172,5 +165,37 @@ namespace FrbaBus.Abm_Micro
         {
             this.SetVisibleCore(false);
         }
+
+        private void prepararGrilla()
+        {
+            
+            Butacas.Columns.Clear();
+
+            DataGridViewColumn cMicro = new DataGridViewTextBoxColumn();;
+            cMicro.HeaderText = "idMicro";
+            cMicro.DataPropertyName = "idMicro";
+
+            DataGridViewColumn cPiso = new DataGridViewTextBoxColumn();
+            cPiso.HeaderText = "Piso";
+            cPiso.DataPropertyName = "Piso";
+
+            DataGridViewColumn cNroAsiento = new DataGridViewTextBoxColumn();
+            cNroAsiento.HeaderText = "Nro. Asiento";
+            cNroAsiento.DataPropertyName = "Nro. Asiento";
+
+
+            DataGridViewComboBoxColumn cTipoDeAsiento = new DataGridViewComboBoxColumn();
+            var tipo = new List<string>() { "Pasillo", "Ventanilla" };
+            cTipoDeAsiento.DataSource = tipo;
+            cTipoDeAsiento.HeaderText = "Tipo de Asiento";
+            cTipoDeAsiento.DataPropertyName = "Tipo de Asiento";
+
+            Butacas.Columns.AddRange(cMicro, cPiso, cNroAsiento, cTipoDeAsiento);
+
+            Butacas.DataSource = butacas;
+
+           
+        }
+
     }
 }

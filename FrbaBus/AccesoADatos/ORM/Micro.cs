@@ -10,7 +10,7 @@ namespace AccesoADatos.Orm
         public Int16 Id { get; set; }
         public String Patente { get; set; }
         public Int16 IdTipoDeServicio { get; set; }
-        public Int16 KilosEncomiendas { get; set; }
+        public Decimal KilosEncomiendas { get; set; }
         public bool Habilitado { get; set; }
         public Int16 IdMarca { get; set; }
         public Int16 IdModelo { get; set; }
@@ -34,33 +34,42 @@ namespace AccesoADatos.Orm
             Butacas.Add(but);
         }
         */
-        public bool TraerMicro(int idMicro)
+        public static Micro BuscarMicroPorId(int idMicro)
         {
-            //DataTable dt = Conector.Datos.EjecutarComandoADataTable("select * from NOT_NULL.usuario, " +
-            //           " NOT_NULL.rol where USR_nick = '" + nick + "' AND USR_idRol = ROL_id;");
+            Micro micro = new Micro();
 
-            //if (dt.Rows.Count > 0)
-            //{
-            //    Id = Convert.ToInt16(dt.Rows[0]["USR_idUsuario"]);
-            //    NombreUsr = dt.Rows[0]["USR_Nombre"] + " " + dt.Rows[0]["USR_Apellido"];
-            //    Password = dt.Rows[0]["USR_Clave"];
-            //    Rol = dt.Rows[0]["ROL_nombre"];
-            //    IdRol = Convert.ToInt16(dt.Rows[0]["ROL_id"]);
-                
-            //    dt = Conector.Datos.EjecutarComandoADataTable("select * from NOT_NULL.funcXRol, " + 
-            //           " NOT_NULL.funcionalidad where FXR_idRol = '" + IdRol.ToString() + 
-            //           "' AND FXR_idFunc = FUN_id;");
-                       
-            //    for(int i = 0; i < dt.Rows.Count; i++)
-            //        Permisos.Add(dt.Rows[i]["FUN_nombre"]);
-                            
-            //    return true;
-            //}
-            //else
-            //{
-            //    return false;
-            //}
-            return false;
+            String query =  "select MIC_numMicro as 'ID', " +
+                            "MIC_patente as 'Matrícula', " +
+                            "MIC_idTipoServicio as 'Tipo de Serv.', " +
+                            "MIC_kilosEncomiendas as 'Capacidad', " +
+                            "MIC_habilitado as 'Habilitado', " +
+                            "MIC_idMarca as 'Marca', " +
+                            "MIC_modelo as 'Modelo', " +
+                            "MIC_fechaAlta as 'Fec. Alta', " +
+                            "MIC_fueraDeServicio as 'Fuera de Servicio', " +
+                            "MIC_fecFueraServ as 'Fec. Fuera de Serv.', " +
+                            "MIC_fecReinicioServ as 'Fec. Reinicio Serv.', " +
+                            "MIC_fecBaja as 'Fec. Baja definitiva' " +
+                            "from NOT_NULL.Micro where " +
+                            "MIC_numMicro = " + Convert.ToString(idMicro);
+
+            DataTable dt = Conector.Datos.EjecutarComandoADataTable(query);
+            var row = dt.Rows[0];
+
+            micro.Id = Convert.ToInt16(row["ID"].ToString());
+            micro.Patente = (row["Matrícula"].ToString());
+            micro.IdTipoDeServicio = Convert.ToInt16(row["Tipo de Serv."].ToString());
+            micro.KilosEncomiendas = Convert.ToDecimal(row["Capacidad"].ToString());
+            micro.Habilitado = Convert.ToBoolean(row["Habilitado"].ToString());
+            micro.IdMarca = Convert.ToInt16(row["Marca"].ToString());
+            micro.FechaAlta = Convert.ToDateTime(row["Fec. Alta"].ToString());
+            micro.FueraDeServicio = Convert.ToBoolean(row["Fuera de Servicio"].ToString());
+            if (row["Fec. Reinicio Serv."].ToString().Length != 0) { micro.FechaReinicioServicio = Convert.ToDateTime(row["Fec. Reinicio Serv."].ToString()); }
+            if (row["Fec. Baja definitiva"].ToString().Length != 0) { micro.FechaDeBaja = Convert.ToDateTime(row["Fec. Baja definitiva"].ToString()); }
+
+            micro.Butacas = Orm.Butaca.TraerButacasPorMicro(micro.Id);           
+
+            return micro;
         }
 
         public static DataTable BuscarMicro(String patenteABuscar, String idtipoDeServicio, String idMarca, String idModelo, String Capacidad)
@@ -252,6 +261,31 @@ namespace AccesoADatos.Orm
           Hashtable parametros = new Hashtable();
           parametros.Add("@numMicro", numMicro);
           Conector.Datos.EjecutarComando("UPDATE NOT_NULL.Micro SET MIC_fecBaja = GETDATE() where MIC_numMicro = @numMicro", parametros);
+        }
+
+        internal bool Modificar()
+        {
+            try
+            {
+                Hashtable parametros = new Hashtable();
+
+                parametros.Add("@IdMicro", this.Id);
+                parametros.Add("@Patente", this.Patente);
+                parametros.Add("@IdTipoServicio", this.IdTipoDeServicio);
+                parametros.Add("@KilosEncomiendas", this.KilosEncomiendas);
+                parametros.Add("@Habilitado", this.Habilitado);
+                parametros.Add("@IdMarca", this.IdMarca);
+                parametros.Add("@IdModelo", this.IdModelo);
+                parametros.Add("@fueraDeServicio", false);
+
+                Conector.Datos.EjecutarComando("UPDATE NOT_NULL.Micro  MIC_patente = @Patente, MIC_idTipoServicio = @IdTipoServicio, MIC_kilosEncomiendas = @KilosEncomiendas, MIC_habilitado = @Habilitado, MIC_idMarca = @IdMarca, MIC_modelo = @IdModelo WHERE MIC_numMicro = @IdMicro", parametros);
+             
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
