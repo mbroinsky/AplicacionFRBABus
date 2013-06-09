@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using AccesoADatos.Orm;
-using FrbaBus.AccesoADatos.Orm;
 
 namespace FrbaBus.Abm_Permisos
 {
@@ -155,5 +154,3 @@ namespace FrbaBus.Abm_Permisos
 
     }
 }
-
-//probando..

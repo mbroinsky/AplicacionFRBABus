@@ -118,6 +118,11 @@ BEGIN
     DROP PROCEDURE NOT_NULL.ListarRoles
 END
 
+IF OBJECT_ID(N'NOT_NULL.ListarRecorridos') IS NOT NULL
+BEGIN
+    DROP PROCEDURE NOT_NULL.ListarRecorridos
+END
+
 IF OBJECT_ID(N'NOT_NULL.CargarTablasSecundarias') IS NOT NULL
 BEGIN
 	DROP PROCEDURE NOT_NULL.CargarTablasSecundarias;
@@ -156,11 +161,6 @@ END
 IF OBJECT_ID(N'NOT_NULL.RegistrarLlegadas') IS NOT NULL
 BEGIN
 	DROP PROCEDURE NOT_NULL.RegistrarLlegadas;
-END
-
-IF EXISTS (SELECT * FROM sys.types WHERE name = 'Llegadas')
-BEGIN
-	DROP TYPE NOT_NULL.Llegadas;
 END
 
 IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'NOT_NULL')
@@ -759,12 +759,13 @@ BEGIN
                 (@idRol, 'maxi', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', 'Maximiliano', 'Broinsky', 0);
 
 	INSERT INTO Funcionalidad(FNC_nombre, FNC_formAsoc) VALUES
-				('ABM Rol', 'ABMRol'),
+				('ABM de Rol', 'ABMRol'),
 				('Listado de Roles', 'SeleccionRol'),
 				('ABM Micro', 'ABMMicro'),
 				('Generar Viaje', 'GenerarViaje'),
 				('Registrar Llegadas', 'RegistrarLlegada'),
-				('Listado de Recorridos', 'SeleccionRecorrido');
+				('Listado de Recorridos', 'SeleccionRecorrido'),
+				('ABM de Recorrido', 'ABMRecorrido');
 
         
 	INSERT INTO FuncionalidadXRol (FXR_idRol, FXR_idFuncionalidad)
@@ -1054,10 +1055,10 @@ BEGIN
     SET @WHERE = '';
 	
 	IF (@ID IS NOT NULL)
-		SET @WHERE = 'ROL_idRol = ''' + CONVERT(varchar,@ID) + ''' AND ';
+		SET @WHERE = @WHERE + 'ROL_idRol = ''' + CONVERT(varchar,@ID) + ''' AND ';
 	
-	IF (@NOMBRE IS NOT NULL OR @NOMBRE = '')
-		SET @WHERE = 'ROL_nombre LIKE ''%' + @NOMBRE + '%'' AND ';
+	IF (@NOMBRE IS NOT NULL)
+		SET @WHERE = @WHERE + 'ROL_nombre LIKE ''%' + @NOMBRE + '%'' AND ';
 	
 	SET @SQL = 'SELECT ROL_idRol AS ID, ROL_nombre AS Nombre, ROL_habilitado AS Habilitado FROM NOT_NULL.ROL WHERE ' + @WHERE + ' 1=1;'
         
@@ -1075,17 +1076,32 @@ CREATE PROCEDURE NOT_NULL.ListarRecorridos
 AS 
 BEGIN
     DECLARE @WHERE varchar(500)
-    DECLARE @SQL varchar(500)
+    DECLARE @SQL varchar(1000)
     
     SET @WHERE = '';
 	
 	IF (@ID IS NOT NULL)
-		SET @WHERE = 'REC_id = ''' + CONVERT(varchar,@ID) + ''' AND ';
+		SET @WHERE = @WHERE + 'REC_id = ''' + CONVERT(varchar,@ID) + ''' AND ';
 	
-	IF (@CODIGO IS NOT NULL OR @CODIGO = '')
-		SET @WHERE = 'REC_CODIGO LIKE ''%' + @CODIGO + '%'' AND ';
+	IF (@CODIGO IS NOT NULL)
+		SET @WHERE = @WHERE + 'REC_CODIGO LIKE ''%' + @CODIGO + '%'' AND ';
+		
+	IF (@ID_TIPO_SERV IS NOT NULL)
+		SET @WHERE = @WHERE + 'REC_idTipoServicio = ''' + CONVERT(varchar,@ID_TIPO_SERV) + ''' AND ';
+		
+	IF (@ID_CIU_ORIGEN IS NOT NULL)
+		SET @WHERE = @WHERE + 'REC_idCiudadOrigen = ''' + CONVERT(varchar,@ID_CIU_ORIGEN) + ''' AND ';
+		
+	IF (@ID_CIU_DESTINO IS NOT NULL)
+		SET @WHERE = @WHERE + 'REC_idCiudadDestino = ''' + CONVERT(varchar,@ID_CIU_DESTINO) + ''' AND ';
+
 	
-	SET @SQL = 'SELECT REC_id AS ID, REC_codigo AS Codigo FROM NOT_NULL.ROL WHERE ' + @WHERE + ' 1=1;'
+	SET @SQL = 'SELECT REC_id AS ID, REC_codigo AS Codigo, a.CIU_Nombre as Origen, b.CIU_nombre as Destino, '
+	SET @SQL = @SQL + 'SRV_nombreServicio as Servicio, REC_precioBase as ''Precio Base'','
+	SET @SQL = @SQL + 'REC_precioKilo as ''Precio Kilo'', REC_habilitado as Habilitado ' 
+	SET @SQL = @SQL + 'FROM NOT_NULL.Recorrido, NOT_NULL.Ciudad a, NOT_NULL.Ciudad b, NOT_NULL.TipoServicio '
+	SET @SQL = @SQL + 'WHERE  ' + @WHERE + ' REC_idCiudadOrigen = a.CIU_idCiudad AND REC_idCiudadDestino = b.CIU_idCiudad '
+	SET @SQL = @SQL + 'AND REC_idTipoServicio = SRV_idTipoServicio ORDER BY ID;'
         
 	EXEC (@SQL);
 END

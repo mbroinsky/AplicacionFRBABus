@@ -31,23 +31,48 @@ namespace Abm_Recorrido
 
         private void Buscar_Click(object sender, EventArgs e)
         {
-            recorridos.Columns.Clear(); 
-            recorridos.DataSource = Recorrido.Listar(codigo.Text, null, Convert.ToInt32(tipoServicio.SelectedValue), 
-                                                  Convert.ToInt32(ciudadOrigen.SelectedValue), 
-                                                  Convert.ToInt32(ciudadDestino.SelectedValue));
-            
-            var btn = new DataGridViewButtonColumn();
+            recorridos.Columns.Clear();
 
-            btn.Text = "Modificar";
-            btn.Name = "Modificar";
-            btn.UseColumnTextForButtonValue = true;
-            btn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            btn.FlatStyle = FlatStyle.Standard;
-            btn.CellTemplate.Style.BackColor = Color.Honeydew;
+            if (tipoServicio.SelectedIndex == -1 && ciudadOrigen.SelectedIndex == -1 &&
+                    ciudadDestino.SelectedIndex == -1)
+                recorridos.DataSource = Recorrido.Listar(codigo.Text, null, null, null, null);
+            else if (tipoServicio.SelectedIndex == -1  && ciudadOrigen.SelectedIndex == -1)
+                recorridos.DataSource = Recorrido.Listar(codigo.Text, null, null,
+                  null, Convert.ToInt32(ciudadDestino.SelectedValue));
+            else if (tipoServicio.SelectedIndex == -1  && ciudadDestino.SelectedIndex == -1)
+                recorridos.DataSource = Recorrido.Listar(codigo.Text, null, null,
+                  Convert.ToInt32(ciudadOrigen.SelectedValue), null);
+            else if (ciudadOrigen.SelectedIndex == -1 && ciudadDestino.SelectedIndex == -1)
+                recorridos.DataSource = Recorrido.Listar(codigo.Text, null, 
+                    Convert.ToInt32(tipoServicio.SelectedValue), null, null);
+            else if (ciudadOrigen.SelectedIndex == -1)
+                recorridos.DataSource = Recorrido.Listar(codigo.Text, null, Convert.ToInt32(tipoServicio.SelectedValue),
+                  null, Convert.ToInt32(ciudadDestino.SelectedValue));
+            else if (ciudadDestino.SelectedIndex == -1)
+                recorridos.DataSource = Recorrido.Listar(codigo.Text, null, Convert.ToInt32(tipoServicio.SelectedValue),
+                  Convert.ToInt32(ciudadOrigen.SelectedValue), null);
+            else if (tipoServicio.SelectedIndex == -1)
+                recorridos.DataSource = Recorrido.Listar(codigo.Text, null, null,
+                  Convert.ToInt32(ciudadOrigen.SelectedValue), Convert.ToInt32(ciudadDestino.SelectedValue));
+            else
+                recorridos.DataSource = Recorrido.Listar(codigo.Text, null, Convert.ToInt32(tipoServicio.SelectedValue),
+                  Convert.ToInt32(ciudadOrigen.SelectedValue), Convert.ToInt32(ciudadDestino.SelectedValue));
 
-            recorridos.Columns.Add(btn);
+            if (((DataTable)recorridos.DataSource).Rows.Count > 0)
+            {
+                var btn = new DataGridViewButtonColumn();
 
-            recorridos.ClearSelection();
+                btn.Text = "Modificar";
+                btn.Name = "Modificar";
+                btn.UseColumnTextForButtonValue = true;
+                btn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                btn.FlatStyle = FlatStyle.Standard;
+                btn.CellTemplate.Style.BackColor = Color.Honeydew;
+
+                recorridos.Columns.Add(btn);
+
+                recorridos.ClearSelection();
+            }
         }
         
         private void Salir_Click(object sender, EventArgs e)
@@ -90,6 +115,14 @@ namespace Abm_Recorrido
 
             recorridos.DataSource = null;
             recorridos.Columns.Clear();
+        }
+
+        private void limpiar_Click(object sender, EventArgs e)
+        {
+            codigo.Text = String.Empty;
+            ciudadDestino.SelectedIndex = -1;
+            ciudadOrigen.SelectedIndex = -1;
+            tipoServicio.SelectedIndex = -1;
         }
     }
 }

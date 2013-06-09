@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using FrbaBus.AccesoADatos.Orm;
 using AccesoADatos.Orm;
 
 namespace FrbaBus.GenerarViaje

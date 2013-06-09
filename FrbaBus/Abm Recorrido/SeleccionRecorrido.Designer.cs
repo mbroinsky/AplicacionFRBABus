@@ -32,15 +32,16 @@
             this.Buscar = new System.Windows.Forms.Button();
             this.codigo = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.limpiar = new System.Windows.Forms.Button();
+            this.lblDestino = new System.Windows.Forms.Label();
+            this.lblOrigen = new System.Windows.Forms.Label();
+            this.lblTipoServ = new System.Windows.Forms.Label();
+            this.tipoServicio = new System.Windows.Forms.ComboBox();
+            this.ciudadDestino = new System.Windows.Forms.ComboBox();
+            this.ciudadOrigen = new System.Windows.Forms.ComboBox();
             this.lblCodigo = new System.Windows.Forms.Label();
             this.Salir = new System.Windows.Forms.Button();
             this.Agregar = new System.Windows.Forms.Button();
-            this.ciudadOrigen = new System.Windows.Forms.ComboBox();
-            this.ciudadDestino = new System.Windows.Forms.ComboBox();
-            this.tipoServicio = new System.Windows.Forms.ComboBox();
-            this.lblTipoServ = new System.Windows.Forms.Label();
-            this.lblOrigen = new System.Windows.Forms.Label();
-            this.lblDestino = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.recorridos)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -66,7 +67,7 @@
             // 
             // Buscar
             // 
-            this.Buscar.Location = new System.Drawing.Point(556, 88);
+            this.Buscar.Location = new System.Drawing.Point(556, 100);
             this.Buscar.Name = "Buscar";
             this.Buscar.Size = new System.Drawing.Size(75, 23);
             this.Buscar.TabIndex = 1;
@@ -83,6 +84,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.limpiar);
             this.groupBox1.Controls.Add(this.lblDestino);
             this.groupBox1.Controls.Add(this.lblOrigen);
             this.groupBox1.Controls.Add(this.lblTipoServ);
@@ -98,6 +100,67 @@
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Búsqueda";
+            // 
+            // limpiar
+            // 
+            this.limpiar.Location = new System.Drawing.Point(475, 100);
+            this.limpiar.Name = "limpiar";
+            this.limpiar.Size = new System.Drawing.Size(75, 23);
+            this.limpiar.TabIndex = 10;
+            this.limpiar.Text = "Limpiar";
+            this.limpiar.UseVisualStyleBackColor = true;
+            this.limpiar.Click += new System.EventHandler(this.limpiar_Click);
+            // 
+            // lblDestino
+            // 
+            this.lblDestino.AutoSize = true;
+            this.lblDestino.Location = new System.Drawing.Point(283, 64);
+            this.lblDestino.Name = "lblDestino";
+            this.lblDestino.Size = new System.Drawing.Size(43, 13);
+            this.lblDestino.TabIndex = 9;
+            this.lblDestino.Text = "Destino";
+            // 
+            // lblOrigen
+            // 
+            this.lblOrigen.AutoSize = true;
+            this.lblOrigen.Location = new System.Drawing.Point(6, 64);
+            this.lblOrigen.Name = "lblOrigen";
+            this.lblOrigen.Size = new System.Drawing.Size(38, 13);
+            this.lblOrigen.TabIndex = 8;
+            this.lblOrigen.Text = "Origen";
+            // 
+            // lblTipoServ
+            // 
+            this.lblTipoServ.AutoSize = true;
+            this.lblTipoServ.Location = new System.Drawing.Point(283, 22);
+            this.lblTipoServ.Name = "lblTipoServ";
+            this.lblTipoServ.Size = new System.Drawing.Size(84, 13);
+            this.lblTipoServ.TabIndex = 7;
+            this.lblTipoServ.Text = "Tipo de Servicio";
+            // 
+            // tipoServicio
+            // 
+            this.tipoServicio.FormattingEnabled = true;
+            this.tipoServicio.Location = new System.Drawing.Point(382, 19);
+            this.tipoServicio.Name = "tipoServicio";
+            this.tipoServicio.Size = new System.Drawing.Size(207, 21);
+            this.tipoServicio.TabIndex = 6;
+            // 
+            // ciudadDestino
+            // 
+            this.ciudadDestino.FormattingEnabled = true;
+            this.ciudadDestino.Location = new System.Drawing.Point(382, 61);
+            this.ciudadDestino.Name = "ciudadDestino";
+            this.ciudadDestino.Size = new System.Drawing.Size(207, 21);
+            this.ciudadDestino.TabIndex = 5;
+            // 
+            // ciudadOrigen
+            // 
+            this.ciudadOrigen.FormattingEnabled = true;
+            this.ciudadOrigen.Location = new System.Drawing.Point(60, 61);
+            this.ciudadOrigen.Name = "ciudadOrigen";
+            this.ciudadOrigen.Size = new System.Drawing.Size(189, 21);
+            this.ciudadOrigen.TabIndex = 4;
             // 
             // lblCodigo
             // 
@@ -128,57 +191,6 @@
             this.Agregar.Text = "Agregar...";
             this.Agregar.UseVisualStyleBackColor = true;
             this.Agregar.Click += new System.EventHandler(this.Agregar_Click);
-            // 
-            // ciudadOrigen
-            // 
-            this.ciudadOrigen.FormattingEnabled = true;
-            this.ciudadOrigen.Location = new System.Drawing.Point(60, 61);
-            this.ciudadOrigen.Name = "ciudadOrigen";
-            this.ciudadOrigen.Size = new System.Drawing.Size(189, 21);
-            this.ciudadOrigen.TabIndex = 4;
-            // 
-            // ciudadDestino
-            // 
-            this.ciudadDestino.FormattingEnabled = true;
-            this.ciudadDestino.Location = new System.Drawing.Point(382, 61);
-            this.ciudadDestino.Name = "ciudadDestino";
-            this.ciudadDestino.Size = new System.Drawing.Size(207, 21);
-            this.ciudadDestino.TabIndex = 5;
-            // 
-            // tipoServicio
-            // 
-            this.tipoServicio.FormattingEnabled = true;
-            this.tipoServicio.Location = new System.Drawing.Point(382, 19);
-            this.tipoServicio.Name = "tipoServicio";
-            this.tipoServicio.Size = new System.Drawing.Size(207, 21);
-            this.tipoServicio.TabIndex = 6;
-            // 
-            // lblTipoServ
-            // 
-            this.lblTipoServ.AutoSize = true;
-            this.lblTipoServ.Location = new System.Drawing.Point(283, 22);
-            this.lblTipoServ.Name = "lblTipoServ";
-            this.lblTipoServ.Size = new System.Drawing.Size(84, 13);
-            this.lblTipoServ.TabIndex = 7;
-            this.lblTipoServ.Text = "Tipo de Servicio";
-            // 
-            // lblOrigen
-            // 
-            this.lblOrigen.AutoSize = true;
-            this.lblOrigen.Location = new System.Drawing.Point(6, 64);
-            this.lblOrigen.Name = "lblOrigen";
-            this.lblOrigen.Size = new System.Drawing.Size(38, 13);
-            this.lblOrigen.TabIndex = 8;
-            this.lblOrigen.Text = "Origen";
-            // 
-            // lblDestino
-            // 
-            this.lblDestino.AutoSize = true;
-            this.lblDestino.Location = new System.Drawing.Point(283, 64);
-            this.lblDestino.Name = "lblDestino";
-            this.lblDestino.Size = new System.Drawing.Size(43, 13);
-            this.lblDestino.TabIndex = 9;
-            this.lblDestino.Text = "Destino";
             // 
             // SeleccionRecorrido
             // 
@@ -216,5 +228,6 @@
         private System.Windows.Forms.ComboBox tipoServicio;
         private System.Windows.Forms.ComboBox ciudadDestino;
         private System.Windows.Forms.ComboBox ciudadOrigen;
+        private System.Windows.Forms.Button limpiar;
     }
 }

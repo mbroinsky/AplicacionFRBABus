@@ -5,7 +5,7 @@ using System.Text;
 using AccesoADatos;
 using System.Collections;
 
-namespace FrbaBus.AccesoADatos.Orm
+namespace AccesoADatos.Orm
 {
     class Viaje
     {

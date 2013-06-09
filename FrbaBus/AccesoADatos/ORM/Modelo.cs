@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FrbaBus.AccesoADatos.Orm
+namespace AccesoADatos.Orm
 {
     class Modelo
     {

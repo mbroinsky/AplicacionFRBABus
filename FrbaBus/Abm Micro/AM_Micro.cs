@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using AccesoADatos.Orm;
-using FrbaBus.AccesoADatos.Orm;
+using Utilidades;
 
 namespace FrbaBus.Abm_Micro
 {

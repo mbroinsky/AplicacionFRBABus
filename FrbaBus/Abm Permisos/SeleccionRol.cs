@@ -21,19 +21,22 @@ namespace FrbaBus.Abm_Permisos
         {
             roles.Columns.Clear(); 
             roles.DataSource = Rol.Listar(nombre.Text);
-            
-            var btn = new DataGridViewButtonColumn();
 
-            btn.Text = "Modificar";
-            btn.Name = "Modificar";
-            btn.UseColumnTextForButtonValue = true;
-            btn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            btn.FlatStyle = FlatStyle.Standard;
-            btn.CellTemplate.Style.BackColor = Color.Honeydew;
+            if (roles.DataSource != null)
+            {
+                var btn = new DataGridViewButtonColumn();
 
-            roles.Columns.Add(btn);
+                btn.Text = "Modificar";
+                btn.Name = "Modificar";
+                btn.UseColumnTextForButtonValue = true;
+                btn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                btn.FlatStyle = FlatStyle.Standard;
+                btn.CellTemplate.Style.BackColor = Color.Honeydew;
 
-            roles.ClearSelection();
+                roles.Columns.Add(btn);
+
+                roles.ClearSelection();
+            }
         }
         
         private void Salir_Click(object sender, EventArgs e)

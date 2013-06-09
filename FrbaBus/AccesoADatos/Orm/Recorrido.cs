@@ -10,6 +10,11 @@ namespace AccesoADatos.Orm
 {
     class Recorrido
     {
+        public Recorrido(int idRec)
+        {
+
+        }
+
         public static void ListarCombo(ComboBox recorridos)
         {
             try
@@ -34,8 +39,8 @@ namespace AccesoADatos.Orm
             }
         }
 
-        public static DataTable Listar(string codigo, int?idRecorrido, int? idTipServ, int? idOrigen,
-                                       int? idDestino)
+        public static DataTable Listar(string codigo, int? idRecorrido, int? idTipServ, 
+                                int? idOrigen, int? idDestino)
         {
             try
             {
@@ -49,5 +54,6 @@ namespace AccesoADatos.Orm
                 return null;
             }
         }
+
     }
 }
