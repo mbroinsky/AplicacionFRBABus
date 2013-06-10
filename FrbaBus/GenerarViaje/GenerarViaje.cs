@@ -15,8 +15,8 @@ namespace FrbaBus.GenerarViaje
         public GenerarViaje()
         {
             InitializeComponent();
-            fechaSalida.Value = DateTime.Now;
-            fechaLlegada.Value = DateTime.Now;
+            fechaSalida.Value = Configuracion.Instance().FechaSistema;
+            fechaLlegada.Value = Configuracion.Instance().FechaSistema;
 
             Recorrido.ListarCombo(recorridos);
 
@@ -31,7 +31,7 @@ namespace FrbaBus.GenerarViaje
                 return;
             }
 
-            if (fechaSalida.Value <= DateTime.Now)
+            if (fechaSalida.Value <= Configuracion.Instance().FechaSistema)
             {
                 MessageBox.Show("Debe seleccionar una fecha mayor a hoy");
                 return;
