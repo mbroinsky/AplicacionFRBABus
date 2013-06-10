@@ -140,6 +140,7 @@
             // 
             // tipoServicio
             // 
+            this.tipoServicio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.tipoServicio.FormattingEnabled = true;
             this.tipoServicio.Location = new System.Drawing.Point(356, 19);
             this.tipoServicio.Name = "tipoServicio";
@@ -148,6 +149,7 @@
             // 
             // ciudadDestino
             // 
+            this.ciudadDestino.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ciudadDestino.FormattingEnabled = true;
             this.ciudadDestino.Location = new System.Drawing.Point(61, 61);
             this.ciudadDestino.Name = "ciudadDestino";
@@ -156,6 +158,7 @@
             // 
             // ciudadOrigen
             // 
+            this.ciudadOrigen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ciudadOrigen.FormattingEnabled = true;
             this.ciudadOrigen.Location = new System.Drawing.Point(640, 19);
             this.ciudadOrigen.Name = "ciudadOrigen";

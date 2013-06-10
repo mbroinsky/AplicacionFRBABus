@@ -19,5 +19,11 @@ namespace Utilidades
             Regex regex = new Regex("[A-Z]{3}-[0-9]{3}");
             return regex.IsMatch(text);
         }
+
+        internal static bool esNumeroReal(String text)
+        {
+            Regex regex = new Regex("^\\d+\\.?\\d{1,2}$" );
+            return regex.IsMatch(text);
+        }
     }
 }

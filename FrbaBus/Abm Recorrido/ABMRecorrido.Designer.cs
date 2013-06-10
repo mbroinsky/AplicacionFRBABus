@@ -39,8 +39,8 @@
             this.tipoServicio = new System.Windows.Forms.ComboBox();
             this.ciudadDestino = new System.Windows.Forms.ComboBox();
             this.ciudadOrigen = new System.Windows.Forms.ComboBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.precioBase = new System.Windows.Forms.TextBox();
+            this.precioKilo = new System.Windows.Forms.TextBox();
             this.lblPrecioBase = new System.Windows.Forms.Label();
             this.lblPrecioKg = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -120,6 +120,7 @@
             // 
             // tipoServicio
             // 
+            this.tipoServicio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.tipoServicio.FormattingEnabled = true;
             this.tipoServicio.Location = new System.Drawing.Point(100, 52);
             this.tipoServicio.Name = "tipoServicio";
@@ -128,6 +129,7 @@
             // 
             // ciudadDestino
             // 
+            this.ciudadDestino.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ciudadDestino.FormattingEnabled = true;
             this.ciudadDestino.Location = new System.Drawing.Point(100, 125);
             this.ciudadDestino.Name = "ciudadDestino";
@@ -136,25 +138,26 @@
             // 
             // ciudadOrigen
             // 
+            this.ciudadOrigen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ciudadOrigen.FormattingEnabled = true;
             this.ciudadOrigen.Location = new System.Drawing.Point(100, 89);
             this.ciudadOrigen.Name = "ciudadOrigen";
             this.ciudadOrigen.Size = new System.Drawing.Size(207, 21);
             this.ciudadOrigen.TabIndex = 11;
             // 
-            // textBox1
+            // precioBase
             // 
-            this.textBox1.Location = new System.Drawing.Point(100, 161);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 17;
+            this.precioBase.Location = new System.Drawing.Point(100, 161);
+            this.precioBase.Name = "precioBase";
+            this.precioBase.Size = new System.Drawing.Size(100, 20);
+            this.precioBase.TabIndex = 17;
             // 
-            // textBox2
+            // precioKilo
             // 
-            this.textBox2.Location = new System.Drawing.Point(100, 198);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 18;
+            this.precioKilo.Location = new System.Drawing.Point(100, 198);
+            this.precioKilo.Name = "precioKilo";
+            this.precioKilo.Size = new System.Drawing.Size(100, 20);
+            this.precioKilo.TabIndex = 18;
             // 
             // lblPrecioBase
             // 
@@ -183,8 +186,8 @@
             this.ControlBox = false;
             this.Controls.Add(this.lblPrecioKg);
             this.Controls.Add(this.lblPrecioBase);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.precioKilo);
+            this.Controls.Add(this.precioBase);
             this.Controls.Add(this.lblDestino);
             this.Controls.Add(this.lblOrigen);
             this.Controls.Add(this.lblTipoServ);
@@ -217,8 +220,8 @@
         private System.Windows.Forms.ComboBox tipoServicio;
         private System.Windows.Forms.ComboBox ciudadDestino;
         private System.Windows.Forms.ComboBox ciudadOrigen;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox precioBase;
+        private System.Windows.Forms.TextBox precioKilo;
         private System.Windows.Forms.Label lblPrecioBase;
         private System.Windows.Forms.Label lblPrecioKg;
     }

@@ -21,6 +21,12 @@ namespace Abm_Recorrido
             InitializeComponent();
 
             _Modificacion = false;
+
+            CargarCombos();
+
+            ciudadOrigen.SelectedIndex = -1;
+            ciudadDestino.SelectedIndex = -1;
+            tipoServicio.SelectedIndex = -1;
         }
 
 
@@ -32,10 +38,26 @@ namespace Abm_Recorrido
 
             _Recorrido = new Recorrido(idRec);
 
+            CargarCombos();
+
             codigo.Text = _Recorrido.Codigo;
             habilitado.Checked = _Recorrido.Habilitado;
+            ciudadOrigen.SelectedValue = _Recorrido.IdCiuOri;
+            ciudadDestino.SelectedValue = _Recorrido.IdCiuDest;
+            tipoServicio.SelectedValue = _Recorrido.IdTipoServ;
+            precioBase.Text = Convert.ToString(_Recorrido.PrecBase);
+            precioKilo.Text = Convert.ToString(_Recorrido.PrecKilo);
         }
 
+        private void CargarCombos()
+        {
+            tipoServicio.DataSource = Servicio.ListarComboServicio();
+            tipoServicio.ValueMember = ((DataTable)tipoServicio.DataSource).Columns[0].ColumnName;
+            tipoServicio.DisplayMember = ((DataTable)tipoServicio.DataSource).Columns[1].ColumnName;
+
+            Ciudad.LlenarCombo(ciudadOrigen);
+            Ciudad.LlenarCombo(ciudadDestino);
+        }
 
         private void Guardar_Click(object sender, EventArgs e)
         {
@@ -51,14 +73,26 @@ namespace Abm_Recorrido
                 return;
             }
 
+            if (!Validador.esNumeroReal(precioKilo.Text))
+            {
+                MessageBox.Show("El precio por kg. debe ser un valor monetario");
+                return;
+            }
+
+            if (!Validador.esNumeroReal(precioBase.Text))
+            {
+                MessageBox.Show("El precio de base debe ser un valor monetario");
+                return;
+            }
+
             if (_Modificacion)
             {
-                //if (!_Rol.Habilitado && !habilitado.Checked)
-                //{
-                //    MessageBox.Show("No se pueden realizar cambios en un rol que no esta habilitado, " +
-                //        "para modificarlo habilítelo primero");
-                //    return;
-                //}
+                if (!_Recorrido.Habilitado && !habilitado.Checked)
+                {
+                    MessageBox.Show("No se pueden realizar cambios en un recorrido que no esta habilitado, " +
+                        "para modificarlo habilítelo primero");
+                    return;
+                }
                 
                 //if (!_Rol.Modificar(codigo.Text, habilitado.Checked, otorgados.Rows))
                 //{
