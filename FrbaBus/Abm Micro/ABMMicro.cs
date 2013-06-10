@@ -24,8 +24,17 @@ namespace FrbaBus.Abm_Micro
             idMarca.ValueMember = ((DataTable)idMarca.DataSource).Columns[0].ColumnName;
             idMarca.DisplayMember = ((DataTable)idMarca.DataSource).Columns[1].ColumnName;
 
+            cargarComboBoxModelo(Convert.ToInt32(idMarca.SelectedValue));
+
             DataTable butacas = new DataTable();
 
+        }
+
+        private void cargarComboBoxModelo(int idMarca)
+        {
+            idModelo.DataSource = Modelo.ListarComboModelo(idMarca);
+            idModelo.ValueMember = ((DataTable)idModelo.DataSource).Columns[0].ColumnName;
+            idModelo.DisplayMember = ((DataTable)idModelo.DataSource).Columns[1].ColumnName;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -150,7 +159,7 @@ namespace FrbaBus.Abm_Micro
         private void cargarGrilla()
         {
             Micros.Columns.Clear();
-            Micros.DataSource = Micro.BuscarMicro(campoMatricula.Text, Convert.ToString(idServicio.SelectedValue), Convert.ToString(idMarca.SelectedValue), "", capacidad.Text);
+            Micros.DataSource = Micro.BuscarMicro(campoMatricula.Text, Convert.ToString(idServicio.SelectedValue), Convert.ToString(idMarca.SelectedValue), Convert.ToString(idModelo.SelectedValue), capacidad.Text);
             /*Columnas para los botones*/
 
             DataGridViewColumn Modificar = new DataGridViewButtonColumn();
@@ -230,6 +239,11 @@ namespace FrbaBus.Abm_Micro
             }
 
             Micros.ClearSelection();
+        }
+
+        private void idMarca_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cargarComboBoxModelo(Convert.ToInt32(idMarca.SelectedIndex));
         }
     }
 }

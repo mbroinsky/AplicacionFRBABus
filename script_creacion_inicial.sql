@@ -83,6 +83,11 @@ BEGIN
     DROP TABLE NOT_NULL.Ciudad
 END
 
+IF OBJECT_ID(N'NOT_NULL.Modelo') IS NOT NULL
+BEGIN
+    DROP TABLE NOT_NULL.Modelo
+END
+
 IF OBJECT_ID(N'NOT_NULL.Marca') IS NOT NULL
 BEGIN
     DROP TABLE NOT_NULL.Marca
@@ -209,7 +214,7 @@ CREATE TABLE NOT_NULL.Micro
 	,MIC_kilosEncomiendas DECIMAL(10, 2) NOT NULL 
 	,MIC_habilitado BIT NOT NULL 
 	,MIC_idMarca INT NOT NULL 
-    ,MIC_modelo VARCHAR(20) NULL
+    ,MIC_idModelo INT NOT NULL 
 	,MIC_fechaAlta DATETIME NOT NULL 
 	,MIC_fueraDeServicio BIT NOT NULL 
 	,MIC_fecFueraServ DATETIME  NULL 
@@ -219,6 +224,7 @@ CREATE TABLE NOT_NULL.Micro
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Micro ADD CONSTRAINT PK_Micro PRIMARY KEY (MIC_numMicro)
 ALTER TABLE NOT_NULL.Micro ADD CONSTRAINT UQ_Patente UNIQUE (MIC_patente)
+
 
 CREATE INDEX IDX_MICRO_PATENTE
 on NOT_NULL.Micro(MIC_patente)
@@ -324,7 +330,29 @@ CREATE TABLE NOT_NULL.Marca
 	,MAR_nombreMarca VARCHAR(20) NOT NULL 
 )
 ON [PRIMARY]
-ALTER TABLE NOT_NULL.Marca ADD CONSTRAINT PK_Marca PRIMARY KEY (MAR_idMarca)
+ALTER TABLE NOT_NULL.Marca ADD CONSTRAINT PK_Marca PRIMARY KEY (MAR_idMarca);
+
+CREATE INDEX IDX_MAR_nombreMarca
+on NOT_NULL.Marca(MAR_nombreMarca)
+
+-- Create Table: Marca
+--------------------------------------------------------------------------------
+CREATE TABLE NOT_NULL.Modelo
+(
+	MOD_idModelo INT NOT NULL IDENTITY(1, 1),
+	MOD_idMarca INT NOT NULL,
+	MOD_nombreModelo VARCHAR(20) NOT NULL 
+)
+ON [PRIMARY]
+ALTER TABLE NOT_NULL.Modelo ADD CONSTRAINT PK_Modelo PRIMARY KEY (MOD_idModelo)
+
+-- Create Foreign Key: Modelo.MOD_idMarca -> Marca.MAR_idMarca
+ALTER TABLE NOT_NULL.[Modelo] ADD CONSTRAINT
+[FK_Modelo_MOD_idModelo_Marca_MAR_idMarca]
+FOREIGN KEY (MOD_idMarca)
+REFERENCES NOT_NULL.[Marca] ([MAR_idMarca])
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
 
 -- Create Table: Cliente
 --------------------------------------------------------------------------------
@@ -499,8 +527,6 @@ REFERENCES NOT_NULL.[Micro] ([MIC_numMicro])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
-
-
 -- Create Foreign Key: Viaje.VIA_codRecorrido -> Recorrido.REC_codigo
 ALTER TABLE NOT_NULL.[Viaje] ADD CONSTRAINT
 [FK_Viaje_VIA_codRecorrido_Recorrido_REC_id]
@@ -669,7 +695,13 @@ REFERENCES NOT_NULL.[TipoServicio] ([SRV_idTipoServicio])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
-
+-- Create Foreign Key: Micro.MIC_idTipoServicio -> TipoServicio.SRV_idTipoServicio
+ALTER TABLE NOT_NULL.[Micro] ADD CONSTRAINT
+[FK_Micro_MIC_idModelo_Modelo_MOD_idModelo]
+FOREIGN KEY ([MIC_idModelo])
+REFERENCES NOT_NULL.[Modelo] ([MOD_idModelo])
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
 
 -- Create Foreign Key: FuncionalidadXRol.FXR_idRol -> Rol.ROL_idRol
 ALTER TABLE NOT_NULL.[FuncionalidadXRol] ADD CONSTRAINT
@@ -736,6 +768,13 @@ BEGIN
 	INSERT INTO Marca (MAR_nombreMarca)
 		SELECT DISTINCT Micro_Marca FROM gd_esquema.Maestra ORDER BY MICRO_MARCA;
 		
+		
+	
+	INSERT INTO NOT_NULL.Modelo (MOD_idMarca, MOD_nombreModelo)
+		SELECT DISTINCT MAR_idMarca, Micro_Modelo FROM gd_esquema.Maestra, NOT_NULL.Marca
+		WHERE Micro_Marca = MAR_nombreMarca
+		ORDER BY MAR_idMarca;
+		
 	INSERT INTO TipoServicio (SRV_nombreServicio, SRV_porcentajeAdic)
 		SELECT tipo_servicio, AVG((Pasaje_Precio - Recorrido_Precio_BasePasaje) / Recorrido_Precio_BasePasaje)
 		FROM gd_esquema.Maestra WHERE Recorrido_Precio_BasePasaje <> 0
@@ -777,11 +816,13 @@ CREATE PROCEDURE NOT_NULL.CargarMicros
 AS
 BEGIN
 	INSERT INTO Micro (MIC_patente, MIC_idTipoServicio, MIC_kilosEncomiendas, MIC_habilitado 
-			, MIC_idMarca, MIC_modelo, MIC_fechaAlta,MIC_fueraDeServicio)
+			, MIC_idMarca, MIC_idModelo, MIC_fechaAlta,MIC_fueraDeServicio)
 		SELECT DISTINCT left(Micro_Patente, 7), SRV_idTipoServicio, Micro_KG_Disponibles,
-                       1, MAR_idMarca, Micro_modelo, CURRENT_TIMESTAMP, 0
-		FROM gd_Esquema.Maestra, Marca, TipoServicio
-		WHERE Tipo_Servicio = SRV_nombreServicio and Micro_Marca = MAR_nombreMarca;
+                       1, MAR_idMarca, MOD_idMarca, CURRENT_TIMESTAMP, 0
+		FROM gd_Esquema.Maestra, Marca, Modelo, TipoServicio
+		WHERE	Tipo_Servicio = SRV_nombreServicio and Micro_Marca = MAR_nombreMarca
+		AND		MAR_idMarca = MOD_idMarca
+		AND		MOD_nombreModelo = Micro_Modelo;
 END
 GO
 

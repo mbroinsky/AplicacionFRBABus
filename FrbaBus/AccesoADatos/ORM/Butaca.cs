@@ -62,10 +62,49 @@ namespace AccesoADatos.Orm
             }
         }
 
-        public bool InsertarTablaDeButacas()
+        public static bool InsertarTablaDeButacas(DataTable dtButacas, int microId)
         {
             try
             {
+                String sql = "insert into NOT_NULL.butaca (BUT_numeroAsiento, BUT_numMicro, BUT_piso, BUT_tipo)" +
+                             "  values ";
+
+                foreach (DataRow row in dtButacas.Rows)
+                {
+                    sql += "(";
+
+                    sql += row[2] + ", " +  microId + ", " + row[1] + ", " + "'"+row[3]+"'";
+
+                    sql += "),";
+                }
+
+                sql = sql.Remove(sql.Length - 1);
+
+                Conector.Datos.EjecutarComando(sql);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool actualizarTablaButacas(DataTable dtButacas, int microId)
+        {
+            try
+            {
+                String sql = "insert into NOT_NULL.butaca (BUT_numeroAsiento, BUT_microId, BUT_piso, BUT_tipo)" +
+                             "  values ";
+
+                foreach (DataRow row in dtButacas.Rows)
+                {
+                    sql += "(";
+
+                    sql += row[0] + ", " + microId + ", " + row[1] + ", " + row[2] + ", " + row[3];
+
+
+                    sql += ")";
+                }
                 Conector.Datos.EjecutarComando(" ");
                 return true;
             }
@@ -92,7 +131,6 @@ namespace AccesoADatos.Orm
                 return null;
             }
         }
-    }
 
-    
+    } 
 }

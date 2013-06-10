@@ -52,7 +52,9 @@ namespace FrbaBus.Abm_Micro
 
             marca.DataSource = Marca.ListarComboMarca();
             marca.ValueMember = ((DataTable)marca.DataSource).Columns[0].ColumnName;
-            marca.DisplayMember = ((DataTable)marca.DataSource).Columns[1].ColumnName; ;
+            marca.DisplayMember = ((DataTable)marca.DataSource).Columns[1].ColumnName;
+
+            cargarComboBoxModelo(Convert.ToInt32(marca.SelectedValue));
         }
 
         private void cargarValoresMicro()
@@ -115,13 +117,14 @@ namespace FrbaBus.Abm_Micro
                   {
                       micro.Patente = patente.Text;
                       micro.IdTipoDeServicio = Convert.ToInt16(servicio.SelectedValue);
-                      micro.KilosEncomiendas = Convert.ToInt16(capacidad.Text);
+                      micro.KilosEncomiendas = Convert.ToDecimal(capacidad.Text);
                       micro.Habilitado = hibilitado.Checked;
                       micro.IdMarca = Convert.ToInt16(marca.SelectedValue);
+                      micro.IdModelo = Convert.ToInt16(modelo.SelectedValue);
 
                       if (esModificacion)
                       {
-                          if (micro.Modificar()) { this.Close(); }
+                          if (micro.Modificar(micro.Id)) { this.Close(); }
                           else { MessageBox.Show("Se produjo un error al insertar el Micro"); }
                       }
                       else
@@ -183,5 +186,19 @@ namespace FrbaBus.Abm_Micro
         {
 
         }
+
+
+        private void cargarComboBoxModelo(int idMarca)
+        {
+            modelo.DataSource = Modelo.ListarComboModelo(idMarca);
+            modelo.ValueMember = ((DataTable)modelo.DataSource).Columns[0].ColumnName;
+            modelo.DisplayMember = ((DataTable)modelo.DataSource).Columns[1].ColumnName;
+        }
+
+        private void marca_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cargarComboBoxModelo(Convert.ToInt32(marca.SelectedIndex));
+        }
+
     }
 }
