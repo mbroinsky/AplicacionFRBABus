@@ -17,7 +17,7 @@ namespace Registrar_LLegada_Micro
         {
             InitializeComponent();
 
-            fechaLlegada.Value = DateTime.Now;
+            fechaLlegada.Value = Configuracion.Instance().FechaSistema;
 
             Ciudad.LlenarCombo(ciudadesOrigen);
             Ciudad.LlenarCombo(ciudadesDestino);
@@ -32,7 +32,7 @@ namespace Registrar_LLegada_Micro
                 return;
             }
 
-            if (fechaLlegada.Value > DateTime.Now)
+            if (fechaLlegada.Value > Configuracion.Instance().FechaSistema)
             {
                 MessageBox.Show("La fecha de arribo no puede ser superior a hoy");
                 return;
@@ -43,7 +43,7 @@ namespace Registrar_LLegada_Micro
                                     patentesMicros.SelectedValue, ciudadesOrigen.SelectedValue,
                                     ciudadesDestino.SelectedValue);
 
-            fechaLlegada.Value = DateTime.Now;
+            fechaLlegada.Value = Configuracion.Instance().FechaSistema;
             ciudadesDestino.SelectedIndex = 0;
             ciudadesOrigen.SelectedIndex = 0;
             patentesMicros.SelectedIndex = 0;
