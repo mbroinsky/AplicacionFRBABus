@@ -44,7 +44,7 @@ namespace AccesoADatos.Orm
                             "MIC_kilosEncomiendas as 'Capacidad', " +
                             "MIC_habilitado as 'Habilitado', " +
                             "MIC_idMarca as 'Marca', " +
-                            "MIC_modelo as 'Modelo', " +
+                            "MIC_idModelo as 'Modelo', " +
                             "MIC_fechaAlta as 'Fec. Alta', " +
                             "MIC_fueraDeServicio as 'Fuera de Servicio', " +
                             "MIC_fecFueraServ as 'Fec. Fuera de Serv.', " +
@@ -62,6 +62,7 @@ namespace AccesoADatos.Orm
             micro.KilosEncomiendas = Convert.ToDecimal(row["Capacidad"].ToString());
             micro.Habilitado = Convert.ToBoolean(row["Habilitado"].ToString());
             micro.IdMarca = Convert.ToInt16(row["Marca"].ToString());
+            micro.IdModelo = Convert.ToInt16(row["Modelo"].ToString());
             micro.FechaAlta = Convert.ToDateTime(row["Fec. Alta"].ToString());
             micro.FueraDeServicio = Convert.ToBoolean(row["Fuera de Servicio"].ToString());
             if (row["Fec. Reinicio Serv."].ToString().Length != 0) { micro.FechaReinicioServicio = Convert.ToDateTime(row["Fec. Reinicio Serv."].ToString()); }
@@ -81,19 +82,20 @@ namespace AccesoADatos.Orm
                                   "MIC_kilosEncomiendas as 'Capacidad', " +
                                   "MIC_habilitado as 'Habilitado', " +
                                   "MAR_nombreMarca as 'Marca', " +
-                                  "MIC_modelo as 'Modelo', " +
+                                  "MOD_nombreModelo as 'Modelo', " +
                                   "MIC_fechaAlta as 'Fec. Alta', " +
                                   "MIC_fueraDeServicio as 'Fuera de Servicio', " +
                                   "MIC_fecFueraServ as 'Fec. Fuera de Serv.', " +
                                   "MIC_fecReinicioServ as 'Fec. Reinicio Serv.', " +
                                   "MIC_fecBaja as 'Fec. Baja definitiva' " +
-                                  "from NOT_NULL.Micro, NOT_NULL.Marca, NOT_NULL.TipoServicio where " +
+                                  "from NOT_NULL.Micro, NOT_NULL.Marca, NOT_NULL.TipoServicio, NOT_NULL.Modelo where " +
                                   "MIC_idMarca = MAR_idMarca and " +
+                                  "MIC_idModelo = MOD_idMarca and " +
                                   "MIC_idTipoServicio = SRV_idTipoServicio and ";
              
             if (patenteABuscar.Length != 0) { query += " MIC_patente = '" + patenteABuscar + "' and "; };
-            if (idtipoDeServicio.Length != 0) { query += "MIC_idTipoServicio = " + idtipoDeServicio + " and "; };
-            if (idModelo.Length != 0) { query += "MIC_modelo = " + idModelo + " and "; };
+            if (idtipoDeServicio.Length != 0) { query += " MIC_idTipoServicio = " + idtipoDeServicio + " and "; };
+            if (idModelo.Length != 0) { query += "MIC_idModelo = " + idModelo + " and "; };
             if (idMarca.Length != 0) { query += "MIC_idMarca = " + idMarca + " and "; };
             if (Capacidad.Length != 0) { query += "MIC_kilosEncomiendas = " + Capacidad + " and " ; };
             query += " 1=1";
@@ -183,6 +185,9 @@ namespace AccesoADatos.Orm
                 Conector.Datos.EjecutarComando( "insert into NOT_NULL.Micro " +
                                                 " (MIC_patente, MIC_idTipoServicio, MIC_kilosEncomiendas, MIC_habilitado, MIC_idMarca, MIC_modelo, MIC_fechaAlta, MIC_fueraDeServicio) " +
                                                 " values (@Patente, @IdTipoServicio, @KilosEncomiendas, @Habilitado, @IdMarca, @IdModelo, GETDATE (), @fueraDeServicio);", parametros);
+
+                Orm.Butaca.InsertarTablaDeButacas(this.Butacas, Conector.Datos.TraerUltimoId());
+
                 return true;
             }
             catch
@@ -263,7 +268,7 @@ namespace AccesoADatos.Orm
           Conector.Datos.EjecutarComando("UPDATE NOT_NULL.Micro SET MIC_fecBaja = GETDATE() where MIC_numMicro = @numMicro", parametros);
         }
 
-        internal bool Modificar()
+        internal bool Modificar(int idMicro)
         {
             try
             {
@@ -278,8 +283,8 @@ namespace AccesoADatos.Orm
                 parametros.Add("@IdModelo", this.IdModelo);
                 parametros.Add("@fueraDeServicio", false);
 
-                Conector.Datos.EjecutarComando("UPDATE NOT_NULL.Micro  MIC_patente = @Patente, MIC_idTipoServicio = @IdTipoServicio, MIC_kilosEncomiendas = @KilosEncomiendas, MIC_habilitado = @Habilitado, MIC_idMarca = @IdMarca, MIC_modelo = @IdModelo WHERE MIC_numMicro = @IdMicro", parametros);
-             
+                Conector.Datos.EjecutarComando("UPDATE NOT_NULL.Micro  SET MIC_patente = @Patente, MIC_idTipoServicio = @IdTipoServicio, MIC_kilosEncomiendas = @KilosEncomiendas, MIC_habilitado = @Habilitado, MIC_idMarca = @IdMarca, MIC_idModelo = @IdModelo WHERE MIC_numMicro = @IdMicro", parametros);
+                Orm.Butaca.InsertarTablaDeButacas(this.Butacas, this.Id);
                 return true;
             }
             catch

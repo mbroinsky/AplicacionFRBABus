@@ -132,6 +132,7 @@
             this.idMarca.Name = "idMarca";
             this.idMarca.Size = new System.Drawing.Size(121, 21);
             this.idMarca.TabIndex = 25;
+            this.idMarca.SelectedIndexChanged += new System.EventHandler(this.idMarca_SelectedIndexChanged);
             // 
             // groupBox1
             // 

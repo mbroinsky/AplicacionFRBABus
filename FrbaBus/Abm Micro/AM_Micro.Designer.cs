@@ -109,7 +109,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(74, 193);
+            this.label4.Location = new System.Drawing.Point(59, 153);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(40, 13);
             this.label4.TabIndex = 6;
@@ -118,7 +118,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(74, 164);
+            this.label5.Location = new System.Drawing.Point(59, 182);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(45, 13);
             this.label5.TabIndex = 7;
@@ -137,7 +137,7 @@
             // modelo
             // 
             this.modelo.FormattingEnabled = true;
-            this.modelo.Location = new System.Drawing.Point(170, 161);
+            this.modelo.Location = new System.Drawing.Point(155, 179);
             this.modelo.Name = "modelo";
             this.modelo.Size = new System.Drawing.Size(121, 21);
             this.modelo.TabIndex = 9;
@@ -146,10 +146,11 @@
             // marca
             // 
             this.marca.FormattingEnabled = true;
-            this.marca.Location = new System.Drawing.Point(170, 190);
+            this.marca.Location = new System.Drawing.Point(155, 150);
             this.marca.Name = "marca";
             this.marca.Size = new System.Drawing.Size(121, 21);
             this.marca.TabIndex = 10;
+            this.marca.SelectedIndexChanged += new System.EventHandler(this.marca_SelectedIndexChanged);
             // 
             // capacidad
             // 
@@ -182,6 +183,10 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.agregarButacas);
+            this.groupBox1.Controls.Add(this.marca);
+            this.groupBox1.Controls.Add(this.modelo);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Location = new System.Drawing.Point(15, 11);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(334, 242);
@@ -210,11 +215,7 @@
             this.Controls.Add(this.cancelar);
             this.Controls.Add(this.aceptar);
             this.Controls.Add(this.capacidad);
-            this.Controls.Add(this.marca);
-            this.Controls.Add(this.modelo);
             this.Controls.Add(this.hibilitado);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -227,6 +228,7 @@
             this.Text = "Administración de Micros";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
