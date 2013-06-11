@@ -214,7 +214,7 @@ CREATE TABLE NOT_NULL.Micro
 	,MIC_kilosEncomiendas DECIMAL(10, 2) NOT NULL 
 	,MIC_habilitado BIT NOT NULL 
 	,MIC_idMarca INT NOT NULL 
-    ,MIC_idModelo INT NOT NULL 
+        ,MIC_idModelo INT NOT NULL 
 	,MIC_fechaAlta DATETIME NOT NULL 
 	,MIC_fueraDeServicio BIT NOT NULL 
 	,MIC_fecFueraServ DATETIME  NULL 
@@ -494,6 +494,7 @@ CREATE TABLE NOT_NULL.Recorrido
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Recorrido ADD CONSTRAINT PK_Recorrido PRIMARY KEY (REC_id)
+ALTER TABLE NOT_NULL.Recorrido ADD CONSTRAINT UQ_CodRec UNIQUE (REC_codigo)
 
 -- Create Foreign Key: Recorrido.REC_idCiudadOrigen -> Ciudad.CIU_idCiudad
 ALTER TABLE NOT_NULL.[Recorrido] ADD CONSTRAINT
