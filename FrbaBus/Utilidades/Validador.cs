@@ -25,5 +25,11 @@ namespace Utilidades
             Regex regex = new Regex("^\\d+\\.?\\d{1,2}$" );
             return regex.IsMatch(text);
         }
+        
+        internal static bool esFechaValida(String text)
+        {
+            Regex regex = new Regex("^201[0-9]\\-[0][1-9]|[1][0-2]\\-\\[0-2][0-9]|[3][0-1] [0-1][0-9]|[2][0-3]\\:[0-5][0-9]\\:[0-5][0-9]$");
+            return regex.IsMatch(text);
+        }
     }
 }
