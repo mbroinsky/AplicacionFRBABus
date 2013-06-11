@@ -168,6 +168,11 @@ BEGIN
 	DROP PROCEDURE NOT_NULL.RegistrarLlegadas;
 END
 
+IF OBJECT_ID(N'NOT_NULL.RankingDestinos') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.RankingDestinos;
+END
+
 IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'NOT_NULL')
 BEGIN
 	DROP SCHEMA NOT_NULL;
@@ -182,12 +187,13 @@ GO
 CREATE TABLE NOT_NULL.Encomienda
 (
 	ENC_numEnc INT NOT NULL IDENTITY(1, 1)
-    ,ENC_idVenta INT NOT NULL
+        ,ENC_idVenta INT NOT NULL
 	,ENC_codigo INT NOT NULL
 	,ENC_idViaje INT NOT NULL
 	,ENC_idCliente INT NOT NULL 
 	,ENC_kilos DECIMAL(10, 2) NOT NULL 
 	,ENC_precio DECIMAL(10, 2) NOT NULL
+	,ENC_cancelada BIT NOT NULL DEFAULT 0
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Encomienda ADD CONSTRAINT PK_Encomienda PRIMARY KEY (ENC_numEnc)
@@ -307,6 +313,7 @@ CREATE TABLE NOT_NULL.Pasaje
 	,PAS_numButaca INT NOT NULL 
 	,PAS_numMicro INT NOT NULL
 	,PAS_precio DECIMAL(10,2) NOT NULL
+	,PAS_cancelado BIT NOT NULL DEFAULT 0
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Pasaje ADD CONSTRAINT PK_Pasaje PRIMARY KEY CLUSTERED (PAS_numPasaje)
@@ -1187,13 +1194,27 @@ BEGIN
 		INSERT INTO NOT_NULL.Puntos (PTS_idCliente, PTS_puntos, PTS_fecVencimiento) 
 		SELECT PAS_idCliente, FLOOR(PAS_precio/5), DATEADD(YEAR, 1, @fecLlegada)	 
 		FROM NOT_NULL.Pasaje
-		WHERE PAS_idViaje = @idViaje;
+		WHERE PAS_idViaje = @idViaje AND PAS_cancelado <> 1;
 			
 		INSERT INTO NOT_NULL.Puntos (PTS_idCliente, PTS_puntos, PTS_fecVencimiento) 
 		SELECT ENC_idCliente, FLOOR(ENC_precio / 5), DATEADD(YEAR, 1, @fecLlegada)	 
 		FROM NOT_NULL.Encomienda
-		WHERE ENC_idViaje = @idViaje;
+		WHERE ENC_idViaje = @idViaje AND ENC_cancelada <> 1;
 	END 
+END
+GO
+
+CREATE PROCEDURE NOT_NULL.RankingDestinos
+    @fecInicio DATETIME,
+    @fecFin DATETIME
+AS 
+BEGIN
+	SELECT TOP 5 CIU_nombre as Destino, COUNT(*) as 'Cantidad Pasajes'
+	FROM Ciudad, Recorrido, Viaje, Pasaje
+	WHERE REC_idCiudadDestino = CIU_id AND VIA_codRecorrido = REC_id AND VIA_fecSalida BETWEEN @fecInicio AND @fecFin
+		AND PAS_idVIaje = VIA_numViaje
+	GROUP BY CIU_id, CIU_nombre
+	ORDER BY COUNT(*) DESC;	 
 END
 GO
 
