@@ -89,8 +89,17 @@ namespace Abm_Recorrido
                 if (_Recorrido.IdCiuDest != Convert.ToInt32(ciudadDestino.SelectedValue) ||
                    _Recorrido.IdTipoServ != Convert.ToInt32(tipoServicio.SelectedValue) ||
                    _Recorrido.IdCiuOri != Convert.ToInt32(ciudadOrigen.SelectedValue) ||
-                   _Recorrido.Codigo != codigo.Text)
+                   _Recorrido.Codigo != codigo.Text ||
+                   _Recorrido.PrecioBase != Convert.ToDouble(precioBase.Text) ||
+                   _Recorrido.PrecioKilo != Convert.ToDouble(precioKilo.Text))
                 {
+                    _Recorrido.Codigo = codigo.Text;
+                    _Recorrido.IdTipoServ = Convert.ToInt32(tipoServicio.SelectedValue);
+                    _Recorrido.IdCiuOri = Convert.ToInt32(ciudadOrigen.SelectedValue); 
+                    _Recorrido.IdCiuDest = Convert.ToInt32(ciudadDestino.SelectedValue); 
+                    _Recorrido.PrecioBase = Convert.ToDouble(precioBase.Text);
+                    _Recorrido.PrecioKilo = Convert.ToDouble(precioKilo.Text);
+                    
                     if (!_Recorrido.Modificar())
                     {
                         MessageBox.Show("Ocurrió un error de actualización");
