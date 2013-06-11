@@ -37,14 +37,20 @@ namespace FrbaBus
                     Clave = nodo.InnerText;
                 else if (nodo.Name.CompareTo("FechaSistema") == 0)
                 {
-                    try
+                    if Validador.esFechaValida(nodo.InnerText.ToString())
                     {
-                        FechaSistema = DateTime.Parse(nodo.InnerText.ToString());
+                        try
+                        {
+                            FechaSistema = DateTime.Parse(nodo.InnerText.ToString());
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Falló la carga de la fecha del archivo de configuración, se toma la fecha del sistema")
+                            FechaSistema = DateTime.Now;
+                        }
                     }
-                    catch
-                    {
+                    else
                         FechaSistema = DateTime.Now;
-                    }
                 }
             }
         }
