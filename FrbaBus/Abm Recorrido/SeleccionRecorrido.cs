@@ -35,27 +35,27 @@ namespace Abm_Recorrido
 
             if (tipoServicio.SelectedIndex == -1 && ciudadOrigen.SelectedIndex == -1 &&
                     ciudadDestino.SelectedIndex == -1)
-                recorridos.DataSource = Recorrido.Listar(codigo.Text, null, null, null, null);
+                recorridos.DataSource = Recorrido.Listar(true, codigo.Text, null, null, null, null);
             else if (tipoServicio.SelectedIndex == -1  && ciudadOrigen.SelectedIndex == -1)
-                recorridos.DataSource = Recorrido.Listar(codigo.Text, null, null,
+                recorridos.DataSource = Recorrido.Listar(true, codigo.Text, null, null,
                   null, Convert.ToInt32(ciudadDestino.SelectedValue));
             else if (tipoServicio.SelectedIndex == -1  && ciudadDestino.SelectedIndex == -1)
-                recorridos.DataSource = Recorrido.Listar(codigo.Text, null, null,
+                recorridos.DataSource = Recorrido.Listar(true, codigo.Text, null, null,
                   Convert.ToInt32(ciudadOrigen.SelectedValue), null);
             else if (ciudadOrigen.SelectedIndex == -1 && ciudadDestino.SelectedIndex == -1)
-                recorridos.DataSource = Recorrido.Listar(codigo.Text, null, 
+                recorridos.DataSource = Recorrido.Listar(true, codigo.Text, null, 
                     Convert.ToInt32(tipoServicio.SelectedValue), null, null);
             else if (ciudadOrigen.SelectedIndex == -1)
-                recorridos.DataSource = Recorrido.Listar(codigo.Text, null, Convert.ToInt32(tipoServicio.SelectedValue),
+                recorridos.DataSource = Recorrido.Listar(true, codigo.Text, null, Convert.ToInt32(tipoServicio.SelectedValue),
                   null, Convert.ToInt32(ciudadDestino.SelectedValue));
             else if (ciudadDestino.SelectedIndex == -1)
-                recorridos.DataSource = Recorrido.Listar(codigo.Text, null, Convert.ToInt32(tipoServicio.SelectedValue),
+                recorridos.DataSource = Recorrido.Listar(true, codigo.Text, null, Convert.ToInt32(tipoServicio.SelectedValue),
                   Convert.ToInt32(ciudadOrigen.SelectedValue), null);
             else if (tipoServicio.SelectedIndex == -1)
-                recorridos.DataSource = Recorrido.Listar(codigo.Text, null, null,
+                recorridos.DataSource = Recorrido.Listar(true, codigo.Text, null, null,
                   Convert.ToInt32(ciudadOrigen.SelectedValue), Convert.ToInt32(ciudadDestino.SelectedValue));
             else
-                recorridos.DataSource = Recorrido.Listar(codigo.Text, null, Convert.ToInt32(tipoServicio.SelectedValue),
+                recorridos.DataSource = Recorrido.Listar(true, codigo.Text, null, Convert.ToInt32(tipoServicio.SelectedValue),
                   Convert.ToInt32(ciudadOrigen.SelectedValue), Convert.ToInt32(ciudadDestino.SelectedValue));
 
             if (((DataTable)recorridos.DataSource).Rows.Count > 0)
@@ -71,16 +71,16 @@ namespace Abm_Recorrido
 
                 recorridos.Columns.Add(btnMod);
 
-                var btnHab = new DataGridViewButtonColumn();
+                var btnDeshab = new DataGridViewButtonColumn();
 
-                btnHab.Text = "Habilitar/Deshabilitar";
-                btnHab.Name = "Habilitar/Deshabilitar";
-                btnHab.UseColumnTextForButtonValue = true;
-                btnHab.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                btnHab.FlatStyle = FlatStyle.Standard;
-                btnHab.CellTemplate.Style.BackColor = Color.Honeydew;
+                btnDeshab.Text = "Deshabilitar";
+                btnDeshab.Name = "Deshabilitar";
+                btnDeshab.UseColumnTextForButtonValue = true;
+                btnDeshab.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                btnDeshab.FlatStyle = FlatStyle.Standard;
+                btnDeshab.CellTemplate.Style.BackColor = Color.Honeydew;
 
-                recorridos.Columns.Add(btnHab);
+                recorridos.Columns.Add(btnDeshab);
 
                 recorridos.ClearSelection();
             }

@@ -1113,7 +1113,8 @@ CREATE PROCEDURE NOT_NULL.ListarRecorridos
 	@CODIGO nvarchar(20) = NULL,
 	@ID_TIPO_SERV int = NULL,
 	@ID_CIU_ORIGEN int = NULL,
-	@ID_CIU_DESTINO int = NULL 
+	@ID_CIU_DESTINO int = NULL,
+	@HABILITADO bit = NULL 
 AS 
 BEGIN
     DECLARE @WHERE varchar(500)
@@ -1135,6 +1136,9 @@ BEGIN
 		
 	IF (@ID_CIU_DESTINO IS NOT NULL)
 		SET @WHERE = @WHERE + 'REC_idCiudadDestino = ''' + CONVERT(varchar,@ID_CIU_DESTINO) + ''' AND ';
+		
+	IF (@HABILITADO IS NOT NULL)
+		SET @WHERE = @WHERE + 'REC_habilitado = ''' + CONVERT(varchar,@HABILITADO) + ''' AND ';
 
 	
 	SET @SQL = 'SELECT REC_id AS ID, REC_codigo AS Codigo, a.CIU_Nombre as Origen, b.CIU_nombre as Destino, '

@@ -20,10 +20,10 @@ namespace AccesoADatos
                     sCadena.Append("initial catalog=<BASE>;");
                     sCadena.Append("user id=<USER>;");
                     sCadena.Append("password=<PASSWORD>;");
-                    sCadena.Replace("<SERVIDOR>", Configuracion.Instance().getServidorBase());
-                    sCadena.Replace("<BASE>", Configuracion.Instance().getBaseDatos());
-                    sCadena.Replace("<USER>", Configuracion.Instance().getUsuario());
-                    sCadena.Replace("<PASSWORD>", Configuracion.Instance().getClave());
+                    sCadena.Replace("<SERVIDOR>", Configuracion.Instance().ServidorBase);
+                    sCadena.Replace("<BASE>", Configuracion.Instance().BaseDatos);
+                    sCadena.Replace("<USER>", Configuracion.Instance().Usuario);
+                    sCadena.Replace("<PASSWORD>", Configuracion.Instance().Clave);
 
                     return sCadena.ToString();
                 }
@@ -78,6 +78,16 @@ namespace AccesoADatos
         protected override System.Data.IDbCommand ComandoSql(string comandoSql)
         {
             var com = new SqlCommand(comandoSql, (SqlConnection)Conexion, (SqlTransaction)_Transaccion);
+            return com;
+        }
+
+        protected override System.Data.IDbCommand ComandoSql(string comandoSql, Hashtable args)
+        {
+            var com = new SqlCommand(comandoSql, (SqlConnection)Conexion, (SqlTransaction)_Transaccion);
+
+            foreach (DictionaryEntry item in args)
+                com.Parameters.AddWithValue(item.Key.ToString(), item.Value);
+
             return com;
         }
 

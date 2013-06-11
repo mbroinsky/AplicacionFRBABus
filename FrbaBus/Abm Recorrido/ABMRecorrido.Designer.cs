@@ -32,7 +32,6 @@
             this.Guardar = new System.Windows.Forms.Button();
             this.Cancelar = new System.Windows.Forms.Button();
             this.codigo = new System.Windows.Forms.TextBox();
-            this.habilitado = new System.Windows.Forms.CheckBox();
             this.lblDestino = new System.Windows.Forms.Label();
             this.lblOrigen = new System.Windows.Forms.Label();
             this.lblTipoServ = new System.Windows.Forms.Label();
@@ -80,16 +79,6 @@
             this.codigo.Name = "codigo";
             this.codigo.Size = new System.Drawing.Size(156, 20);
             this.codigo.TabIndex = 9;
-            // 
-            // habilitado
-            // 
-            this.habilitado.AutoSize = true;
-            this.habilitado.Location = new System.Drawing.Point(282, 17);
-            this.habilitado.Name = "habilitado";
-            this.habilitado.Size = new System.Drawing.Size(73, 17);
-            this.habilitado.TabIndex = 10;
-            this.habilitado.Text = "Habilitado";
-            this.habilitado.UseVisualStyleBackColor = true;
             // 
             // lblDestino
             // 
@@ -194,7 +183,6 @@
             this.Controls.Add(this.tipoServicio);
             this.Controls.Add(this.ciudadDestino);
             this.Controls.Add(this.ciudadOrigen);
-            this.Controls.Add(this.habilitado);
             this.Controls.Add(this.codigo);
             this.Controls.Add(this.Cancelar);
             this.Controls.Add(this.Guardar);
@@ -213,7 +201,6 @@
         private System.Windows.Forms.Button Guardar;
         private System.Windows.Forms.Button Cancelar;
         private System.Windows.Forms.TextBox codigo;
-        private System.Windows.Forms.CheckBox habilitado;
         private System.Windows.Forms.Label lblDestino;
         private System.Windows.Forms.Label lblOrigen;
         private System.Windows.Forms.Label lblTipoServ;

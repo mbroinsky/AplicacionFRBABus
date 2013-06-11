@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using AccesoADatos.Orm;
 using AccesoADatos;
+using FrbaBus;
 
 namespace Registrar_LLegada_Micro
 {

@@ -9,11 +9,11 @@ namespace FrbaBus
     public class Configuracion
     {
         private static Configuracion oInstance;
-        private String ServidorBase;
-        private String BaseDatos;
-        private String Usuario;
-        private String Clave;
-        private DateTime FechaSistema;
+        public String ServidorBase { get; set; }
+        public String BaseDatos { get; set; }
+        public String Usuario { get; set; }
+        public String Clave { get; set; }
+        public DateTime FechaSistema { get; set; }
 
         protected Configuracion()
         {
@@ -56,26 +56,6 @@ namespace FrbaBus
                 oInstance = new Configuracion();
 
             return oInstance;
-        }
-
-        public string getServidorBase() 
-        {
-            return ServidorBase;
-        }
-
-        public string getUsuario()
-        {
-            return Usuario;
-        }
-
-        public string getClave()
-        {
-            return Clave;
-        }
-
-        public string getBaseDatos()
-        {
-            return BaseDatos;
-        }
+        }       
     }
 }

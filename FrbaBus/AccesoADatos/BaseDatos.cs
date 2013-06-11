@@ -18,6 +18,7 @@ namespace AccesoADatos
         protected abstract IDbConnection CrearConexion(string cadena);
         protected abstract IDbCommand Comando(string procedimientoAlmacenado);
         protected abstract IDbCommand ComandoSql(string comandoSql);
+        protected abstract IDbCommand ComandoSql(string comandoSql, Hashtable args);
         protected abstract IDataAdapter CrearDataAdapter(string procedimientoAlmacenado, params Object[] args);
         protected abstract IDataAdapter CrearDataAdapterSql(string comandoSql);
         protected abstract IDataAdapter CrearDataAdapterSql(string comandoSql, Hashtable args);
@@ -233,6 +234,11 @@ namespace AccesoADatos
             return ComandoSql(sql).ExecuteNonQuery();
         }
 
+        public int EjecutarSql(string sql, Hashtable args)
+        {
+            return ComandoSql(sql, args).ExecuteNonQuery();
+        }
+
         public int Ejecutar(string storeProcedure, params  Object[] args)
         {
             var com = Comando(storeProcedure);
@@ -251,6 +257,7 @@ namespace AccesoADatos
             return resp;
         }
 
+        
         public void IniciarTransaccion()
         {
             try

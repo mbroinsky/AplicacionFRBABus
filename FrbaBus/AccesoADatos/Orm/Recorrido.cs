@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,9 +48,21 @@ namespace AccesoADatos.Orm
                 }
             }
             catch
-            { 
+            {
                 return;
             }
+        }
+
+        public Recorrido(int id, string codigo, int idTipoServ, int idCiuOri, int idCiuDest, double precBase, double precKilo, bool habilitado)
+        {
+            Id = id;
+            Codigo = codigo;
+            IdTipoServ = idTipoServ;
+            IdCiuOri = idCiuOri;
+            IdCiuDest = idCiuDest;
+            PrecBase = precBase;
+            PrecKilo = precKilo;
+            Habilitado = habilitado;
         }
 
         public static void ListarCombo(ComboBox recorridos)
@@ -77,13 +89,13 @@ namespace AccesoADatos.Orm
             }
         }
 
-        public static DataTable Listar(string codigo, int? idRecorrido, int? idTipServ, 
+        public static DataTable Listar(bool habilitado, string codigo, int? idRecorrido, int? idTipServ,
                                 int? idOrigen, int? idDestino)
         {
             try
             {
                 DataTable dt = Conector.Datos.EjecutarProcedureADataTable("NOT_NULL.ListarRecorridos",
-                                        idRecorrido, codigo, idTipServ, idOrigen, idDestino);
+                                        idRecorrido, codigo, idTipServ, idOrigen, idDestino, habilitado);
 
                 return dt;
             }
@@ -93,5 +105,63 @@ namespace AccesoADatos.Orm
             }
         }
 
+        public bool Insertar()
+        {
+            try
+            {
+                Hashtable parametros = new Hashtable();
+
+                parametros.Add("@codigo", Codigo);
+                parametros.Add("@idTipoServ", IdTipoServ);
+                parametros.Add("@idCiuOrigen", IdCiuOri);
+                parametros.Add("@idCiuDest", IdCiuDest);
+                parametros.Add("@precioBase", PrecBase);
+                parametros.Add("@precioKilo", PrecKilo);
+                parametros.Add("@habilitado", Habilitado);
+
+                if (Conector.Datos.EjecutarSql("insert into NOT_NULL.Recorrido " +
+                           " (REC_codigo, REC_idTipoServicio, REC_idCiudadOrigen, REC_idCiudadDestino, " +
+                            "REC_precioBase, REC_precioKilo, REC_habilitado)" +
+                           " values (@codigo, @idTipoServ, @idCiuOrigen, @idCiuDest, @precioBase, @precioKilo," +
+                           "@habilitado);", parametros) == 0)
+                    return false;
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool Modificar()
+        {
+            try
+            {
+                Hashtable parametros = new Hashtable();
+
+                parametros.Add("@codigo", Codigo);
+                parametros.Add("@idTipoServ", IdTipoServ);
+                parametros.Add("@idCiuOrigen", IdCiuOri);
+                parametros.Add("@idCiuDest", IdCiuDest);
+                parametros.Add("@precioBase", PrecBase);
+                parametros.Add("@precioKilo", PrecKilo);
+                parametros.Add("@habilitado", Habilitado);
+                parametros.Add("@idRec", Id);
+
+                if (Conector.Datos.EjecutarSql("update NOT_NULL.Recorrido SET " +
+                           "REC_codigo = @codigo, REC_idTipoServicio = @idTipoServ, " +
+                           "REC_idCiudadOrigen = @idCiuOrigen, REC_idCiudadDestino = @idCiuDest, " +
+                           "REC_precioBase = @precioBase, REC_precioKilo = @precioKilo, " +
+                           "REC_habilitado = @habilitado WHERE REC_id = @idRec;", parametros) == 0)
+                    return false;
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

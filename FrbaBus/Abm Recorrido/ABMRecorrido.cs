@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -41,7 +41,6 @@ namespace Abm_Recorrido
             CargarCombos();
 
             codigo.Text = _Recorrido.Codigo;
-            habilitado.Checked = _Recorrido.Habilitado;
             ciudadOrigen.SelectedValue = _Recorrido.IdCiuOri;
             ciudadDestino.SelectedValue = _Recorrido.IdCiuDest;
             tipoServicio.SelectedValue = _Recorrido.IdTipoServ;
@@ -87,28 +86,36 @@ namespace Abm_Recorrido
 
             if (_Modificacion)
             {
-                if (!_Recorrido.Habilitado && !habilitado.Checked)
+                if (_Recorrido.IdCiuDest != Convert.ToInt32(ciudadDestino.SelectedValue) ||
+                   _Recorrido.IdTipoServ != Convert.ToInt32(tipoServicio.SelectedValue) ||
+                   _Recorrido.IdCiuOri != Convert.ToInt32(ciudadOrigen.SelectedValue) ||
+                   _Recorrido.Codigo != codigo.Text)
                 {
-                    MessageBox.Show("No se pueden realizar cambios en un recorrido que no esta habilitado, " +
-                        "para modificarlo habilítelo primero");
+                    if (!_Recorrido.Modificar())
+                    {
+                        MessageBox.Show("Ocurrió un error de actualización");
+                        return;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No se produjeron modificaciones");
                     return;
                 }
-                
-                //if (!_Rol.Modificar(codigo.Text, habilitado.Checked, otorgados.Rows))
-                //{
-                //    MessageBox.Show("Ocurrió un error de actualización");
-                //    return;
-                //}
             }
             else
             {
-                //_Rol = new Rol();
+                _Recorrido = new Recorrido(-1, codigo.Text, Convert.ToInt32(tipoServicio.SelectedValue),
+                                   Convert.ToInt32(ciudadOrigen.SelectedValue), 
+                                   Convert.ToInt32(ciudadDestino.SelectedValue), 
+                                   Convert.ToDouble(precioBase.Text),
+                                   Convert.ToDouble(precioKilo.Text), true);
 
-                //if (!_Rol.Insertar(codigo.Text, habilitado.Checked, otorgados.Rows))
-                //{
-                //    MessageBox.Show("Ocurrió un error de actualización");
-                //    return;
-                //}
+                if (!_Recorrido.Insertar())
+                {
+                    MessageBox.Show("Ocurrió un error al agregar el nuevo recorrido");
+                    return;
+                }
  
             }
             
