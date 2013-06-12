@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using Utilidades;
+using System.Windows.Forms;
 
 namespace FrbaBus
 {
@@ -37,7 +39,7 @@ namespace FrbaBus
                     Clave = nodo.InnerText;
                 else if (nodo.Name.CompareTo("FechaSistema") == 0)
                 {
-                    if Validador.esFechaValida(nodo.InnerText.ToString())
+                    if (Validador.esFechaValida(nodo.InnerText.ToString()))
                     {
                         try
                         {
@@ -45,7 +47,7 @@ namespace FrbaBus
                         }
                         catch
                         {
-                            MessageBox.Show("Falló la carga de la fecha del archivo de configuración, se toma la fecha del sistema")
+                            MessageBox.Show("Falló la carga de la fecha del archivo de configuración, se toma la fecha del sistema");
                             FechaSistema = DateTime.Now;
                         }
                     }
