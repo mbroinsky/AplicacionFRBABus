@@ -1205,15 +1205,15 @@ END
 GO
 
 CREATE PROCEDURE NOT_NULL.RankingDestinos
-    @fecInicio DATETIME,
-    @fecFin DATETIME
+    @fecInicio SMALLDATETIME,
+    @fecFin SMALLDATETIME
 AS 
 BEGIN
 	SELECT TOP 5 CIU_nombre as Destino, COUNT(*) as 'Cantidad Pasajes'
 	FROM Ciudad, Recorrido, Viaje, Pasaje
-	WHERE REC_idCiudadDestino = CIU_id AND VIA_codRecorrido = REC_id AND VIA_fecSalida BETWEEN @fecInicio AND @fecFin
+	WHERE REC_idCiudadDestino = CIU_idCiudad AND VIA_codRecorrido = REC_id AND VIA_fecSalida BETWEEN @fecInicio AND @fecFin
 		AND PAS_idVIaje = VIA_numViaje
-	GROUP BY CIU_id, CIU_nombre
+	GROUP BY CIU_idCiudad, CIU_nombre
 	ORDER BY COUNT(*) DESC;	 
 END
 GO
