@@ -56,5 +56,10 @@ namespace FrbaBus
         {
             AbrirDialogo(new Abm_Recorrido.SeleccionRecorrido());
         }
+
+        private void listadosEstadisticos_Click(object sender, EventArgs e)
+        {
+            AbrirDialogo(new ListadoEstadistico.SeleccionListado());
+        }
     }
 }

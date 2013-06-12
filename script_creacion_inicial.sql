@@ -812,7 +812,8 @@ BEGIN
 				('Generar Viaje', 'GenerarViaje'),
 				('Registrar Llegadas', 'RegistrarLlegada'),
 				('Listado de Recorridos', 'SeleccionRecorrido'),
-				('ABM de Recorrido', 'ABMRecorrido');
+				('ABM de Recorrido', 'ABMRecorrido'),
+				('Listados Estadísticos', 'SeleccionListado');
 
         
 	INSERT INTO FuncionalidadXRol (FXR_idRol, FXR_idFuncionalidad)

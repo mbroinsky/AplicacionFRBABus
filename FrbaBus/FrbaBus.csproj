@@ -110,6 +110,7 @@
     <Compile Include="AccesoADatos\BaseDatos.cs" />
     <Compile Include="AccesoADatos\Orm\Butaca.cs" />
     <Compile Include="AccesoADatos\Orm\Ciudad.cs" />
+    <Compile Include="AccesoADatos\Orm\Listado.cs" />
     <Compile Include="AccesoADatos\Orm\Recorrido.cs" />
     <Compile Include="AccesoADatos\Orm\Funcionalidad.cs" />
     <Compile Include="AccesoADatos\Orm\Marca.cs" />
@@ -149,6 +150,12 @@
     </Compile>
     <Compile Include="AccesoSistema.Designer.cs">
       <DependentUpon>AccesoSistema.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListadoEstadistico\SeleccionListado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ListadoEstadistico\SeleccionListado.Designer.cs">
+      <DependentUpon>SeleccionListado.cs</DependentUpon>
     </Compile>
     <Compile Include="Menu.cs">
       <SubType>Form</SubType>
@@ -197,6 +204,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GenerarViaje\GenerarViaje.resx">
       <DependentUpon>GenerarViaje.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListadoEstadistico\SeleccionListado.resx">
+      <DependentUpon>SeleccionListado.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Menu.resx">
       <DependentUpon>Menu.cs</DependentUpon>
