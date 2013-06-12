@@ -110,6 +110,7 @@
     <Compile Include="AccesoADatos\BaseDatos.cs" />
     <Compile Include="AccesoADatos\Orm\Butaca.cs" />
     <Compile Include="AccesoADatos\Orm\Ciudad.cs" />
+    <Compile Include="AccesoADatos\Orm\Cliente.cs" />
     <Compile Include="AccesoADatos\Orm\Recorrido.cs" />
     <Compile Include="AccesoADatos\Orm\Funcionalidad.cs" />
     <Compile Include="AccesoADatos\Orm\Marca.cs" />
@@ -194,6 +195,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AccesoSistema.resx">
       <DependentUpon>AccesoSistema.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Consulta Puntos Adquiridos\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GenerarViaje\GenerarViaje.resx">
       <DependentUpon>GenerarViaje.cs</DependentUpon>
