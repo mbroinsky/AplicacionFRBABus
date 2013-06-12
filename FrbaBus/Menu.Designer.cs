@@ -34,6 +34,7 @@
             this.generarViaje = new System.Windows.Forms.Button();
             this.registrarLlegadas = new System.Windows.Forms.Button();
             this.abmRecorridos = new System.Windows.Forms.Button();
+            this.listadosEstadisticos = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ABMMicro
@@ -96,12 +97,23 @@
             this.abmRecorridos.UseVisualStyleBackColor = true;
             this.abmRecorridos.Click += new System.EventHandler(this.abmRecorridos_Click);
             // 
+            // listadosEstadisticos
+            // 
+            this.listadosEstadisticos.Location = new System.Drawing.Point(517, 92);
+            this.listadosEstadisticos.Name = "listadosEstadisticos";
+            this.listadosEstadisticos.Size = new System.Drawing.Size(75, 44);
+            this.listadosEstadisticos.TabIndex = 6;
+            this.listadosEstadisticos.Text = "Listados Estadísticos";
+            this.listadosEstadisticos.UseVisualStyleBackColor = true;
+            this.listadosEstadisticos.Click += new System.EventHandler(this.listadosEstadisticos_Click);
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(685, 149);
             this.ControlBox = false;
+            this.Controls.Add(this.listadosEstadisticos);
             this.Controls.Add(this.abmRecorridos);
             this.Controls.Add(this.registrarLlegadas);
             this.Controls.Add(this.generarViaje);
@@ -124,5 +136,6 @@
         private System.Windows.Forms.Button generarViaje;
         private System.Windows.Forms.Button registrarLlegadas;
         private System.Windows.Forms.Button abmRecorridos;
+        private System.Windows.Forms.Button listadosEstadisticos;
     }
 }
