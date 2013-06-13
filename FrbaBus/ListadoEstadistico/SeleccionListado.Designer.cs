@@ -92,7 +92,6 @@
             this.comienzoSemestre.Name = "comienzoSemestre";
             this.comienzoSemestre.Size = new System.Drawing.Size(86, 20);
             this.comienzoSemestre.TabIndex = 2;
-            this.comienzoSemestre.ValueChanged += new System.EventHandler(this.comienzoSemestre_ValueChanged);
             // 
             // ver
             // 

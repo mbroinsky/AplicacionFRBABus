@@ -58,9 +58,20 @@ namespace AccesoADatos.Orm
             }
         }
 
-        internal static object ListadoDestinosConMicrosMasVacios(DateTime dateTime, DateTime dateTime_2)
+        internal static object ListadoDestinosConMicrosMasVacios(DateTime fechaInicio, DateTime fechaFin)
         {
-            throw new NotImplementedException();
+            try
+            {
+                DataTable dt = Conector.Datos.EjecutarProcedureADataTable("NOT_NULL.RankingDestinosXMicrosVacios",
+                    fechaInicio, fechaFin);
+
+                return dt;
+            }
+            catch
+            {
+                MessageBox.Show("Falló al intentar mostrar el listado");
+                return null;
+            }
         }
 
         internal static object ListadoMicrosConMenosDisponibilidad(DateTime dateTime, DateTime dateTime_2)

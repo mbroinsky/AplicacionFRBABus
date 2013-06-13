@@ -173,6 +173,21 @@ BEGIN
 	DROP PROCEDURE NOT_NULL.RankingDestinos;
 END
 
+IF OBJECT_ID(N'NOT_NULL.RankingDestinosXPasajesCancelados') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.RankingDestinosXPasajesCancelados
+END
+
+IF OBJECT_ID(N'NOT_NULL.RankingClientesXPuntosAcumulados') IS NOT NULL
+BEGIN
+	DROP PROCEDURE  NOT_NULL.RankingClientesXPuntosAcumulados
+END
+
+IF OBJECT_ID(N'NOT_NULL.RankingDestinosXMicrosVacios') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.RankingDestinosXMicrosVacios
+END
+
 IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'NOT_NULL')
 BEGIN
 	DROP SCHEMA NOT_NULL;
@@ -1244,6 +1259,27 @@ BEGIN
 		dateadd(year, -1, PTS_fecVencimiento) BETWEEN @fecInicio AND @fecFin
 	GROUP BY CLI_idCLiente, CLI_nombre
 	ORDER BY SUM(PTS_puntos) DESC;	 
+END
+GO
+
+CREATE PROCEDURE NOT_NULL.RankingDestinosXMicrosVacios
+    @fecInicio SMALLDATETIME,
+    @fecFin SMALLDATETIME
+AS 
+BEGIN
+	SELECT TOP 5 CIU_nombre as Destino, 
+			MIC_patente as Patente, 
+			(COUNT(*)*100)/(SELECT COUNT(*) FROM NOT_NULL.Butaca WHERE VIA_numMicro = BUT_numMicro) as 'Porcentaje Desocupado',
+			COUNT(*) as 'Asientos Vacíos',
+			VIA_fecSalida as 'Fecha viaje'
+	FROM NOT_NULL.Viaje, NOT_NULL.Recorrido, NOT_NULL.Micro, NOT_NULL.Ciudad, NOT_NULL.Butaca  
+	WHERE REC_idCiudadDestino = CIU_idCiudad AND VIA_codRecorrido = REC_id 
+		AND VIA_fecSalida BETWEEN @fecInicio AND @fecFin
+		AND MIC_numMicro = VIA_numMicro AND VIA_numMicro = BUT_numMicro AND 
+		BUT_numeroAsiento not in (select PAS_numButaca from NOT_NULL.Pasaje where 
+		PAS_numMicro = VIA_numMicro AND PAS_idViaje = VIA_numViaje)
+	GROUP BY VIA_fecSalida, MIC_patente, VIA_numMicro, CIU_nombre
+	ORDER BY 3 DESC, 4 DESC;
 END
 GO
 

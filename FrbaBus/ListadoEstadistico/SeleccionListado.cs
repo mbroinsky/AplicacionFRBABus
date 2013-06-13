@@ -51,10 +51,5 @@ namespace FrbaBus.ListadoEstadistico
                     break;
             }
         }
-
-        private void comienzoSemestre_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
