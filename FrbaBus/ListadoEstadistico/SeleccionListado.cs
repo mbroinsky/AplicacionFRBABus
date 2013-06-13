@@ -27,10 +27,28 @@ namespace FrbaBus.ListadoEstadistico
                 return;
             }
 
-            if (tipoListado.SelectedIndex == 0)
+            switch (tipoListado.SelectedIndex)
             {
-                resultados.DataSource = Listado.ListadoDestinosConMasPasajes(comienzoSemestre.Value, 
-                    comienzoSemestre.Value.AddMonths(6));
+                case 0:
+                    resultados.DataSource = Listado.ListadoDestinosConMasPasajes(comienzoSemestre.Value, 
+                        comienzoSemestre.Value.AddMonths(6));
+                    break;
+                case 1:
+                    resultados.DataSource = Listado.ListadoDestinosConMicrosMasVacios(comienzoSemestre.Value,
+                        comienzoSemestre.Value.AddMonths(6));
+                    break;
+                case 2:
+                    resultados.DataSource = Listado.ListadoClientesConMasPuntos(comienzoSemestre.Value, 
+                        comienzoSemestre.Value.AddMonths(6));
+                    break;
+                case 3:
+                    resultados.DataSource = Listado.ListadoDestinosConMasCancelaciones(comienzoSemestre.Value, 
+                        comienzoSemestre.Value.AddMonths(6));
+                    break;
+                case 4:
+                    resultados.DataSource = Listado.ListadoMicrosConMenosDisponibilidad(comienzoSemestre.Value,
+                        comienzoSemestre.Value.AddMonths(6));
+                    break;
             }
         }
 

@@ -1219,6 +1219,34 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE NOT_NULL.RankingDestinosXPasajesCancelados
+    @fecInicio SMALLDATETIME,
+    @fecFin SMALLDATETIME
+AS 
+BEGIN
+	SELECT TOP 5 CIU_nombre as Destino, COUNT(*) as 'Pasajes cancelados'
+	FROM Viaje, Recorrido, Ciudad, Pasaje 
+	WHERE REC_idCiudadDestino = CIU_idCiudad AND VIA_codRecorrido = REC_id AND VIA_fecSalida BETWEEN @fecInicio AND @fecFin
+		AND PAS_idViaje = VIA_numViaje AND PAS_cancelado = 1
+	GROUP BY CIU_idCiudad, CIU_nombre
+	ORDER BY COUNT(*) DESC;	 
+END
+GO
+
+CREATE PROCEDURE NOT_NULL.RankingClientesXPuntosAcumulados
+    @fecInicio SMALLDATETIME,
+    @fecFin SMALLDATETIME
+AS 
+BEGIN
+	SELECT TOP 5 CLI_nombre as Nombre, SUM(PTS_puntos) as 'Puntos Acumulados'
+	FROM Cliente, Puntos 
+	WHERE PTS_idCliente = CLI_idCliente AND 
+		dateadd(year, -1, PTS_fecVencimiento) BETWEEN @fecInicio AND @fecFin
+	GROUP BY CLI_idCLiente, CLI_nombre
+	ORDER BY SUM(PTS_puntos) DESC;	 
+END
+GO
+
 --FIN
 COMMIT;
 

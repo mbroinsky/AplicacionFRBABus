@@ -25,5 +25,47 @@ namespace AccesoADatos.Orm
                 return null;
             }
         }
+
+        internal static object ListadoClientesConMasPuntos(DateTime fechaInicio, DateTime fechaFin)
+        {
+            try
+            {
+                DataTable dt = Conector.Datos.EjecutarProcedureADataTable("NOT_NULL.RankingClientesXPuntosAcumulados",
+                    fechaInicio, fechaFin);
+
+                return dt;
+            }
+            catch
+            {
+                MessageBox.Show("Falló al intentar mostrar el listado");
+                return null;
+            }
+        }
+
+        internal static object ListadoDestinosConMasCancelaciones(DateTime fechaInicio, DateTime fechaFin)
+        {
+            try
+            {
+                DataTable dt = Conector.Datos.EjecutarProcedureADataTable("NOT_NULL.RankingDestinosXPasajesCancelados",
+                    fechaInicio, fechaFin);
+
+                return dt;
+            }
+            catch
+            {
+                MessageBox.Show("Falló al intentar mostrar el listado");
+                return null;
+            }
+        }
+
+        internal static object ListadoDestinosConMicrosMasVacios(DateTime dateTime, DateTime dateTime_2)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static object ListadoMicrosConMenosDisponibilidad(DateTime dateTime, DateTime dateTime_2)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
