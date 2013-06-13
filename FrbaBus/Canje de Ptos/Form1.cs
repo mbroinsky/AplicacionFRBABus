@@ -6,14 +6,34 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Utilidades;
+using FrbaBus.AccesoADatos.Orm;
 
 namespace FrbaBus.Canje_de_Ptos
 {
-    public partial class Form1 : Form
+    public partial class CanjeDePuntos : Form
     {
-        public Form1()
+        public CanjeDePuntos()
         {
             InitializeComponent();
+        }
+
+        private void listarProductos_Click(object sender, EventArgs e)
+        {
+            grillaProductos.Columns.Clear();
+            if (Validador.esNumericoEnteroPositivo(campoDNICliente.Text))
+            {
+                grillaProductos.DataSource = Cliente.productosDisponiblesParaCliente(Convert.ToInt32(campoDNICliente.Text));
+            }
+            else
+            {
+                MessageBox.Show("El valor ingresado no es numérico");
+            }
+        }
+
+        private void grillaPuntos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

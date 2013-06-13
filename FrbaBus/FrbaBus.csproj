@@ -203,6 +203,9 @@
     <EmbeddedResource Include="AccesoSistema.resx">
       <DependentUpon>AccesoSistema.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Canje de Ptos\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Consulta Puntos Adquiridos\ConsultaDePuntos.resx">
       <DependentUpon>ConsultaDePuntos.cs</DependentUpon>
     </EmbeddedResource>

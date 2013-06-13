@@ -5,6 +5,7 @@ using System.Text;
 using System.Data;
 using System.Collections;
 using AccesoADatos;
+using System.Windows.Forms;
 
 namespace FrbaBus.AccesoADatos.Orm
 {
@@ -39,6 +40,21 @@ namespace FrbaBus.AccesoADatos.Orm
             }
             catch
             {
+                return null;
+            }
+        }
+
+        internal static object productosDisponiblesParaCliente(int dni)
+        {
+            try
+            {
+                DataTable dt = Conector.Datos.EjecutarProcedureADataTable("NOT_NULL.productosDisponibleCliente", dni);
+
+                return dt;
+            }
+            catch
+            {
+                MessageBox.Show("Falló al intentar mostrar el listado");
                 return null;
             }
         }

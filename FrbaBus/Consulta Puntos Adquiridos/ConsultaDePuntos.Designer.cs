@@ -64,16 +64,13 @@
             // 
             // grillaPuntos
             // 
-            this.grillaPuntos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grillaPuntos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grillaPuntos.Location = new System.Drawing.Point(12, 37);
-            this.grillaPuntos.MultiSelect = false;
             this.grillaPuntos.Name = "grillaPuntos";
-            this.grillaPuntos.RowHeadersVisible = false;
             this.grillaPuntos.Size = new System.Drawing.Size(268, 217);
             this.grillaPuntos.TabIndex = 3;
             // 
-            // ConsultaDePuntos
+            // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
