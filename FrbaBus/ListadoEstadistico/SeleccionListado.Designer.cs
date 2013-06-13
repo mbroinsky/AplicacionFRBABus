@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tipoListado = new System.Windows.Forms.ListBox();
+            this.lblComienzoSem = new System.Windows.Forms.Label();
+            this.lblTipoListado = new System.Windows.Forms.Label();
+            this.comienzoSemestre = new System.Windows.Forms.DateTimePicker();
             this.ver = new System.Windows.Forms.Button();
             this.salir = new System.Windows.Forms.Button();
-            this.comienzoSemestre = new System.Windows.Forms.DateTimePicker();
-            this.lblTipoListado = new System.Windows.Forms.Label();
-            this.lblComienzoSem = new System.Windows.Forms.Label();
             this.resultados = new System.Windows.Forms.DataGridView();
-            this.tipoListado = new System.Windows.Forms.ListBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.resultados)).BeginInit();
             this.SuspendLayout();
@@ -53,6 +53,47 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
+            // tipoListado
+            // 
+            this.tipoListado.FormattingEnabled = true;
+            this.tipoListado.Items.AddRange(new object[] {
+            "Top 5 destinos con más pasajes comprados",
+            "Top 5 destinos con micros más vacíos",
+            "Top 5 clientes con más puntos acumulados",
+            "Top 5 destinos con pasajes cancelados",
+            "Top 5 micros con mayor cantidad de días fuera de servicio"});
+            this.tipoListado.Location = new System.Drawing.Point(13, 32);
+            this.tipoListado.Name = "tipoListado";
+            this.tipoListado.Size = new System.Drawing.Size(299, 82);
+            this.tipoListado.TabIndex = 5;
+            // 
+            // lblComienzoSem
+            // 
+            this.lblComienzoSem.AutoSize = true;
+            this.lblComienzoSem.Location = new System.Drawing.Point(347, 16);
+            this.lblComienzoSem.Name = "lblComienzoSem";
+            this.lblComienzoSem.Size = new System.Drawing.Size(98, 13);
+            this.lblComienzoSem.TabIndex = 4;
+            this.lblComienzoSem.Text = "Comienzo semestre";
+            // 
+            // lblTipoListado
+            // 
+            this.lblTipoListado.AutoSize = true;
+            this.lblTipoListado.Location = new System.Drawing.Point(10, 16);
+            this.lblTipoListado.Name = "lblTipoListado";
+            this.lblTipoListado.Size = new System.Drawing.Size(128, 13);
+            this.lblTipoListado.TabIndex = 3;
+            this.lblTipoListado.Text = "Seleccione tipo de listado";
+            // 
+            // comienzoSemestre
+            // 
+            this.comienzoSemestre.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.comienzoSemestre.Location = new System.Drawing.Point(359, 42);
+            this.comienzoSemestre.Name = "comienzoSemestre";
+            this.comienzoSemestre.Size = new System.Drawing.Size(86, 20);
+            this.comienzoSemestre.TabIndex = 2;
+            this.comienzoSemestre.ValueChanged += new System.EventHandler(this.comienzoSemestre_ValueChanged);
+            // 
             // ver
             // 
             this.ver.Location = new System.Drawing.Point(370, 91);
@@ -65,38 +106,13 @@
             // 
             // salir
             // 
+            this.salir.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.salir.Location = new System.Drawing.Point(393, 418);
             this.salir.Name = "salir";
             this.salir.Size = new System.Drawing.Size(75, 23);
             this.salir.TabIndex = 1;
             this.salir.Text = "Salir";
             this.salir.UseVisualStyleBackColor = true;
-            // 
-            // comienzoSemestre
-            // 
-            this.comienzoSemestre.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.comienzoSemestre.Location = new System.Drawing.Point(359, 42);
-            this.comienzoSemestre.Name = "comienzoSemestre";
-            this.comienzoSemestre.Size = new System.Drawing.Size(86, 20);
-            this.comienzoSemestre.TabIndex = 2;
-            // 
-            // lblTipoListado
-            // 
-            this.lblTipoListado.AutoSize = true;
-            this.lblTipoListado.Location = new System.Drawing.Point(10, 16);
-            this.lblTipoListado.Name = "lblTipoListado";
-            this.lblTipoListado.Size = new System.Drawing.Size(128, 13);
-            this.lblTipoListado.TabIndex = 3;
-            this.lblTipoListado.Text = "Seleccione tipo de listado";
-            // 
-            // lblComienzoSem
-            // 
-            this.lblComienzoSem.AutoSize = true;
-            this.lblComienzoSem.Location = new System.Drawing.Point(347, 16);
-            this.lblComienzoSem.Name = "lblComienzoSem";
-            this.lblComienzoSem.Size = new System.Drawing.Size(98, 13);
-            this.lblComienzoSem.TabIndex = 4;
-            this.lblComienzoSem.Text = "Comienzo semestre";
             // 
             // resultados
             // 
@@ -114,20 +130,6 @@
             this.resultados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.resultados.Size = new System.Drawing.Size(466, 281);
             this.resultados.TabIndex = 2;
-            // 
-            // tipoListado
-            // 
-            this.tipoListado.FormattingEnabled = true;
-            this.tipoListado.Items.AddRange(new object[] {
-            "Top 5 destinos con más pasajes comprados",
-            "Top 5 destinos con micros más vacíos",
-            "Top 5 clientes con más puntos acumulados",
-            "Top 5 destinos con pasajes cancelados",
-            "Top 5 micros con mayor cantidad de días fuera de servicio"});
-            this.tipoListado.Location = new System.Drawing.Point(13, 32);
-            this.tipoListado.Name = "tipoListado";
-            this.tipoListado.Size = new System.Drawing.Size(299, 82);
-            this.tipoListado.TabIndex = 5;
             // 
             // SeleccionListado
             // 

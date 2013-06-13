@@ -61,5 +61,10 @@ namespace FrbaBus
         {
             AbrirDialogo(new ListadoEstadistico.SeleccionListado());
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            AbrirDialogo(new Consulta_Puntos_Adquiridos.ConsultaDePuntos());
+        }
     }
 }

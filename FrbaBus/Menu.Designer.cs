@@ -35,6 +35,7 @@
             this.registrarLlegadas = new System.Windows.Forms.Button();
             this.abmRecorridos = new System.Windows.Forms.Button();
             this.listadosEstadisticos = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ABMMicro
@@ -107,12 +108,23 @@
             this.listadosEstadisticos.UseVisualStyleBackColor = true;
             this.listadosEstadisticos.Click += new System.EventHandler(this.listadosEstadisticos_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(517, 42);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 44);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "Consulta de puntos";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(685, 149);
             this.ControlBox = false;
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.listadosEstadisticos);
             this.Controls.Add(this.abmRecorridos);
             this.Controls.Add(this.registrarLlegadas);
@@ -137,5 +149,6 @@
         private System.Windows.Forms.Button registrarLlegadas;
         private System.Windows.Forms.Button abmRecorridos;
         private System.Windows.Forms.Button listadosEstadisticos;
+        private System.Windows.Forms.Button button1;
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace FrbaBus.Consulta_Puntos_Adquiridos
 {
-    partial class Form1
+    partial class ConsultaDePuntos
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.campoDNICliente = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.grillaPuntos = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.grillaPuntos)).BeginInit();
@@ -45,12 +45,13 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // textBox1
+            // campoDNICliente
             // 
-            this.textBox1.Location = new System.Drawing.Point(44, 10);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(146, 20);
-            this.textBox1.TabIndex = 1;
+            this.campoDNICliente.Location = new System.Drawing.Point(44, 10);
+            this.campoDNICliente.Name = "campoDNICliente";
+            this.campoDNICliente.Size = new System.Drawing.Size(146, 20);
+            this.campoDNICliente.TabIndex = 1;
+            this.campoDNICliente.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label1
             // 
@@ -76,9 +77,9 @@
             this.ClientSize = new System.Drawing.Size(292, 266);
             this.Controls.Add(this.grillaPuntos);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.campoDNICliente);
             this.Controls.Add(this.button1);
-            this.Name = "Form1";
+            this.Name = "ConsultaDePuntos";
             this.Text = "Consulta de Puntos";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grillaPuntos)).EndInit();
@@ -90,7 +91,7 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox campoDNICliente;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView grillaPuntos;
     }

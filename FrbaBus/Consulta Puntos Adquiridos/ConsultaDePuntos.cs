@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using FrbaBus.AccesoADatos.Orm;
+using Utilidades;
 
 namespace FrbaBus.Consulta_Puntos_Adquiridos
 {
-    public partial class Form1 : Form
+    public partial class ConsultaDePuntos : Form
     {
-        public Form1()
+        public ConsultaDePuntos()
         {
             InitializeComponent();
         }
@@ -25,7 +26,18 @@ namespace FrbaBus.Consulta_Puntos_Adquiridos
         private void button1_Click(object sender, EventArgs e)
         {
             grillaPuntos.Columns.Clear();
-            grillaPuntos.DataSource = Cliente.obtenerPuntosCliente(10);
+            if (Validador.esNumericoEnteroPositivo(campoDNICliente.Text))
+            {
+                grillaPuntos.DataSource = Cliente.obtenerPuntosCliente(Convert.ToInt32(campoDNICliente.Text));
+            }
+            else
+            {
+                MessageBox.Show("El valor ingresado no es numérico");
+            }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
 
         }
     }

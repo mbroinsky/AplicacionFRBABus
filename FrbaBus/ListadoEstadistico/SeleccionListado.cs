@@ -33,5 +33,10 @@ namespace FrbaBus.ListadoEstadistico
                     comienzoSemestre.Value.AddMonths(6));
             }
         }
+
+        private void comienzoSemestre_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
