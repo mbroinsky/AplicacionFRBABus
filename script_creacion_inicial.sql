@@ -1291,7 +1291,7 @@ AS
 BEGIN
 	SELECT TOP 5 CIU_nombre as Destino, 
 			MIC_patente as Patente, 
-			cast((COUNT(*)*100)/(SELECT COUNT(*) FROM NOT_NULL.Butaca 
+			cast((COUNT(*)*100) as double)/cast((SELECT COUNT(*) FROM NOT_NULL.Butaca 
 			WHERE VIA_numMicro = BUT_numMicro) as double) as 'Porcentaje Desocupado',
 			COUNT(*) as 'Asientos Vacíos',
 			VIA_fecSalida as 'Fecha viaje'
