@@ -118,6 +118,11 @@ BEGIN
     DROP TABLE NOT_NULL.Tarjeta
 END
 
+IF OBJECT_ID(N'NOT_NULL.HistoricoMantenimiento') IS NOT NULL
+BEGIN
+    DROP TABLE NOT_NULL.HistoricoMantenimiento
+END
+
 IF OBJECT_ID(N'NOT_NULL.ListarRoles') IS NOT NULL
 BEGIN
     DROP PROCEDURE NOT_NULL.ListarRoles
@@ -188,6 +193,11 @@ BEGIN
 	DROP PROCEDURE NOT_NULL.RankingDestinosXMicrosVacios
 END
 
+IF OBJECT_ID(N'NOT_NULL.RankingMicrosFueraServ') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.RankingMicrosFueraServ
+END
+
 IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'NOT_NULL')
 BEGIN
 	DROP SCHEMA NOT_NULL;
@@ -237,9 +247,6 @@ CREATE TABLE NOT_NULL.Micro
 	,MIC_idMarca INT NOT NULL 
         ,MIC_idModelo INT NOT NULL 
 	,MIC_fechaAlta DATETIME NOT NULL 
-	,MIC_fueraDeServicio BIT NOT NULL 
-	,MIC_fecFueraServ DATETIME  NULL 
-	,MIC_fecReinicioServ DATETIME  NULL 
 	,MIC_fecBaja DATETIME  NULL
 )
 ON [PRIMARY]
@@ -518,6 +525,14 @@ ON [PRIMARY]
 ALTER TABLE NOT_NULL.Recorrido ADD CONSTRAINT PK_Recorrido PRIMARY KEY (REC_id)
 ALTER TABLE NOT_NULL.Recorrido ADD CONSTRAINT UQ_CodRec UNIQUE (REC_codigo)
 
+
+CREATE TABLE NOT_NULL.HistoricoMantenimiento
+(
+	HMAN_idMicro INT 
+	,HMAN_fecInicio DATETIME NOT NULL
+    	,HMAN_fecFin DATETIME NOT NULL 
+)
+
 -- Create Foreign Key: Recorrido.REC_idCiudadOrigen -> Ciudad.CIU_idCiudad
 ALTER TABLE NOT_NULL.[Recorrido] ADD CONSTRAINT
 [FK_Recorrido_REC_idCiudadOrigen_Ciudad_CIU_idCiudad]
@@ -771,6 +786,13 @@ REFERENCES NOT_NULL.[TipoServicio] ([SRV_idTipoServicio])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
+ALTER TABLE NOT_NULL.[HistoricoMantenimiento] ADD CONSTRAINT
+[FK_HistoricoMantenimiento_HMAN_idMicro_MIC_idMicro]
+FOREIGN KEY ([HMAN_idMicro])
+REFERENCES NOT_NULL.[Micro] ([MIC_idMicro])
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
+
 GO
 
 --Acá se deberían agregar los SP
@@ -856,7 +878,7 @@ BEGIN
     INSERT INTO Butaca (BUT_numeroAsiento, BUT_numMicro, BUT_tipo, BUT_piso)
 		SELECT DISTINCT Butaca_Nro, MIC_numMicro, Butaca_Tipo, Butaca_Piso
 		FROM gd_Esquema.Maestra, Micro
-		WHERE Micro_Patente = Micro.MIC_patente AND Butaca_Piso <> 0;
+		WHERE Micro_Patente = Micro.MIC_patente AND Butaca_Piso <> 0 AND Pasaje_Codigo <> 0;
 END
 GO
 
@@ -1263,6 +1285,27 @@ END
 GO
 
 CREATE PROCEDURE NOT_NULL.RankingDestinosXMicrosVacios
+    @fecInicio SMALLDATETIME,
+    @fecFin SMALLDATETIME
+AS 
+BEGIN
+	SELECT TOP 5 CIU_nombre as Destino, 
+			MIC_patente as Patente, 
+			(COUNT(*)*100)/(SELECT COUNT(*) FROM NOT_NULL.Butaca WHERE VIA_numMicro = BUT_numMicro) as 'Porcentaje Desocupado',
+			COUNT(*) as 'Asientos Vacíos',
+			VIA_fecSalida as 'Fecha viaje'
+	FROM NOT_NULL.Viaje, NOT_NULL.Recorrido, NOT_NULL.Micro, NOT_NULL.Ciudad, NOT_NULL.Butaca  
+	WHERE REC_idCiudadDestino = CIU_idCiudad AND VIA_codRecorrido = REC_id 
+		AND VIA_fecSalida BETWEEN @fecInicio AND @fecFin
+		AND MIC_numMicro = VIA_numMicro AND VIA_numMicro = BUT_numMicro AND 
+		BUT_numeroAsiento not in (select PAS_numButaca from NOT_NULL.Pasaje where 
+		PAS_numMicro = VIA_numMicro AND PAS_idViaje = VIA_numViaje)
+	GROUP BY VIA_fecSalida, MIC_patente, VIA_numMicro, CIU_nombre
+	ORDER BY 3 DESC, 4 DESC;
+END
+GO
+
+CREATE PROCEDURE NOT_NULL.RankingMicrosFueraServ
     @fecInicio SMALLDATETIME,
     @fecFin SMALLDATETIME
 AS 
