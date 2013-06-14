@@ -39,7 +39,7 @@ namespace AccesoADatos.Orm
             Micro micro = new Micro();
 
             String query =  "select MIC_numMicro as 'ID', " +
-                            "MIC_patente as 'Matrícula', " +
+                            "MIC_patente as 'Matrï¿½cula', " +
                             "MIC_idTipoServicio as 'Tipo de Serv.', " +
                             "MIC_kilosEncomiendas as 'Capacidad', " +
                             "MIC_habilitado as 'Habilitado', " +
@@ -57,7 +57,7 @@ namespace AccesoADatos.Orm
             var row = dt.Rows[0];
 
             micro.Id = Convert.ToInt16(row["ID"].ToString());
-            micro.Patente = (row["Matrícula"].ToString());
+            micro.Patente = (row["Matrï¿½cula"].ToString());
             micro.IdTipoDeServicio = Convert.ToInt16(row["Tipo de Serv."].ToString());
             micro.KilosEncomiendas = Convert.ToDecimal(row["Capacidad"].ToString());
             micro.Habilitado = Convert.ToBoolean(row["Habilitado"].ToString());
@@ -75,9 +75,9 @@ namespace AccesoADatos.Orm
 
         public static DataTable BuscarMicro(String patenteABuscar, String idtipoDeServicio, String idMarca, String idModelo, String Capacidad)
         {
-            //MODIFICAR USANDO HASH TABLE DE PARÁMETROS
+            //MODIFICAR USANDO HASH TABLE DE PARï¿½METROS
             String query = "select MIC_numMicro as 'ID', " +
-                                  "MIC_patente as 'Matrícula', " +
+                                  "MIC_patente as 'Matrï¿½cula', " +
                                   "SRV_nombreServicio as 'Tipo de Serv.', " +
                                   "MIC_kilosEncomiendas as 'Capacidad', " +
                                   "MIC_habilitado as 'Habilitado', " +
@@ -123,12 +123,13 @@ namespace AccesoADatos.Orm
                     " where MIC_idTipoServicio = REC_idTipoServicio AND " +
                     " REC_id = @idRecorrido AND " +
                     " MIC_Habilitado = 1 AND " +
-                    " (MIC_fueraDeServicio = 0 OR MIC_fecReinicioServ < @fecSalida) AND" +
+                    " MIC_numMicro NOT IN (SELECT HMAN_idMicro WHERE @fecActual BETWEEN HMAN_fecInicio AND HMAN_fecFin) AND" +
                     " MIC_numMicro NOT IN (SELECT VIA_numMicro from NOT_NULL.Viaje WHERE " +
                     " datediff(hour, VIA_fecSalida, @fecSalida) < 24)";
 
                 parametros.Add("@idRecorrido", idRecorrido);
                 parametros.Add("@fecSalida", fecSalida.ToString("yyyy-MM-dd HH:mm:ss"));
+                parametros.Add("@fecActual", Configuracion.Instance().FechaSistema);
 
                 micros.DataSource = Conector.Datos.EjecutarComandoADataTable(sql, parametros);
                 micros.ValueMember = "id";
