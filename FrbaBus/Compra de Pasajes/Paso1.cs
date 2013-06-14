@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace FrbaBus.Compra_de_Pasajes
 {
-    public partial class Form1 : Form
+    public partial class paso1 : Form
     {
-        public Form1()
+        public paso1()
         {
             InitializeComponent();
         }

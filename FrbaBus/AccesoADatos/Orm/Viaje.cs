@@ -45,6 +45,14 @@ namespace AccesoADatos.Orm
                 return false;
             }
         }
+
+        public static void RegistrarLlegada(DateTime fecLlegada, int idMicro, int idOrigen, int idDestino)
+        {
+            Conector.Datos.EjecutarProcedure("NOT_NULL.RegistrarLlegadas", fecLlegada,
+                        idMicro, idOrigen, idDestino);
+
+            return;
+        }
     }
 
 

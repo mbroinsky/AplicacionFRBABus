@@ -50,6 +50,9 @@ namespace FrbaBus.ListadoEstadistico
                         comienzoSemestre.Value.AddMonths(6));
                     break;
             }
+
+            foreach (DataGridViewColumn col in resultados.Columns)
+                col.SortMode = DataGridViewColumnSortMode.NotSortable;
         }
     }
 }

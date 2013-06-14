@@ -58,8 +58,10 @@ namespace Registrar_LLegada_Micro
             {
                 try
                 {
-                    Conector.Datos.EjecutarProcedure("NOT_NULL.RegistrarLlegadas", fila.Cells["fecLlegada"].Value,
-                        fila.Cells["idMicro"].Value, fila.Cells["idOrigen"].Value, fila.Cells["idDestino"].Value);
+                    Viaje.RegistrarLlegada(Convert.ToDateTime(fila.Cells["fecLlegada"].Value), 
+                       Convert.ToInt32(fila.Cells["idMicro"].Value), 
+                       Convert.ToInt32(fila.Cells["idOrigen"].Value), 
+                       Convert.ToInt32(fila.Cells["idDestino"].Value));
                 }
                 catch
                 {

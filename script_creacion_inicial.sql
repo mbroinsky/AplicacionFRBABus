@@ -1291,8 +1291,8 @@ AS
 BEGIN
 	SELECT TOP 5 CIU_nombre as Destino, 
 			MIC_patente as Patente, 
-			cast((COUNT(*)*100) as real) / cast((SELECT COUNT(*) FROM NOT_NULL.Butaca 
-			WHERE VIA_numMicro = BUT_numMicro) as real) as 'Porcentaje Desocupado',
+			round(cast((COUNT(*)*100) as real) / cast((SELECT COUNT(*) FROM NOT_NULL.Butaca 
+			WHERE VIA_numMicro = BUT_numMicro) as real), 2) as 'Porcentaje Desocupado',
 			COUNT(*) as 'Asientos Vacíos',
 			VIA_fecSalida as 'Fecha viaje'
 	FROM NOT_NULL.Viaje, NOT_NULL.Recorrido, NOT_NULL.Micro, NOT_NULL.Ciudad, NOT_NULL.Butaca  
@@ -1306,24 +1306,22 @@ BEGIN
 END
 GO
 
+
 CREATE PROCEDURE NOT_NULL.RankingMicrosFueraServ
     @fecInicio SMALLDATETIME,
     @fecFin SMALLDATETIME
 AS 
 BEGIN
-	SELECT TOP 5 CIU_nombre as Destino, 
-			MIC_patente as Patente, 
-			(COUNT(*)*100)/(SELECT COUNT(*) FROM NOT_NULL.Butaca WHERE VIA_numMicro = BUT_numMicro) as 'Porcentaje Desocupado',
-			COUNT(*) as 'Asientos Vacíos',
-			VIA_fecSalida as 'Fecha viaje'
-	FROM NOT_NULL.Viaje, NOT_NULL.Recorrido, NOT_NULL.Micro, NOT_NULL.Ciudad, NOT_NULL.Butaca  
-	WHERE REC_idCiudadDestino = CIU_idCiudad AND VIA_codRecorrido = REC_id 
-		AND VIA_fecSalida BETWEEN @fecInicio AND @fecFin
-		AND MIC_numMicro = VIA_numMicro AND VIA_numMicro = BUT_numMicro AND 
-		BUT_numeroAsiento not in (select PAS_numButaca from NOT_NULL.Pasaje where 
-		PAS_numMicro = VIA_numMicro AND PAS_idViaje = VIA_numViaje)
-	GROUP BY VIA_fecSalida, MIC_patente, VIA_numMicro, CIU_nombre
-	ORDER BY 3 DESC, 4 DESC;
+	SELECT TOP 5 MIC_Patente as Destino, 
+		SUM(CASE WHEN HMAN_fecInicio >= @fecInicio AND HMAN_fecFin <= @fecFin THEN
+				datediff(day, HMAN_fecFin, HMAN_fecInicio) 
+		    WHEN HMAN_fecInicio >= @fecInicio THEN datediff(day, @fecFin, HMAN_fecInicio)
+		    ELSE datediff(day, HMAN_fecFin, @fecInicio) END) as 'Días mantenimiento'	
+	FROM NOT_NULL.Micro, NOT_NULL.HistoricoMantenimiento
+	WHERE MIC_numMicro = HMAN_idMicro 
+		AND HMAN_fecInicio >= @fecInicio OR HMAN_fecFin <= @fecFin
+	GROUP BY MIC_numMicro, MIC_patente
+	ORDER BY 2 DESC;
 END
 GO
 
