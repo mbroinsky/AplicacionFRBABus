@@ -68,6 +68,11 @@ BEGIN
     DROP TABLE NOT_NULL.Viaje
 END
 
+IF OBJECT_ID(N'NOT_NULL.HistoricoMantenimiento') IS NOT NULL
+BEGIN
+    DROP TABLE NOT_NULL.HistoricoMantenimiento
+END
+
 IF OBJECT_ID(N'NOT_NULL.Micro') IS NOT NULL
 BEGIN
     DROP TABLE NOT_NULL.Micro
@@ -116,11 +121,6 @@ END
 IF OBJECT_ID(N'NOT_NULL.Tarjeta') IS NOT NULL
 BEGIN
     DROP TABLE NOT_NULL.Tarjeta
-END
-
-IF OBJECT_ID(N'NOT_NULL.HistoricoMantenimiento') IS NOT NULL
-BEGIN
-    DROP TABLE NOT_NULL.HistoricoMantenimiento
 END
 
 IF OBJECT_ID(N'NOT_NULL.ListarRoles') IS NOT NULL
@@ -787,9 +787,9 @@ ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
 ALTER TABLE NOT_NULL.[HistoricoMantenimiento] ADD CONSTRAINT
-[FK_HistoricoMantenimiento_HMAN_idMicro_MIC_idMicro]
+[FK_HistoricoMantenimiento_HMAN_idMicro_MIC_numMicro]
 FOREIGN KEY ([HMAN_idMicro])
-REFERENCES NOT_NULL.[Micro] ([MIC_idMicro])
+REFERENCES NOT_NULL.[Micro] ([MIC_numMicro])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
@@ -862,9 +862,9 @@ CREATE PROCEDURE NOT_NULL.CargarMicros
 AS
 BEGIN
 	INSERT INTO Micro (MIC_patente, MIC_idTipoServicio, MIC_kilosEncomiendas, MIC_habilitado 
-			, MIC_idMarca, MIC_idModelo, MIC_fechaAlta,MIC_fueraDeServicio)
+			, MIC_idMarca, MIC_idModelo, MIC_fechaAlta)
 		SELECT DISTINCT left(Micro_Patente, 7), SRV_idTipoServicio, Micro_KG_Disponibles,
-                       1, MAR_idMarca, MOD_idMarca, CURRENT_TIMESTAMP, 0
+                       1, MAR_idMarca, MOD_idMarca, CURRENT_TIMESTAMP
 		FROM gd_Esquema.Maestra, Marca, Modelo, TipoServicio
 		WHERE	Tipo_Servicio = SRV_nombreServicio and Micro_Marca = MAR_nombreMarca
 		AND		MAR_idMarca = MOD_idMarca
@@ -1291,8 +1291,8 @@ AS
 BEGIN
 	SELECT TOP 5 CIU_nombre as Destino, 
 			MIC_patente as Patente, 
-			cast((COUNT(*)*100) as double)/cast((SELECT COUNT(*) FROM NOT_NULL.Butaca 
-			WHERE VIA_numMicro = BUT_numMicro) as double) as 'Porcentaje Desocupado',
+			cast((COUNT(*)*100) as real) / cast((SELECT COUNT(*) FROM NOT_NULL.Butaca 
+			WHERE VIA_numMicro = BUT_numMicro) as real) as 'Porcentaje Desocupado',
 			COUNT(*) as 'Asientos Vacíos',
 			VIA_fecSalida as 'Fecha viaje'
 	FROM NOT_NULL.Viaje, NOT_NULL.Recorrido, NOT_NULL.Micro, NOT_NULL.Ciudad, NOT_NULL.Butaca  
