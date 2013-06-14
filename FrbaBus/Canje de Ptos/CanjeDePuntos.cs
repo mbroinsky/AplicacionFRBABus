@@ -23,7 +23,14 @@ namespace FrbaBus.Canje_de_Ptos
             grillaProductos.Columns.Clear();
             if (Validador.esNumericoEnteroPositivo(campoDNICliente.Text))
             {
+                DataGridViewColumn canjearPuntos = new DataGridViewButtonColumn();
+                canjearPuntos.HeaderText = "Canjear";
+                canjearPuntos.Name = "Canjear";
+                canjearPuntos.Visible = true;
+
                 grillaProductos.DataSource = Cliente.productosDisponiblesParaCliente(Convert.ToInt32(campoDNICliente.Text));
+
+                grillaProductos.Columns.Add(canjearPuntos);
             }
             else
             {
