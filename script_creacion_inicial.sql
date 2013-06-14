@@ -513,10 +513,11 @@ ALTER TABLE NOT_NULL.Canje ADD CONSTRAINT PK_Canje PRIMARY KEY (CNJ_idCanje)
 CREATE TABLE NOT_NULL.Recorrido
 (
 	REC_id INT NOT NULL IDENTITY(1, 1)
-    ,REC_codigo NUMERIC(18,0) NOT NULL
-    ,REC_idTipoServicio INT NOT NULL 
+        ,REC_codigo NUMERIC(18,0) NOT NULL
+        ,REC_idTipoServicio INT NOT NULL 
 	,REC_idCiudadOrigen INT NOT NULL 
-	,REC_idCiudadDestino INT NOT NULL 
+	,REC_idCiudadDestino INT NOT NULL
+	,REC_tiempoViaje BYTE NOT NULL
  	,REC_precioBase DECIMAL(10, 2) NOT NULL 
 	,REC_precioKilo DECIMAL(10, 2) NOT NULL 
 	,REC_habilitado BIT NOT NULL 
@@ -887,9 +888,10 @@ AS
 BEGIN
     INSERT INTO Recorrido (REC_idTipoServicio, REC_idCiudadOrigen,
 			REC_idCiudadDestino,REC_codigo,REC_precioBase,REC_precioKilo
-                        ,REC_habilitado)
+                        ,REC_habilitado, REC_tiempoViaje)
 		SELECT SRV_idTipoServicio, a.CIU_idCiudad, b.CIU_idCiudad, Recorrido_Codigo, 
 			max(Recorrido_Precio_BasePasaje), max(Recorrido_Precio_BaseKG), 1
+			, datediff(hour, Fecha_Llegada_Estimada, Fecha_Salida) 
 		FROM gd_Esquema.Maestra, Ciudad as a, Ciudad as b, TipoServicio
 		WHERE Recorrido_Ciudad_Origen = a.CIU_nombre and
   		      Recorrido_Ciudad_Destino = b.CIU_nombre and
