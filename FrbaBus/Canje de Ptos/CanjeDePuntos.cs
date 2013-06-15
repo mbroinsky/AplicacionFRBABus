@@ -42,5 +42,10 @@ namespace FrbaBus.Canje_de_Ptos
         {
 
         }
+
+        private void CanjeDePuntos_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

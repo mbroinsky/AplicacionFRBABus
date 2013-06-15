@@ -66,5 +66,10 @@ namespace FrbaBus
         {
             AbrirDialogo(new Consulta_Puntos_Adquiridos.ConsultaDePuntos());
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            AbrirDialogo(new Canje_de_Ptos.CanjeDePuntos());
+        }
     }
 }

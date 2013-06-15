@@ -84,6 +84,7 @@
             this.Controls.Add(this.listarProductos);
             this.Name = "CanjeDePuntos";
             this.Text = "Canje de Puntos";
+            this.Load += new System.EventHandler(this.CanjeDePuntos_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grillaProductos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
