@@ -198,6 +198,17 @@ BEGIN
 	DROP PROCEDURE NOT_NULL.RankingMicrosFueraServ
 END
 
+IF OBJECT_ID(N'NOT_NULL.productosDisponibleCliente') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.productosDisponibleCliente
+END
+
+IF OBJECT_ID(N'NOT_NULL.puntosTotalesCliente') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.puntosTotalesCliente
+END
+
+
 IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'NOT_NULL')
 BEGIN
 	DROP SCHEMA NOT_NULL;
@@ -212,7 +223,7 @@ GO
 CREATE TABLE NOT_NULL.Encomienda
 (
 	ENC_numEnc INT NOT NULL IDENTITY(1, 1)
-        ,ENC_idVenta INT NOT NULL
+    ,ENC_idVenta INT NOT NULL
 	,ENC_codigo INT NOT NULL
 	,ENC_idViaje INT NOT NULL
 	,ENC_idCliente INT NOT NULL 
@@ -1324,6 +1335,52 @@ BEGIN
 		AND HMAN_fecInicio >= @fecInicio OR HMAN_fecFin <= @fecFin
 	GROUP BY MIC_numMicro, MIC_patente
 	ORDER BY 2 DESC;
+END
+GO
+
+CREATE FUNCTION NOT_NULL.puntosTotalesCliente (@dni numeric)
+RETURNS numeric
+WITH EXECUTE AS CALLER
+AS
+BEGIN
+    DECLARE 
+		@idCliente numeric,
+		@puntosTotales numeric,
+		@ingresos numeric,
+		@egresos numeric
+    
+    SELECT @idCliente = CLI_idCLiente 
+	FROM NOT_NULL.Cliente
+	WHERE CLI_dni = @dni
+    
+     
+    SELECT @ingresos = sum(PTS_puntos)
+	FROM NOT_NULL.Puntos
+	WHERE PTS_idCliente = @idCliente
+	AND PTS_fecVencimiento > GETDATE()
+					
+    SELECT @egresos = sum(PRO_puntos)
+    FROM NOT_NULL.Producto, NOT_NULL.Canje
+	WHERE	CNJ_idCliente = @idCliente
+	AND	CNJ_idProducto = PRO_idProd
+	AND CNJ_fecCanje < DATEADD(year,-1,GETDATE())
+							
+    SET @puntosTotales = ISNULL (@ingresos, 0) - ISNULL (@egresos, 0)
+     
+    RETURN(@puntosTotales)
+END
+GO
+
+CREATE PROCEDURE NOT_NULL.productosDisponibleCliente
+    @dni numeric
+AS 
+BEGIN
+	SELECT	PRO_descripcion as 'Producto',
+			PRO_puntos as 'Precio',
+			PRO_stock as 'Stock'
+	FROM NOT_NULL.Producto
+	WHERE PRO_puntos >= (select NOT_NULL.puntosTotalesCliente(@dni))
+	AND	PRO_stock > 0
 END
 GO
 
