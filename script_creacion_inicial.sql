@@ -1379,7 +1379,7 @@ BEGIN
 			PRO_puntos as 'Precio',
 			PRO_stock as 'Stock'
 	FROM NOT_NULL.Producto
-	WHERE PRO_puntos >= (select NOT_NULL.puntosTotalesCliente(@dni))
+	WHERE PRO_puntos <= (select NOT_NULL.puntosTotalesCliente(@dni))
 	AND	PRO_stock > 0
 END
 GO

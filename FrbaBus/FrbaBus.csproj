@@ -134,12 +134,6 @@
     </Compile>
     <Compile Include="AccesoADatos\ORM\Usuario.cs" />
     <Compile Include="Configuracion.cs" />
-    <Compile Include="Compra de Pasajes\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Compra de Pasajes\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Consulta Puntos Adquiridos\ConsultaDePuntos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -274,6 +268,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\Configuracion.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Compra de Pasajes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
