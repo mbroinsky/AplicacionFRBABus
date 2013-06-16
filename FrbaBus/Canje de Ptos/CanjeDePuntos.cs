@@ -95,6 +95,7 @@ namespace FrbaBus.Canje_de_Ptos
                 DataGridViewButtonColumn canjearPuntos = new DataGridViewButtonColumn();
                 canjearPuntos.HeaderText = "Canjear";
                 canjearPuntos.Name = "Canjear";
+                canjearPuntos.Text = "Canjear";
                 canjearPuntos.Visible = true;
                 canjearPuntos.UseColumnTextForButtonValue = true;
 
