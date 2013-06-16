@@ -32,6 +32,8 @@
             this.campoDNICliente = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.grillaPuntos = new System.Windows.Forms.DataGridView();
+            this.totalDePuntos = new System.Windows.Forms.Label();
+            this.totalPuntos = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.grillaPuntos)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,17 +66,45 @@
             // 
             // grillaPuntos
             // 
+            this.grillaPuntos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grillaPuntos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grillaPuntos.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.grillaPuntos.Location = new System.Drawing.Point(12, 37);
             this.grillaPuntos.Name = "grillaPuntos";
+            this.grillaPuntos.ReadOnly = true;
+            this.grillaPuntos.RowHeadersVisible = false;
             this.grillaPuntos.Size = new System.Drawing.Size(268, 217);
             this.grillaPuntos.TabIndex = 3;
+            this.grillaPuntos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grillaPuntos_CellContentClick);
             // 
-            // Form1
+            // totalDePuntos
+            // 
+            this.totalDePuntos.AutoSize = true;
+            this.totalDePuntos.Location = new System.Drawing.Point(12, 261);
+            this.totalDePuntos.Name = "totalDePuntos";
+            this.totalDePuntos.Size = new System.Drawing.Size(87, 13);
+            this.totalDePuntos.TabIndex = 4;
+            this.totalDePuntos.Text = "Total de puntos: ";
+            this.totalDePuntos.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.totalDePuntos.Click += new System.EventHandler(this.label2_Click);
+            // 
+            // totalPuntos
+            // 
+            this.totalPuntos.AutoSize = true;
+            this.totalPuntos.Location = new System.Drawing.Point(95, 261);
+            this.totalPuntos.Name = "totalPuntos";
+            this.totalPuntos.Size = new System.Drawing.Size(13, 13);
+            this.totalPuntos.TabIndex = 5;
+            this.totalPuntos.Text = "0";
+            this.totalPuntos.Click += new System.EventHandler(this.label2_Click_1);
+            // 
+            // ConsultaDePuntos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(292, 266);
+            this.ClientSize = new System.Drawing.Size(292, 283);
+            this.Controls.Add(this.totalPuntos);
+            this.Controls.Add(this.totalDePuntos);
             this.Controls.Add(this.grillaPuntos);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.campoDNICliente);
@@ -94,5 +124,7 @@
         private System.Windows.Forms.TextBox campoDNICliente;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView grillaPuntos;
+        private System.Windows.Forms.Label totalDePuntos;
+        private System.Windows.Forms.Label totalPuntos;
     }
 }

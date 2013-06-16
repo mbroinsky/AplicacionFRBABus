@@ -62,6 +62,7 @@
             this.campoDNICliente.Name = "campoDNICliente";
             this.campoDNICliente.Size = new System.Drawing.Size(123, 20);
             this.campoDNICliente.TabIndex = 5;
+            this.campoDNICliente.TextChanged += new System.EventHandler(this.campoDNICliente_TextChanged);
             // 
             // listarProductos
             // 

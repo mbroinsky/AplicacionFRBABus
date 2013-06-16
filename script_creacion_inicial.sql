@@ -208,6 +208,11 @@ BEGIN
 	DROP FUNCTION NOT_NULL.puntosTotalesCliente
 END
 
+IF OBJECT_ID(N'NOT_NULL.canjearProducto') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.canjearProducto
+END
+
 
 IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'NOT_NULL')
 BEGIN
@@ -514,6 +519,7 @@ CREATE TABLE NOT_NULL.Canje
 	CNJ_idCanje INT NOT NULL IDENTITY(1, 1)
 	,CNJ_idCliente INT NOT NULL
 	,CNJ_idProducto INT NOT NULL 
+	,CNJ_cantidad INT NOT NULL
 	,CNJ_fecCanje DATETIME NOT NULL 
 )
 ON [PRIMARY]
@@ -862,11 +868,21 @@ BEGIN
 				('Registrar Llegadas', 'RegistrarLlegada'),
 				('Listado de Recorridos', 'SeleccionRecorrido'),
 				('ABM de Recorrido', 'ABMRecorrido'),
-				('Listados Estadísticos', 'SeleccionListado');
+				('Listados Estadísticos', 'SeleccionListado'),
+				('Canje de Ptos', 'CanjeDePuntos'),
+				('Consulta Puntos Adquiridos', 'ConsultaDePuntos');
 
         
 	INSERT INTO FuncionalidadXRol (FXR_idRol, FXR_idFuncionalidad)
 		SELECT @idRol, FNC_idFuncionalidad FROM Funcionalidad;
+		
+	INSERT INTO NOT_NULL.Producto(PRO_descripcion, PRO_puntos, PRO_stock) VALUES 
+				('Anteojos de sol', 150, 20),
+				('Mochila de mano', 250, 25),
+				('Valija mediana', 300, 20),
+				('Valija grande', 400, 15),
+				('Viaje a Códoba', 1000, 10),
+				('Viaje a Córdoba para dos personas', 1700, 10);
 END
 GO
 
@@ -1359,11 +1375,11 @@ BEGIN
 	WHERE PTS_idCliente = @idCliente
 	AND PTS_fecVencimiento > GETDATE()
 					
-    SELECT @egresos = sum(PRO_puntos)
+    SELECT @egresos = sum(PRO_puntos*CNJ_cantidad)
     FROM NOT_NULL.Producto, NOT_NULL.Canje
 	WHERE	CNJ_idCliente = @idCliente
 	AND	CNJ_idProducto = PRO_idProd
-	AND CNJ_fecCanje < DATEADD(year,-1,GETDATE())
+	AND CNJ_fecCanje > DATEADD(year,-1,GETDATE())
 							
     SET @puntosTotales = ISNULL (@ingresos, 0) - ISNULL (@egresos, 0)
      
@@ -1375,7 +1391,8 @@ CREATE PROCEDURE NOT_NULL.productosDisponibleCliente
     @dni numeric
 AS 
 BEGIN
-	SELECT	PRO_descripcion as 'Producto',
+	SELECT	PRO_idProd as 'id',
+			PRO_descripcion as 'Producto',
 			PRO_puntos as 'Precio',
 			PRO_stock as 'Stock'
 	FROM NOT_NULL.Producto
@@ -1384,6 +1401,27 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE NOT_NULL.canjearProducto
+    @dni numeric,
+    @idProducto numeric,
+    @cantidad numeric,
+    @fecha date
+    
+AS 
+BEGIN
+	
+	DECLARE @idCliente numeric
+
+    SELECT @idCliente = CLI_idCLiente 
+	FROM NOT_NULL.Cliente
+	WHERE CLI_dni = @dni
+	
+	UPDATE NOT_NULL.Producto SET PRO_stock = (PRO_stock - @cantidad) WHERE PRO_idProd = @idProducto
+	
+	INSERT INTO NOT_NULL.Canje(CNJ_idCliente, CNJ_idProducto,CNJ_cantidad,CNJ_fecCanje) VALUES (@idCliente, @idProducto, @cantidad,@fecha)
+	
+END
+GO
 --FIN
 COMMIT;
 

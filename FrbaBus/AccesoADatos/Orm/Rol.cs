@@ -45,7 +45,6 @@ namespace AccesoADatos.Orm
                 if (fun.FormularioAsoc == formAsoc)
                     return true;
             }
-
             return false;
         }
    
