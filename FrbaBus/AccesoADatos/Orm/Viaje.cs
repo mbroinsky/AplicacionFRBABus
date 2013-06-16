@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using AccesoADatos;
 using System.Collections;
+using System.Data;
+using System.Windows.Forms;
 
 namespace AccesoADatos.Orm
 {
@@ -52,6 +54,38 @@ namespace AccesoADatos.Orm
                         idMicro, idOrigen, idDestino);
 
             return;
+        }
+
+        public static DataTable TraerDisponibles(DateTime fecViaje, int idOrigen, int idDestino)
+        {
+            try
+            {
+                string sql = "select VIA_numviaje as ID, convert(varchar, VIA_FecSalida, 114) as Horario, " +
+                    "convert(varchar, VIA_fecllegadaEstimada, 114) as Llegada, SRV_nombreServicio as Servicio, " +
+                    "round(REC_precioBase + (REC_precioBase * SRV_porcentajeAdic) / 100, 2) as 'Precio de pasaje', " +
+                    "REC_precioKilo as 'Encomienda(x Kg)' " +
+                    "FROM NOT_NULL.Viaje, NOT_NULL.Recorrido, NOT_NULL.TipoServicio " +
+                    "WHERE VIA_codRecorrido = REC_id AND REC_idTipoServicio = SRV_idTipoServicio AND " +
+                    "convert(varchar, VIA_fecSalida, 103) = convert(varchar, @fecViaje, 103) AND " +
+                    "@idOrigen = REC_idCiudadOrigen AND @idDestino = REC_idCiudadDestino " +
+                    "order by 2;";
+                
+                Hashtable parametros = new Hashtable();
+
+                parametros.Add("@fecViaje", fecViaje);
+                parametros.Add("@idOrigen", idOrigen);
+                parametros.Add("@idDestino", idDestino);
+ 
+                DataTable dt = Conector.Datos.EjecutarComandoADataTable(sql, parametros);
+
+                return dt;
+            }
+            catch
+            {
+                MessageBox.Show("Error, no se pueden cargar viajes disponibles");
+
+                return null;
+            }
         }
     }
 

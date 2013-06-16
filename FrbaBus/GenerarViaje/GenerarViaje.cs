@@ -78,10 +78,5 @@ namespace FrbaBus.GenerarViaje
 
             this.Close();
         }
-
-        private void recorridos_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

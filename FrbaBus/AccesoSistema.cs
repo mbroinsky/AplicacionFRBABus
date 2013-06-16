@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using FrbaBus.Compra_de_Pasajes;
 
 namespace FrbaBus
 {
@@ -36,7 +37,13 @@ namespace FrbaBus
 
         private void ComprarPasajes_Click(object sender, EventArgs e)
         {
+            var venta = new Paso1();
 
+            this.SetVisibleCore(false);
+
+            venta.ShowDialog();
+
+            this.SetVisibleCore(true);
         }
     }
 }

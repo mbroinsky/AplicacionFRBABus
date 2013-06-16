@@ -130,7 +130,6 @@
             this.recorridos.Name = "recorridos";
             this.recorridos.Size = new System.Drawing.Size(200, 21);
             this.recorridos.TabIndex = 12;
-            this.recorridos.SelectedIndexChanged += new System.EventHandler(this.recorridos_SelectedIndexChanged);
             // 
             // fechaSalida
             // 
