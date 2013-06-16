@@ -35,10 +35,8 @@
             this.buscar = new System.Windows.Forms.Button();
             this.grpPreseleccion = new System.Windows.Forms.GroupBox();
             this.lblRecorrido = new System.Windows.Forms.Label();
-            this.lblFecLle = new System.Windows.Forms.Label();
             this.lblFecSal = new System.Windows.Forms.Label();
             this.recorridos = new System.Windows.Forms.ComboBox();
-            this.fechaLlegada = new System.Windows.Forms.DateTimePicker();
             this.fechaSalida = new System.Windows.Forms.DateTimePicker();
             this.volver = new System.Windows.Forms.Button();
             this.grpMicros.SuspendLayout();
@@ -98,14 +96,12 @@
             // grpPreseleccion
             // 
             this.grpPreseleccion.Controls.Add(this.lblRecorrido);
-            this.grpPreseleccion.Controls.Add(this.lblFecLle);
             this.grpPreseleccion.Controls.Add(this.lblFecSal);
             this.grpPreseleccion.Controls.Add(this.recorridos);
-            this.grpPreseleccion.Controls.Add(this.fechaLlegada);
             this.grpPreseleccion.Controls.Add(this.fechaSalida);
             this.grpPreseleccion.Location = new System.Drawing.Point(4, -4);
             this.grpPreseleccion.Name = "grpPreseleccion";
-            this.grpPreseleccion.Size = new System.Drawing.Size(294, 95);
+            this.grpPreseleccion.Size = new System.Drawing.Size(294, 81);
             this.grpPreseleccion.TabIndex = 13;
             this.grpPreseleccion.TabStop = false;
             // 
@@ -117,15 +113,6 @@
             this.lblRecorrido.Size = new System.Drawing.Size(53, 13);
             this.lblRecorrido.TabIndex = 15;
             this.lblRecorrido.Text = "Recorrido";
-            // 
-            // lblFecLle
-            // 
-            this.lblFecLle.AutoSize = true;
-            this.lblFecLle.Location = new System.Drawing.Point(4, 71);
-            this.lblFecLle.Name = "lblFecLle";
-            this.lblFecLle.Size = new System.Drawing.Size(134, 13);
-            this.lblFecLle.TabIndex = 14;
-            this.lblFecLle.Text = "Fecha de llegada estimada";
             // 
             // lblFecSal
             // 
@@ -144,15 +131,6 @@
             this.recorridos.Size = new System.Drawing.Size(200, 21);
             this.recorridos.TabIndex = 12;
             this.recorridos.SelectedIndexChanged += new System.EventHandler(this.recorridos_SelectedIndexChanged);
-            // 
-            // fechaLlegada
-            // 
-            this.fechaLlegada.CustomFormat = "dd/MM/yyyy HH:mm:ss";
-            this.fechaLlegada.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.fechaLlegada.Location = new System.Drawing.Point(144, 67);
-            this.fechaLlegada.Name = "fechaLlegada";
-            this.fechaLlegada.Size = new System.Drawing.Size(139, 20);
-            this.fechaLlegada.TabIndex = 11;
             // 
             // fechaSalida
             // 
@@ -207,10 +185,8 @@
         private System.Windows.Forms.Button buscar;
         private System.Windows.Forms.GroupBox grpPreseleccion;
         private System.Windows.Forms.Label lblRecorrido;
-        private System.Windows.Forms.Label lblFecLle;
         private System.Windows.Forms.Label lblFecSal;
         private System.Windows.Forms.ComboBox recorridos;
-        private System.Windows.Forms.DateTimePicker fechaLlegada;
         private System.Windows.Forms.DateTimePicker fechaSalida;
         private System.Windows.Forms.Button volver;
         private System.Windows.Forms.ComboBox microsDisp;

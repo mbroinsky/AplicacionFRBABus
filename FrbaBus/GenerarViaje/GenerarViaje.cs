@@ -16,8 +16,7 @@ namespace FrbaBus.GenerarViaje
         {
             InitializeComponent();
             fechaSalida.Value = Configuracion.Instance().FechaSistema;
-            fechaLlegada.Value = Configuracion.Instance().FechaSistema;
-
+            
             Recorrido.ListarCombo(recorridos);
 
             generar.Enabled = false;
@@ -34,18 +33,6 @@ namespace FrbaBus.GenerarViaje
             if (fechaSalida.Value <= Configuracion.Instance().FechaSistema)
             {
                 MessageBox.Show("Debe seleccionar una fecha mayor a hoy");
-                return;
-            }
-
-            if (fechaLlegada.Value < fechaSalida.Value)
-            {
-                MessageBox.Show("La fecha de llegada no puede ser menor a la fecha de salida");
-                return;
-            }
-
-            if(fechaLlegada.Value.Subtract(fechaSalida.Value).Days > 1)
-            {
-                MessageBox.Show("Un viaje no puede tardar más de 24 horas");
                 return;
             }
 
@@ -81,7 +68,7 @@ namespace FrbaBus.GenerarViaje
 
             var viaje = new Viaje(Convert.ToInt32(microsDisp.SelectedValue),
                                 Convert.ToInt32(recorridos.SelectedValue),
-                                fechaSalida.Value, fechaLlegada.Value);
+                                fechaSalida.Value);
 
             if (!viaje.Insertar())
             {

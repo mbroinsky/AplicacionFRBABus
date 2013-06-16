@@ -124,7 +124,7 @@ namespace AccesoADatos.Orm
                     " where MIC_idTipoServicio = REC_idTipoServicio AND " +
                     " REC_id = @idRecorrido AND " +
                     " MIC_Habilitado = 1 AND " +
-                    " MIC_numMicro NOT IN (SELECT HMAN_idMicro WHERE @fecActual BETWEEN HMAN_fecInicio AND HMAN_fecFin) AND" +
+                    " MIC_numMicro NOT IN (SELECT HMAN_idMicro FROM NOT_NULL.HistoricoMantenimiento WHERE @fecActual BETWEEN HMAN_fecInicio AND HMAN_fecFin) AND" +
                     " MIC_numMicro NOT IN (SELECT VIA_numMicro from NOT_NULL.Viaje WHERE " +
                     " datediff(hour, VIA_fecSalida, @fecSalida) < 24)";
 

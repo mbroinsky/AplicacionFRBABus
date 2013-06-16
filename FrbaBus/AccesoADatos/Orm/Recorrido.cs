@@ -6,6 +6,7 @@ using System.Data;
 using AccesoADatos;
 using System.Windows.Forms;
 using System.Collections;
+using System.Globalization;
 
 namespace AccesoADatos.Orm
 {
@@ -19,6 +20,7 @@ namespace AccesoADatos.Orm
         public Double PrecBase { get; set; }
         public Double PrecKilo { get; set; }
         public Boolean Habilitado { get; set; }
+        public DateTime TiempoViaje { get; set; }
 
         public Recorrido(int idRec)
         {
@@ -29,7 +31,7 @@ namespace AccesoADatos.Orm
                 param.Add("@idRecorrido", idRec);
 
                 String sql = "select REC_codigo, REC_idTipoServicio, REC_idCiudadOrigen, REC_idCiudadDestino," +
-                    "REC_precioBase, REC_precioKilo, REC_habilitado FROM NOT_NULL.Recorrido WHERE " +
+                    "REC_precioBase, REC_precioKilo, REC_habilitado, REC_tiempoViaje FROM NOT_NULL.Recorrido WHERE " +
                     "REC_id = @idRecorrido;";
 
                 using (DataTable dt = Conector.Datos.EjecutarComandoADataTable(sql, param))
@@ -42,7 +44,8 @@ namespace AccesoADatos.Orm
                         IdCiuDest = Convert.ToInt32(dt.Rows[0]["REC_idCiudadDestino"]);
                         PrecBase = Convert.ToDouble(dt.Rows[0]["REC_precioBase"]);
                         PrecKilo = Convert.ToDouble(dt.Rows[0]["REC_precioKilo"]);
-                        Habilitado = Convert.ToBoolean(dt.Rows[0]["REC_Habilitado"]);
+                        Habilitado = Convert.ToBoolean(dt.Rows[0]["REC_habilitado"]);
+                        TiempoViaje = DateTime.Parse(dt.Rows[0]["REC_tiempoViaje"].ToString());
                         Id = idRec;
                     }
                 }
@@ -53,7 +56,8 @@ namespace AccesoADatos.Orm
             }
         }
 
-        public Recorrido(int id, string codigo, int idTipoServ, int idCiuOri, int idCiuDest, double precBase, double precKilo, bool habilitado)
+        public Recorrido(int id, string codigo, int idTipoServ, int idCiuOri, int idCiuDest, double precBase, 
+            double precKilo, bool habilitado, DateTime tiempoViaje)
         {
             Id = id;
             Codigo = codigo;
@@ -63,6 +67,7 @@ namespace AccesoADatos.Orm
             PrecBase = precBase;
             PrecKilo = precKilo;
             Habilitado = habilitado;
+            TiempoViaje = tiempoViaje;
         }
 
         public static void ListarCombo(ComboBox recorridos)
@@ -118,12 +123,13 @@ namespace AccesoADatos.Orm
                 parametros.Add("@precioBase", PrecBase);
                 parametros.Add("@precioKilo", PrecKilo);
                 parametros.Add("@habilitado", Habilitado);
+                parametros.Add("@tiempoViaje", TiempoViaje);
 
                 if (Conector.Datos.EjecutarSql("insert into NOT_NULL.Recorrido " +
                            " (REC_codigo, REC_idTipoServicio, REC_idCiudadOrigen, REC_idCiudadDestino, " +
-                            "REC_precioBase, REC_precioKilo, REC_habilitado)" +
+                            "REC_precioBase, REC_precioKilo, REC_habilitado, REC_tiempoViaje)" +
                            " values (@codigo, @idTipoServ, @idCiuOrigen, @idCiuDest, @precioBase, @precioKilo," +
-                           "@habilitado);", parametros) == 0)
+                           "@habilitado, @tiempoViaje);", parametros) == 0)
                     return false;
 
                 return true;
@@ -148,12 +154,13 @@ namespace AccesoADatos.Orm
                 parametros.Add("@precioKilo", PrecKilo);
                 parametros.Add("@habilitado", Habilitado);
                 parametros.Add("@idRec", Id);
+                parametros.Add("@tiempoViaje", TiempoViaje);
 
                 if (Conector.Datos.EjecutarSql("update NOT_NULL.Recorrido SET " +
                            "REC_codigo = @codigo, REC_idTipoServicio = @idTipoServ, " +
                            "REC_idCiudadOrigen = @idCiuOrigen, REC_idCiudadDestino = @idCiuDest, " +
                            "REC_precioBase = @precioBase, REC_precioKilo = @precioKilo, " +
-                           "REC_habilitado = @habilitado WHERE REC_id = @idRec;", parametros) == 0)
+                           "REC_habilitado = @habilitado, REC_tiempoViaje = @tiempoViaje WHERE REC_id = @idRec;", parametros) == 0)
                     return false;
 
                 return true;

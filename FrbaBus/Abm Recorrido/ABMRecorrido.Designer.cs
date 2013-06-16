@@ -42,6 +42,8 @@
             this.precioKilo = new System.Windows.Forms.TextBox();
             this.lblPrecioBase = new System.Windows.Forms.Label();
             this.lblPrecioKg = new System.Windows.Forms.Label();
+            this.tiempoViaje = new System.Windows.Forms.TextBox();
+            this.lblTiempo = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblCodigo
@@ -55,7 +57,7 @@
             // 
             // Guardar
             // 
-            this.Guardar.Location = new System.Drawing.Point(219, 233);
+            this.Guardar.Location = new System.Drawing.Point(155, 293);
             this.Guardar.Name = "Guardar";
             this.Guardar.Size = new System.Drawing.Size(75, 23);
             this.Guardar.TabIndex = 1;
@@ -66,7 +68,7 @@
             // Cancelar
             // 
             this.Cancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancelar.Location = new System.Drawing.Point(300, 233);
+            this.Cancelar.Location = new System.Drawing.Point(246, 293);
             this.Cancelar.Name = "Cancelar";
             this.Cancelar.Size = new System.Drawing.Size(75, 23);
             this.Cancelar.TabIndex = 2;
@@ -136,14 +138,14 @@
             // 
             // precioBase
             // 
-            this.precioBase.Location = new System.Drawing.Point(100, 161);
+            this.precioBase.Location = new System.Drawing.Point(108, 161);
             this.precioBase.Name = "precioBase";
             this.precioBase.Size = new System.Drawing.Size(100, 20);
             this.precioBase.TabIndex = 17;
             // 
             // precioKilo
             // 
-            this.precioKilo.Location = new System.Drawing.Point(100, 198);
+            this.precioKilo.Location = new System.Drawing.Point(108, 198);
             this.precioKilo.Name = "precioKilo";
             this.precioKilo.Size = new System.Drawing.Size(100, 20);
             this.precioKilo.TabIndex = 18;
@@ -166,13 +168,32 @@
             this.lblPrecioKg.TabIndex = 20;
             this.lblPrecioKg.Text = "Precio por Kg.";
             // 
+            // tiempoViaje
+            // 
+            this.tiempoViaje.Location = new System.Drawing.Point(108, 235);
+            this.tiempoViaje.MaxLength = 5;
+            this.tiempoViaje.Name = "tiempoViaje";
+            this.tiempoViaje.Size = new System.Drawing.Size(100, 20);
+            this.tiempoViaje.TabIndex = 21;
+            // 
+            // lblTiempo
+            // 
+            this.lblTiempo.BackColor = System.Drawing.Color.Transparent;
+            this.lblTiempo.Location = new System.Drawing.Point(12, 238);
+            this.lblTiempo.Name = "lblTiempo";
+            this.lblTiempo.Size = new System.Drawing.Size(90, 26);
+            this.lblTiempo.TabIndex = 22;
+            this.lblTiempo.Text = "Tiempo de viaje (HH:mm)";
+            // 
             // ABMRecorrido
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancelar;
-            this.ClientSize = new System.Drawing.Size(387, 270);
+            this.ClientSize = new System.Drawing.Size(328, 328);
             this.ControlBox = false;
+            this.Controls.Add(this.lblTiempo);
+            this.Controls.Add(this.tiempoViaje);
             this.Controls.Add(this.lblPrecioKg);
             this.Controls.Add(this.lblPrecioBase);
             this.Controls.Add(this.precioKilo);
@@ -211,5 +232,7 @@
         private System.Windows.Forms.TextBox precioKilo;
         private System.Windows.Forms.Label lblPrecioBase;
         private System.Windows.Forms.Label lblPrecioKg;
+        private System.Windows.Forms.TextBox tiempoViaje;
+        private System.Windows.Forms.Label lblTiempo;
     }
 }

@@ -27,9 +27,10 @@ namespace Abm_Recorrido
             ciudadOrigen.SelectedIndex = -1;
             ciudadDestino.SelectedIndex = -1;
             tipoServicio.SelectedIndex = -1;
+
+            tiempoViaje.Text = "00:00";
         }
-
-
+        
         public ABMRecorrido(int idRec)
         {
             InitializeComponent();
@@ -46,6 +47,7 @@ namespace Abm_Recorrido
             tipoServicio.SelectedValue = _Recorrido.IdTipoServ;
             precioBase.Text = Convert.ToString(_Recorrido.PrecBase);
             precioKilo.Text = Convert.ToString(_Recorrido.PrecKilo);
+            tiempoViaje.Text = _Recorrido.TiempoViaje.ToString("HH:mm");
         }
 
         private void CargarCombos()
@@ -84,6 +86,12 @@ namespace Abm_Recorrido
                 return;
             }
 
+            if (!Validador.esHoraValida(tiempoViaje.Text))
+            {
+                MessageBox.Show("El tiempo de viaje no es válido, debe ser de 00:00 a 23:59");
+                return;
+            }
+
             if (_Modificacion)
             {
                 if (_Recorrido.IdCiuDest != Convert.ToInt32(ciudadDestino.SelectedValue) ||
@@ -91,7 +99,8 @@ namespace Abm_Recorrido
                    _Recorrido.IdCiuOri != Convert.ToInt32(ciudadOrigen.SelectedValue) ||
                    _Recorrido.Codigo != codigo.Text ||
                    _Recorrido.PrecBase != Convert.ToDouble(precioBase.Text) ||
-                   _Recorrido.PrecKilo != Convert.ToDouble(precioKilo.Text))
+                   _Recorrido.PrecKilo != Convert.ToDouble(precioKilo.Text) ||
+                   _Recorrido.TiempoViaje != DateTime.Parse(tiempoViaje.Text))
                 {
                     _Recorrido.Codigo = codigo.Text;
                     _Recorrido.IdTipoServ = Convert.ToInt32(tipoServicio.SelectedValue);
@@ -99,6 +108,7 @@ namespace Abm_Recorrido
                     _Recorrido.IdCiuDest = Convert.ToInt32(ciudadDestino.SelectedValue); 
                     _Recorrido.PrecBase = Convert.ToDouble(precioBase.Text);
                     _Recorrido.PrecKilo = Convert.ToDouble(precioKilo.Text);
+                    _Recorrido.TiempoViaje = Convert.ToDateTime(tiempoViaje.Text);
                     
                     if (!_Recorrido.Modificar())
                     {
@@ -118,7 +128,8 @@ namespace Abm_Recorrido
                                    Convert.ToInt32(ciudadOrigen.SelectedValue), 
                                    Convert.ToInt32(ciudadDestino.SelectedValue), 
                                    Convert.ToDouble(precioBase.Text),
-                                   Convert.ToDouble(precioKilo.Text), true);
+                                   Convert.ToDouble(precioKilo.Text), true, 
+                                   Convert.ToDateTime(tiempoViaje.Text));
 
                 if (!_Recorrido.Insertar())
                 {

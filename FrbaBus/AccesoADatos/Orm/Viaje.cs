@@ -15,12 +15,11 @@ namespace AccesoADatos.Orm
         private DateTime FechaLlegada { get; set; }
         private DateTime FechaEstimadaLlegada { get; set; }
 
-        public Viaje(int numMicro, int idRecorrido, DateTime fecSalida, DateTime fecLlegadaEst)
+        public Viaje(int numMicro, int idRecorrido, DateTime fecSalida)
         {
             NumMicro = numMicro;
             IdRecorrido = idRecorrido;
             FechaSalida = fecSalida;
-            FechaEstimadaLlegada = fecLlegadaEst;
         }
 
         public bool Insertar()
@@ -32,11 +31,12 @@ namespace AccesoADatos.Orm
                 parametros.Add("@NumMicro", NumMicro);
                 parametros.Add("@IdRecorrido", IdRecorrido);
                 parametros.Add("@FechaSalida", FechaSalida.ToString("yyyy-MM-dd HH:mm:ss"));
-                parametros.Add("@FechaEstimadaLlegada", FechaEstimadaLlegada.ToString("yyyy-MM-dd HH:mm:ss"));
-
+                
                 Conector.Datos.EjecutarComando("insert into NOT_NULL.Viaje " +
                        " (VIA_numMicro, VIA_codRecorrido, VIA_fecSalida, VIA_fecLlegadaEstimada) " +
-                       " values (@NumMicro, @IdRecorrido, @FechaSalida, @FechaEstimadaLlegada);", parametros);
+                       " Select @NumMicro, @IdRecorrido, @FechaSalida, " +
+                       " dateadd(minute, datepart(minute, REC_tiempoViaje), dateadd(hour, datepart(hour, REC_tiempoViaje), @fechaSalida)) " +
+                       " from NOT_NULL.Recorrido where REC_id = @idRecorrido;", parametros);
 
                 return true;
             }
