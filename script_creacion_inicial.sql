@@ -203,17 +203,17 @@ BEGIN
 	DROP PROCEDURE NOT_NULL.RankingMicrosFueraServ
 END
 
-IF OBJECT_ID(N'NOT_NULL.productosDisponibleCliente') IS NOT NULL
+IF OBJECT_ID(N'NOT_NULL.ProductosDisponibleCliente') IS NOT NULL
 BEGIN
 	DROP PROCEDURE NOT_NULL.productosDisponibleCliente
 END
 
-IF OBJECT_ID(N'NOT_NULL.puntosTotalesCliente') IS NOT NULL
+IF OBJECT_ID(N'NOT_NULL.PuntosTotalesCliente') IS NOT NULL
 BEGIN
 	DROP FUNCTION NOT_NULL.puntosTotalesCliente
 END
 
-IF OBJECT_ID(N'NOT_NULL.canjearProducto') IS NOT NULL
+IF OBJECT_ID(N'NOT_NULL.CanjearProducto') IS NOT NULL
 BEGIN
 	DROP PROCEDURE NOT_NULL.canjearProducto
 END
@@ -221,6 +221,11 @@ END
 IF OBJECT_ID(N'NOT_NULL.ButacasVacias') IS NOT NULL
 BEGIN
 	DROP FUNCTION NOT_NULL.ButacasVacias
+END
+
+IF OBJECT_ID(N'NOT_NULL.KilogramosDisponibles') IS NOT NULL
+BEGIN
+	DROP FUNCTION NOT_NULL.KilogramosDisponibles
 END
 
 IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'NOT_NULL')
@@ -562,14 +567,14 @@ CREATE TABLE NOT_NULL.HistoricoMantenimiento
 
 CREATE TABLE NOT_NULL.ReservasButacas
 (
-	RES_voucher INT NOT NULL,
+	RES_voucherVenta INT NOT NULL,
 	RES_idViaje INT NOT NULL,
 	RES_idMicro INT NOT NULL,
 	RES_nroButaca INT NOT NULL
 )
 ON [PRIMARY]
-ALTER TABLE NOT_NULL.ReservasButacas ADD CONSTRAINT PK_ReservasButacas PRIMARY KEY (RES_voucher,
-	RES_idViaje, RES_idMicro, RES_nroButaca)
+ALTER TABLE NOT_NULL.ReservasButacas ADD CONSTRAINT PK_ReservasButacas 
+PRIMARY KEY (RES_idViaje, RES_idMicro, RES_nroButaca)
 
 -- Create Foreign Key: Recorrido.REC_idCiudadOrigen -> Ciudad.CIU_idCiudad
 ALTER TABLE NOT_NULL.[Recorrido] ADD CONSTRAINT
@@ -829,19 +834,19 @@ REFERENCES NOT_NULL.[Micro] ([MIC_numMicro])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
-ALTER TABLE NOT_NULL.[ReservasButacas] ADD CONSTRAINT
-[FK_ReservasButacas_RES_idViaje_VIA_numViaje]
-FOREIGN KEY ([RES_idViaje])
-REFERENCES NOT_NULL.[Viaje] ([VIA_numViaje])
+ALTER TABLE NOT_NULL.ReservasButacas ADD CONSTRAINT
+FK_ReservasButacas_RES_idViaje_VIA_numViaje
+FOREIGN KEY (RES_idViaje)
+REFERENCES NOT_NULL.Viaje (VIA_numViaje)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
---ALTER TABLE NOT_NULL.[ReservasButacas] ADD CONSTRAINT
---[FK_ReservasButacas_RES_idMicro_RES_nroButaca_BUT_numMicro_BUT_numeroAsiento]
---FOREIGN KEY ([RES_idMicro],[RES_nroButaca])
---REFERENCES NOT_NULL.[Butaca]([BUT_numMicro],[BUT_numeroAsiento])
---ON UPDATE NO ACTION
---ON DELETE NO ACTION
+ALTER TABLE NOT_NULL.ReservasButacas ADD CONSTRAINT
+FK_ReservasButacas_RES_idMicro_RES_nroButaca_BUT_numMicro_BUT_numeroAsiento
+FOREIGN KEY (RES_nroButaca, RES_idMicro)
+REFERENCES NOT_NULL.Butaca(BUT_numeroAsiento, BUT_numMicro)
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
 
 GO
 
@@ -1385,7 +1390,7 @@ BEGIN
 END
 GO
 
-CREATE FUNCTION NOT_NULL.puntosTotalesCliente (@dni numeric)
+CREATE FUNCTION NOT_NULL.PuntosTotalesCliente (@dni numeric)
 RETURNS numeric
 WITH EXECUTE AS CALLER
 AS
@@ -1418,7 +1423,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NOT_NULL.productosDisponibleCliente
+CREATE PROCEDURE NOT_NULL.ProductosDisponibleCliente
     @dni numeric
 AS 
 BEGIN
@@ -1432,7 +1437,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NOT_NULL.canjearProducto
+CREATE PROCEDURE NOT_NULL.CanjearProducto
     @dni numeric,
     @idProducto numeric,
     @cantidad numeric,
@@ -1481,6 +1486,36 @@ BEGIN
 	RETURN @cantidad	
 END
 GO
+
+CREATE FUNCTION NOT_NULL.KilogramosDisponibles (@idViaje INT)
+RETURNS SMALLINT
+WITH EXECUTE AS CALLER
+AS
+BEGIN
+	DECLARE @cantidad DOUBLE
+	DECLARE @idMicro INT
+	
+	SELECT @idMicro = VIA_numMicro
+	FROM NOT_NULL.viaje
+	WHERE VIA_numViaje = @idViaje;
+	
+	SELECT @cantidad = MIC_kilosEncomiendas 
+	FROM NOT_NULL.Micro
+	WHERE MIC_numMicro = @idMicro;
+	
+	SELECT @cantidad = @cantidad - sum(ENC_kilos)
+	FROM NOT_NULL.Encomienda
+	WHERE END_idViaje = @idViaje AND ENC_cancelada = '0';
+	
+	--SELECT @cantidad = @cantidad - sum(ENC_kilos)
+	--FROM NOT_NULL.ReservasEncomiendas
+	--WHERE RES_idMicro = @idMicro;
+	
+	RETURN @cantidad	
+END
+GO
+
+
 --FIN
 COMMIT;
 
