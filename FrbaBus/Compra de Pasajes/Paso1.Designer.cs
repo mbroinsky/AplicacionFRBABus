@@ -132,7 +132,7 @@
             this.viajesDisponibles.Name = "viajesDisponibles";
             this.viajesDisponibles.ReadOnly = true;
             this.viajesDisponibles.RowHeadersVisible = false;
-            this.viajesDisponibles.Size = new System.Drawing.Size(443, 176);
+            this.viajesDisponibles.Size = new System.Drawing.Size(763, 176);
             this.viajesDisponibles.TabIndex = 22;
             // 
             // cancelar
@@ -146,7 +146,7 @@
             // 
             // siguiente
             // 
-            this.siguiente.Location = new System.Drawing.Point(370, 305);
+            this.siguiente.Location = new System.Drawing.Point(690, 305);
             this.siguiente.Name = "siguiente";
             this.siguiente.Size = new System.Drawing.Size(75, 23);
             this.siguiente.TabIndex = 24;
@@ -157,13 +157,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(449, 340);
+            this.ClientSize = new System.Drawing.Size(768, 340);
             this.ControlBox = false;
             this.Controls.Add(this.siguiente);
             this.Controls.Add(this.cancelar);
             this.Controls.Add(this.viajesDisponibles);
             this.Controls.Add(this.groupBox1);
             this.Name = "Paso1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Compra de pasajes";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

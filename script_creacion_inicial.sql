@@ -123,6 +123,11 @@ BEGIN
     DROP TABLE NOT_NULL.Tarjeta
 END
 
+IF OBJECT_ID(N'NOT_NULL.ReservasButacas') IS NOT NULL
+BEGIN
+    DROP TABLE NOT_NULL.ReservasButacas
+END
+
 IF OBJECT_ID(N'NOT_NULL.ListarRoles') IS NOT NULL
 BEGIN
     DROP PROCEDURE NOT_NULL.ListarRoles
@@ -213,6 +218,10 @@ BEGIN
 	DROP PROCEDURE NOT_NULL.canjearProducto
 END
 
+IF OBJECT_ID(N'NOT_NULL.ButacasVacias') IS NOT NULL
+BEGIN
+	DROP FUNCTION NOT_NULL.ButacasVacias
+END
 
 IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'NOT_NULL')
 BEGIN
@@ -548,8 +557,19 @@ CREATE TABLE NOT_NULL.HistoricoMantenimiento
 (
 	HMAN_idMicro INT 
 	,HMAN_fecInicio DATETIME NOT NULL
-    	,HMAN_fecFin DATETIME NOT NULL 
+   	,HMAN_fecFin DATETIME NOT NULL 
 )
+
+CREATE TABLE NOT_NULL.ReservasButacas
+(
+	RES_voucher INT NOT NULL,
+	RES_idViaje INT NOT NULL,
+	RES_idMicro INT NOT NULL,
+	RES_nroButaca INT NOT NULL
+)
+ON [PRIMARY]
+ALTER TABLE NOT_NULL.ReservasButacas ADD CONSTRAINT PK_ReservasButacas PRIMARY KEY (RES_voucher,
+	RES_idViaje, RES_idMicro, RES_nroButaca)
 
 -- Create Foreign Key: Recorrido.REC_idCiudadOrigen -> Ciudad.CIU_idCiudad
 ALTER TABLE NOT_NULL.[Recorrido] ADD CONSTRAINT
@@ -590,8 +610,6 @@ FOREIGN KEY ([VIA_codRecorrido])
 REFERENCES NOT_NULL.[Recorrido] ([REC_id])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
-
-
 
 -- Create Foreign Key: Encomienda.ENC_idViaje -> Viaje.VIA_numViaje
 ALTER TABLE NOT_NULL.[Encomienda] ADD CONSTRAINT
@@ -811,6 +829,20 @@ REFERENCES NOT_NULL.[Micro] ([MIC_numMicro])
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
+ALTER TABLE NOT_NULL.[ReservasButacas] ADD CONSTRAINT
+[FK_ReservasButacas_RES_idViaje_VIA_numViaje]
+FOREIGN KEY ([RES_idViaje])
+REFERENCES NOT_NULL.[Viaje] ([VIA_numViaje])
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
+
+--ALTER TABLE NOT_NULL.[ReservasButacas] ADD CONSTRAINT
+--[FK_ReservasButacas_RES_idMicro_RES_nroButaca_BUT_numMicro_BUT_numeroAsiento]
+--FOREIGN KEY ([RES_idMicro],[RES_nroButaca])
+--REFERENCES NOT_NULL.[Butaca]([BUT_numMicro],[BUT_numeroAsiento])
+--ON UPDATE NO ACTION
+--ON DELETE NO ACTION
+
 GO
 
 --Acá se deberían agregar los SP
@@ -856,8 +888,7 @@ BEGIN
 	INSERT INTO Usuario (USR_idRol, USR_nick, USR_password, USR_nombre,
 			     USR_apellido, USR_intentos) VALUES
                 (@idRol, 'admin', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', 'Administrador', 'General', 0),
-			    (@idRol, 'mireya', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', 'Mireya', 'Mamani', 0),
-			    (@idRol, 'jesús', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', 'Jesús', 'Herrera', 0),
+				(@idRol, 'jesús', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', 'Jesús', 'Herrera', 0),
                 (@idRol, 'maxi', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', 'Maximiliano', 'Broinsky', 0);
 
 	INSERT INTO Funcionalidad(FNC_nombre, FNC_formAsoc) VALUES
@@ -1420,6 +1451,34 @@ BEGIN
 	
 	INSERT INTO NOT_NULL.Canje(CNJ_idCliente, CNJ_idProducto,CNJ_cantidad,CNJ_fecCanje) VALUES (@idCliente, @idProducto, @cantidad,@fecha)
 	
+END
+GO
+
+CREATE FUNCTION NOT_NULL.ButacasVacias (@idViaje INT)
+RETURNS SMALLINT
+WITH EXECUTE AS CALLER
+AS
+BEGIN
+	DECLARE @cantidad SMALLINT
+	DECLARE @idMicro INT
+	
+	SELECT @idMicro = VIA_numMicro
+	FROM NOT_NULL.viaje
+	WHERE VIA_numViaje = @idViaje;
+	
+	SELECT @cantidad = COUNT(*) 
+	FROM Butaca
+	WHERE BUT_numMicro = @idMicro;
+	
+	SELECT @cantidad = @cantidad - COUNT(*)
+	FROM NOT_NULL.Pasaje
+	WHERE PAS_idViaje = @idViaje AND PAS_cancelado = '0';
+	
+	SELECT @cantidad = @cantidad - COUNT(*)
+	FROM NOT_NULL.ReservasButacas
+	WHERE RES_idMicro = @idMicro;
+	
+	RETURN @cantidad	
 END
 GO
 --FIN

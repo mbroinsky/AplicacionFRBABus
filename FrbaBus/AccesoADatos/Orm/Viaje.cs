@@ -63,7 +63,8 @@ namespace AccesoADatos.Orm
                 string sql = "select VIA_numviaje as ID, convert(varchar, VIA_FecSalida, 114) as Horario, " +
                     "convert(varchar, VIA_fecllegadaEstimada, 114) as Llegada, SRV_nombreServicio as Servicio, " +
                     "round(REC_precioBase + (REC_precioBase * SRV_porcentajeAdic) / 100, 2) as 'Precio de pasaje', " +
-                    "REC_precioKilo as 'Encomienda(x Kg)' " +
+                    "REC_precioKilo as 'Encomienda(x Kg)', " +
+                    "NOT_NULL.ButacasVacias(VIA_numViaje) as 'Butacas libres'" +
                     "FROM NOT_NULL.Viaje, NOT_NULL.Recorrido, NOT_NULL.TipoServicio " +
                     "WHERE VIA_codRecorrido = REC_id AND REC_idTipoServicio = SRV_idTipoServicio AND " +
                     "convert(varchar, VIA_fecSalida, 103) = convert(varchar, @fecViaje, 103) AND " +
