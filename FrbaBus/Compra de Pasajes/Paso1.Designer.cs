@@ -127,16 +127,22 @@
             // 
             this.viajesDisponibles.AllowUserToAddRows = false;
             this.viajesDisponibles.AllowUserToDeleteRows = false;
+            this.viajesDisponibles.AllowUserToResizeColumns = false;
+            this.viajesDisponibles.AllowUserToResizeRows = false;
+            this.viajesDisponibles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.viajesDisponibles.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.viajesDisponibles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.viajesDisponibles.Location = new System.Drawing.Point(2, 110);
             this.viajesDisponibles.Name = "viajesDisponibles";
             this.viajesDisponibles.ReadOnly = true;
             this.viajesDisponibles.RowHeadersVisible = false;
+            this.viajesDisponibles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.viajesDisponibles.Size = new System.Drawing.Size(763, 176);
             this.viajesDisponibles.TabIndex = 22;
             // 
             // cancelar
             // 
+            this.cancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancelar.Location = new System.Drawing.Point(2, 305);
             this.cancelar.Name = "cancelar";
             this.cancelar.Size = new System.Drawing.Size(75, 23);
@@ -157,6 +163,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.cancelar;
             this.ClientSize = new System.Drawing.Size(768, 340);
             this.ControlBox = false;
             this.Controls.Add(this.siguiente);

@@ -32,13 +32,15 @@ namespace FrbaBus.Compra_de_Pasajes
 
             if (ciudadDestino.SelectedIndex == ciudadOrigen.SelectedIndex)
             {
-                MessageBox.Show("La ciudad de destino no puede coincider con la de origen");
+                MessageBox.Show("La ciudad de destino no puede coincidir con la de origen");
                 return;
             }
 
             viajesDisponibles.DataSource = Viaje.TraerDisponibles(Convert.ToDateTime(fechaViaje.Value), 
                 Convert.ToInt32(ciudadOrigen.SelectedValue), 
                 Convert.ToInt32(ciudadDestino.SelectedValue));
+
+            viajesDisponibles.Columns["ID"].Visible = false;
         }
 
     }

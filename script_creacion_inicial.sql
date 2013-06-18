@@ -58,6 +58,11 @@ BEGIN
     DROP TABLE NOT_NULL.Venta
 END
 
+IF OBJECT_ID(N'NOT_NULL.ReservasButacas') IS NOT NULL
+BEGIN
+    DROP TABLE NOT_NULL.ReservasButacas
+END
+
 IF OBJECT_ID(N'NOT_NULL.Butaca') IS NOT NULL
 BEGIN
     DROP TABLE NOT_NULL.Butaca
@@ -121,11 +126,6 @@ END
 IF OBJECT_ID(N'NOT_NULL.Tarjeta') IS NOT NULL
 BEGIN
     DROP TABLE NOT_NULL.Tarjeta
-END
-
-IF OBJECT_ID(N'NOT_NULL.ReservasButacas') IS NOT NULL
-BEGIN
-    DROP TABLE NOT_NULL.ReservasButacas
 END
 
 IF OBJECT_ID(N'NOT_NULL.ListarRoles') IS NOT NULL
@@ -1492,7 +1492,7 @@ RETURNS SMALLINT
 WITH EXECUTE AS CALLER
 AS
 BEGIN
-	DECLARE @cantidad DOUBLE
+	DECLARE @cantidad DECIMAL(10,2)
 	DECLARE @idMicro INT
 	
 	SELECT @idMicro = VIA_numMicro
@@ -1503,9 +1503,9 @@ BEGIN
 	FROM NOT_NULL.Micro
 	WHERE MIC_numMicro = @idMicro;
 	
-	SELECT @cantidad = @cantidad - sum(ENC_kilos)
+	SELECT @cantidad = @cantidad - isnull(sum(ENC_kilos), 0)
 	FROM NOT_NULL.Encomienda
-	WHERE END_idViaje = @idViaje AND ENC_cancelada = '0';
+	WHERE ENC_idViaje = @idViaje AND ENC_cancelada = '0';
 	
 	--SELECT @cantidad = @cantidad - sum(ENC_kilos)
 	--FROM NOT_NULL.ReservasEncomiendas
