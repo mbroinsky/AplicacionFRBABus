@@ -2,7 +2,7 @@
 
 BEGIN TRAN
 
--- Para poder correr el Script limpio de principio a Fin, deberíamos agregar todos los drops de tablas antes.
+-- Para poder correr el Script limpio de principio a Fin, agregamos todos los drops de objetos antes.
 IF OBJECT_ID('NOT_NULL.Usuario') IS NOT NULL
 BEGIN
     DROP TABLE NOT_NULL.Usuario
@@ -33,9 +33,9 @@ BEGIN
     DROP TABLE NOT_NULL.DevXEnc
 END
 
-IF OBJECT_ID(N'NOT_NULL.DevolucionVenta') IS NOT NULL
+IF OBJECT_ID(N'NOT_NULL.Devolucion') IS NOT NULL
 BEGIN
-    DROP TABLE NOT_NULL.DevolucionVenta
+    DROP TABLE NOT_NULL.Devolucion
 END
 
 IF OBJECT_ID(N'NOT_NULL.Pasaje') IS NOT NULL
@@ -237,6 +237,9 @@ GO
 CREATE SCHEMA NOT_NULL;
 GO
 
+
+-- Creación de todas las tablas
+
 -- Create Table: Encomienda
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Encomienda
@@ -249,9 +252,11 @@ CREATE TABLE NOT_NULL.Encomienda
 	,ENC_kilos DECIMAL(10, 2) NOT NULL 
 	,ENC_precio DECIMAL(10, 2) NOT NULL
 	,ENC_cancelada BIT NOT NULL DEFAULT 0
+	,ENC_idDev INT NULL
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Encomienda ADD CONSTRAINT PK_Encomienda PRIMARY KEY (ENC_numEnc)
+
 
 -- Create Table: Butaca
 --------------------------------------------------------------------------------
@@ -265,6 +270,7 @@ CREATE TABLE NOT_NULL.Butaca
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Butaca ADD CONSTRAINT PK_Butaca PRIMARY KEY (BUT_numeroAsiento, BUT_numMicro)
 
+
 -- Create Table: Micro
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Micro
@@ -275,7 +281,7 @@ CREATE TABLE NOT_NULL.Micro
 	,MIC_kilosEncomiendas DECIMAL(10, 2) NOT NULL 
 	,MIC_habilitado BIT NOT NULL 
 	,MIC_idMarca INT NOT NULL 
-        ,MIC_idModelo INT NOT NULL 
+    ,MIC_idModelo INT NOT NULL 
 	,MIC_fechaAlta DATETIME NOT NULL 
 	,MIC_fecBaja DATETIME  NULL
 )
@@ -283,9 +289,9 @@ ON [PRIMARY]
 ALTER TABLE NOT_NULL.Micro ADD CONSTRAINT PK_Micro PRIMARY KEY (MIC_numMicro)
 ALTER TABLE NOT_NULL.Micro ADD CONSTRAINT UQ_Patente UNIQUE (MIC_patente)
 
+CREATE INDEX IDX_MICRO_PATENTE ON NOT_NULL.Micro(MIC_patente)
 
-CREATE INDEX IDX_MICRO_PATENTE
-on NOT_NULL.Micro(MIC_patente)
+
 -- Create Table: Ciudad
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Ciudad
@@ -311,11 +317,9 @@ CREATE TABLE NOT_NULL.Viaje
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Viaje ADD CONSTRAINT PK_Viaje PRIMARY KEY CLUSTERED (VIA_numViaje)
 
---CREATE INDEX IDX_VIAJE_RECORRIDO
---on NOT_NULL.Viaje(VIA_codRecorrido)
+CREATE INDEX IDX_VIAJE_RECORRIDO ON NOT_NULL.Viaje(VIA_codRecorrido, VIA_numMicro, VIA_fecSalida)
 
-CREATE INDEX IDX_VIAJE_RECORRIDO
-on NOT_NULL.Viaje(VIA_codRecorrido, VIA_numMicro, VIA_fecSalida)
+
 -- Create Table: Usuario
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Usuario
@@ -332,6 +336,7 @@ ON [PRIMARY]
 ALTER TABLE NOT_NULL.Usuario ADD CONSTRAINT PK_Usuario PRIMARY KEY CLUSTERED (USR_idUsuario)
 ALTER TABLE NOT_NULL.Usuario ADD CONSTRAINT UQ_Nick UNIQUE (USR_nick)
 
+
 -- Create Table: FuncionalidadXRol
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.FuncionalidadXRol
@@ -341,6 +346,7 @@ CREATE TABLE NOT_NULL.FuncionalidadXRol
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.FuncionalidadXRol ADD CONSTRAINT PK_FuncionalidadXRol PRIMARY KEY (FXR_idRol, FXR_idFuncionalidad)
+
 
 -- Create Table: Funcionalidad
 --------------------------------------------------------------------------------
@@ -352,6 +358,7 @@ CREATE TABLE NOT_NULL.Funcionalidad
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Funcionalidad ADD CONSTRAINT PK_Funcionalidad PRIMARY KEY (FNC_idFuncionalidad)
+
 
 -- Create Table: Pasaje
 --------------------------------------------------------------------------------
@@ -366,9 +373,11 @@ CREATE TABLE NOT_NULL.Pasaje
 	,PAS_numMicro INT NOT NULL
 	,PAS_precio DECIMAL(10,2) NOT NULL
 	,PAS_cancelado BIT NOT NULL DEFAULT 0
+	,PAS_idDev INT NULL
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Pasaje ADD CONSTRAINT PK_Pasaje PRIMARY KEY CLUSTERED (PAS_numPasaje)
+
 
 -- Create Table: Rol
 --------------------------------------------------------------------------------
@@ -380,6 +389,7 @@ CREATE TABLE NOT_NULL.Rol
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Rol ADD CONSTRAINT PK_Rol PRIMARY KEY (ROL_idRol)
+
 
 -- Create Table: Marca
 --------------------------------------------------------------------------------
@@ -394,6 +404,7 @@ ALTER TABLE NOT_NULL.Marca ADD CONSTRAINT PK_Marca PRIMARY KEY (MAR_idMarca);
 CREATE INDEX IDX_MAR_nombreMarca
 on NOT_NULL.Marca(MAR_nombreMarca)
 
+
 -- Create Table: Marca
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Modelo
@@ -405,13 +416,6 @@ CREATE TABLE NOT_NULL.Modelo
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Modelo ADD CONSTRAINT PK_Modelo PRIMARY KEY (MOD_idModelo)
 
--- Create Foreign Key: Modelo.MOD_idMarca -> Marca.MAR_idMarca
-ALTER TABLE NOT_NULL.[Modelo] ADD CONSTRAINT
-[FK_Modelo_MOD_idModelo_Marca_MAR_idMarca]
-FOREIGN KEY (MOD_idMarca)
-REFERENCES NOT_NULL.[Marca] ([MAR_idMarca])
-ON UPDATE NO ACTION
-ON DELETE NO ACTION
 
 -- Create Table: Cliente
 --------------------------------------------------------------------------------
@@ -431,8 +435,9 @@ ON [PRIMARY]
 ALTER TABLE NOT_NULL.Cliente ADD CONSTRAINT PK_Cliente PRIMARY KEY CLUSTERED (CLI_idCliente)
 ALTER TABLE NOT_NULL.Cliente ADD CONSTRAINT UQ_dni UNIQUE (CLI_dni)
 
-CREATE INDEX IDX_DNI_CLIENTE
-on NOT_NULL.Cliente(CLI_dni)
+CREATE INDEX IDX_DNI_CLIENTE ON NOT_NULL.Cliente(CLI_dni)
+
+
 -- Create Table: Venta
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Venta
@@ -446,25 +451,6 @@ CREATE TABLE NOT_NULL.Venta
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Venta ADD CONSTRAINT PK_Venta PRIMARY KEY CLUSTERED (VEN_idVenta)
 
--- Create Table: DevXPas
---------------------------------------------------------------------------------
-CREATE TABLE NOT_NULL.DevXPas
-(
-	DXP_idDevolucion INT NOT NULL 
-	,DXP_idPasaje INT NOT NULL 
-)
-ON [PRIMARY]
-ALTER TABLE NOT_NULL.DevXPas ADD CONSTRAINT PK_DevXPas PRIMARY KEY (DXP_idDevolucion, DXP_idPasaje)
-
--- Create Table: DevXEnc
---------------------------------------------------------------------------------
-CREATE TABLE NOT_NULL.DevXEnc
-(
-	DXE_idDevolucion INT NOT NULL 
-	,DXE_idEncomienda INT NOT NULL 
-)
-ON [PRIMARY]
-ALTER TABLE NOT_NULL.DevXEnc ADD CONSTRAINT PK_DevXEnc PRIMARY KEY (DXE_idDevolucion, DXE_idEncomienda)
 
 -- Create Table: Tarjeta
 --------------------------------------------------------------------------------
@@ -479,17 +465,18 @@ CREATE TABLE NOT_NULL.Tarjeta
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Tarjeta ADD CONSTRAINT PK_Tarjeta PRIMARY KEY (TAR_idTarjeta)
 
+
 -- Create Table: DevolucionVenta
 --------------------------------------------------------------------------------
-CREATE TABLE NOT_NULL.DevolucionVenta
+CREATE TABLE NOT_NULL.Devolucion
 (
-	DEV_idDevolucion INT NOT NULL IDENTITY(1, 1)
-	,DEV_idVenta INT NOT NULL 
+	DEV_idDev INT NOT NULL IDENTITY(1, 1)
 	,DEV_fecha DATETIME NOT NULL 
 	,DEV_motivo VARCHAR(250) NOT NULL 
 )
 ON [PRIMARY]
-ALTER TABLE NOT_NULL.DevolucionVenta ADD CONSTRAINT PK_DevolucionVenta PRIMARY KEY (DEV_idDevolucion)
+ALTER TABLE NOT_NULL.Devolucion ADD CONSTRAINT PK_DevolucionVenta PRIMARY KEY (DEV_idDev)
+
 
 -- Create Table: Puntos
 --------------------------------------------------------------------------------
@@ -503,6 +490,7 @@ CREATE TABLE NOT_NULL.Puntos
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Puntos ADD CONSTRAINT PK_Puntos PRIMARY KEY (PTS_idPunto)
 
+
 -- Create Table: Producto
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Producto
@@ -515,6 +503,7 @@ CREATE TABLE NOT_NULL.Producto
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Producto ADD CONSTRAINT PK_Producto PRIMARY KEY (PRO_idProd)
 
+
 -- Create Table: TipoServicio
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.TipoServicio
@@ -525,6 +514,7 @@ CREATE TABLE NOT_NULL.TipoServicio
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.TipoServicio ADD CONSTRAINT PK_TipoServicio PRIMARY KEY (SRV_idTipoServicio)
+
 
 -- Create Table: Canje
 --------------------------------------------------------------------------------
@@ -538,6 +528,7 @@ CREATE TABLE NOT_NULL.Canje
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Canje ADD CONSTRAINT PK_Canje PRIMARY KEY (CNJ_idCanje)
+
 
 -- Create Table: Recorrido
 --------------------------------------------------------------------------------
@@ -558,6 +549,8 @@ ALTER TABLE NOT_NULL.Recorrido ADD CONSTRAINT PK_Recorrido PRIMARY KEY (REC_id)
 ALTER TABLE NOT_NULL.Recorrido ADD CONSTRAINT UQ_CodRec UNIQUE (REC_codigo)
 
 
+-- Create Table: HistoricoMantenimiento
+--------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.HistoricoMantenimiento
 (
 	HMAN_idMicro INT 
@@ -565,6 +558,9 @@ CREATE TABLE NOT_NULL.HistoricoMantenimiento
    	,HMAN_fecFin DATETIME NOT NULL 
 )
 
+
+-- Create Table: ReservasButacas
+--------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.ReservasButacas
 (
 	RES_voucherVenta INT NOT NULL,
@@ -573,291 +569,221 @@ CREATE TABLE NOT_NULL.ReservasButacas
 	RES_nroButaca INT NOT NULL
 )
 ON [PRIMARY]
-ALTER TABLE NOT_NULL.ReservasButacas ADD CONSTRAINT PK_ReservasButacas 
-PRIMARY KEY (RES_idViaje, RES_idMicro, RES_nroButaca)
+ALTER TABLE NOT_NULL.ReservasButacas ADD CONSTRAINT PK_ReservasButacas PRIMARY KEY (RES_idViaje, RES_idMicro, RES_nroButaca)
+
+
+--Creamos las foreigns keys de todas las tablas
 
 -- Create Foreign Key: Recorrido.REC_idCiudadOrigen -> Ciudad.CIU_idCiudad
-ALTER TABLE NOT_NULL.[Recorrido] ADD CONSTRAINT
-[FK_Recorrido_REC_idCiudadOrigen_Ciudad_CIU_idCiudad]
-FOREIGN KEY ([REC_idCiudadOrigen])
-REFERENCES NOT_NULL.[Ciudad] ([CIU_idCiudad])
+ALTER TABLE NOT_NULL.Recorrido ADD CONSTRAINT FK_Recorrido_REC_idCiudadOrigen_Ciudad_CIU_idCiudad
+FOREIGN KEY (REC_idCiudadOrigen) REFERENCES NOT_NULL.Ciudad(CIU_idCiudad)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
+
 
 -- Create Foreign Key: Usuario.USR_idRol -> Rol.ROL_idRol
-ALTER TABLE NOT_NULL.[Usuario] ADD CONSTRAINT
-[FK_Usuario_USR_idRol_Rol_ROL_idRol]
-FOREIGN KEY ([USR_idRol])
-REFERENCES NOT_NULL.[Rol] ([ROL_idRol])
+ALTER TABLE NOT_NULL.Usuario ADD CONSTRAINT FK_Usuario_USR_idRol_Rol_ROL_idRol
+FOREIGN KEY (USR_idRol) REFERENCES NOT_NULL.Rol(ROL_idRol)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
+
 
 -- Create Foreign Key: Micro.MIC_idMarca -> Marca.MAR_idMarca
-ALTER TABLE NOT_NULL.[Micro] ADD CONSTRAINT
-[FK_Micro_MIC_idMarca_Marca_MAR_idMarca]
-FOREIGN KEY ([MIC_idMarca])
-REFERENCES NOT_NULL.[Marca] ([MAR_idMarca])
+ALTER TABLE NOT_NULL.Micro ADD CONSTRAINT FK_Micro_MIC_idMarca_Marca_MAR_idMarca
+FOREIGN KEY (MIC_idMarca) REFERENCES NOT_NULL.Marca(MAR_idMarca)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
+
 
 -- Create Foreign Key: Viaje.VIA_numMicro -> Micro.MIC_numMicro
-ALTER TABLE NOT_NULL.[Viaje] ADD CONSTRAINT
-[FK_Viaje_VIA_numMicro_Micro_MIC_numMicro]
-FOREIGN KEY ([VIA_numMicro])
-REFERENCES NOT_NULL.[Micro] ([MIC_numMicro])
+ALTER TABLE NOT_NULL.Viaje ADD CONSTRAINT FK_Viaje_VIA_numMicro_Micro_MIC_numMicro
+FOREIGN KEY (VIA_numMicro) REFERENCES NOT_NULL.Micro(MIC_numMicro)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
+
 
 -- Create Foreign Key: Viaje.VIA_codRecorrido -> Recorrido.REC_codigo
-ALTER TABLE NOT_NULL.[Viaje] ADD CONSTRAINT
-[FK_Viaje_VIA_codRecorrido_Recorrido_REC_id]
-FOREIGN KEY ([VIA_codRecorrido])
-REFERENCES NOT_NULL.[Recorrido] ([REC_id])
+ALTER TABLE NOT_NULL.Viaje ADD CONSTRAINT FK_Viaje_VIA_codRecorrido_Recorrido_REC_id
+FOREIGN KEY (VIA_codRecorrido) REFERENCES NOT_NULL.Recorrido(REC_id)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
+
 
 -- Create Foreign Key: Encomienda.ENC_idViaje -> Viaje.VIA_numViaje
-ALTER TABLE NOT_NULL.[Encomienda] ADD CONSTRAINT
-[FK_Encomienda_ENC_idViaje_Viaje_VIA_numViaje]
-FOREIGN KEY ([ENC_idViaje])
-REFERENCES NOT_NULL.[Viaje] ([VIA_numViaje])
+ALTER TABLE NOT_NULL.Encomienda ADD CONSTRAINT FK_Encomienda_ENC_idViaje_Viaje_VIA_numViaje
+FOREIGN KEY (ENC_idViaje) REFERENCES NOT_NULL.Viaje(VIA_numViaje)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
-
 
 
 -- Create Foreign Key: Encomienda.ENC_idCliente -> Cliente.CLI_idCliente
-ALTER TABLE NOT_NULL.[Encomienda] ADD CONSTRAINT
-[FK_Encomienda_ENC_idCliente_Cliente_CLI_idCliente]
-FOREIGN KEY ([ENC_idCliente])
-REFERENCES NOT_NULL.[Cliente] ([CLI_idCliente])
+ALTER TABLE NOT_NULL.Encomienda ADD CONSTRAINT FK_Encomienda_ENC_idCliente_Cliente_CLI_idCliente
+FOREIGN KEY (ENC_idCliente) REFERENCES NOT_NULL.Cliente(CLI_idCliente)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
 
-
--- Create Foreign Key: Pasaje.PAS_idViaje -> Viaje.VIA_numViaje
-ALTER TABLE NOT_NULL.[Pasaje] ADD CONSTRAINT
-[FK_Pasaje_PAS_idViaje_Viaje_VIA_numViaje]
-FOREIGN KEY ([PAS_idViaje])
-REFERENCES NOT_NULL.[Viaje] ([VIA_numViaje])
-ON UPDATE NO ACTION
-ON DELETE NO ACTION
-
--- Create Foreign Key: Pasaje.PAS_idCliente -> Cliente.CLI_idCliente
-ALTER TABLE NOT_NULL.[Pasaje] ADD CONSTRAINT
-[FK_Pasaje_PAS_idCliente_Cliente_CLI_idCliente]
-FOREIGN KEY ([PAS_idCliente])
-REFERENCES NOT_NULL.[Cliente] ([CLI_idCliente])
-ON UPDATE NO ACTION
-ON DELETE NO ACTION
-
--- Create Foreign Key: Pasaje.PAS_numButaca -> Butaca.BUT_numeroAsiento
-ALTER TABLE NOT_NULL.Pasaje ADD CONSTRAINT FK_Pasaje_PAS_numButaca_PAS_numMicro_Butaca_BUT_numeroAsiento_Butaca_BUT_numMicro
-FOREIGN KEY (PAS_numButaca, PAS_numMicro)
-REFERENCES NOT_NULL.Butaca(BUT_numeroAsiento, BUT_numMicro)
-ON UPDATE NO ACTION
-ON DELETE NO ACTION
-
-
--- Create Foreign Key: Pasaje.PAS_idVenta -> Venta.VEN_idVenta
-ALTER TABLE NOT_NULL.[Pasaje] ADD CONSTRAINT
-[FK_Pasaje_PAS_idVenta_Venta_VEN_idVenta]
-FOREIGN KEY ([PAS_idVenta])
-REFERENCES NOT_NULL.[Venta] ([VEN_idVenta])
+-- Create Foreign Key: Encomienda.ENC_idDev -> Devolucion.DEV_idDev
+ALTER TABLE NOT_NULL.Encomienda ADD CONSTRAINT FK_Encomienda_ENC_idDev_Devolucion_DEV_idDev
+FOREIGN KEY (ENC_idDev) REFERENCES NOT_NULL.Devolucion(DEV_idDev)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
 
 -- Create Foreign Key: Encomienda.ENC_idVenta -> Venta.VEN_idVenta
-ALTER TABLE NOT_NULL.[Encomienda] ADD CONSTRAINT
-[FK_Encomienda_ENC_idVenta_Venta_VEN_idVenta]
-FOREIGN KEY ([ENC_idVenta])
-REFERENCES NOT_NULL.[Venta] ([VEN_idVenta])
+ALTER TABLE NOT_NULL.Encomienda ADD CONSTRAINT FK_Encomienda_ENC_idVenta_Venta_VEN_idVenta
+FOREIGN KEY (ENC_idVenta) REFERENCES NOT_NULL. Venta ( VEN_idVenta)
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
+
+
+-- Create Foreign Key: Pasaje.PAS_idViaje -> Viaje.VIA_numViaje
+ALTER TABLE NOT_NULL.Pasaje ADD CONSTRAINT FK_Pasaje_PAS_idViaje_Viaje_VIA_numViaje
+FOREIGN KEY (PAS_idViaje) REFERENCES NOT_NULL.Viaje (VIA_numViaje)
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
+
+-- Create Foreign Key: Pasaje.PAS_idCliente -> Cliente.CLI_idCliente
+ALTER TABLE NOT_NULL.Pasaje ADD CONSTRAINT FK_Pasaje_PAS_idCliente_Cliente_CLI_idCliente
+FOREIGN KEY (PAS_idCliente) REFERENCES NOT_NULL.Cliente(CLI_idCliente)
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
+
+-- Create Foreign Key: Pasaje.PAS_numButaca -> Butaca.BUT_numeroAsiento
+ALTER TABLE NOT_NULL.Pasaje ADD CONSTRAINT FK_Pasaje_PAS_numButaca_PAS_numMicro_Butaca_BUT_numeroAsiento_Butaca_BUT_numMicro
+FOREIGN KEY (PAS_numButaca, PAS_numMicro) REFERENCES NOT_NULL.Butaca(BUT_numeroAsiento, BUT_numMicro)
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
+
+-- Create Foreign Key: Pasaje.PAS_idVenta -> Venta.VEN_idVenta
+ALTER TABLE NOT_NULL. Pasaje ADD CONSTRAINT FK_Pasaje_PAS_idVenta_Venta_VEN_idVenta
+FOREIGN KEY ( PAS_idVenta) REFERENCES NOT_NULL. Venta ( VEN_idVenta)
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
+
+
+-- Create Foreign Key: Pasaje.PAS_idDev -> Devolucion.DEV_idDev
+ALTER TABLE NOT_NULL.Pasaje ADD CONSTRAINT FK_Pasaje_PAS_idDev_Devolucion_DEV_idDev
+FOREIGN KEY (PAS_idDev) REFERENCES NOT_NULL.Devolucion (DEV_idDev)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
 
 -- Create Foreign Key: Venta.VEN_idTarjeta -> Tarjeta.TAR_idTarjeta
-ALTER TABLE NOT_NULL.[Venta] ADD CONSTRAINT
-[FK_Venta_VEN_idTarjeta_Tarjeta_TAR_idTarjeta]
-FOREIGN KEY ([VEN_idTarjeta])
-REFERENCES NOT_NULL.[Tarjeta] ([TAR_idTarjeta])
+ALTER TABLE NOT_NULL.Venta ADD CONSTRAINT FK_Venta_VEN_idTarjeta_Tarjeta_TAR_idTarjeta
+FOREIGN KEY ( VEN_idTarjeta) REFERENCES NOT_NULL.Tarjeta ( TAR_idTarjeta)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
-
-
-
--- Create Foreign Key: DevXPas.DXP_idDevolucion -> DevolucionVenta.DEV_idDevolucion
-ALTER TABLE NOT_NULL.[DevXPas] ADD CONSTRAINT
-[FK_DevXPas_DXP_idDevolucion_DevolucionVenta_DEV_idDevolucion]
-FOREIGN KEY ([DXP_idDevolucion])
-REFERENCES NOT_NULL.[DevolucionVenta] ([DEV_idDevolucion])
-ON UPDATE NO ACTION
-ON DELETE NO ACTION
-
-
-
--- Create Foreign Key: DevolucionVenta.DEV_idVenta -> Venta.VEN_idVenta
-ALTER TABLE NOT_NULL.[DevolucionVenta] ADD CONSTRAINT
-[FK_DevolucionVenta_DEV_idVenta_Venta_VEN_idVenta]
-FOREIGN KEY ([DEV_idVenta])
-REFERENCES NOT_NULL.[Venta] ([VEN_idVenta])
-ON UPDATE NO ACTION
-ON DELETE NO ACTION
-
-
-
--- Create Foreign Key: DevXPas.DXP_idPasaje -> Pasaje.PAS_numPasaje
-ALTER TABLE NOT_NULL.[DevXPas] ADD CONSTRAINT
-[FK_DevXPas_DXP_idPasaje_Pasaje_PAS_numPasaje]
-FOREIGN KEY ([DXP_idPasaje])
-REFERENCES NOT_NULL.[Pasaje] ([PAS_numPasaje])
-ON UPDATE NO ACTION
-ON DELETE NO ACTION
-
-
-
--- Create Foreign Key: DevXEnc.DXE_idDevolucion -> DevolucionVenta.DEV_idDevolucion
-ALTER TABLE NOT_NULL.[DevXEnc] ADD CONSTRAINT
-[FK_DevXEnc_DXE_idDevolucion_DevolucionVenta_DEV_idDevolucion]
-FOREIGN KEY ([DXE_idDevolucion])
-REFERENCES NOT_NULL.[DevolucionVenta] ([DEV_idDevolucion])
-ON UPDATE NO ACTION
-ON DELETE NO ACTION
-
-
-
--- Create Foreign Key: DevXEnc.DXE_idEncomienda -> Encomienda.ENC_numEnc
-ALTER TABLE NOT_NULL.[DevXEnc] ADD CONSTRAINT
-[FK_DevXEnc_DXE_idEncomienda_Encomienda_ENC_numEnc]
-FOREIGN KEY ([DXE_idEncomienda])
-REFERENCES NOT_NULL.[Encomienda] ([ENC_numEnc])
-ON UPDATE NO ACTION
-ON DELETE NO ACTION
-
 
 
 -- Create Foreign Key: Puntos.PTS_idCliente -> Cliente.CLI_idCliente
-ALTER TABLE NOT_NULL.[Puntos] ADD CONSTRAINT
-[FK_Puntos_PTS_idCliente_Cliente_CLI_idCliente]
-FOREIGN KEY ([PTS_idCliente])
-REFERENCES NOT_NULL.[Cliente] ([CLI_idCliente])
+ALTER TABLE NOT_NULL.Puntos ADD CONSTRAINT FK_Puntos_PTS_idCliente_Cliente_CLI_idCliente
+FOREIGN KEY (PTS_idCliente) REFERENCES NOT_NULL.Cliente (CLI_idCliente)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
-
 
 
 -- Create Foreign Key: Recorrido.REC_idCiudadDestino -> Ciudad.CIU_idCiudad
-ALTER TABLE NOT_NULL.[Recorrido] ADD CONSTRAINT
-[FK_Recorrido_REC_idCiudadDestino_Ciudad_CIU_idCiudad]
-FOREIGN KEY ([REC_idCiudadDestino])
-REFERENCES NOT_NULL.[Ciudad] ([CIU_idCiudad])
+ALTER TABLE NOT_NULL.Recorrido ADD CONSTRAINT FK_Recorrido_REC_idCiudadDestino_Ciudad_CIU_idCiudad
+FOREIGN KEY (REC_idCiudadDestino) REFERENCES NOT_NULL.Ciudad (CIU_idCiudad)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
-
 
 
 -- Create Foreign Key: Butaca.BUT_numMicro -> Micro.MIC_numMicro
-ALTER TABLE NOT_NULL.[Butaca] ADD CONSTRAINT
-[FK_Butaca_BUT_numMicro_Micro_MIC_numMicro]
-FOREIGN KEY ([BUT_numMicro])
-REFERENCES NOT_NULL.[Micro] ([MIC_numMicro])
+ALTER TABLE NOT_NULL.Butaca ADD CONSTRAINT FK_Butaca_BUT_numMicro_Micro_MIC_numMicro
+FOREIGN KEY (BUT_numMicro) REFERENCES NOT_NULL.Micro (MIC_numMicro)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
+
 -- Create Foreign Key: Micro.MIC_idTipoServicio -> TipoServicio.SRV_idTipoServicio
-ALTER TABLE NOT_NULL.[Micro] ADD CONSTRAINT
-[FK_Micro_MIC_idTipoServicio_TipoServicio_SRV_idTipoServicio]
-FOREIGN KEY ([MIC_idTipoServicio])
-REFERENCES NOT_NULL.[TipoServicio] ([SRV_idTipoServicio])
+ALTER TABLE NOT_NULL.Micro ADD CONSTRAINT FK_Micro_MIC_idTipoServicio_TipoServicio_SRV_idTipoServicio
+FOREIGN KEY (MIC_idTipoServicio) REFERENCES NOT_NULL.TipoServicio (SRV_idTipoServicio)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
+
 -- Create Foreign Key: Micro.MIC_idTipoServicio -> TipoServicio.SRV_idTipoServicio
-ALTER TABLE NOT_NULL.[Micro] ADD CONSTRAINT
-[FK_Micro_MIC_idModelo_Modelo_MOD_idModelo]
-FOREIGN KEY ([MIC_idModelo])
-REFERENCES NOT_NULL.[Modelo] ([MOD_idModelo])
+ALTER TABLE NOT_NULL.Micro ADD CONSTRAINT FK_Micro_MIC_idModelo_Modelo_MOD_idModelo
+FOREIGN KEY (MIC_idModelo) REFERENCES NOT_NULL.Modelo (MOD_idModelo)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
+
 
 -- Create Foreign Key: FuncionalidadXRol.FXR_idRol -> Rol.ROL_idRol
-ALTER TABLE NOT_NULL.[FuncionalidadXRol] ADD CONSTRAINT
-[FK_FuncionalidadXRol_FXR_idRol_Rol_ROL_idRol]
-FOREIGN KEY ([FXR_idRol])
-REFERENCES NOT_NULL.[Rol] ([ROL_idRol])
+ALTER TABLE NOT_NULL.FuncionalidadXRol ADD CONSTRAINT FK_FuncionalidadXRol_FXR_idRol_Rol_ROL_idRol
+FOREIGN KEY (FXR_idRol) REFERENCES NOT_NULL.Rol (ROL_idRol)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
-
 
 
 -- Create Foreign Key: FuncionalidadXRol.FXR_idFuncionalidad -> Funcionalidad.FNC_idFuncionalidad
-ALTER TABLE NOT_NULL.[FuncionalidadXRol] ADD CONSTRAINT
-[FK_FuncionalidadXRol_FXR_idFuncionalidad_Funcionalidad_FNC_idFuncionalidad]
-FOREIGN KEY ([FXR_idFuncionalidad])
-REFERENCES NOT_NULL.[Funcionalidad] ([FNC_idFuncionalidad])
+ALTER TABLE NOT_NULL.FuncionalidadXRol ADD CONSTRAINT FK_FuncionalidadXRol_FXR_idFuncionalidad_Funcionalidad_FNC_idFuncionalidad
+FOREIGN KEY (FXR_idFuncionalidad) REFERENCES NOT_NULL.Funcionalidad (FNC_idFuncionalidad)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
 
-
 -- Create Foreign Key: Canje.CNJ_idProducto -> Producto.PRO_idProd
-ALTER TABLE NOT_NULL.[Canje] ADD CONSTRAINT
-[FK_Canje_CNJ_idProducto_Producto_PRO_idProd]
-FOREIGN KEY ([CNJ_idProducto])
-REFERENCES NOT_NULL.[Producto] ([PRO_idProd])
+ALTER TABLE NOT_NULL.Canje ADD CONSTRAINT FK_Canje_CNJ_idProducto_Producto_PRO_idProd
+FOREIGN KEY (CNJ_idProducto) REFERENCES NOT_NULL.Producto (PRO_idProd)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
+
 -- Create Foreign Key: Canje.CNJ_idProducto -> Producto.PRO_idProd
-ALTER TABLE NOT_NULL.[Canje] ADD CONSTRAINT
-[FK_Canje_CNJ_idCliente_Cliente_CLI_idCliente]
-FOREIGN KEY ([CNJ_idCliente])
-REFERENCES NOT_NULL.[Cliente] ([CLI_idCliente])
+ALTER TABLE NOT_NULL.Canje ADD CONSTRAINT FK_Canje_CNJ_idCliente_Cliente_CLI_idCliente
+FOREIGN KEY (CNJ_idCliente) REFERENCES NOT_NULL.Cliente (CLI_idCliente)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
 
 -- Create Foreign Key: Recorrido.REC_idTipoServicio -> TipoServicio.SRV_idTipoServicio
-ALTER TABLE NOT_NULL.[Recorrido] ADD CONSTRAINT
-[FK_Recorrido_REC_idTipoServicio_TipoServicio_SRV_idTipoServicio]
-FOREIGN KEY ([REC_idTipoServicio])
-REFERENCES NOT_NULL.[TipoServicio] ([SRV_idTipoServicio])
+ALTER TABLE NOT_NULL.Recorrido ADD CONSTRAINT FK_Recorrido_REC_idTipoServicio_TipoServicio_SRV_idTipoServicio
+FOREIGN KEY (REC_idTipoServicio) REFERENCES NOT_NULL.TipoServicio (SRV_idTipoServicio)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
-ALTER TABLE NOT_NULL.[HistoricoMantenimiento] ADD CONSTRAINT
-[FK_HistoricoMantenimiento_HMAN_idMicro_MIC_numMicro]
-FOREIGN KEY ([HMAN_idMicro])
-REFERENCES NOT_NULL.[Micro] ([MIC_numMicro])
+
+-- Create Foreign Key: HistoricoMantenimiento.HMAN_idMicro -> Micro.MIC_numMicro
+ALTER TABLE NOT_NULL.HistoricoMantenimiento ADD CONSTRAINT FK_HistoricoMantenimiento_HMAN_idMicro_MIC_numMicro
+FOREIGN KEY (HMAN_idMicro) REFERENCES NOT_NULL.Micro (MIC_numMicro)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
-ALTER TABLE NOT_NULL.ReservasButacas ADD CONSTRAINT
-FK_ReservasButacas_RES_idViaje_VIA_numViaje
-FOREIGN KEY (RES_idViaje)
-REFERENCES NOT_NULL.Viaje (VIA_numViaje)
+
+-- Create Foreign Key: ReservasButacas.RES_idViaje -> Viaje.VIA_numViaje
+ALTER TABLE NOT_NULL.ReservasButacas ADD CONSTRAINT FK_ReservasButacas_RES_idViaje_VIA_numViaje
+FOREIGN KEY (RES_idViaje) REFERENCES NOT_NULL.Viaje (VIA_numViaje)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
-ALTER TABLE NOT_NULL.ReservasButacas ADD CONSTRAINT
-FK_ReservasButacas_RES_idMicro_RES_nroButaca_BUT_numMicro_BUT_numeroAsiento
-FOREIGN KEY (RES_nroButaca, RES_idMicro)
-REFERENCES NOT_NULL.Butaca(BUT_numeroAsiento, BUT_numMicro)
+
+-- Create Foreign Key: ReservasButacas.RES_nroButaca -> Butaca.BUT_numeroAsiento
+--                     ReservasButacas.RES_idMicro   -> Butaca.BUT_numMicro
+ALTER TABLE NOT_NULL.ReservasButacas ADD CONSTRAINT FK_ReservasButacas_RES_idMicro_RES_nroButaca_BUT_numMicro_BUT_numeroAsiento 
+FOREIGN KEY (RES_nroButaca, RES_idMicro) REFERENCES NOT_NULL.Butaca(BUT_numeroAsiento, BUT_numMicro) 
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
+
+
+-- Create Foreign Key: Modelo.MOD_idMarca -> Marca.MAR_idMarca
+ALTER TABLE NOT_NULL.Modelo ADD CONSTRAINT FK_Modelo_MOD_idModelo_Marca_MAR_idMarca
+FOREIGN KEY (MOD_idMarca) REFERENCES NOT_NULL.Marca (MAR_idMarca)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
 GO
 
---Acá se deberían agregar los SP
+--Creación de SPs de Migración
 
 CREATE PROCEDURE NOT_NULL.CargarTablasSecundarias 
 AS 
 BEGIN
 	DECLARE @idRol INT;
 
-    	INSERT INTO Ciudad (CIU_nombre)  
+    INSERT INTO Ciudad (CIU_nombre)  
 		SELECT Distinct Recorrido_Ciudad_Destino as nombreCiudad
 		FROM gd_esquema.Maestra
 		union
@@ -868,8 +794,6 @@ BEGIN
 	INSERT INTO Marca (MAR_nombreMarca)
 		SELECT DISTINCT Micro_Marca FROM gd_esquema.Maestra ORDER BY MICRO_MARCA;
 		
-		
-	
 	INSERT INTO NOT_NULL.Modelo (MOD_idMarca, MOD_nombreModelo)
 		SELECT DISTINCT MAR_idMarca, Micro_Modelo FROM gd_esquema.Maestra, NOT_NULL.Marca
 		WHERE Micro_Marca = MAR_nombreMarca
@@ -908,8 +832,7 @@ BEGIN
 				('Canje de Ptos', 'CanjeDePuntos'),
 				('Consulta Puntos Adquiridos', 'ConsultaDePuntos');
 
-        
-	INSERT INTO FuncionalidadXRol (FXR_idRol, FXR_idFuncionalidad)
+    INSERT INTO FuncionalidadXRol (FXR_idRol, FXR_idFuncionalidad)
 		SELECT @idRol, FNC_idFuncionalidad FROM Funcionalidad;
 		
 	INSERT INTO NOT_NULL.Producto(PRO_descripcion, PRO_puntos, PRO_stock) VALUES 
@@ -921,6 +844,7 @@ BEGIN
 				('Viaje a Córdoba para dos personas', 1700, 10);
 END
 GO
+
 
 CREATE PROCEDURE NOT_NULL.CargarMicros
 AS
@@ -973,6 +897,7 @@ BEGIN
 		WHERE Micro_Patente = MIC_patente AND Recorrido_Codigo = REC_Codigo;
 END
 GO
+
 
 CREATE PROCEDURE NOT_NULL.CargarVentasPasajes
 AS
@@ -1167,13 +1092,13 @@ FETCH VENTAENCOMIENDACUR INTO
 			@fechaSalida
 	END
 		
-CLOSE VENTAENCOMIENDACUR
-DEALLOCATE VENTAENCOMIENDACUR;
+	CLOSE VENTAENCOMIENDACUR
+	DEALLOCATE VENTAENCOMIENDACUR;
 END
 GO
 
---Acá se deben correr los SP de migracion
 
+--Correr SPs de Migración
 EXECUTE NOT_NULL.CargarTablasSecundarias;
 EXECUTE NOT_NULL.CargarMicros;
 EXECUTE NOT_NULL.CargarButacas;
@@ -1183,8 +1108,8 @@ EXECUTE NOT_NULL.cargarVentasPasajes;
 EXECUTE NOT_NULL.cargarVentasEncomiendas;
 GO
 
---Acá se deben borrar los SP de migracion
 
+--Borrado de SPs de migracion
 DROP PROCEDURE NOT_NULL.CargarTablasSecundarias;
 DROP PROCEDURE NOT_NULL.CargarMicros;
 DROP PROCEDURE NOT_NULL.CargarButacas;
@@ -1192,10 +1117,101 @@ DROP PROCEDURE NOT_NULL.CargarRecorridos;
 DROP PROCEDURE NOT_NULL.CargarViajes;
 DROP PROCEDURE NOT_NULL.CargarVentasPasajes;
 DROP PROCEDURE NOT_NULL.CargarVentasEncomiendas;
-
 GO
 
---Acá creamos los SP de Aplicacion
+
+--Creación de Funciones de aplicación
+CREATE FUNCTION NOT_NULL.PuntosTotalesCliente (@dni numeric)
+RETURNS numeric
+WITH EXECUTE AS CALLER
+AS
+BEGIN
+    DECLARE 
+		@idCliente numeric,
+		@puntosTotales numeric,
+		@ingresos numeric,
+		@egresos numeric
+    
+    SELECT @idCliente = CLI_idCLiente 
+	FROM NOT_NULL.Cliente
+	WHERE CLI_dni = @dni
+    
+     
+    SELECT @ingresos = sum(PTS_puntos)
+	FROM NOT_NULL.Puntos
+	WHERE PTS_idCliente = @idCliente
+	AND PTS_fecVencimiento > GETDATE()
+					
+    SELECT @egresos = sum(PRO_puntos*CNJ_cantidad)
+    FROM NOT_NULL.Producto, NOT_NULL.Canje
+	WHERE	CNJ_idCliente = @idCliente
+	AND	CNJ_idProducto = PRO_idProd
+	AND CNJ_fecCanje > DATEADD(year,-1,GETDATE())
+							
+    SET @puntosTotales = ISNULL (@ingresos, 0) - ISNULL (@egresos, 0)
+     
+    RETURN(@puntosTotales)
+END
+GO
+
+CREATE FUNCTION NOT_NULL.ButacasVacias (@idViaje INT)
+RETURNS SMALLINT
+WITH EXECUTE AS CALLER
+AS
+BEGIN
+	DECLARE @cantidad SMALLINT
+	DECLARE @idMicro INT
+	
+	SELECT @idMicro = VIA_numMicro
+	FROM NOT_NULL.viaje
+	WHERE VIA_numViaje = @idViaje;
+	
+	SELECT @cantidad = COUNT(*) 
+	FROM Butaca
+	WHERE BUT_numMicro = @idMicro;
+	
+	SELECT @cantidad = @cantidad - COUNT(*)
+	FROM NOT_NULL.Pasaje
+	WHERE PAS_idViaje = @idViaje AND PAS_cancelado = '0';
+	
+	SELECT @cantidad = @cantidad - COUNT(*)
+	FROM NOT_NULL.ReservasButacas
+	WHERE RES_idMicro = @idMicro;
+	
+	RETURN @cantidad	
+END
+GO
+
+CREATE FUNCTION NOT_NULL.KilogramosDisponibles (@idViaje INT)
+RETURNS SMALLINT
+WITH EXECUTE AS CALLER
+AS
+BEGIN
+	DECLARE @cantidad DECIMAL(10,2)
+	DECLARE @idMicro INT
+	
+	SELECT @idMicro = VIA_numMicro
+	FROM NOT_NULL.viaje
+	WHERE VIA_numViaje = @idViaje;
+	
+	SELECT @cantidad = MIC_kilosEncomiendas 
+	FROM NOT_NULL.Micro
+	WHERE MIC_numMicro = @idMicro;
+	
+	SELECT @cantidad = @cantidad - isnull(sum(ENC_kilos), 0)
+	FROM NOT_NULL.Encomienda
+	WHERE ENC_idViaje = @idViaje AND ENC_cancelada = '0';
+	
+	--SELECT @cantidad = @cantidad - sum(ENC_kilos)
+	--FROM NOT_NULL.ReservasEncomiendas
+	--WHERE RES_idMicro = @idMicro;
+	
+	RETURN @cantidad	
+END
+GO
+
+
+--Creación de SPs de Aplicacion
 CREATE PROCEDURE NOT_NULL.ListarRoles
 	@ID int = NULL,
 	@NOMBRE nvarchar(20) = NULL 
@@ -1218,7 +1234,6 @@ BEGIN
 END
 GO
 
---Acá creamos los SP de Aplicacion
 CREATE PROCEDURE NOT_NULL.ListarRecorridos
 	@ID int = NULL,
 	@CODIGO nvarchar(20) = NULL,
@@ -1371,7 +1386,6 @@ BEGIN
 END
 GO
 
-
 CREATE PROCEDURE NOT_NULL.RankingMicrosFueraServ
     @fecInicio SMALLDATETIME,
     @fecFin SMALLDATETIME
@@ -1387,39 +1401,6 @@ BEGIN
 		AND HMAN_fecInicio >= @fecInicio OR HMAN_fecFin <= @fecFin
 	GROUP BY MIC_numMicro, MIC_patente
 	ORDER BY 2 DESC;
-END
-GO
-
-CREATE FUNCTION NOT_NULL.PuntosTotalesCliente (@dni numeric)
-RETURNS numeric
-WITH EXECUTE AS CALLER
-AS
-BEGIN
-    DECLARE 
-		@idCliente numeric,
-		@puntosTotales numeric,
-		@ingresos numeric,
-		@egresos numeric
-    
-    SELECT @idCliente = CLI_idCLiente 
-	FROM NOT_NULL.Cliente
-	WHERE CLI_dni = @dni
-    
-     
-    SELECT @ingresos = sum(PTS_puntos)
-	FROM NOT_NULL.Puntos
-	WHERE PTS_idCliente = @idCliente
-	AND PTS_fecVencimiento > GETDATE()
-					
-    SELECT @egresos = sum(PRO_puntos*CNJ_cantidad)
-    FROM NOT_NULL.Producto, NOT_NULL.Canje
-	WHERE	CNJ_idCliente = @idCliente
-	AND	CNJ_idProducto = PRO_idProd
-	AND CNJ_fecCanje > DATEADD(year,-1,GETDATE())
-							
-    SET @puntosTotales = ISNULL (@ingresos, 0) - ISNULL (@egresos, 0)
-     
-    RETURN(@puntosTotales)
 END
 GO
 
@@ -1459,64 +1440,6 @@ BEGIN
 END
 GO
 
-CREATE FUNCTION NOT_NULL.ButacasVacias (@idViaje INT)
-RETURNS SMALLINT
-WITH EXECUTE AS CALLER
-AS
-BEGIN
-	DECLARE @cantidad SMALLINT
-	DECLARE @idMicro INT
-	
-	SELECT @idMicro = VIA_numMicro
-	FROM NOT_NULL.viaje
-	WHERE VIA_numViaje = @idViaje;
-	
-	SELECT @cantidad = COUNT(*) 
-	FROM Butaca
-	WHERE BUT_numMicro = @idMicro;
-	
-	SELECT @cantidad = @cantidad - COUNT(*)
-	FROM NOT_NULL.Pasaje
-	WHERE PAS_idViaje = @idViaje AND PAS_cancelado = '0';
-	
-	SELECT @cantidad = @cantidad - COUNT(*)
-	FROM NOT_NULL.ReservasButacas
-	WHERE RES_idMicro = @idMicro;
-	
-	RETURN @cantidad	
-END
-GO
-
-CREATE FUNCTION NOT_NULL.KilogramosDisponibles (@idViaje INT)
-RETURNS SMALLINT
-WITH EXECUTE AS CALLER
-AS
-BEGIN
-	DECLARE @cantidad DECIMAL(10,2)
-	DECLARE @idMicro INT
-	
-	SELECT @idMicro = VIA_numMicro
-	FROM NOT_NULL.viaje
-	WHERE VIA_numViaje = @idViaje;
-	
-	SELECT @cantidad = MIC_kilosEncomiendas 
-	FROM NOT_NULL.Micro
-	WHERE MIC_numMicro = @idMicro;
-	
-	SELECT @cantidad = @cantidad - isnull(sum(ENC_kilos), 0)
-	FROM NOT_NULL.Encomienda
-	WHERE ENC_idViaje = @idViaje AND ENC_cancelada = '0';
-	
-	--SELECT @cantidad = @cantidad - sum(ENC_kilos)
-	--FROM NOT_NULL.ReservasEncomiendas
-	--WHERE RES_idMicro = @idMicro;
-	
-	RETURN @cantidad	
-END
-GO
-
-
 --FIN
 COMMIT;
-
 SET NOCOUNT OFF
