@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using AccesoADatos.Orm;
-using AccesoADatos;
-using FrbaBus;
+using FrbaBus.AccesoADatos.Orm;
+using FrbaBus.AccesoADatos;
 
-namespace Registrar_LLegada_Micro
+
+namespace FrbaBus.Registrar_LLegada_Micro
 {
     public partial class RegistrarLlegada : Form
     {

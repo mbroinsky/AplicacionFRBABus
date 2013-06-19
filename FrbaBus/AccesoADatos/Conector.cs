@@ -1,4 +1,4 @@
-namespace AccesoADatos
+namespace FrbaBus.AccesoADatos
 {
     public class Conector
     {

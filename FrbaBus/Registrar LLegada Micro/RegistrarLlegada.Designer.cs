@@ -1,4 +1,4 @@
-﻿namespace Registrar_LLegada_Micro
+﻿namespace FrbaBus.Registrar_LLegada_Micro
 {
     partial class RegistrarLlegada
     {

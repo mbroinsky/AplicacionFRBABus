@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
-using AccesoADatos;
+using FrbaBus.AccesoADatos;
 
-namespace AccesoADatos.Orm
+namespace FrbaBus.AccesoADatos.Orm
 {
     class Servicio
     {

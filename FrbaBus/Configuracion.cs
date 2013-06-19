@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using Utilidades;
+using FrbaBus.Utilidades;
 using System.Windows.Forms;
 
 namespace FrbaBus

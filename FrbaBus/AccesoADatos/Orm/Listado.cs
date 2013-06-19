@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AccesoADatos;
+using FrbaBus.AccesoADatos;
 using System.Windows.Forms;
 using System.Data;
 
-namespace AccesoADatos.Orm
+namespace FrbaBus.AccesoADatos.Orm
 {
     public abstract class Listado
     {

@@ -4,7 +4,7 @@ using System.Data;
 using System.Windows.Forms;
 using FrbaBus;
 
-namespace AccesoADatos.Orm
+namespace FrbaBus.AccesoADatos.Orm
 {
     public class Micro
     {

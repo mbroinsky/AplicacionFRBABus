@@ -6,10 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using AccesoADatos.Orm;
-using FrbaBus;
+using FrbaBus.AccesoADatos.Orm;
 
-namespace Abm_Recorrido
+namespace FrbaBus.Abm_Recorrido
 {
     public partial class SeleccionRecorrido : Form
     {

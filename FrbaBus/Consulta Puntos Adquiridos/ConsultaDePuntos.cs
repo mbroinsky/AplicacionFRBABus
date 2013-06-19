@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using FrbaBus.AccesoADatos.Orm;
-using Utilidades;
+using FrbaBus.Utilidades;
 
 namespace FrbaBus.Consulta_Puntos_Adquiridos
 {

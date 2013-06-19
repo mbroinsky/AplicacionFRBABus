@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Windows.Forms;
-using AccesoADatos.Orm;
+using FrbaBus.AccesoADatos.Orm;
 using System.Collections;
 
-namespace AccesoADatos.Orm
+namespace FrbaBus.AccesoADatos.Orm
 {
     public class Rol
     {

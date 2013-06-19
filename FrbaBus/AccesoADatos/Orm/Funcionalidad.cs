@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
-using AccesoADatos;
+using FrbaBus.AccesoADatos;
 using System.Collections;
 
-namespace AccesoADatos.Orm
+namespace FrbaBus.AccesoADatos.Orm
 {
     class Funcionalidad
     {

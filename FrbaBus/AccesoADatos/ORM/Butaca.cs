@@ -5,7 +5,7 @@ using System.Text;
 using System.Collections;
 using System.Data;
 
-namespace AccesoADatos.Orm
+namespace FrbaBus.AccesoADatos.Orm
 {
     public class Butaca
     {

@@ -117,8 +117,10 @@
             // 
             this.resultados.AllowUserToAddRows = false;
             this.resultados.AllowUserToDeleteRows = false;
+            this.resultados.AllowUserToResizeColumns = false;
             this.resultados.AllowUserToResizeRows = false;
-            this.resultados.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            this.resultados.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.resultados.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.resultados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.resultados.Location = new System.Drawing.Point(2, 131);
             this.resultados.MultiSelect = false;

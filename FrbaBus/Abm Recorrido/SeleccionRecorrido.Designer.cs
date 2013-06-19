@@ -1,4 +1,4 @@
-﻿namespace Abm_Recorrido
+﻿namespace FrbaBus.Abm_Recorrido
 {
     partial class SeleccionRecorrido
     {
@@ -50,8 +50,9 @@
             // 
             this.recorridos.AllowUserToAddRows = false;
             this.recorridos.AllowUserToDeleteRows = false;
-            this.recorridos.AllowUserToOrderColumns = true;
-            this.recorridos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            this.recorridos.AllowUserToResizeColumns = false;
+            this.recorridos.AllowUserToResizeRows = false;
+            this.recorridos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.recorridos.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.recorridos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.recorridos.Location = new System.Drawing.Point(12, 103);

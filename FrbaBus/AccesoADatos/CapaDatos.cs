@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 using FrbaBus;
 using System.Collections;
 
-namespace AccesoADatos
+namespace FrbaBus.AccesoADatos
 {
     public class CapaDatos : BaseDatos
     {

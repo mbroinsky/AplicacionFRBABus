@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Collections;
-using AccesoADatos;
+using FrbaBus.AccesoADatos;
 using System.Windows.Forms;
 
 namespace FrbaBus.AccesoADatos.Orm

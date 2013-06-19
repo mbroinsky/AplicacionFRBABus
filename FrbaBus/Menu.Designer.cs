@@ -61,7 +61,7 @@
             // 
             // Salir
             // 
-            this.Salir.Location = new System.Drawing.Point(598, 92);
+            this.Salir.Location = new System.Drawing.Point(338, 92);
             this.Salir.Name = "Salir";
             this.Salir.Size = new System.Drawing.Size(75, 44);
             this.Salir.TabIndex = 2;
@@ -71,7 +71,7 @@
             // 
             // generarViaje
             // 
-            this.generarViaje.Location = new System.Drawing.Point(175, 92);
+            this.generarViaje.Location = new System.Drawing.Point(175, 12);
             this.generarViaje.Name = "generarViaje";
             this.generarViaje.Size = new System.Drawing.Size(75, 45);
             this.generarViaje.TabIndex = 3;
@@ -81,7 +81,7 @@
             // 
             // registrarLlegadas
             // 
-            this.registrarLlegadas.Location = new System.Drawing.Point(256, 93);
+            this.registrarLlegadas.Location = new System.Drawing.Point(257, 12);
             this.registrarLlegadas.Name = "registrarLlegadas";
             this.registrarLlegadas.Size = new System.Drawing.Size(75, 44);
             this.registrarLlegadas.TabIndex = 4;
@@ -91,7 +91,7 @@
             // 
             // abmRecorridos
             // 
-            this.abmRecorridos.Location = new System.Drawing.Point(338, 93);
+            this.abmRecorridos.Location = new System.Drawing.Point(175, 92);
             this.abmRecorridos.Name = "abmRecorridos";
             this.abmRecorridos.Size = new System.Drawing.Size(75, 44);
             this.abmRecorridos.TabIndex = 5;
@@ -101,7 +101,7 @@
             // 
             // listadosEstadisticos
             // 
-            this.listadosEstadisticos.Location = new System.Drawing.Point(517, 92);
+            this.listadosEstadisticos.Location = new System.Drawing.Point(338, 12);
             this.listadosEstadisticos.Name = "listadosEstadisticos";
             this.listadosEstadisticos.Size = new System.Drawing.Size(75, 44);
             this.listadosEstadisticos.TabIndex = 6;
@@ -111,7 +111,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(517, 42);
+            this.button1.Location = new System.Drawing.Point(93, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 44);
             this.button1.TabIndex = 7;
@@ -121,7 +121,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(436, 42);
+            this.button2.Location = new System.Drawing.Point(12, 12);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 44);
             this.button2.TabIndex = 8;
@@ -133,7 +133,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(685, 149);
+            this.ClientSize = new System.Drawing.Size(423, 149);
             this.ControlBox = false;
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);

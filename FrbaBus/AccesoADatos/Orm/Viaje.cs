@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AccesoADatos;
+using FrbaBus.AccesoADatos;
 using System.Collections;
 using System.Data;
 using System.Windows.Forms;
 
-namespace AccesoADatos.Orm
+namespace FrbaBus.AccesoADatos.Orm
 {
     class Viaje
     {

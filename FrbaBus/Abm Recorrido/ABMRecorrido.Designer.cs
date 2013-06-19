@@ -1,4 +1,4 @@
-﻿namespace Abm_Recorrido
+﻿namespace FrbaBus.Abm_Recorrido
 {
     partial class ABMRecorrido
     {

@@ -2,7 +2,7 @@ using System;
 using System.Data;
 using System.Collections;
 
-namespace AccesoADatos
+namespace FrbaBus.AccesoADatos
 {
     public abstract class BaseDatos
     {
