@@ -478,6 +478,28 @@ ON [PRIMARY]
 ALTER TABLE NOT_NULL.Devolucion ADD CONSTRAINT PK_DevolucionVenta PRIMARY KEY (DEV_idDev)
 
 
+--- Create Table: DevXPas
+---------------------------------------------------------------------------------
+CREATE TABLE NOT_NULL.DevXPas
+(
+  DXP_idDevolucion INT NOT NULL 
+  ,DXP_idPasaje INT NOT NULL 
+)
+ON [PRIMARY]
+ALTER TABLE NOT_NULL.DevXPas ADD CONSTRAINT PK_DevXPas PRIMARY KEY (DXP_idDevolucion, DXP_idPasaje)
+
+
+--- Create Table: DevXEnc
+---------------------------------------------------------------------------------
+CREATE TABLE NOT_NULL.DevXEnc
+(
+  DXE_idDevolucion INT NOT NULL 
+  ,DXE_idEncomienda INT NOT NULL 
+)
+ON [PRIMARY]
+ALTER TABLE NOT_NULL.DevXEnc ADD CONSTRAINT PK_DevXEnc PRIMARY KEY (DXE_idDevolucion, DXE_idEncomienda)
+
+
 -- Create Table: Puntos
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Puntos
