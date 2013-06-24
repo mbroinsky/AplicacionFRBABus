@@ -795,6 +795,18 @@ ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
 
+--- Create Foreign Key: DevXPas.DXP_idDevolucion -> DevolucionVenta.DEV_idDevolucion
+ALTER TABLE NOT_NULL.DevXPas ADD CONSTRAINT FK_DevXPas_DXP_idDevolucion_Devolucion_DEV_idDevolucion
+FOREIGN KEY (DXP_idDevolucion) REFERENCES NOT_NULL.Devolucion(DEV_idDevolucion)
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
+
+--- Create Foreign Key: DevXPas.DXP_idPasaje -> Pasaje.PAS_numPasaje
+ALTER TABLE NOT_NULL.DevXPas ADD CONSTRAINT FK_DevXPas_DXP_idPasaje_Pasaje_PAS_numPasaje
+FOREIGN KEY (DXP_idPasaje) REFERENCES NOT_NULL.Pasaje(PAS_numPasaje)
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
+
 GO
 
 --Creación de SPs de Migración
