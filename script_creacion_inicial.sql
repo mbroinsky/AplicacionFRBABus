@@ -252,7 +252,6 @@ CREATE TABLE NOT_NULL.Encomienda
 	,ENC_kilos DECIMAL(10, 2) NOT NULL 
 	,ENC_precio DECIMAL(10, 2) NOT NULL
 	,ENC_cancelada BIT NOT NULL DEFAULT 0
-	,ENC_idDev INT NULL
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Encomienda ADD CONSTRAINT PK_Encomienda PRIMARY KEY (ENC_numEnc)
@@ -373,7 +372,6 @@ CREATE TABLE NOT_NULL.Pasaje
 	,PAS_numMicro INT NOT NULL
 	,PAS_precio DECIMAL(10,2) NOT NULL
 	,PAS_cancelado BIT NOT NULL DEFAULT 0
-	,PAS_idDev INT NULL
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Pasaje ADD CONSTRAINT PK_Pasaje PRIMARY KEY CLUSTERED (PAS_numPasaje)
@@ -645,13 +643,6 @@ ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
 
--- Create Foreign Key: Encomienda.ENC_idDev -> Devolucion.DEV_idDev
-ALTER TABLE NOT_NULL.Encomienda ADD CONSTRAINT FK_Encomienda_ENC_idDev_Devolucion_DEV_idDev
-FOREIGN KEY (ENC_idDev) REFERENCES NOT_NULL.Devolucion(DEV_idDev)
-ON UPDATE NO ACTION
-ON DELETE NO ACTION
-
-
 -- Create Foreign Key: Encomienda.ENC_idVenta -> Venta.VEN_idVenta
 ALTER TABLE NOT_NULL.Encomienda ADD CONSTRAINT FK_Encomienda_ENC_idVenta_Venta_VEN_idVenta
 FOREIGN KEY (ENC_idVenta) REFERENCES NOT_NULL. Venta ( VEN_idVenta)
@@ -680,13 +671,6 @@ ON DELETE NO ACTION
 -- Create Foreign Key: Pasaje.PAS_idVenta -> Venta.VEN_idVenta
 ALTER TABLE NOT_NULL. Pasaje ADD CONSTRAINT FK_Pasaje_PAS_idVenta_Venta_VEN_idVenta
 FOREIGN KEY ( PAS_idVenta) REFERENCES NOT_NULL. Venta ( VEN_idVenta)
-ON UPDATE NO ACTION
-ON DELETE NO ACTION
-
-
--- Create Foreign Key: Pasaje.PAS_idDev -> Devolucion.DEV_idDev
-ALTER TABLE NOT_NULL.Pasaje ADD CONSTRAINT FK_Pasaje_PAS_idDev_Devolucion_DEV_idDev
-FOREIGN KEY (PAS_idDev) REFERENCES NOT_NULL.Devolucion (DEV_idDev)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
@@ -795,6 +779,21 @@ ALTER TABLE NOT_NULL.Modelo ADD CONSTRAINT FK_Modelo_MOD_idModelo_Marca_MAR_idMa
 FOREIGN KEY (MOD_idMarca) REFERENCES NOT_NULL.Marca (MAR_idMarca)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
+
+
+--- Create Foreign Key: DevXEnc.DXE_idDevolucion -> DevolucionVenta.DEV_idDevolucion
+ALTER TABLE NOT_NULL.DevXEnc ADD CONSTRAINT FK_DevXEnc_DXE_idDevolucion_Devolucion_DEV_idDevolucion
+FOREIGN KEY (DXE_idDevolucion) REFERENCES NOT_NULL.Devolucion(DEV_idDevolucion)
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
+ 
+
+--- Create Foreign Key: DevXEnc.DXE_idEncomienda -> Encomienda.ENC_numEnc
+ALTER TABLE NOT_NULL.DevXEnc ADD CONSTRAINT FK_DevXEnc_DXE_idEncomienda_Encomienda_ENC_numEnc
+FOREIGN KEY(DXE_idEncomienda) REFERENCES NOT_NULL.Encomienda(ENC_numEnc)
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
+
 
 GO
 
