@@ -106,11 +106,12 @@
             // 
             this.Butacas.AllowUserToAddRows = false;
             this.Butacas.AllowUserToDeleteRows = false;
-            this.Butacas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.Butacas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.Butacas.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.Butacas.Location = new System.Drawing.Point(12, 72);
             this.Butacas.Name = "Butacas";
             this.Butacas.RowHeadersVisible = false;
+            this.Butacas.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.Butacas.Size = new System.Drawing.Size(325, 250);
             this.Butacas.TabIndex = 30;
             this.Butacas.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Butacas_CellContentClick);

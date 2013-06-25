@@ -113,6 +113,14 @@ namespace FrbaBus.AccesoADatos.Orm
             }
         }
 
+        /// <summary>
+        ///  Trae los micros disponibles para generar un viaje para una fecha determinada 
+        ///  y con un tipo de servicio que sea igual al del recorrido que se asociará al viaje.
+        ///  El micro no debe estar en mantenimiento en la fecha de inicio del viaje.
+        /// </summary>
+        /// <param name="idRecorrido">Id del recorrido</param>
+        /// <param name="fecSalid">Fecha de salida del viaje</param>
+        /// <param name="micros">Combo a llenar</param>
         public static void LlenarComboDisponibles(Int32 idRecorrido, DateTime fecSalida, ComboBox micros)
         {
             try
@@ -124,14 +132,13 @@ namespace FrbaBus.AccesoADatos.Orm
                     " where MIC_idTipoServicio = REC_idTipoServicio AND " +
                     " REC_id = @idRecorrido AND " +
                     " MIC_Habilitado = 1 AND " +
-                    " MIC_numMicro NOT IN (SELECT HMAN_idMicro FROM NOT_NULL.HistoricoMantenimiento WHERE @fecActual BETWEEN HMAN_fecInicio AND HMAN_fecFin) AND" +
+                    " MIC_numMicro NOT IN (SELECT HMAN_idMicro FROM NOT_NULL.HistoricoMantenimiento WHERE @fecSalida BETWEEN HMAN_fecInicio AND HMAN_fecFin) AND" +
                     " MIC_numMicro NOT IN (SELECT VIA_numMicro from NOT_NULL.Viaje WHERE " +
-                    " datediff(hour, VIA_fecSalida, @fecSalida) < 24)";
+                    " datediff(hour, VIA_fecLlegadaEstimada, @fecSalida) < 24)";
 
                 parametros.Add("@idRecorrido", idRecorrido);
                 parametros.Add("@fecSalida", fecSalida.ToString("yyyy-MM-dd HH:mm:ss"));
-                parametros.Add("@fecActual", Configuracion.Instance().FechaSistema);
-
+                
                 micros.DataSource = Conector.Datos.EjecutarComandoADataTable(sql, parametros);
                 micros.ValueMember = "id";
                 micros.DisplayMember = "MIC_patente";

@@ -25,7 +25,7 @@ namespace FrbaBus.Compra_de_Pasajes
 
         private void buscar_Click(object sender, EventArgs e)
         {
-            if (fechaViaje.Value <= Configuracion.Instance().FechaSistema)
+            if (fechaViaje.Value < Configuracion.Instance().FechaSistema)
             {
                 MessageBox.Show("La fecha de viaje no es válida");
                 return;

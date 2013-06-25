@@ -33,11 +33,6 @@ BEGIN
     DROP TABLE NOT_NULL.DevXEnc
 END
 
-IF OBJECT_ID(N'NOT_NULL.Devolucion') IS NOT NULL
-BEGIN
-    DROP TABLE NOT_NULL.Devolucion
-END
-
 IF OBJECT_ID(N'NOT_NULL.Pasaje') IS NOT NULL
 BEGIN
     DROP TABLE NOT_NULL.Pasaje
@@ -51,6 +46,11 @@ END
 IF OBJECT_ID(N'NOT_NULL.Encomienda') IS NOT NULL
 BEGIN
     DROP TABLE NOT_NULL.Encomienda
+END
+
+IF OBJECT_ID(N'NOT_NULL.Devolucion') IS NOT NULL
+BEGIN
+    DROP TABLE NOT_NULL.Devolucion
 END
 
 IF OBJECT_ID(N'NOT_NULL.Venta') IS NOT NULL
@@ -783,7 +783,7 @@ ON DELETE NO ACTION
 
 --- Create Foreign Key: DevXEnc.DXE_idDevolucion -> DevolucionVenta.DEV_idDevolucion
 ALTER TABLE NOT_NULL.DevXEnc ADD CONSTRAINT FK_DevXEnc_DXE_idDevolucion_Devolucion_DEV_idDevolucion
-FOREIGN KEY (DXE_idDevolucion) REFERENCES NOT_NULL.Devolucion(DEV_idDevolucion)
+FOREIGN KEY (DXE_idDevolucion) REFERENCES NOT_NULL.Devolucion(DEV_idDev)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
  
@@ -797,7 +797,7 @@ ON DELETE NO ACTION
 
 --- Create Foreign Key: DevXPas.DXP_idDevolucion -> DevolucionVenta.DEV_idDevolucion
 ALTER TABLE NOT_NULL.DevXPas ADD CONSTRAINT FK_DevXPas_DXP_idDevolucion_Devolucion_DEV_idDevolucion
-FOREIGN KEY (DXP_idDevolucion) REFERENCES NOT_NULL.Devolucion(DEV_idDevolucion)
+FOREIGN KEY (DXP_idDevolucion) REFERENCES NOT_NULL.Devolucion(DEV_idDev)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
