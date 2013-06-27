@@ -48,6 +48,15 @@ namespace FrbaBus.Abm_Recorrido
             precioBase.Text = Convert.ToString(_Recorrido.PrecBase);
             precioKilo.Text = Convert.ToString(_Recorrido.PrecKilo);
             tiempoViaje.Text = _Recorrido.TiempoViaje.ToString("HH:mm");
+            
+            //Si tiene viajes asociados, algunas cosas no se las dejo modificar
+            //por ejemplo la ciudad destino, la ciudad origen y el tipo de servicio
+            if (_Recorrido.TieneViajesAsociados())
+            {
+                ciudadOrigen.Enabled = false;
+                ciudadDestino.Enabled = false;
+                tipoServicio.Enabled = false;
+            }
         }
 
         private void CargarCombos()
