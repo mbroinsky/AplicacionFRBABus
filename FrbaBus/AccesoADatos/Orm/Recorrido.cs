@@ -170,5 +170,25 @@ namespace FrbaBus.AccesoADatos.Orm
                 return false;
             }
         }
+        
+        public bool TieneViajesAsociados()
+        {
+            try
+            {
+                Hashtable parametros = new Hashtable();
+
+                parametros.Add("@idRec", Id);
+
+                var cant = Conector.Datos.EjecutarEscalar("select count(*) from " +
+                           "NOT_NULL.viaje WHERE VIA_codRecorrido = @idRec;", parametros);
+
+                return (cant > 0);
+            }
+            catch
+            {
+                //Ante un error, por las dudas asumo que tiene viajes asociados
+                return true;
+            }
+        }
     }
 }
