@@ -1341,22 +1341,74 @@ BEGIN
 	
 	IF @idViaje IS NOT NULL
 	BEGIN
-		-- Registra llegada
-		UPDATE NOT_NULL.Viaje SET VIA_fecLlegada = @fecLlegada WHERE VIA_numViaje = @idViaje;
+		BEGIN TRANS;
+		
+		BEGIN TRY
+			-- Registra llegada
+			UPDATE NOT_NULL.Viaje SET VIA_fecLlegada = @fecLlegada WHERE VIA_numViaje = @idViaje;
 			
-		-- Inserta Puntos
-		INSERT INTO NOT_NULL.Puntos (PTS_idCliente, PTS_puntos, PTS_fecVencimiento) 
-		SELECT PAS_idCliente, FLOOR(PAS_precio/5), DATEADD(YEAR, 1, @fecLlegada)	 
-		FROM NOT_NULL.Pasaje
-		WHERE PAS_idViaje = @idViaje AND PAS_cancelado <> 1;
+			-- Inserta Puntos
+			INSERT INTO NOT_NULL.Puntos (PTS_idCliente, PTS_puntos, PTS_fecVencimiento) 
+			SELECT PAS_idCliente, FLOOR(PAS_precio/5), DATEADD(YEAR, 1, @fecLlegada)	 
+			FROM NOT_NULL.Pasaje
+			WHERE PAS_idViaje = @idViaje AND PAS_cancelado <> 1;
 			
-		INSERT INTO NOT_NULL.Puntos (PTS_idCliente, PTS_puntos, PTS_fecVencimiento) 
-		SELECT ENC_idCliente, FLOOR(ENC_precio / 5), DATEADD(YEAR, 1, @fecLlegada)	 
-		FROM NOT_NULL.Encomienda
-		WHERE ENC_idViaje = @idViaje AND ENC_cancelada <> 1;
+			INSERT INTO NOT_NULL.Puntos (PTS_idCliente, PTS_puntos, PTS_fecVencimiento) 
+			SELECT ENC_idCliente, FLOOR(ENC_precio / 5), DATEADD(YEAR, 1, @fecLlegada)	 
+			FROM NOT_NULL.Encomienda
+			WHERE ENC_idViaje = @idViaje AND ENC_cancelada <> 1;
+			
+			COMMIT TRANS;
+		END TRY
+		BEGIN CATCH
+			ROLLBACK TRANS;
+		END CATCH
 	END 
 END
 GO
+
+CREATE PROCEDURE NOT_NULL.DeshabilitarRecorrido
+    @idRecorrido INT,
+    @fecHoy DATETIME
+AS 
+BEGIN
+	DECLARE @idViaje INT
+	DECLARE VIAJES CURSOR FOR
+	SELECT VIA_idViaje 
+	FROM NOT_NULL.Viaje
+	WHERE VIA_codRecorrido = @idRecorrido
+	AND VIA_fecSalida > @fecHoy
+	AND VIA_habilitado = '1';
+
+	OPEN VIAJES
+
+	FETCH VIAJES INTO @idViaje
+	
+	BEGIN TRANSACTION
+	
+	BEGIN TRY
+		WHILE (@@FETCH_STATUS = 0 )
+		BEGIN
+			UPDATE NOT_NULL.Venta SET VIA_habilitado = '0' WHERE VIA_idViaje = @idViaje
+			
+			UPDATE NOT_NULL.Encomienda SET ENC_cancelada = '1' WHERE ENC_idViaje = @idViaje;
+			
+			FETCH VIAJES INTO @idViaje;
+		END
+		
+		UPDATE Recorrido SET REC_habilitado = '0';
+		
+		COMMIT TRANSACTION;
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION;
+	END CATCH
+		
+	CLOSE VIAJES
+	DEALLOCATE VIAJES;
+END
+GO
+
 
 CREATE PROCEDURE NOT_NULL.RankingDestinos
     @fecInicio SMALLDATETIME,
