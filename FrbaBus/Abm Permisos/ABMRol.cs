@@ -48,7 +48,6 @@ namespace FrbaBus.Abm_Permisos
             _Rol = rolMod;
 
             Nombre.Text = _Rol.Nombre;
-            Habilitado.Checked = _Rol.Habilitado;
 
             var temp = Funcionalidad.ListarDenegadasPorRol(_Rol.Id);
 
@@ -118,14 +117,7 @@ namespace FrbaBus.Abm_Permisos
 
             if (_Modificacion)
             {
-                if (!_Rol.Habilitado && !Habilitado.Checked)
-                {
-                    MessageBox.Show("No se pueden realizar cambios en un rol que no esta habilitado, " +
-                        "para modificarlo habilítelo primero");
-                    return;
-                }
-                
-                if (!_Rol.Modificar(Nombre.Text, Habilitado.Checked, otorgados.Rows))
+                if (!_Rol.Modificar(Nombre.Text, true, otorgados.Rows))
                 {
                     MessageBox.Show("Ocurrió un error de actualización");
                     return;
@@ -135,7 +127,7 @@ namespace FrbaBus.Abm_Permisos
             {
                 _Rol = new Rol();
 
-                if (!_Rol.Insertar(Nombre.Text, Habilitado.Checked, otorgados.Rows))
+                if (!_Rol.Insertar(Nombre.Text, true, otorgados.Rows))
                 {
                     MessageBox.Show("Ocurrió un error de actualización");
                     return;
@@ -146,11 +138,5 @@ namespace FrbaBus.Abm_Permisos
 
             this.Close();
         }
-
-        private void denegados_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
     }
 }

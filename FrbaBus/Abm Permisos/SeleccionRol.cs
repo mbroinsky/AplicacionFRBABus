@@ -35,6 +35,17 @@ namespace FrbaBus.Abm_Permisos
 
                 roles.Columns.Add(btn);
 
+                btn = new DataGridViewButtonColumn();
+
+                btn.Text = "Deshab/Hab";
+                btn.Name = "Deshab/Hab";
+                btn.UseColumnTextForButtonValue = true;
+                btn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                btn.FlatStyle = FlatStyle.Standard;
+                btn.CellTemplate.Style.BackColor = Color.Honeydew;
+
+                roles.Columns.Add(btn);
+
                 roles.ClearSelection();
             }
         }
@@ -46,16 +57,22 @@ namespace FrbaBus.Abm_Permisos
 
         private void Roles_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == roles.Columns.Count - 1)
+            if (roles.SelectedRows.Count == 0)
             {
-                if (roles.SelectedRows.Count == 0)
-                {
-                    return;                    
-                }
-                
-                var fila = roles.SelectedRows[0];
+                return;
+            }
 
-                var mod = new ABMRol(new Rol(fila));
+            if (e.ColumnIndex == roles.Columns["Modificar"].Index)
+            {
+                var rol = new Rol(roles.SelectedRows[0]);
+
+                if (!rol.Habilitado)
+                {
+                    MessageBox.Show("No se puede modificar un rol deshabilitado");
+                    return;
+                }
+
+                var mod = new ABMRol(rol);
 
                 if (!Globales.oInstance.usr.TienePermiso(mod.Name))
                 {
@@ -67,6 +84,30 @@ namespace FrbaBus.Abm_Permisos
 
                 roles.DataSource = null;
                 roles.Columns.Clear();
+            }
+            else if (e.ColumnIndex == roles.Columns["Deshab/Hab"].Index)
+            {
+                var fila = roles.SelectedRows[0];
+
+                var rol = new Rol(fila);
+
+                if (!Globales.oInstance.usr.TienePermiso("DeshabRol"))
+                {
+                    MessageBox.Show("Ud. no tiene permiso para Deshabilitar/Habilitar rol");
+                    return;
+                }
+
+                if (rol.Id == Globales.Instance().usr.UsuarioRol.Id)
+                {
+                    MessageBox.Show("Un usuario no puede deshabilitar su propio rol");
+                    return;
+                }
+
+                rol.Habilitado = !rol.Habilitado;
+                
+                rol.Modificar();
+
+                this.Buscar_Click(this.buscar, null);
             }
         }
 

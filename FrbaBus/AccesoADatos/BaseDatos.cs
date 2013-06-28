@@ -195,6 +195,11 @@ namespace FrbaBus.AccesoADatos
             return com.ExecuteScalar();
         }
 
+        public object TraerEscalarDeComando(string sql, Hashtable args)
+        {
+            return ComandoSql(sql, args).ExecuteScalar();
+        }
+
         public int TraerUltimoId()
         {
             try

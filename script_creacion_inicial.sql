@@ -311,7 +311,8 @@ CREATE TABLE NOT_NULL.Viaje
 	,VIA_codRecorrido INT NOT NULL
 	,VIA_fecSalida DATETIME NOT NULL 
 	,VIA_fecLlegada DATETIME  NULL 
-	,VIA_fecLlegadaEstimada DATETIME NOT NULL 
+	,VIA_fecLlegadaEstimada DATETIME NOT NULL
+	,VIA_habilitado BIT NOT NULL DEFAULT 1 
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Viaje ADD CONSTRAINT PK_Viaje PRIMARY KEY CLUSTERED (VIA_numViaje)
@@ -863,7 +864,9 @@ BEGIN
 				('ABM de Recorrido', 'ABMRecorrido'),
 				('Listados Estadísticos', 'SeleccionListado'),
 				('Canje de Ptos', 'CanjeDePuntos'),
-				('Consulta Puntos Adquiridos', 'ConsultaDePuntos');
+				('Consulta Puntos Adquiridos', 'ConsultaDePuntos'),
+				('Deshabilitar Recorrido', 'DeshabRecorrido'),
+				('Deshabilitar Rol', 'DeshabRol');
 
     INSERT INTO FuncionalidadXRol (FXR_idRol, FXR_idFuncionalidad)
 		SELECT @idRol, FNC_idFuncionalidad FROM Funcionalidad;

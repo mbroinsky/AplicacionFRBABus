@@ -106,8 +106,28 @@ namespace FrbaBus.Abm_Recorrido
 
                 mod.ShowDialog();
 
-                recorridos.DataSource = null;
-                recorridos.Columns.Clear();
+                this.Buscar_Click(this.Buscar, null);
+            }
+            else if (e.ColumnIndex == recorridos.Columns["Deshabilitar"].Index)
+            {
+                if (!Globales.oInstance.usr.TienePermiso("DeshabRecorrido"))
+                {
+                    MessageBox.Show("Ud. no tiene permiso para acceder a la pantalla solicitada");
+                    return;
+                }
+
+                if (MessageBox.Show("Esta operación no puede deshacerse ¿Está seguro?", "Advertencia",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.No)
+                {
+                    return;
+                }
+
+                if (!Recorrido.Deshabilitar(Convert.ToInt32(recorridos.SelectedRows[0].Cells["ID"].Value)))
+                {
+                    MessageBox.Show("Ocurrió un error y no se pudo deshabilitar");
+                }
+
+                this.Buscar_Click(this.Buscar, null);
             }
         }
 
@@ -123,8 +143,7 @@ namespace FrbaBus.Abm_Recorrido
 
             alta.ShowDialog();
 
-            recorridos.DataSource = null;
-            recorridos.Columns.Clear();
+            this.Buscar_Click(this.Buscar, null);
         }
 
         private void limpiar_Click(object sender, EventArgs e)

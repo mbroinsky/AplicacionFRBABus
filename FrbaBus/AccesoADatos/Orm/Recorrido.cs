@@ -179,8 +179,8 @@ namespace FrbaBus.AccesoADatos.Orm
 
                 parametros.Add("@idRec", Id);
 
-                var cant = Conector.Datos.EjecutarEscalar("select count(*) from " +
-                           "NOT_NULL.viaje WHERE VIA_codRecorrido = @idRec;", parametros);
+                var cant = Convert.ToInt32(Conector.Datos.TraerEscalarDeComando("select count(*) from " +
+                           "NOT_NULL.viaje WHERE VIA_codRecorrido = @idRec;", parametros));
 
                 return (cant > 0);
             }
@@ -188,6 +188,43 @@ namespace FrbaBus.AccesoADatos.Orm
             {
                 //Ante un error, por las dudas asumo que tiene viajes asociados
                 return true;
+            }
+        }
+
+        public static bool ExisteRecorrido(int idTipoServ, int idCiuOri, int idCiuDest)
+        {
+            try
+            {
+                Hashtable parametros = new Hashtable();
+
+                parametros.Add("@idTipoServ", idTipoServ);
+                parametros.Add("@idCiuOri", idCiuOri);
+                parametros.Add("@idCiuDest", idCiuDest);
+
+                var cant = Convert.ToInt32(Conector.Datos.TraerEscalarDeComando("select count(*) from " +
+                           "NOT_NULL.recorrido WHERE REC_idTipoServicio = @idTipoServicio AND " +
+                           "REC_idCiudadOrigen = @idCiuOri AND REC_idCiudadDestino = @idCiuDest AND " +
+                           "REC_habilitado = '1';", parametros));
+
+                return (cant > 0);
+            }
+            catch
+            {
+                //Ante un error, por las dudas asumo que existe un recorrido
+                return true;
+            }
+        }
+
+        public static bool Deshabilitar(int idRec)
+        {
+            try
+            {
+                Conector.Datos.EjecutarProcedure("NOT_NULL.DeshabilitarRecorrido",idRec);
+                return true;
+            }
+            catch 
+            {
+                return false;
             }
         }
     }

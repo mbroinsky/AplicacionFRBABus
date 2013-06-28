@@ -38,7 +38,6 @@
             this.QuitarTodo = new System.Windows.Forms.Button();
             this.AgregarTodo = new System.Windows.Forms.Button();
             this.Nombre = new System.Windows.Forms.TextBox();
-            this.Habilitado = new System.Windows.Forms.CheckBox();
             this.lblDenegados = new System.Windows.Forms.Label();
             this.lblOtorgados = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.denegados)).BeginInit();
@@ -92,7 +91,6 @@
             this.denegados.ShowEditingIcon = false;
             this.denegados.Size = new System.Drawing.Size(128, 192);
             this.denegados.TabIndex = 3;
-            this.denegados.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.denegados_CellContentClick);
             // 
             // otorgados
             // 
@@ -159,16 +157,6 @@
             this.Nombre.Size = new System.Drawing.Size(156, 20);
             this.Nombre.TabIndex = 9;
             // 
-            // Habilitado
-            // 
-            this.Habilitado.AutoSize = true;
-            this.Habilitado.Location = new System.Drawing.Point(233, 14);
-            this.Habilitado.Name = "Habilitado";
-            this.Habilitado.Size = new System.Drawing.Size(73, 17);
-            this.Habilitado.TabIndex = 10;
-            this.Habilitado.Text = "Habilitado";
-            this.Habilitado.UseVisualStyleBackColor = true;
-            // 
             // lblDenegados
             // 
             this.lblDenegados.AutoSize = true;
@@ -196,7 +184,6 @@
             this.ControlBox = false;
             this.Controls.Add(this.lblOtorgados);
             this.Controls.Add(this.lblDenegados);
-            this.Controls.Add(this.Habilitado);
             this.Controls.Add(this.Nombre);
             this.Controls.Add(this.AgregarTodo);
             this.Controls.Add(this.QuitarTodo);
@@ -229,7 +216,6 @@
         private System.Windows.Forms.Button QuitarTodo;
         private System.Windows.Forms.Button AgregarTodo;
         private System.Windows.Forms.TextBox Nombre;
-        private System.Windows.Forms.CheckBox Habilitado;
         private System.Windows.Forms.Label lblDenegados;
         private System.Windows.Forms.Label lblOtorgados;
     }

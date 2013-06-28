@@ -111,6 +111,15 @@ namespace FrbaBus.Abm_Recorrido
                    _Recorrido.PrecKilo != Convert.ToDouble(precioKilo.Text) ||
                    _Recorrido.TiempoViaje != DateTime.Parse(tiempoViaje.Text))
                 {
+                    if (tipoServicio.Enabled && Recorrido.ExisteRecorrido(
+                        Convert.ToInt32(tipoServicio.SelectedValue),
+                        Convert.ToInt32(ciudadOrigen.SelectedValue),
+                        Convert.ToInt32(ciudadDestino.SelectedValue)))
+                    {
+                        MessageBox.Show("Ya existe un recorrido habilitado para el tipo de servicio y las ciudades de origen y destino");
+                        return;
+                    }
+
                     _Recorrido.Codigo = codigo.Text;
                     _Recorrido.IdTipoServ = Convert.ToInt32(tipoServicio.SelectedValue);
                     _Recorrido.IdCiuOri = Convert.ToInt32(ciudadOrigen.SelectedValue); 
@@ -133,6 +142,15 @@ namespace FrbaBus.Abm_Recorrido
             }
             else
             {
+                if (Recorrido.ExisteRecorrido(
+                    Convert.ToInt32(tipoServicio.SelectedValue),
+                    Convert.ToInt32(ciudadOrigen.SelectedValue),
+                    Convert.ToInt32(ciudadDestino.SelectedValue)))
+                {
+                    MessageBox.Show("Ya existe un recorrido habilitado para el tipo de servicio y las ciudades seleccionadas");
+                    return;
+                }
+                
                 _Recorrido = new Recorrido(-1, codigo.Text, Convert.ToInt32(tipoServicio.SelectedValue),
                                    Convert.ToInt32(ciudadOrigen.SelectedValue), 
                                    Convert.ToInt32(ciudadDestino.SelectedValue), 
