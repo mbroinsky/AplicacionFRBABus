@@ -219,7 +219,7 @@ namespace FrbaBus.AccesoADatos.Orm
         {
             try
             {
-                DateTime fecHora = new DateTime(Globales.Instance().FechaSistema + DateTime.Time);
+                DateTime fecHora = Configuracion.Instance().FechaSistema;
                 
                 Conector.Datos.EjecutarProcedure("NOT_NULL.DeshabilitarRecorrido",idRec, fecHora);
                 return true;

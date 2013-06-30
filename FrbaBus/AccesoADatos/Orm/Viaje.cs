@@ -69,7 +69,7 @@ namespace FrbaBus.AccesoADatos.Orm
                     "FROM NOT_NULL.Viaje, NOT_NULL.Recorrido, NOT_NULL.TipoServicio " +
                     "WHERE VIA_codRecorrido = REC_id AND REC_idTipoServicio = SRV_idTipoServicio AND " +
                     "convert(varchar, VIA_fecSalida, 103) = convert(varchar, @fecViaje, 103) AND " +
-                    "@idOrigen = REC_idCiudadOrigen AND @idDestino = REC_idCiudadDestino " +
+                    "@idOrigen = REC_idCiudadOrigen AND @idDestino = REC_idCiudadDestino AND VIA_habilitado = '1'" +
                     "order by 2;";
                 
                 Hashtable parametros = new Hashtable();

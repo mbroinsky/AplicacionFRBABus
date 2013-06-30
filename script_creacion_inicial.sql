@@ -203,6 +203,11 @@ BEGIN
 	DROP PROCEDURE NOT_NULL.RankingMicrosFueraServ
 END
 
+IF OBJECT_ID(N'NOT_NULL.DeshabilitarRecorrido') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.DeshabilitarRecorrido
+END
+
 IF OBJECT_ID(N'NOT_NULL.ProductosDisponibleCliente') IS NOT NULL
 BEGIN
 	DROP PROCEDURE NOT_NULL.productosDisponibleCliente
@@ -1341,7 +1346,7 @@ BEGIN
 	
 	IF @idViaje IS NOT NULL
 	BEGIN
-		BEGIN TRANS;
+		BEGIN TRANSACTION;
 		
 		BEGIN TRY
 			-- Registra llegada
@@ -1358,10 +1363,10 @@ BEGIN
 			FROM NOT_NULL.Encomienda
 			WHERE ENC_idViaje = @idViaje AND ENC_cancelada <> 1;
 			
-			COMMIT TRANS;
+			COMMIT TRANSACTION;
 		END TRY
 		BEGIN CATCH
-			ROLLBACK TRANS;
+			ROLLBACK TRANSACTION;
 		END CATCH
 	END 
 END
@@ -1374,7 +1379,7 @@ AS
 BEGIN
 	DECLARE @idViaje INT
 	DECLARE VIAJES CURSOR FOR
-	SELECT VIA_idViaje 
+	SELECT VIA_numViaje 
 	FROM NOT_NULL.Viaje
 	WHERE VIA_codRecorrido = @idRecorrido
 	AND VIA_fecSalida > @fecHoy
@@ -1389,14 +1394,16 @@ BEGIN
 	BEGIN TRY
 		WHILE (@@FETCH_STATUS = 0 )
 		BEGIN
-			UPDATE NOT_NULL.Venta SET VIA_habilitado = '0' WHERE VIA_idViaje = @idViaje
+			UPDATE NOT_NULL.Viaje SET VIA_habilitado = '0' WHERE VIA_numViaje = @idViaje
 			
 			UPDATE NOT_NULL.Encomienda SET ENC_cancelada = '1' WHERE ENC_idViaje = @idViaje;
+			
+			UPDATE NOT_NULL.Pasaje SET PAS_cancelado = '1' WHERE PAS_idViaje = @idViaje;
 			
 			FETCH VIAJES INTO @idViaje;
 		END
 		
-		UPDATE Recorrido SET REC_habilitado = '0';
+		UPDATE Recorrido SET REC_habilitado = '0' where REC_id = @idRecorrido;
 		
 		COMMIT TRANSACTION;
 	END TRY
