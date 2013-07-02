@@ -223,6 +223,12 @@ BEGIN
 	DROP PROCEDURE NOT_NULL.canjearProducto
 END
 
+IF OBJECT_ID(N' NOT_NULL.BuscarMicros') IS NOT NULL
+BEGIN
+	DROP PROCEDURE  NOT_NULL.BuscarMicros
+END
+
+
 IF OBJECT_ID(N'NOT_NULL.ButacasVacias') IS NOT NULL
 BEGIN
 	DROP FUNCTION NOT_NULL.ButacasVacias
@@ -1535,6 +1541,57 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE NOT_NULL.BuscarMicros
+	@matricula nvarchar(7) = NULL,
+	@idTipoDeServicio nvarchar(10) = NULL,
+	@idMarca nvarchar(10) = NULL,
+	@idModelo nvarchar(10) = NULL,
+	@capacidad nvarchar(10)  = NULL
+AS
+BEGIN
+	DECLARE @WHERE varchar(500)
+	DECLARE @SQL varchar(2000)
+	
+	SET @WHERE = '';
+	
+	IF(@matricula IS NOT NULL)
+		SET @WHERE = @WHERE + 'MIC_patente = '''+@matricula+''' and '
+	
+	IF(@idTipoDeServicio IS NOT NULL)
+		SET @WHERE = @WHERE + 'MIC_idTipoServicio = ' + @idTipoDeServicio + ' and '
+
+	IF(@idMarca IS NOT NULL)
+		SET @WHERE = @WHERE + 'MIC_idMarca = ' + @idMarca + ' and '
+		
+	IF(@idModelo IS NOT NULL)
+		SET @WHERE = @WHERE + 'MIC_idModelo = ' + @idModelo + ' and '
+		
+	IF(@capacidad IS NOT NULL)
+		SET @WHERE = @WHERE + 'MIC_kilosEncomiendas = ' + CONVERT(varchar,@capacidad) + ' and '
+	
+	SET @SQL = 'select MIC_numMicro as ''ID'', ' 
+	SET @SQL = @SQL + 'MIC_patente as ''Matricula'', ' 
+	SET @SQL = @SQL + 'SRV_nombreServicio as ''Tipo de Serv.'', ' 
+	SET @SQL = @SQL + 'MIC_kilosEncomiendas as ''Capacidad'', ' 
+	SET @SQL = @SQL + 'MIC_habilitado as ''Habilitado'', ' 
+	SET @SQL = @SQL + 'MAR_nombreMarca as ''Marca'', ' 
+	SET @SQL = @SQL + 'MOD_nombreModelo as ''Modelo'', ' 
+	SET @SQL = @SQL + 'MIC_fechaAlta as ''Fec. Alta'', ' 
+	SET @SQL = @SQL + '(SELECT TOP 1 HMAN_fecInicio as ''Ini. Mant'' FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro and HMAN_fecInicio = (SELECT TOP 1 MAX(HMAN_fecInicio) FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro)) as ''Fec. Ini Mant'', '
+	SET @SQL = @SQL + '(SELECT TOP 1 HMAN_fecFin as ''Ini. Mant'' FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro and HMAN_fecInicio = (SELECT TOP 1 MAX(HMAN_fecInicio) FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro)) as ''Fec. fin Mant'', '
+	SET @SQL = @SQL + 'MIC_fecBaja as ''Fec. Baja definitiva'' ' 
+	SET @SQL = @SQL + 'from NOT_NULL.Micro, NOT_NULL.Marca, NOT_NULL.TipoServicio, NOT_NULL.Modelo '
+	SET @SQL = @SQL + 'where ' + @WHERE + ' ' 
+	SET @SQL = @SQL + 'MIC_idMarca = MAR_idMarca and ' 
+	SET @SQL = @SQL + 'MIC_idModelo = MOD_idMarca and ' 
+	SET @SQL = @SQL + 'MIC_idTipoServicio = SRV_idTipoServicio'
+
+	EXEC (@SQL);
+END
+GO
+
+DROP PROCEDURE NOT_NULL.BuscarMicros
+		
 --FIN
 COMMIT;
 SET NOCOUNT OFF

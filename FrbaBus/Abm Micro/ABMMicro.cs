@@ -16,25 +16,52 @@ namespace FrbaBus.Abm_Micro
         {
             InitializeComponent();
 
-            idServicio.DataSource = Servicio.ListarComboServicio();
+
+            DataTable comboServicios = Servicio.ListarComboServicio();
+            DataRow rowServicios = comboServicios.NewRow();
+            rowServicios[0] = DBNull.Value;
+            rowServicios[1] = "-TODOS-";
+            comboServicios.Rows.Add(rowServicios);
+            idServicio.DataSource = comboServicios;
             idServicio.ValueMember = ((DataTable)idServicio.DataSource).Columns[0].ColumnName;
             idServicio.DisplayMember = ((DataTable)idServicio.DataSource).Columns[1].ColumnName;
 
-            idMarca.DataSource = Marca.ListarComboMarca();
+
+            DataTable comboMarca = Marca.ListarComboMarca();
+            DataRow rowMarca = comboMarca.NewRow();
+            rowMarca[0] = DBNull.Value;
+            rowMarca[1] = "-TODOS-";
+            comboMarca.Rows.Add(rowMarca);
+            idMarca.DataSource = comboMarca;
             idMarca.ValueMember = ((DataTable)idMarca.DataSource).Columns[0].ColumnName;
             idMarca.DisplayMember = ((DataTable)idMarca.DataSource).Columns[1].ColumnName;
 
-            cargarComboBoxModelo(Convert.ToInt32(idMarca.SelectedValue));
+            cargarComboBoxModelo();
 
             DataTable butacas = new DataTable();
 
         }
 
-        private void cargarComboBoxModelo(int idMarca)
+        private void cargarComboBoxModelo()
         {
-            idModelo.DataSource = Modelo.ListarComboModelo(idMarca);
-            idModelo.ValueMember = ((DataTable)idModelo.DataSource).Columns[0].ColumnName;
-            idModelo.DisplayMember = ((DataTable)idModelo.DataSource).Columns[1].ColumnName;
+                DataTable comboModelo = new DataTable();
+                if (!DBNull.Value.Equals(idMarca.SelectedValue))
+                {
+                    comboModelo = Modelo.ListarComboModelo(Convert.ToInt32(idMarca.SelectedIndex+1));
+                }
+                else
+                {
+                    comboModelo.Columns.Add("id", typeof(int));
+                    comboModelo.Columns.Add("Modelo", typeof(string));
+                }
+                DataRow rowModelo = comboModelo.NewRow();
+                rowModelo[0] = DBNull.Value;
+                rowModelo[1] = "-TODOS-";
+                comboModelo.Rows.Add(rowModelo);
+                idModelo.DataSource = comboModelo;
+                idModelo.ValueMember = ((DataTable)idModelo.DataSource).Columns[0].ColumnName;
+                idModelo.DisplayMember = ((DataTable)idModelo.DataSource).Columns[1].ColumnName;
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -205,7 +232,7 @@ namespace FrbaBus.Abm_Micro
                 btnBajaDefinitiva.UseColumnTextForButtonValue = false;
                 btnBajaDefinitiva.Value = "Baja definitiva";
 
-                if (Convert.ToInt32(row.Cells["Fuera de Servicio"].Value) == 0)
+                if (row.Cells["Fec. Ini Mant"].Value != null)
                 {
                     btnEstado.Value = "Sacar de servicio";
                 }
@@ -243,7 +270,7 @@ namespace FrbaBus.Abm_Micro
 
         private void idMarca_SelectedIndexChanged(object sender, EventArgs e)
         {
-            cargarComboBoxModelo(Convert.ToInt32(idMarca.SelectedIndex));
+                cargarComboBoxModelo();
         }
     }
 }

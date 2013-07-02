@@ -74,35 +74,20 @@ namespace FrbaBus.AccesoADatos.Orm
             return micro;
         }
 
-        public static DataTable BuscarMicro(String patenteABuscar, String idtipoDeServicio, String idMarca, String idModelo, String Capacidad)
+        public static DataTable BuscarMicro(String patenteABuscar, String idtipoDeServicio, String idMarca, String idModelo, String capacidad)
         {
-            //MODIFICAR USANDO HASH TABLE DE PAR�METROS
-            String query = "select MIC_numMicro as 'ID', " +
-                                  "MIC_patente as 'Matr�cula', " +
-                                  "SRV_nombreServicio as 'Tipo de Serv.', " +
-                                  "MIC_kilosEncomiendas as 'Capacidad', " +
-                                  "MIC_habilitado as 'Habilitado', " +
-                                  "MAR_nombreMarca as 'Marca', " +
-                                  "MOD_nombreModelo as 'Modelo', " +
-                                  "MIC_fechaAlta as 'Fec. Alta', " +
-                                  "MIC_fueraDeServicio as 'Fuera de Servicio', " +
-                                  "MIC_fecFueraServ as 'Fec. Fuera de Serv.', " +
-                                  "MIC_fecReinicioServ as 'Fec. Reinicio Serv.', " +
-                                  "MIC_fecBaja as 'Fec. Baja definitiva' " +
-                                  "from NOT_NULL.Micro, NOT_NULL.Marca, NOT_NULL.TipoServicio, NOT_NULL.Modelo where " +
-                                  "MIC_idMarca = MAR_idMarca and " +
-                                  "MIC_idModelo = MOD_idMarca and " +
-                                  "MIC_idTipoServicio = SRV_idTipoServicio and ";
-             
-            if (patenteABuscar.Length != 0) { query += " MIC_patente = '" + patenteABuscar + "' and "; };
-            if (idtipoDeServicio.Length != 0) { query += " MIC_idTipoServicio = " + idtipoDeServicio + " and "; };
-            if (idModelo.Length != 0) { query += "MIC_idModelo = " + idModelo + " and "; };
-            if (idMarca.Length != 0) { query += "MIC_idMarca = " + idMarca + " and "; };
-            if (Capacidad.Length != 0) { query += "MIC_kilosEncomiendas = " + Capacidad + " and " ; };
-            query += " 1=1";
 
-            DataTable dt = Conector.Datos.EjecutarComandoADataTable(query);
+            if (patenteABuscar.Length == 0) { patenteABuscar = null; };
+            if (idtipoDeServicio.Length == 0) { idtipoDeServicio = null; };
+            if (idMarca.Length == 0) { idMarca = null; };
+            if (idModelo.Length == 0) { idModelo = null; };
+            if (capacidad.Length == 0) { capacidad = null; };
             
+            
+            DataSet ds = Conector.Datos.EjecutarProcedure("NOT_NULL.BuscarMicros", patenteABuscar, idtipoDeServicio, idMarca, idModelo, capacidad );
+
+            DataTable dt = ds.Tables[0];
+
             if (dt.Rows.Count > 0)
             {
                 return dt;
