@@ -7,269 +7,131 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using FrbaBus.AccesoADatos.Orm;
+using FrbaBus.Utilidades;
 
 namespace FrbaBus.Abm_Micro
 {
     public partial class ABMMicro : Form
     {
+        public Micro micro { get; set; }
+        public bool esModificacion { get; set; }
+
         public ABMMicro()
         {
             InitializeComponent();
 
+            micro = new Micro();
 
-            DataTable comboServicios = Servicio.ListarComboServicio();
-            DataRow rowServicios = comboServicios.NewRow();
-            rowServicios[0] = DBNull.Value;
-            rowServicios[1] = "-TODOS-";
-            comboServicios.Rows.Add(rowServicios);
-            idServicio.DataSource = comboServicios;
-            idServicio.ValueMember = ((DataTable)idServicio.DataSource).Columns[0].ColumnName;
-            idServicio.DisplayMember = ((DataTable)idServicio.DataSource).Columns[1].ColumnName;
+            esModificacion = false;
 
+            cargarDropDowns();
 
-            DataTable comboMarca = Marca.ListarComboMarca();
-            DataRow rowMarca = comboMarca.NewRow();
-            rowMarca[0] = DBNull.Value;
-            rowMarca[1] = "-TODOS-";
-            comboMarca.Rows.Add(rowMarca);
-            idMarca.DataSource = comboMarca;
-            idMarca.ValueMember = ((DataTable)idMarca.DataSource).Columns[0].ColumnName;
-            idMarca.DisplayMember = ((DataTable)idMarca.DataSource).Columns[1].ColumnName;
-
-            cargarComboBoxModelo();
-
-            DataTable butacas = new DataTable();
+            if (esModificacion) { cargarValoresMicro(); };
 
         }
 
-        private void cargarComboBoxModelo()
+        public ABMMicro(Micro microAModificar)
         {
-                DataTable comboModelo = new DataTable();
-                if (!DBNull.Value.Equals(idMarca.SelectedValue))
+            micro = new Micro();
+            micro = microAModificar;
+
+            esModificacion = true;
+
+            InitializeComponent();
+            cargarDropDowns();
+
+            cargarValoresMicro();
+        }
+
+        private void cargarDropDowns()
+        {
+            servicio.DataSource = Servicio.ListarComboServicio();
+            servicio.ValueMember = ((DataTable)servicio.DataSource).Columns[0].ColumnName;
+            servicio.DisplayMember = ((DataTable)servicio.DataSource).Columns[1].ColumnName;
+
+            marca.DataSource = Marca.ListarComboMarca();
+            marca.ValueMember = ((DataTable)marca.DataSource).Columns[0].ColumnName;
+            marca.DisplayMember = ((DataTable)marca.DataSource).Columns[1].ColumnName;
+
+            cargarComboBoxModelo(Convert.ToInt32(marca.SelectedValue));
+        }
+
+        private void cargarValoresMicro()
+        {
+            this.patente.Text = micro.Patente;
+            this.servicio.SelectedValue = micro.IdTipoDeServicio;
+            this.modelo.SelectedValue = micro.IdModelo;
+            this.marca.SelectedValue = micro.IdMarca;
+            this.capacidad.Text = Convert.ToString(micro.KilosEncomiendas);
+            this.hibilitado.Checked = micro.Habilitado;
+        }
+
+        private void aceptar_Click(object sender, EventArgs e)
+        {
+            if (Validador.esPantenteValida(patente.Text))
+            {
+                if (Validador.esNumericoEnteroPositivo(capacidad.Text))
                 {
-                    comboModelo = Modelo.ListarComboModelo(Convert.ToInt32(idMarca.SelectedIndex+1));
+                    if (micro.Butacas.Rows.Count > 1)
+                    {
+                        micro.Patente = patente.Text;
+                        micro.IdTipoDeServicio = Convert.ToInt16(servicio.SelectedValue);
+                        micro.KilosEncomiendas = Convert.ToDecimal(capacidad.Text);
+                        micro.Habilitado = hibilitado.Checked;
+                        micro.IdMarca = Convert.ToInt16(marca.SelectedValue);
+                        micro.IdModelo = Convert.ToInt16(modelo.SelectedValue);
+
+                        if (esModificacion)
+                        {
+                            if (micro.Modificar(micro.Id)) { this.Close(); }
+                            else { MessageBox.Show("Se produjo un error al insertar el Micro"); }
+                        }
+                        else
+                        {
+                            if (micro.Insertar()) { this.Close(); }
+                            else { MessageBox.Show("Se produjo un error al insertar el Micro"); }
+                        }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("El micro que desea insertar no contiene butacas");
+                    }
                 }
                 else
                 {
-                    comboModelo.Columns.Add("id", typeof(int));
-                    comboModelo.Columns.Add("Modelo", typeof(string));
+                    MessageBox.Show("La capacidad debe ser un valor numerico entero");
                 }
-                DataRow rowModelo = comboModelo.NewRow();
-                rowModelo[0] = DBNull.Value;
-                rowModelo[1] = "-TODOS-";
-                comboModelo.Rows.Add(rowModelo);
-                idModelo.DataSource = comboModelo;
-                idModelo.ValueMember = ((DataTable)idModelo.DataSource).Columns[0].ColumnName;
-                idModelo.DisplayMember = ((DataTable)idModelo.DataSource).Columns[1].ColumnName;
-
+            }
+            else
+            {
+                MessageBox.Show("El formato de la patente debe ser AAA-999");
+            }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void agregarButacas_Click(object sender, EventArgs e)
         {
-            this.cargarGrilla();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            var log = new Abm_Micro.AM_Micro();
-
+            ABMButacas log;
+            if (esModificacion) { log = new Abm_Micro.ABMButacas(micro.Butacas); }
+            else { log = new Abm_Micro.ABMButacas(); };
             this.SetVisibleCore(false);
-
             log.ShowDialog();
-
+            this.micro.Butacas = (DataTable)log.Butacas.DataSource;
+            log.Close();
             this.SetVisibleCore(true);
         }
 
-        private void AbrirDialogo(ABMMicro aBMMicro)
+        private void cargarComboBoxModelo(int idMarca)
         {
-            throw new NotImplementedException();
+            modelo.DataSource = Modelo.ListarComboModelo(idMarca);
+            modelo.ValueMember = ((DataTable)modelo.DataSource).Columns[0].ColumnName;
+            modelo.DisplayMember = ((DataTable)modelo.DataSource).Columns[1].ColumnName;
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void marca_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            cargarComboBoxModelo(Convert.ToInt32(marca.SelectedIndex));
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Matrícula_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void idServicio_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Micros_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-            if (e.ColumnIndex == Micros.Columns.Count - 1)
-            {
-
-                if (MessageBox.Show("¿Está seguro que quiere dar de baja el micro en forma definitiva?", "Baja definitiva", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    var fila = Micros.Rows[e.RowIndex];
-
-                    Micro.bajaDefinitiva(Convert.ToInt32(fila.Cells["id"].Value));
-
-                    Micros.Columns.Clear();
-
-                }
-
-            }
-
-            if (e.ColumnIndex == Micros.Columns.Count - 2)
-            {
-                var fila = Micros.Rows[e.RowIndex];
-
-                Micro.cambiarHabilitado(Convert.ToInt32(fila.Cells["id"].Value), Convert.ToInt32(fila.Cells["Ini. Mantenimiento"].Value));
-
-                Micros.Columns.Clear();
-            }
-
-            if (e.ColumnIndex == Micros.Columns.Count - 3)
-            {
-                var fila = Micros.Rows[e.RowIndex];
-
-                String fechaIni = null;
-                String fechaFin = null;
-
-                if (!DBNull.Value.Equals(fila.Cells["Ini. Mantenimiento"].Value)) { fechaIni = Convert.ToString(fila.Cells["Ini. Mantenimiento"].Value); };
-                if (!DBNull.Value.Equals(fila.Cells["Fin Mantenimiento"].Value)) { fechaFin = Convert.ToString(fila.Cells["Fin Mantenimiento"].Value); };
-
-                Micro.cambiarEstado(Convert.ToInt32(fila.Cells["id"].Value), fechaIni, fechaFin);
-
-                Micros.Columns.Clear();
-            }
-
-
-            if (e.ColumnIndex == Micros.Columns.Count - 4)
-            {
-                var fila = Micros.Rows[e.RowIndex];
-
-                var log = new Abm_Micro.AM_Micro(Micro.BuscarMicroPorId(Convert.ToInt32(fila.Cells["id"].Value)));
-
-                this.SetVisibleCore(false);
-
-                log.ShowDialog();
-
-                this.SetVisibleCore(true);
-            }
-
-            this.cargarGrilla();
-        }
-
-        private void idServicio_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void salir_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cargarGrilla()
-        {
-            Micros.Columns.Clear();
-            Micros.DataSource = Micro.BuscarMicro(campoMatricula.Text, Convert.ToString(idServicio.SelectedValue), Convert.ToString(idMarca.SelectedValue), Convert.ToString(idModelo.SelectedValue), capacidad.Text);
-            /*Columnas para los botones*/
-
-            DataGridViewColumn Modificar = new DataGridViewButtonColumn();
-            Modificar.HeaderText = "Modificar";
-            Modificar.Name = "Modificar";
-            Modificar.Visible = true;
-
-            DataGridViewColumn enServicio = new DataGridViewButtonColumn();
-            enServicio.HeaderText = "Estado del servicio";
-            enServicio.Name = "Estado del servicio";
-            enServicio.Visible = true;
-
-            DataGridViewColumn Habilitar = new DataGridViewButtonColumn();
-            Habilitar.HeaderText = "Habilitar";
-            Habilitar.Name = "Habilitar";
-            Habilitar.Visible = true;
-
-            DataGridViewColumn BajaDefinitiva = new DataGridViewButtonColumn();
-            BajaDefinitiva.HeaderText = "Baja Definitiva";
-            BajaDefinitiva.Name = "Baja Definitiva";
-            BajaDefinitiva.Visible = true;
-
-            Micros.Columns.Add(Modificar);
-            Micros.Columns.Add(enServicio);
-            Micros.Columns.Add(Habilitar);
-            Micros.Columns.Add(BajaDefinitiva);
-
-            /*Botones*/
-
-            foreach (DataGridViewRow row in Micros.Rows)
-            {
-                DataGridViewButtonCell btnModificar = new DataGridViewButtonCell();
-                btnModificar.UseColumnTextForButtonValue = false;
-                btnModificar.Value = "Modificar";
-
-                DataGridViewButtonCell btnEstado = new DataGridViewButtonCell();
-                btnEstado.UseColumnTextForButtonValue = false;
-
-                DataGridViewButtonCell btnHabilitar = new DataGridViewButtonCell();
-                btnHabilitar.UseColumnTextForButtonValue = false;
-
-                DataGridViewButtonCell btnBajaDefinitiva = new DataGridViewButtonCell();
-                btnBajaDefinitiva.UseColumnTextForButtonValue = false;
-                btnBajaDefinitiva.Value = "Baja definitiva";
-
-                if (DBNull.Value.Equals(row.Cells["Ini. Mantenimiento"].Value) || (!DBNull.Value.Equals(row.Cells["Ini. Mantenimiento"].Value) && !DBNull.Value.Equals(row.Cells["Fin Mantenimiento"].Value)))
-                {
-                    btnEstado.Value = "Enviar a Mant.";
-                }
-                else
-                {
-                    btnEstado.Value = "Reincorporar";
-                }
-
-                if (Convert.ToInt32(row.Cells["Habilitado"].Value) == 0)
-                {
-                    btnHabilitar.Value = "Habilitar";
-                    row.DefaultCellStyle.BackColor = Color.LightGray;
-                }
-                else
-                {
-                    btnHabilitar.Value = "Deshabilitar";
-                }
-
-                row.Cells["Modificar"] = btnModificar;
-                row.Cells["Estado del servicio"] = btnEstado;
-                row.Cells["Habilitar"] = btnHabilitar;
-                row.Cells["Baja Definitiva"] = btnBajaDefinitiva;
-
-            }
-
-            Micros.ClearSelection();
-        }
-
-        private void idMarca_SelectedIndexChanged(object sender, EventArgs e)
-        {
-                cargarComboBoxModelo();
-        }
     }
 }

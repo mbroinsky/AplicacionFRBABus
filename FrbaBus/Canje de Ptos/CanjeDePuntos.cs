@@ -73,16 +73,6 @@ namespace FrbaBus.Canje_de_Ptos
             }
         }
 
-        private void CanjeDePuntos_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void campoDNICliente_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void cargarGilla(){
                 
                 dni = Convert.ToInt32(campoDNICliente.Text);

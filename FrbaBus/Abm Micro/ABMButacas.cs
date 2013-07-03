@@ -10,12 +10,12 @@ using FrbaBus.Utilidades;
 
 namespace FrbaBus.Abm_Micro
 {
-    public partial class ABM_Butacas : Form
+    public partial class ABMButacas : Form
     {
         public DataTable butacas{get;set;}
         public DataGridViewComboBoxColumn comboBoxPasilloVentana;
 
-        public ABM_Butacas()
+        public ABMButacas()
         {
             InitializeComponent();
             butacas = new DataTable();
@@ -27,7 +27,7 @@ namespace FrbaBus.Abm_Micro
             piso.Text = "1";
         }
 
-        public ABM_Butacas(DataTable butacasMicro)
+        public ABMButacas(DataTable butacasMicro)
         {
             InitializeComponent();
             butacas = new DataTable(); 
@@ -38,27 +38,7 @@ namespace FrbaBus.Abm_Micro
 
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Form2_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
+        private void agregar_Click(object sender, EventArgs e)
         {
             if (Validador.esNumericoEnteroPositivo(cantidad.Text) && Validador.esNumericoEnteroPositivo(piso.Text))
             {
@@ -84,74 +64,9 @@ namespace FrbaBus.Abm_Micro
             }
         }
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton1_CheckedChanged_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton1_CheckedChanged_2(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label6_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton3_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton4_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void limpiar_Click(object sender, EventArgs e)
          {
             butacas.Clear();
-        }
-
-        private void Butacas_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
 
         private void piso_TextChanged(object sender, EventArgs e)

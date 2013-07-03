@@ -177,7 +177,7 @@ namespace FrbaBus.AccesoADatos.Orm
 
                 return true;
             }
-            catch (SqlException e)
+            catch
             {
                 return false;
             }

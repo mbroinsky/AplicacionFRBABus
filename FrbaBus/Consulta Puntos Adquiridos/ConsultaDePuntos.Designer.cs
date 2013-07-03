@@ -53,7 +53,6 @@
             this.campoDNICliente.Name = "campoDNICliente";
             this.campoDNICliente.Size = new System.Drawing.Size(146, 20);
             this.campoDNICliente.TabIndex = 1;
-            this.campoDNICliente.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label1
             // 
@@ -77,7 +76,6 @@
             this.grillaPuntos.RowHeadersVisible = false;
             this.grillaPuntos.Size = new System.Drawing.Size(268, 217);
             this.grillaPuntos.TabIndex = 3;
-            this.grillaPuntos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grillaPuntos_CellContentClick);
             // 
             // totalDePuntos
             // 
@@ -88,7 +86,6 @@
             this.totalDePuntos.TabIndex = 4;
             this.totalDePuntos.Text = "Total de puntos: ";
             this.totalDePuntos.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.totalDePuntos.Click += new System.EventHandler(this.label2_Click);
             // 
             // totalPuntos
             // 
@@ -98,7 +95,6 @@
             this.totalPuntos.Size = new System.Drawing.Size(13, 13);
             this.totalPuntos.TabIndex = 5;
             this.totalPuntos.Text = "0";
-            this.totalPuntos.Click += new System.EventHandler(this.label2_Click_1);
             // 
             // ConsultaDePuntos
             // 
@@ -118,8 +114,6 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Consulta de Puntos";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.grillaPuntos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

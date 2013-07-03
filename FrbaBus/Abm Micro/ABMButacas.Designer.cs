@@ -1,6 +1,6 @@
 ﻿namespace FrbaBus.Abm_Micro
 {
-    partial class ABM_Butacas
+    partial class ABMButacas
     {
         /// <summary>
         /// Variable del diseñador requerida.
@@ -50,7 +50,7 @@
             this.agregarButacas.TabIndex = 0;
             this.agregarButacas.Text = "Agregar";
             this.agregarButacas.UseVisualStyleBackColor = true;
-            this.agregarButacas.Click += new System.EventHandler(this.button1_Click);
+            this.agregarButacas.Click += new System.EventHandler(this.agregar_Click);
             // 
             // label1
             // 
@@ -60,7 +60,6 @@
             this.label1.Size = new System.Drawing.Size(27, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "Piso";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // piso
             // 
@@ -79,7 +78,6 @@
             this.label2.Size = new System.Drawing.Size(106, 13);
             this.label2.TabIndex = 4;
             this.label2.Text = "Cantidad de asientos";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // groupBox1
             // 
@@ -94,7 +92,6 @@
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Butacas";
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // cantidad
             // 
@@ -115,7 +112,6 @@
             this.Butacas.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.Butacas.Size = new System.Drawing.Size(325, 250);
             this.Butacas.TabIndex = 30;
-            this.Butacas.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Butacas_CellContentClick);
             // 
             // cancelar
             // 
@@ -147,7 +143,7 @@
             this.limpiar.UseVisualStyleBackColor = true;
             this.limpiar.Click += new System.EventHandler(this.limpiar_Click);
             // 
-            // ABM_Butacas
+            // ABMButacas
             // 
             this.AcceptButton = this.aceptar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -159,9 +155,8 @@
             this.Controls.Add(this.aceptar);
             this.Controls.Add(this.Butacas);
             this.Controls.Add(this.groupBox1);
-            this.Name = "ABM_Butacas";
+            this.Name = "ABMButacas";
             this.Text = "Butacas";
-            this.Load += new System.EventHandler(this.Form2_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Butacas)).EndInit();

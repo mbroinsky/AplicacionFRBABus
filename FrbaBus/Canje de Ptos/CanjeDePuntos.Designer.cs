@@ -66,7 +66,6 @@
             this.campoDNICliente.Name = "campoDNICliente";
             this.campoDNICliente.Size = new System.Drawing.Size(123, 20);
             this.campoDNICliente.TabIndex = 5;
-            this.campoDNICliente.TextChanged += new System.EventHandler(this.campoDNICliente_TextChanged);
             // 
             // listarProductos
             // 
@@ -94,7 +93,6 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Canje de Puntos";
-            this.Load += new System.EventHandler(this.CanjeDePuntos_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grillaProductos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

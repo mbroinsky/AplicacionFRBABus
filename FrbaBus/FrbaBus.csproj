@@ -63,23 +63,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abm Micro\ABM_Butacas.cs">
+    <Compile Include="Abm Micro\ABMButacas.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Micro\ABM_Butacas.Designer.cs">
-      <DependentUpon>ABM_Butacas.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Abm Micro\AM_Micro.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Abm Micro\AM_Micro.Designer.cs">
-      <DependentUpon>AM_Micro.cs</DependentUpon>
+    <Compile Include="Abm Micro\ABMButacas.Designer.cs">
+      <DependentUpon>ABMButacas.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Micro\ABMMicro.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Abm Micro\ABMMicro.Designer.cs">
       <DependentUpon>ABMMicro.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Micro\SeleccionMicro.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Micro\SeleccionMicro.Designer.cs">
+      <DependentUpon>SeleccionMicro.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Permisos\ABMRol.cs">
       <SubType>Form</SubType>
@@ -185,14 +185,14 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Abm Micro\ABM_Butacas.resx">
-      <DependentUpon>ABM_Butacas.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Abm Micro\AM_Micro.resx">
-      <DependentUpon>AM_Micro.cs</DependentUpon>
+    <EmbeddedResource Include="Abm Micro\ABMButacas.resx">
+      <DependentUpon>ABMButacas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Micro\ABMMicro.resx">
       <DependentUpon>ABMMicro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Micro\SeleccionMicro.resx">
+      <DependentUpon>SeleccionMicro.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Permisos\ABMRol.resx">
       <DependentUpon>ABMRol.cs</DependentUpon>

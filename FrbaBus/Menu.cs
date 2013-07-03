@@ -28,7 +28,7 @@ namespace FrbaBus
 
         private void AMicro_Click(object sender, EventArgs e)
         {
-            AbrirDialogo(new FrbaBus.Abm_Micro.ABMMicro());
+            AbrirDialogo(new FrbaBus.Abm_Micro.SeleccionMicro());
         }
 
         private void GenerarViaje_Click(object sender, EventArgs e)

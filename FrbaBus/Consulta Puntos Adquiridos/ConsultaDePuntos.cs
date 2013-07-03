@@ -18,11 +18,6 @@ namespace FrbaBus.Consulta_Puntos_Adquiridos
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             grillaPuntos.Columns.Clear();
@@ -39,26 +34,6 @@ namespace FrbaBus.Consulta_Puntos_Adquiridos
             {
                 MessageBox.Show("El valor ingresado no es numérico");
             }
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void grillaPuntos_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click_1(object sender, EventArgs e)
-        {
-
         }
     }
 }
