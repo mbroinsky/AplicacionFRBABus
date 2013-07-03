@@ -64,6 +64,7 @@
             // 
             // piso
             // 
+            this.piso.Enabled = false;
             this.piso.Location = new System.Drawing.Point(39, 19);
             this.piso.Name = "piso";
             this.piso.Size = new System.Drawing.Size(26, 20);
@@ -106,7 +107,7 @@
             // 
             this.Butacas.AllowUserToAddRows = false;
             this.Butacas.AllowUserToDeleteRows = false;
-            this.Butacas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.Butacas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.Butacas.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.Butacas.Location = new System.Drawing.Point(12, 72);
             this.Butacas.Name = "Butacas";

@@ -1577,13 +1577,13 @@ BEGIN
 	SET @SQL = @SQL + 'MAR_nombreMarca as ''Marca'', ' 
 	SET @SQL = @SQL + 'MOD_nombreModelo as ''Modelo'', ' 
 	SET @SQL = @SQL + 'MIC_fechaAlta as ''Fec. Alta'', ' 
-	SET @SQL = @SQL + '(SELECT TOP 1 HMAN_fecInicio as ''Ini. Mant'' FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro and HMAN_fecInicio = (SELECT TOP 1 MAX(HMAN_fecInicio) FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro)) as ''Fec. Ini Mant'', '
-	SET @SQL = @SQL + '(SELECT TOP 1 HMAN_fecFin as ''Ini. Mant'' FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro and HMAN_fecInicio = (SELECT TOP 1 MAX(HMAN_fecInicio) FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro)) as ''Fec. fin Mant'', '
-	SET @SQL = @SQL + 'MIC_fecBaja as ''Fec. Baja definitiva'' ' 
+	SET @SQL = @SQL + '(SELECT TOP 1 HMAN_fecInicio FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro and HMAN_fecInicio = (SELECT TOP 1 MAX(HMAN_fecInicio) FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro)) as ''Ini. Mantenimiento'', '
+	SET @SQL = @SQL + '(SELECT TOP 1 HMAN_fecFin FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro and HMAN_fecInicio = (SELECT TOP 1 MAX(HMAN_fecInicio) FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro)) as ''Fin Mantenimiento'' '
 	SET @SQL = @SQL + 'from NOT_NULL.Micro, NOT_NULL.Marca, NOT_NULL.TipoServicio, NOT_NULL.Modelo '
 	SET @SQL = @SQL + 'where ' + @WHERE + ' ' 
 	SET @SQL = @SQL + 'MIC_idMarca = MAR_idMarca and ' 
 	SET @SQL = @SQL + 'MIC_idModelo = MOD_idMarca and ' 
+	SET @SQL = @SQL + 'MIC_fecBaja IS NULL and ' 
 	SET @SQL = @SQL + 'MIC_idTipoServicio = SRV_idTipoServicio'
 
 	EXEC (@SQL);

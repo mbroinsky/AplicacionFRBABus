@@ -24,9 +24,7 @@ namespace FrbaBus.Abm_Micro
             butacas.Columns.Add("Nro. Asiento");
             butacas.Columns.Add("Tipo de Asiento");
             prepararGrilla();
-
-            
-           // Butacas.Columns["idMicro"].Visible = false;
+            piso.Text = "1";
         }
 
         public ABM_Butacas(DataTable butacasMicro)
@@ -36,7 +34,7 @@ namespace FrbaBus.Abm_Micro
             this.butacas = butacasMicro;
             prepararGrilla();
            
-            //Butacas.Columns["idMicro"].Visible = false;
+            Butacas.Columns[0].Visible = false;
 
         }
 
@@ -71,6 +69,7 @@ namespace FrbaBus.Abm_Micro
                     {
                         butacas.Rows.Add(new object[] { 0, Convert.ToInt32(piso.Text), asientos, "Pasillo" });
                     }
+                    piso.Text = Convert.ToString(Convert.ToInt32(piso.Text)+1);
                 }
                 else
                 {
@@ -167,7 +166,7 @@ namespace FrbaBus.Abm_Micro
 
         private void prepararGrilla()
         {
-            
+
             Butacas.Columns.Clear();
 
             DataGridViewColumn cMicro = new DataGridViewTextBoxColumn();;
@@ -182,17 +181,16 @@ namespace FrbaBus.Abm_Micro
             cNroAsiento.HeaderText = "Nro. Asiento";
             cNroAsiento.DataPropertyName = "Nro. Asiento";
 
-
             DataGridViewComboBoxColumn cTipoDeAsiento = new DataGridViewComboBoxColumn();
             var tipo = new List<string>() { "Pasillo", "Ventanilla" };
             cTipoDeAsiento.DataSource = tipo;
             cTipoDeAsiento.HeaderText = "Tipo de Asiento";
-            cTipoDeAsiento.DataPropertyName = "Tipo de Asiento";
+            cTipoDeAsiento.DataPropertyName = "Tipo de Asiento";         
 
             Butacas.Columns.AddRange(cMicro, cPiso, cNroAsiento, cTipoDeAsiento);
+            Butacas.Columns[0].Visible = false;
 
             Butacas.DataSource = butacas;
-
            
         }
 

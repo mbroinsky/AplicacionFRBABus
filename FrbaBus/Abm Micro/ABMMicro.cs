@@ -142,7 +142,7 @@ namespace FrbaBus.Abm_Micro
             {
                 var fila = Micros.Rows[e.RowIndex];
 
-                Micro.cambiarHabilitado(Convert.ToInt32(fila.Cells["id"].Value), Convert.ToInt32(fila.Cells["Habilitado"].Value));
+                Micro.cambiarHabilitado(Convert.ToInt32(fila.Cells["id"].Value), Convert.ToInt32(fila.Cells["Ini. Mantenimiento"].Value));
 
                 Micros.Columns.Clear();
             }
@@ -151,7 +151,13 @@ namespace FrbaBus.Abm_Micro
             {
                 var fila = Micros.Rows[e.RowIndex];
 
-                Micro.cambiarEstado(Convert.ToInt32(fila.Cells["id"].Value), Convert.ToInt32(fila.Cells["Fuera de Servicio"].Value));
+                String fechaIni = null;
+                String fechaFin = null;
+
+                if (!DBNull.Value.Equals(fila.Cells["Ini. Mantenimiento"].Value)) { fechaIni = Convert.ToString(fila.Cells["Ini. Mantenimiento"].Value); };
+                if (!DBNull.Value.Equals(fila.Cells["Fin Mantenimiento"].Value)) { fechaFin = Convert.ToString(fila.Cells["Fin Mantenimiento"].Value); };
+
+                Micro.cambiarEstado(Convert.ToInt32(fila.Cells["id"].Value), fechaIni, fechaFin);
 
                 Micros.Columns.Clear();
             }
@@ -232,9 +238,9 @@ namespace FrbaBus.Abm_Micro
                 btnBajaDefinitiva.UseColumnTextForButtonValue = false;
                 btnBajaDefinitiva.Value = "Baja definitiva";
 
-                if (row.Cells["Fec. Ini Mant"].Value != null)
+                if (DBNull.Value.Equals(row.Cells["Ini. Mantenimiento"].Value) || (!DBNull.Value.Equals(row.Cells["Ini. Mantenimiento"].Value) && !DBNull.Value.Equals(row.Cells["Fin Mantenimiento"].Value)))
                 {
-                    btnEstado.Value = "Sacar de servicio";
+                    btnEstado.Value = "Enviar a Mant.";
                 }
                 else
                 {
@@ -255,13 +261,6 @@ namespace FrbaBus.Abm_Micro
                 row.Cells["Estado del servicio"] = btnEstado;
                 row.Cells["Habilitar"] = btnHabilitar;
                 row.Cells["Baja Definitiva"] = btnBajaDefinitiva;
-
-                /*
-                if (Convert.ToString(row.Cells["Fec. Baja definitiva"].Value).Length != 0)
-                {
-                 
-                }
-                */
 
             }
 
