@@ -139,6 +139,12 @@
     <Compile Include="Compra de Pasajes\Paso1.Designer.cs">
       <DependentUpon>Paso1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Compra de Pasajes\Paso2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Compra de Pasajes\Paso2.Designer.cs">
+      <DependentUpon>Paso2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Configuracion.cs" />
     <Compile Include="Consulta Puntos Adquiridos\ConsultaDePuntos.cs">
       <SubType>Form</SubType>
@@ -208,6 +214,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Compra de Pasajes\Paso1.resx">
       <DependentUpon>Paso1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Compra de Pasajes\Paso2.resx">
+      <DependentUpon>Paso2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Consulta Puntos Adquiridos\ConsultaDePuntos.resx">
       <DependentUpon>ConsultaDePuntos.cs</DependentUpon>

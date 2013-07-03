@@ -66,6 +66,8 @@
             // 
             // grillaPuntos
             // 
+            this.grillaPuntos.AllowUserToAddRows = false;
+            this.grillaPuntos.AllowUserToDeleteRows = false;
             this.grillaPuntos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grillaPuntos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grillaPuntos.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
@@ -109,7 +111,12 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.campoDNICliente);
             this.Controls.Add(this.button1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ConsultaDePuntos";
+            this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Consulta de Puntos";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grillaPuntos)).EndInit();

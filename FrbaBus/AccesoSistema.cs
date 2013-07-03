@@ -43,6 +43,17 @@ namespace FrbaBus
 
             venta.ShowDialog();
 
+            if (venta.Cancelado)
+            {
+                venta.Close();
+                this.SetVisibleCore(true);
+                return;
+            }
+
+            var paso2 = new Paso2(venta.PasajesLibres, venta.KilosLibres);
+
+            paso2.ShowDialog();
+
             this.SetVisibleCore(true);
         }
     }

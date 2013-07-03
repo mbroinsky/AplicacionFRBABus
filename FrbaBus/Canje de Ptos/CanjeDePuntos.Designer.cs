@@ -37,12 +37,16 @@
             // 
             // grillaProductos
             // 
+            this.grillaProductos.AllowUserToAddRows = false;
+            this.grillaProductos.AllowUserToDeleteRows = false;
             this.grillaProductos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grillaProductos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grillaProductos.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.grillaProductos.Location = new System.Drawing.Point(12, 39);
             this.grillaProductos.MultiSelect = false;
             this.grillaProductos.Name = "grillaProductos";
             this.grillaProductos.RowHeadersVisible = false;
+            this.grillaProductos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grillaProductos.Size = new System.Drawing.Size(268, 217);
             this.grillaProductos.TabIndex = 7;
             this.grillaProductos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grillaPuntos_CellContentClick);
@@ -83,7 +87,12 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.campoDNICliente);
             this.Controls.Add(this.listarProductos);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "CanjeDePuntos";
+            this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Canje de Puntos";
             this.Load += new System.EventHandler(this.CanjeDePuntos_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grillaProductos)).EndInit();

@@ -87,6 +87,7 @@
             this.fechaViaje.Name = "fechaViaje";
             this.fechaViaje.Size = new System.Drawing.Size(108, 20);
             this.fechaViaje.TabIndex = 19;
+            this.fechaViaje.Value = new System.DateTime(2013, 7, 2, 0, 0, 0, 0);
             // 
             // label1
             // 
@@ -137,39 +138,42 @@
             this.viajesDisponibles.ReadOnly = true;
             this.viajesDisponibles.RowHeadersVisible = false;
             this.viajesDisponibles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.viajesDisponibles.Size = new System.Drawing.Size(763, 176);
+            this.viajesDisponibles.Size = new System.Drawing.Size(763, 232);
             this.viajesDisponibles.TabIndex = 22;
             // 
             // cancelar
             // 
             this.cancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelar.Location = new System.Drawing.Point(2, 305);
+            this.cancelar.Location = new System.Drawing.Point(2, 348);
             this.cancelar.Name = "cancelar";
             this.cancelar.Size = new System.Drawing.Size(75, 23);
             this.cancelar.TabIndex = 23;
             this.cancelar.Text = "Cancelar";
             this.cancelar.UseVisualStyleBackColor = true;
+            this.cancelar.Click += new System.EventHandler(this.cancelar_Click);
             // 
             // siguiente
             // 
-            this.siguiente.Location = new System.Drawing.Point(690, 305);
+            this.siguiente.Location = new System.Drawing.Point(690, 348);
             this.siguiente.Name = "siguiente";
             this.siguiente.Size = new System.Drawing.Size(75, 23);
             this.siguiente.TabIndex = 24;
             this.siguiente.Text = "Siguiente >";
             this.siguiente.UseVisualStyleBackColor = true;
+            this.siguiente.Click += new System.EventHandler(this.siguiente_Click);
             // 
             // Paso1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelar;
-            this.ClientSize = new System.Drawing.Size(768, 340);
+            this.ClientSize = new System.Drawing.Size(768, 375);
             this.ControlBox = false;
             this.Controls.Add(this.siguiente);
             this.Controls.Add(this.cancelar);
             this.Controls.Add(this.viajesDisponibles);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Paso1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Compra de pasajes";

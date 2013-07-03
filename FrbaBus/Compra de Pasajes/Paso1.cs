@@ -13,9 +13,16 @@ namespace FrbaBus.Compra_de_Pasajes
 {
     public partial class Paso1 : Form
     {
+        public Int32 IdViaje { get; set; }
+        public int PasajesLibres { get; set; }
+        public int KilosLibres { get; set; }
+        public bool Cancelado { get; set; }
+
         public Paso1()
         {
             InitializeComponent();
+
+            Cancelado = false;
 
             fechaViaje.Value = Configuracion.Instance().FechaSistema;
 
@@ -25,7 +32,7 @@ namespace FrbaBus.Compra_de_Pasajes
 
         private void buscar_Click(object sender, EventArgs e)
         {
-            if (fechaViaje.Value < Configuracion.Instance().FechaSistema)
+            if (fechaViaje.Value.ToString("dd/MM/yyyy").CompareTo(Configuracion.Instance().FechaSistema.ToString("dd/MM/yyyy")) < 0)
             {
                 MessageBox.Show("La fecha de viaje no es válida");
                 return;
@@ -41,7 +48,36 @@ namespace FrbaBus.Compra_de_Pasajes
                 Convert.ToInt32(ciudadOrigen.SelectedValue), 
                 Convert.ToInt32(ciudadDestino.SelectedValue));
 
-            viajesDisponibles.Columns["ID"].Visible = false;
+            if (viajesDisponibles.DataSource != null)
+                viajesDisponibles.Columns["ID"].Visible = false;
+        }
+
+        private void siguiente_Click(object sender, EventArgs e)
+        {
+            if (viajesDisponibles.SelectedRows.Count < 1)
+            {
+                MessageBox.Show("Debe seleccionar un viaje para proseguir con la compra");
+                return;
+            }
+
+            this.IdViaje = Convert.ToInt32(viajesDisponibles.SelectedRows[0].Cells["ID"].Value);
+            this.PasajesLibres = Convert.ToInt32(viajesDisponibles.SelectedRows[0].Cells["Butacas libres"].Value);
+            this.KilosLibres = Convert.ToInt32(viajesDisponibles.SelectedRows[0].Cells["Kg. libres"].Value);
+
+            this.Hide();
+        }
+
+        private void cancelar_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("¿Seguro que desea cancelar la compra?",
+                "Cancelación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Exclamation) == DialogResult.No)
+                return;
+
+            this.Cancelado = true;
+            
+            this.Hide();
         }
 
     }

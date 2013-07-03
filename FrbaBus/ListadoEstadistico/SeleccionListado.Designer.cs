@@ -127,7 +127,7 @@
             this.resultados.Name = "resultados";
             this.resultados.ReadOnly = true;
             this.resultados.RowHeadersVisible = false;
-            this.resultados.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.resultados.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.resultados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.resultados.Size = new System.Drawing.Size(466, 281);
             this.resultados.TabIndex = 2;

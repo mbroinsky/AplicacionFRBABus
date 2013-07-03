@@ -68,13 +68,22 @@ namespace FrbaBus.AccesoADatos.Orm
                     "NOT_NULL.KilogramosDisponibles(VIA_numViaje) as 'Kg. libres' " +
                     "FROM NOT_NULL.Viaje, NOT_NULL.Recorrido, NOT_NULL.TipoServicio " +
                     "WHERE VIA_codRecorrido = REC_id AND REC_idTipoServicio = SRV_idTipoServicio AND " +
-                    "convert(varchar, VIA_fecSalida, 103) = convert(varchar, @fecViaje, 103) AND " +
-                    "@idOrigen = REC_idCiudadOrigen AND @idDestino = REC_idCiudadDestino AND VIA_habilitado = '1'" +
-                    "order by 2;";
-                
+                    "convert(varchar, VIA_fecSalida, 103) = convert(varchar, @fecViaje, 103) AND ";
+
                 Hashtable parametros = new Hashtable();
 
-                parametros.Add("@fecViaje", fecViaje);
+                if (fecViaje.ToString("dd/MM/yyyy").CompareTo(Configuracion.Instance().FechaSistema.ToString("dd/MM/yyyy")) == 0)
+                {
+                    sql += "VIA_fecSalida >= dateadd(hour, 1, @fecViaje) AND ";
+
+                    parametros.Add("@fecViaje", Configuracion.Instance().FechaSistema);
+                }
+                else
+                    parametros.Add("@fecViaje", fecViaje);
+                
+                sql += "@idOrigen = REC_idCiudadOrigen AND @idDestino = REC_idCiudadDestino AND VIA_habilitado = '1'" +
+                    "order by 2;";
+
                 parametros.Add("@idOrigen", idOrigen);
                 parametros.Add("@idDestino", idDestino);
  
@@ -82,9 +91,9 @@ namespace FrbaBus.AccesoADatos.Orm
 
                 return dt;
             }
-            catch
+            catch (Exception e)
             {
-                MessageBox.Show("Error, no se pueden cargar viajes disponibles");
+                MessageBox.Show("Error, no se pueden cargar viajes disponibles:" + e.Message.ToString());
 
                 return null;
             }
