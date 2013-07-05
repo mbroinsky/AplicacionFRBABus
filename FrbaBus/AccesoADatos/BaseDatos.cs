@@ -95,85 +95,22 @@ namespace FrbaBus.AccesoADatos
             return EjecutarComando(sql, args).Tables[0].Copy();
         }
 
-        //public IDataReader TraerDataReader(string procedimientoAlmacenado)
-        //{
-        //    var com = Comando(procedimientoAlmacenado);
-        //    return com.ExecuteReader();
-        //} 
+        // Obtiene un Valor a partir de un Procedimiento Almacenado, y sus parámetros. 
+        public object TraerValorOutput(string procedimientoAlmacenado, params Object[] args)
+        {
+            var com = Comando(procedimientoAlmacenado);
+            
+            CargarParametros(com, args);
+            
+            com.ExecuteNonQuery();
+        
+            Object resp = null;
 
-
-        //// Obtiene un DataReader a partir de un Procedimiento Almacenado y sus parÃ¡metros. 
-        //public IDataReader TraerDataReader(string procedimientoAlmacenado, params object[] args)
-        //{
-        //    var com = Comando(procedimientoAlmacenado);
-        //    CargarParametros(com, args);
-        //    return com.ExecuteReader();
-        //} // end TraerDataReader
-
-        //// Obtiene un DataReader a partir de un Procedimiento Almacenado. 
-        //public IDataReader TraerDataReaderSql(string comandoSql)
-        //{
-        //    var com = ComandoSql(comandoSql);
-        //    return com.ExecuteReader();
-        //} // end TraerDataReaderSql 
-
-        //public object TraerValorOutput(string procedimientoAlmacenado)
-        // {
-        //     // asignar el string sql al command
-        //     var com = Comando(procedimientoAlmacenado);
-        //     // ejecutar el command
-        //     com.ExecuteNonQuery();
-        //     // declarar variable de retorno
-        //     Object resp = null;
-
-        //     // recorrer los parametros del SP
-        //     foreach (IDbDataParameter par in com.Parameters)
-        //         // si tiene parametros de tipo IO/Output retornar ese valor
-        //         if (par.Direction == ParameterDirection.InputOutput || par.Direction == ParameterDirection.Output)
-        //             resp = par.Value;
-        //     return resp;
-        // } // end TraerValor
-
-
-        // // Obtiene un Valor a partir de un Procedimiento Almacenado, y sus parÃ¡metros. 
-        // public object TraerValorOutput(string procedimientoAlmacenado, params Object[] args)
-        // {
-        //     // asignar el string sql al command
-        //     var com = Comando(procedimientoAlmacenado);
-        //     // cargar los parametros del SP
-        //     CargarParametros(com, args);
-        //     // ejecutar el command
-        //     com.ExecuteNonQuery();
-        //     // declarar variable de retorno
-        //     Object resp = null;
-
-        //     // recorrer los parametros del SP
-        //     foreach (IDbDataParameter par in com.Parameters)
-        //         // si tiene parametros de tipo IO/Output retornar ese valor
-        //         if (par.Direction == ParameterDirection.InputOutput || par.Direction == ParameterDirection.Output)
-        //             resp = par.Value;
-        //     return resp;
-        // } // end TraerValor
-
-        // // Obtiene un Valor Escalar a partir de un Procedimiento Almacenado. 
-        // public object TraerValorOutputSql(string comadoSql)
-        // {
-        //     // asignar el string sql al command
-        //     var com = ComandoSql(comadoSql);
-        //     // ejecutar el command
-        //     com.ExecuteNonQuery();
-        //     // declarar variable de retorno
-        //     Object resp = null;
-
-        //     // recorrer los parametros del Query (uso tipico envio de varias sentencias sql en el mismo command)
-        //     foreach (IDbDataParameter par in com.Parameters)
-        //         // si tiene parametros de tipo IO/Output retornar ese valor
-        //         if (par.Direction == ParameterDirection.InputOutput || par.Direction == ParameterDirection.Output)
-        //             resp = par.Value;
-        //     return resp;
-        // } // end TraerValor
-
-
+            foreach (IDbDataParameter par in com.Parameters)
+                if (par.Direction == ParameterDirection.InputOutput || par.Direction == ParameterDirection.Output)
+                    resp = par.Value;
+        } 
+        
         //// Obtiene un Valor de una funcion Escalar a partir de un Procedimiento Almacenado. 
         //public object TraerValorEscalar(string procedimientoAlmacenado)
         //{
