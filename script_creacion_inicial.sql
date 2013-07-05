@@ -128,6 +128,11 @@ BEGIN
     DROP TABLE NOT_NULL.Tarjeta
 END
 
+IF OBJECT_ID(N'NOT_NULL.Numerador') IS NOT NULL
+BEGIN
+    DROP TABLE NOT_NULL.Numerador
+END
+
 IF OBJECT_ID(N'NOT_NULL.ListarRoles') IS NOT NULL
 BEGIN
     DROP PROCEDURE NOT_NULL.ListarRoles
@@ -242,7 +247,6 @@ IF OBJECT_ID(N' NOT_NULL.cancelarEncomienda') IS NOT NULL
 BEGIN
 	DROP PROCEDURE NOT_NULL.cancelarEncomienda
 END
-
 IF OBJECT_ID(N'NOT_NULL.ButacasVacias') IS NOT NULL
 BEGIN
 	DROP FUNCTION NOT_NULL.ButacasVacias
@@ -251,6 +255,11 @@ END
 IF OBJECT_ID(N'NOT_NULL.KilogramosDisponibles') IS NOT NULL
 BEGIN
 	DROP FUNCTION NOT_NULL.KilogramosDisponibles
+END
+
+IF OBJECT_ID(N'NOT_NULL.TraerNumerador') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.TraerNumerador;
 END
 
 IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'NOT_NULL')
@@ -621,6 +630,14 @@ ON [PRIMARY]
 ALTER TABLE NOT_NULL.ReservasButacas ADD CONSTRAINT PK_ReservasButacas PRIMARY KEY (RES_idViaje, RES_idMicro, RES_nroButaca)
 
 
+-- Create Table: ReservasButacas
+--------------------------------------------------------------------------------
+CREATE TABLE NOT_NULL.Numerador
+(
+	NUM_numero INT NOT NULL,
+	NUM_tabla VARCHAR NOT NULL
+)
+
 --Creamos las foreigns keys de todas las tablas
 
 -- Create Foreign Key: Recorrido.REC_idCiudadOrigen -> Ciudad.CIU_idCiudad
@@ -896,7 +913,7 @@ BEGIN
 				('Deshabilitar Recorrido', 'DeshabRecorrido'),
 				('Deshabilitar Rol', 'DeshabRol');
 
-    INSERT INTO FuncionalidadXRol (FXR_idRol, FXR_idFuncionalidad)
+    	INSERT INTO FuncionalidadXRol (FXR_idRol, FXR_idFuncionalidad)
 		SELECT @idRol, FNC_idFuncionalidad FROM Funcionalidad;
 		
 	INSERT INTO NOT_NULL.Producto(PRO_descripcion, PRO_puntos, PRO_stock) VALUES 
@@ -906,6 +923,10 @@ BEGIN
 				('Valija grande', 400, 15),
 				('Viaje a Códoba', 1000, 10),
 				('Viaje a Córdoba para dos personas', 1700, 10);
+				
+	INSERT INTO NOT_NULL.Numerador VALUES 
+				('10000000', 'Pasajes'),
+				('50000000', 'Venta');
 END
 GO
 
@@ -1607,9 +1628,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NOT_NULL.listarPasajesYEncomiendas
-	@idVenta int = null
-AS
+DROP PROCEDURE NOT_NULL.BuscarMicros
 BEGIN
 	SELECT 'Pasaje' as Tipo,
 			PAS_numPasaje as 'id',
@@ -1635,6 +1654,30 @@ CREATE PROCEDURE NOT_NULL.cancelarPasaje
 	@idPasaje int = null,
 	@motivo varchar(250),
 	@fechaDev datetime
+	SELECT	PRO_idProd as 'id',
+			PRO_descripcion as 'Producto',
+			PRO_puntos as 'Precio',
+			PRO_stock as 'Stock'
+	FROM NOT_NULL.Producto
+	WHERE PRO_puntos <= (select NOT_NULL.puntosTotalesCliente(@dni))
+	AND	PRO_stock > 0
+END
+GO
+
+CREATE PROCEDURE NOT_NULL.TraerNumerador
+    @tabla varchar,
+    out @numero numeric    
+AS 
+BEGIN
+    	SELECT @numero = NUM_numero 
+	FROM NOT_NULL.Numerador
+	WHERE NUM_tabla = @tabla
+	FOR UPDATE;
+	
+	UPDATE NOT_NULL.Numerador SET NUM_numero = NUM_numero + 1 WHERE NUM_tabla = @tabla;
+END
+GO
+
 AS
 BEGIN
 
