@@ -225,9 +225,23 @@ END
 
 IF OBJECT_ID(N' NOT_NULL.BuscarMicros') IS NOT NULL
 BEGIN
-	DROP PROCEDURE  NOT_NULL.BuscarMicros
+	DROP PROCEDURE NOT_NULL.BuscarMicros
 END
 
+IF OBJECT_ID(N' NOT_NULL.listarPasajesYEncomiendas') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.listarPasajesYEncomiendas
+END
+
+IF OBJECT_ID(N' NOT_NULL.cancelarPasaje') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.cancelarPasaje
+END
+
+IF OBJECT_ID(N' NOT_NULL.cancelarEncomienda') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.cancelarEncomienda
+END
 
 IF OBJECT_ID(N'NOT_NULL.ButacasVacias') IS NOT NULL
 BEGIN
@@ -585,10 +599,13 @@ ALTER TABLE NOT_NULL.Recorrido ADD CONSTRAINT UQ_CodRec UNIQUE (REC_codigo)
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.HistoricoMantenimiento
 (
-	HMAN_idMicro INT 
+	HMAN_id INT NOT NULL IDENTITY(1, 1)
+	,HMAN_idMicro INT 
 	,HMAN_fecInicio DATETIME NOT NULL
-   	,HMAN_fecFin DATETIME NOT NULL 
+   	,HMAN_fecFin DATETIME 
 )
+
+ALTER TABLE NOT_NULL.HistoricoMantenimiento ADD CONSTRAINT PK_HistoricoMantenimiento PRIMARY KEY (HMAN_id)
 
 
 -- Create Table: ReservasButacas
@@ -1577,8 +1594,8 @@ BEGIN
 	SET @SQL = @SQL + 'MAR_nombreMarca as ''Marca'', ' 
 	SET @SQL = @SQL + 'MOD_nombreModelo as ''Modelo'', ' 
 	SET @SQL = @SQL + 'MIC_fechaAlta as ''Fec. Alta'', ' 
-	SET @SQL = @SQL + '(SELECT TOP 1 HMAN_fecInicio FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro and HMAN_fecInicio = (SELECT TOP 1 MAX(HMAN_fecInicio) FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro)) as ''Ini. Mantenimiento'', '
-	SET @SQL = @SQL + '(SELECT TOP 1 HMAN_fecFin FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro and HMAN_fecInicio = (SELECT TOP 1 MAX(HMAN_fecInicio) FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro)) as ''Fin Mantenimiento'' '
+	SET @SQL = @SQL + '(SELECT TOP 1 HMAN_fecInicio FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro and HMAN_id = (SELECT MAX(HMAN_id) FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro)) as ''Ini. Mantenimiento'', '
+	SET @SQL = @SQL + '(SELECT TOP 1 HMAN_fecFin FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro and HMAN_id = (SELECT MAX(HMAN_id) FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro)) as ''Fin Mantenimiento'' '
 	SET @SQL = @SQL + 'from NOT_NULL.Micro, NOT_NULL.Marca, NOT_NULL.TipoServicio, NOT_NULL.Modelo '
 	SET @SQL = @SQL + 'where ' + @WHERE + ' ' 
 	SET @SQL = @SQL + 'MIC_idMarca = MAR_idMarca and ' 
@@ -1590,8 +1607,61 @@ BEGIN
 END
 GO
 
-DROP PROCEDURE NOT_NULL.BuscarMicros
-		
+CREATE PROCEDURE NOT_NULL.listarPasajesYEncomiendas
+	@idVenta int = null
+AS
+BEGIN
+	SELECT 'Pasaje' as Tipo,
+			PAS_numPasaje as 'id',
+			PAS_codigo as 'Codigo',
+			(SELECT CIU_nombre FROM NOT_NULL.Ciudad, NOT_NULL.Recorrido, NOT_NULL.Viaje WHERE PAS_idVenta = VIA_numViaje AND VIA_codRecorrido = REC_codigo AND REC_idCiudadOrigen = CIU_idCiudad) as 'Origen',
+			(SELECT CIU_nombre FROM NOT_NULL.Ciudad, NOT_NULL.Recorrido, NOT_NULL.Viaje WHERE PAS_idVenta = VIA_numViaje AND VIA_codRecorrido = REC_codigo AND REC_idCiudadDestino = CIU_idCiudad) as 'Destino',
+			PAS_precio as 'Precio'
+	FROM NOT_NULL.Pasaje
+	WHERE	PAS_idVenta = @idVenta
+	UNION
+	SELECT 'Encomienda' as Tipo,
+			ENC_numEnc as 'id',
+			ENC_codigo as 'Codigo',
+			(SELECT CIU_nombre FROM NOT_NULL.Ciudad, NOT_NULL.Recorrido, NOT_NULL.Encomienda WHERE ENC_idVenta = VIA_numViaje AND VIA_codRecorrido = REC_codigo AND REC_idCiudadOrigen = CIU_idCiudad) as 'Origen',
+			(SELECT CIU_nombre FROM NOT_NULL.Ciudad, NOT_NULL.Recorrido, NOT_NULL.Encomienda WHERE ENC_idVenta = VIA_numViaje AND VIA_codRecorrido = REC_codigo AND REC_idCiudadDestino = CIU_idCiudad) as 'Destino',
+			ENC_precio as 'Precio'
+	FROM NOT_NULL.Encomienda
+	WHERE	ENC_idVenta = @idVenta				
+END
+GO
+
+CREATE PROCEDURE NOT_NULL.cancelarPasaje
+	@idPasaje int = null,
+	@motivo varchar(250),
+	@fechaDev datetime
+AS
+BEGIN
+
+	UPDATE NOT_NULL.Pasajes SET PAS_cancelado = 1 WHERE PAS_numPasaje = @idPasaje
+	
+	INSERT INTO NOT_NULL.Devolucion(DEV_fecha, DEV_motivo) VALUES (@fechaDev, @motivo)
+	
+	INSERT INTO NOT_NULL.DevXPas(DXP_idDevolucion, DXP_idPasaje) VALUES (@@IDENTITY, @idPasaje)
+	
+END
+GO
+
+CREATE PROCEDURE NOT_NULL.cancelarEncomienda
+	@idEncomienda int = null,
+	@motivo varchar(250),
+	@fechaDev datetime
+AS
+BEGIN
+
+	UPDATE NOT_NULL.Encomienda SET ENC_cancelada = 1 WHERE ENC_numEnc = @idPasaje
+	
+	INSERT INTO NOT_NULL.Devolucion(DEV_fecha, DEV_motivo) VALUES (@fechaDev, @motivo)
+	
+	INSERT INTO NOT_NULL.DevXEnc(DXE_idDevolucion, DXE_idEncomienda) VALUES (@@IDENTITY, @idPasaje)
+	
+END
+GO	
 --FIN
 COMMIT;
 SET NOCOUNT OFF
