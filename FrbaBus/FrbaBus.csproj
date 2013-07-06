@@ -111,7 +111,9 @@
     <Compile Include="AccesoADatos\Orm\Butaca.cs" />
     <Compile Include="AccesoADatos\Orm\Ciudad.cs" />
     <Compile Include="AccesoADatos\Orm\Cliente.cs" />
+    <Compile Include="AccesoADatos\Orm\Encomienda.cs" />
     <Compile Include="AccesoADatos\Orm\Listado.cs" />
+    <Compile Include="AccesoADatos\Orm\Pasaje.cs" />
     <Compile Include="AccesoADatos\Orm\Recorrido.cs" />
     <Compile Include="AccesoADatos\Orm\Funcionalidad.cs" />
     <Compile Include="AccesoADatos\Orm\Marca.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="AccesoADatos\Orm\Rol.cs" />
     <Compile Include="AccesoADatos\Orm\Micro.cs" />
     <Compile Include="AccesoADatos\Orm\Servicio.cs" />
+    <Compile Include="AccesoADatos\Orm\Venta.cs" />
     <Compile Include="AccesoADatos\Orm\Viaje.cs" />
     <Compile Include="Cancelar Viaje\Form1.cs">
       <SubType>Form</SubType>
