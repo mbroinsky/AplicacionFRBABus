@@ -1692,8 +1692,8 @@ GO
 
 
 CREATE PROCEDURE NOT_NULL.TraerNumerador
-    @tabla varchar,
-    @numero numeric OUTPUT    
+    @tabla varchar(15),
+    @numero numeric(15,0) OUTPUT    
 AS 
 BEGIN
    	SELECT @numero = NUM_numero 

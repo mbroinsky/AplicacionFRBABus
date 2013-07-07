@@ -136,6 +136,12 @@
       <DependentUpon>CanjeDePuntos.cs</DependentUpon>
     </Compile>
     <Compile Include="AccesoADatos\ORM\Usuario.cs" />
+    <Compile Include="Compra de Pasajes\Cliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Compra de Pasajes\Cliente.Designer.cs">
+      <DependentUpon>Cliente.cs</DependentUpon>
+    </Compile>
     <Compile Include="Compra de Pasajes\Paso1.cs">
       <SubType>Form</SubType>
     </Compile>

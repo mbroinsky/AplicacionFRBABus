@@ -80,6 +80,7 @@
             this.siguiente.TabIndex = 4;
             this.siguiente.Text = "Siguiente >";
             this.siguiente.UseVisualStyleBackColor = true;
+            this.siguiente.Click += new System.EventHandler(this.siguiente_Click);
             // 
             // cancelar
             // 

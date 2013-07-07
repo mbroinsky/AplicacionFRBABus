@@ -11,7 +11,7 @@ namespace FrbaBus.AccesoADatos.Orm
 {
     class Encomienda
     {
-         public static Int64 traerNumerador()
+         public static Int64 TraerNumerador()
          {
              try
              {

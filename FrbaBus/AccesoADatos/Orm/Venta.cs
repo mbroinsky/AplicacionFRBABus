@@ -12,7 +12,7 @@ namespace FrbaBus.AccesoADatos.Orm
     {
 
 
-        public static Int64 traerNumerador()
+        public static Int64 TraerNumerador()
         {
             try
             {

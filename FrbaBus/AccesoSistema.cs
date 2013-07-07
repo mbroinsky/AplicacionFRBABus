@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using FrbaBus.Compra_de_Pasajes;
+using FrbaBus.AccesoADatos;
+using FrbaBus.AccesoADatos.Orm;
 
 namespace FrbaBus
 {
@@ -37,6 +39,10 @@ namespace FrbaBus
 
         private void ComprarPasajes_Click(object sender, EventArgs e)
         {
+            int cantPasajes;
+            int cantKilos;
+            Int64 idVoucher;
+
             var venta = new Paso1();
 
             this.SetVisibleCore(false);
@@ -50,9 +56,29 @@ namespace FrbaBus
                 return;
             }
 
-            var paso2 = new Paso2(venta.PasajesLibres, venta.KilosLibres);
+            var selCantidades = new Paso2(venta.PasajesLibres, venta.KilosLibres);
 
-            paso2.ShowDialog();
+            venta.Close();
+
+            selCantidades.ShowDialog();
+
+            if (selCantidades.Cancelado)
+            {
+                selCantidades.Close();
+                this.SetVisibleCore(true);
+                return;
+            }
+
+            cantPasajes = selCantidades.CantidadPasajes;
+            cantKilos = selCantidades.KilosSeleccionados;
+
+            idVoucher = Venta.TraerNumerador();
+
+            Conector.Datos.IniciarTransaccion();
+
+
+
+            Conector.Datos.TerminarTransaccion();
 
             this.SetVisibleCore(true);
         }

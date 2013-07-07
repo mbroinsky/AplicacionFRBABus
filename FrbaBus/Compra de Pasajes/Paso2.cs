@@ -6,12 +6,16 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using FrbaBus.Utilidades;
 
 namespace FrbaBus.Compra_de_Pasajes
 {
     public partial class Paso2 : Form
     {
         public bool Cancelado { get; set; }
+        private int KilosDisponibles;
+        public int KilosSeleccionados {get; set; }
+        public int CantidadPasajes{get; set;}
 
         public Paso2(int pasajesLibres, int kilosLibres)
         {
@@ -21,6 +25,7 @@ namespace FrbaBus.Compra_de_Pasajes
                 cantPasajes.Items.Add(i);
 
             cantPasajes.SelectedIndex = 0;
+            KilosDisponibles = kilosLibres;
 
             Cancelado = false;
         }
@@ -38,6 +43,30 @@ namespace FrbaBus.Compra_de_Pasajes
             this.Hide();
         }
 
+        private void siguiente_Click(object sender, EventArgs e)
+        {
+            if (!Validador.esNumericoEnteroPositivo(cantKilos.Text))
+            {
+                MessageBox.Show("La cantidad de kilos está mal ingresada");
+                return;
+            }
 
+            if (Convert.ToInt32(cantKilos.Text) > KilosDisponibles)
+            {
+                MessageBox.Show("La cantidad disponible de kilos es " + Convert.ToString(KilosDisponibles) + 
+                    "Kg. Por favor ingrese una cantidad menor");
+                return;
+            }
+
+            if (Convert.ToInt32(cantKilos.Text) == 0 && Convert.ToInt32(cantPasajes.Text) == 0)
+            {
+                MessageBox.Show("Si no desea comprar nada, por favor presione el botón 'Cancelar'");
+                return;
+            }
+
+            this.CantidadPasajes = Convert.ToInt32(cantPasajes.Text);
+            this.KilosSeleccionados = Convert.ToInt32(cantKilos.Text);
+            this.Hide();
+        }
     }
 }
