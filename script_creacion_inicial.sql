@@ -635,8 +635,8 @@ ALTER TABLE NOT_NULL.ReservasButacas ADD CONSTRAINT PK_ReservasButacas PRIMARY K
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Numerador
 (
-	NUM_numero INT NOT NULL,
-	NUM_tabla VARCHAR NOT NULL
+	NUM_numero NUMERIC(15,0) NOT NULL,
+	NUM_tabla VARCHAR(15) NOT NULL
 )
 
 --Creamos las foreigns keys de todas las tablas
@@ -926,11 +926,11 @@ BEGIN
 				('Viaje a Códoba', 1000, 10),
 				('Viaje a Córdoba para dos personas', 1700, 10);
 				
-	/*
+	
 	INSERT INTO NOT_NULL.Numerador VALUES 
 				('10000000', 'Pasajes'),
 				('50000000', 'Venta');
-	*/
+	
 END
 GO
 
@@ -1634,7 +1634,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NOT_NULL.listarPasajesYEncomiendas
+CREATE PROCEDURE NOT_NULL.ListarPasajesYEncomiendas
 	@idVenta int = null
 AS
 BEGIN
@@ -1658,7 +1658,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NOT_NULL.cancelarPasaje
+CREATE PROCEDURE NOT_NULL.CancelarPasaje
 	@idPasaje int = null,
 	@motivo varchar(250),
 	@fechaDev datetime
@@ -1674,7 +1674,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NOT_NULL.cancelarEncomienda
+CREATE PROCEDURE NOT_NULL.CancelarEncomienda
 	@idEncomienda int = null,
 	@motivo varchar(250),
 	@fechaDev datetime
@@ -1690,21 +1690,21 @@ BEGIN
 END
 GO	
 
-/*
+
 CREATE PROCEDURE NOT_NULL.TraerNumerador
     @tabla varchar,
-    out @numero numeric    
+    @numero numeric OUTPUT    
 AS 
 BEGIN
-    	SELECT @numero = NUM_numero 
+   	SELECT @numero = NUM_numero 
 	FROM NOT_NULL.Numerador
 	WHERE NUM_tabla = @tabla
-	FOR UPDATE;
+--	FOR UPDATE;
 	
 	UPDATE NOT_NULL.Numerador SET NUM_numero = NUM_numero + 1 WHERE NUM_tabla = @tabla;
 END
 GO
-*/
+
 --FIN
 COMMIT;
 SET NOCOUNT OFF

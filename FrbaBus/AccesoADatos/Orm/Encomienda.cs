@@ -11,15 +11,15 @@ namespace FrbaBus.AccesoADatos.Orm
 {
     class Encomienda
     {
-         public static Long traerNumerador()
+         public static Int64 traerNumerador()
          {
              try
              {
-             	long numero;
+             	Int64 numero = 0;
              
-                 numero = Convert.ToLong(Conector.Datos.TraerValorOutput("NOT_NULL.TraerNumerador", "Encomienda", numero);
+                numero = Convert.ToInt64(Conector.Datos.TraerValorOutput("NOT_NULL.TraerNumerador", "Encomienda", numero));
  
-                 return numero;
+                return numero;
  
              }
              catch

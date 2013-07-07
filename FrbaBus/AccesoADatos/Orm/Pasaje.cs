@@ -11,13 +11,13 @@ namespace FrbaBus.AccesoADatos.Orm
 {
     class Pasaje
     {
-        public static Long traerNumerador()
+        public static Int64 traerNumerador()
         {
             try
             {
-            	long numero;
+            	Int64 numero = 0;
             
-                numero = Convert.ToLong(Conector.Datos.TraerValorOutput("NOT_NULL.TraerNumerador", "Pasaje", numero);
+                numero = Convert.ToInt64(Conector.Datos.TraerValorOutput("NOT_NULL.TraerNumerador", "Pasaje", numero));
 
                 return numero;
 

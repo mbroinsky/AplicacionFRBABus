@@ -109,6 +109,8 @@ namespace FrbaBus.AccesoADatos
             foreach (IDbDataParameter par in com.Parameters)
                 if (par.Direction == ParameterDirection.InputOutput || par.Direction == ParameterDirection.Output)
                     resp = par.Value;
+
+            return resp;
         } 
         
         //// Obtiene un Valor de una funcion Escalar a partir de un Procedimiento Almacenado. 

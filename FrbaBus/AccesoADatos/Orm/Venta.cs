@@ -12,13 +12,13 @@ namespace FrbaBus.AccesoADatos.Orm
     {
 
 
-      /*  public static Long traerNumerador()
+        public static Int64 traerNumerador()
         {
             try
             {
-            	long numero;
+            	Int64 numero = 0;
             
-                numero = Convert.ToLong(Conector.Datos.TraerValorOutput("NOT_NULL.TraerNumerador", "Venta", numero));
+                numero = Convert.ToInt64(Conector.Datos.TraerValorOutput("NOT_NULL.TraerNumerador", "Venta", numero));
 
                 return numero;
 
@@ -28,7 +28,7 @@ namespace FrbaBus.AccesoADatos.Orm
                 return -1;
             }
         }
-       */
+      
 
         public static DataTable traerPasajesYEncomiendas(int idVenta)
         {
