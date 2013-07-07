@@ -10,15 +10,15 @@ namespace FrbaBus.AccesoADatos.Orm
 {
     class Venta
     {
-    	
-    
-        public static Long traerNumerador()
+
+
+      /*  public static Long traerNumerador()
         {
             try
             {
             	long numero;
             
-                numero = Convert.ToLong(Conector.Datos.TraerValorOutput("NOT_NULL.TraerNumerador", "Venta", numero);
+                numero = Convert.ToLong(Conector.Datos.TraerValorOutput("NOT_NULL.TraerNumerador", "Venta", numero));
 
                 return numero;
 
@@ -28,6 +28,19 @@ namespace FrbaBus.AccesoADatos.Orm
                 return -1;
             }
         }
+       */
+
+        public static DataTable traerPasajesYEncomiendas(int idVenta)
+        {
+
+            DataTable dt = new DataTable();
+
+            dt = Conector.Datos.EjecutarProcedureADataTable("NOT_NULL.listarPasajesYEncomiendas", idVenta);
+
+            return dt;
+
+        }
+
 
     }
 }

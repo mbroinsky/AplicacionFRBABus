@@ -13,20 +13,19 @@ namespace FrbaBus.Canje_de_Ptos
 {
     public partial class CanjeDePuntos : Form
     {
+        int dni;
+
         public CanjeDePuntos()
         {
             InitializeComponent();
         }
 
-        int dni;
-
-        private void listarProductos_Click(object sender, EventArgs e)
+          private void listarProductos_Click(object sender, EventArgs e)
         {
             grillaProductos.Columns.Clear();
             if (Validador.esNumericoEnteroPositivo(campoDNICliente.Text))
             {
                 cargarGilla();
-
             }
             else
             {

@@ -228,35 +228,26 @@ BEGIN
 	DROP PROCEDURE NOT_NULL.canjearProducto
 END
 
-IF OBJECT_ID(N' NOT_NULL.BuscarMicros') IS NOT NULL
+IF OBJECT_ID(N'NOT_NULL.BuscarMicros') IS NOT NULL
 BEGIN
 	DROP PROCEDURE NOT_NULL.BuscarMicros
 END
 
-IF OBJECT_ID(N' NOT_NULL.listarPasajesYEncomiendas') IS NOT NULL
+IF OBJECT_ID(N'NOT_NULL.listarPasajesYEncomiendas') IS NOT NULL
 BEGIN
 	DROP PROCEDURE NOT_NULL.listarPasajesYEncomiendas
 END
 
-IF OBJECT_ID(N' NOT_NULL.cancelarPasaje') IS NOT NULL
+IF OBJECT_ID(N'NOT_NULL.cancelarPasaje') IS NOT NULL
 BEGIN
 	DROP PROCEDURE NOT_NULL.cancelarPasaje
 END
 
-IF OBJECT_ID(N' NOT_NULL.cancelarEncomienda') IS NOT NULL
+IF OBJECT_ID(N'NOT_NULL.cancelarEncomienda') IS NOT NULL
 BEGIN
 	DROP PROCEDURE NOT_NULL.cancelarEncomienda
 END
 
-IF OBJECT_ID(N' NOT_NULL.cancelarPasaje') IS NOT NULL
-BEGIN
-	DROP PROCEDURE NOT_NULL.cancelarPasaje
-END
-
-IF OBJECT_ID(N' NOT_NULL.cancelarEncomienda') IS NOT NULL
-BEGIN
-	DROP PROCEDURE NOT_NULL.cancelarEncomienda
-END
 IF OBJECT_ID(N'NOT_NULL.ButacasVacias') IS NOT NULL
 BEGIN
 	DROP FUNCTION NOT_NULL.ButacasVacias
@@ -921,7 +912,8 @@ BEGIN
 				('Canje de Ptos', 'CanjeDePuntos'),
 				('Consulta Puntos Adquiridos', 'ConsultaDePuntos'),
 				('Deshabilitar Recorrido', 'DeshabRecorrido'),
-				('Deshabilitar Rol', 'DeshabRol');
+				('Deshabilitar Rol', 'DeshabRol'),
+				('Cancelar Pas/Enc', 'CancelarPasajesYEncomiendas');
 
     	INSERT INTO FuncionalidadXRol (FXR_idRol, FXR_idFuncionalidad)
 		SELECT @idRol, FNC_idFuncionalidad FROM Funcionalidad;
@@ -934,9 +926,11 @@ BEGIN
 				('Viaje a Códoba', 1000, 10),
 				('Viaje a Córdoba para dos personas', 1700, 10);
 				
+	/*
 	INSERT INTO NOT_NULL.Numerador VALUES 
 				('10000000', 'Pasajes'),
 				('50000000', 'Venta');
+	*/
 END
 GO
 
@@ -1245,9 +1239,10 @@ BEGIN
 							
     SET @puntosTotales = ISNULL (@ingresos, 0) - ISNULL (@egresos, 0)
      
-    RETURN(@puntosTotales)
+    RETURN @puntosTotales
 END
 GO
+
 
 CREATE FUNCTION NOT_NULL.ButacasVacias (@idViaje INT)
 RETURNS SMALLINT
@@ -1276,6 +1271,7 @@ BEGIN
 	RETURN @cantidad	
 END
 GO
+
 
 CREATE FUNCTION NOT_NULL.KilogramosDisponibles (@idViaje INT)
 RETURNS SMALLINT
@@ -1638,55 +1634,6 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NOT_NULL.BuscarMicros
-	@matricula nvarchar(7) = NULL,
-	@idTipoDeServicio nvarchar(10) = NULL,
-	@idMarca nvarchar(10) = NULL,
-	@idModelo nvarchar(10) = NULL,
-	@capacidad nvarchar(10)  = NULL
-AS
-BEGIN
-	DECLARE @WHERE varchar(500)
-	DECLARE @SQL varchar(2000)
-	
-	SET @WHERE = '';
-	
-	IF(@matricula IS NOT NULL)
-		SET @WHERE = @WHERE + 'MIC_patente = '''+@matricula+''' and '
-	
-	IF(@idTipoDeServicio IS NOT NULL)
-		SET @WHERE = @WHERE + 'MIC_idTipoServicio = ' + @idTipoDeServicio + ' and '
-
-	IF(@idMarca IS NOT NULL)
-		SET @WHERE = @WHERE + 'MIC_idMarca = ' + @idMarca + ' and '
-		
-	IF(@idModelo IS NOT NULL)
-		SET @WHERE = @WHERE + 'MIC_idModelo = ' + @idModelo + ' and '
-		
-	IF(@capacidad IS NOT NULL)
-		SET @WHERE = @WHERE + 'MIC_kilosEncomiendas = ' + CONVERT(varchar,@capacidad) + ' and '
-	
-	SET @SQL = 'select MIC_numMicro as ''ID'', ' 
-	SET @SQL = @SQL + 'MIC_patente as ''Matricula'', ' 
-	SET @SQL = @SQL + 'SRV_nombreServicio as ''Tipo de Serv.'', ' 
-	SET @SQL = @SQL + 'MIC_kilosEncomiendas as ''Capacidad'', ' 
-	SET @SQL = @SQL + 'MIC_habilitado as ''Habilitado'', ' 
-	SET @SQL = @SQL + 'MAR_nombreMarca as ''Marca'', ' 
-	SET @SQL = @SQL + 'MOD_nombreModelo as ''Modelo'', ' 
-	SET @SQL = @SQL + 'MIC_fechaAlta as ''Fec. Alta'', ' 
-	SET @SQL = @SQL + '(SELECT TOP 1 HMAN_fecInicio FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro and HMAN_id = (SELECT MAX(HMAN_id) FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro)) as ''Ini. Mantenimiento'', '
-	SET @SQL = @SQL + '(SELECT TOP 1 HMAN_fecFin FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro and HMAN_id = (SELECT MAX(HMAN_id) FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = MIC_numMicro)) as ''Fin Mantenimiento'' '
-	SET @SQL = @SQL + 'from NOT_NULL.Micro, NOT_NULL.Marca, NOT_NULL.TipoServicio, NOT_NULL.Modelo '
-	SET @SQL = @SQL + 'where ' + @WHERE + ' ' 
-	SET @SQL = @SQL + 'MIC_idMarca = MAR_idMarca and ' 
-	SET @SQL = @SQL + 'MIC_idModelo = MOD_idMarca and ' 
-	SET @SQL = @SQL + 'MIC_fecBaja IS NULL and ' 
-	SET @SQL = @SQL + 'MIC_idTipoServicio = SRV_idTipoServicio'
-
-	EXEC (@SQL);
-END
-GO
-
 CREATE PROCEDURE NOT_NULL.listarPasajesYEncomiendas
 	@idVenta int = null
 AS
@@ -1694,8 +1641,8 @@ BEGIN
 	SELECT 'Pasaje' as Tipo,
 			PAS_numPasaje as 'id',
 			PAS_codigo as 'Codigo',
-			(SELECT CIU_nombre FROM NOT_NULL.Ciudad, NOT_NULL.Recorrido, NOT_NULL.Viaje WHERE PAS_idVenta = VIA_numViaje AND VIA_codRecorrido = REC_codigo AND REC_idCiudadOrigen = CIU_idCiudad) as 'Origen',
-			(SELECT CIU_nombre FROM NOT_NULL.Ciudad, NOT_NULL.Recorrido, NOT_NULL.Viaje WHERE PAS_idVenta = VIA_numViaje AND VIA_codRecorrido = REC_codigo AND REC_idCiudadDestino = CIU_idCiudad) as 'Destino',
+			(SELECT CIU_nombre FROM NOT_NULL.Ciudad, NOT_NULL.Recorrido, NOT_NULL.Viaje WHERE PAS_idViaje = VIA_numViaje AND VIA_codRecorrido = REC_id AND REC_idCiudadOrigen = CIU_idCiudad) as 'Origen',
+			(SELECT CIU_nombre FROM NOT_NULL.Ciudad, NOT_NULL.Recorrido, NOT_NULL.Viaje WHERE PAS_idViaje = VIA_numViaje AND VIA_codRecorrido = REC_id AND REC_idCiudadDestino = CIU_idCiudad) as 'Destino',
 			PAS_precio as 'Precio'
 	FROM NOT_NULL.Pasaje
 	WHERE	PAS_idVenta = @idVenta
@@ -1703,8 +1650,8 @@ BEGIN
 	SELECT 'Encomienda' as Tipo,
 			ENC_numEnc as 'id',
 			ENC_codigo as 'Codigo',
-			(SELECT CIU_nombre FROM NOT_NULL.Ciudad, NOT_NULL.Recorrido, NOT_NULL.Viaje WHERE ENC_idVenta = VIA_numViaje AND VIA_codRecorrido = REC_codigo AND REC_idCiudadOrigen = CIU_idCiudad) as 'Origen',
-			(SELECT CIU_nombre FROM NOT_NULL.Ciudad, NOT_NULL.Recorrido, NOT_NULL.Viaje WHERE ENC_idVenta = VIA_numViaje AND VIA_codRecorrido = REC_codigo AND REC_idCiudadDestino = CIU_idCiudad) as 'Destino',
+			(SELECT CIU_nombre FROM NOT_NULL.Ciudad, NOT_NULL.Recorrido, NOT_NULL.Viaje WHERE ENC_idViaje = VIA_numViaje AND VIA_codRecorrido = REC_id AND REC_idCiudadOrigen = CIU_idCiudad) as 'Origen',
+			(SELECT CIU_nombre FROM NOT_NULL.Ciudad, NOT_NULL.Recorrido, NOT_NULL.Viaje WHERE ENC_idViaje = VIA_numViaje AND VIA_codRecorrido = REC_id AND REC_idCiudadDestino = CIU_idCiudad) as 'Destino',
 			ENC_precio as 'Precio'
 	FROM NOT_NULL.Encomienda
 	WHERE	ENC_idVenta = @idVenta				
@@ -1743,6 +1690,7 @@ BEGIN
 END
 GO	
 
+/*
 CREATE PROCEDURE NOT_NULL.TraerNumerador
     @tabla varchar,
     out @numero numeric    
@@ -1756,7 +1704,7 @@ BEGIN
 	UPDATE NOT_NULL.Numerador SET NUM_numero = NUM_numero + 1 WHERE NUM_tabla = @tabla;
 END
 GO
-
+*/
 --FIN
 COMMIT;
 SET NOCOUNT OFF

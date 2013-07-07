@@ -71,5 +71,10 @@ namespace FrbaBus
         {
             AbrirDialogo(new Canje_de_Ptos.CanjeDePuntos());
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            AbrirDialogo(new CancelarPasajesYEncomiendas.CancelarPasajesYEncomiendas());
+        }
     }
 }

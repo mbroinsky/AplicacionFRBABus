@@ -154,7 +154,6 @@ namespace FrbaBus.AccesoADatos.Orm
             }
         }
 
-
         public bool Insertar()
         {
             try
@@ -169,16 +168,21 @@ namespace FrbaBus.AccesoADatos.Orm
                 parametros.Add("@IdModelo", this.IdModelo);
                 parametros.Add("@FechaAlta", Configuracion.Instance().FechaSistema);
 
+                Conector.Datos.IniciarTransaccion();
+
                 Conector.Datos.EjecutarComando( "insert into NOT_NULL.Micro " +
                                                 " (MIC_patente, MIC_idTipoServicio, MIC_kilosEncomiendas, MIC_habilitado, MIC_idMarca, MIC_idModelo, MIC_fechaAlta) " +
                                                 " values (@Patente, @IdTipoServicio, @KilosEncomiendas, @Habilitado, @IdMarca, @IdModelo, @FechaAlta)", parametros);
 
                 Orm.Butaca.InsertarTablaDeButacas(this.Butacas, Conector.Datos.TraerUltimoId());
 
+                Conector.Datos.TerminarTransaccion();
+
                 return true;
             }
             catch
             {
+                Conector.Datos.AbortarTransaccion();
                 return false;
             }
         }
