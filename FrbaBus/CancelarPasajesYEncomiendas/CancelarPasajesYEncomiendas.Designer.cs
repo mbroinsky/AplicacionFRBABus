@@ -39,14 +39,16 @@
             // 
             // grillaPasajesYEncomiendas
             // 
+            this.grillaPasajesYEncomiendas.AllowUserToAddRows = false;
             this.grillaPasajesYEncomiendas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grillaPasajesYEncomiendas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grillaPasajesYEncomiendas.Enabled = false;
             this.grillaPasajesYEncomiendas.Location = new System.Drawing.Point(12, 81);
             this.grillaPasajesYEncomiendas.Name = "grillaPasajesYEncomiendas";
             this.grillaPasajesYEncomiendas.ReadOnly = true;
+            this.grillaPasajesYEncomiendas.RowHeadersVisible = false;
             this.grillaPasajesYEncomiendas.Size = new System.Drawing.Size(523, 287);
             this.grillaPasajesYEncomiendas.TabIndex = 0;
+            this.grillaPasajesYEncomiendas.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grillaPasajesYEncomiendas_CellContentClick);
             // 
             // buscarPasajesYEncomiendas
             // 

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using FrbaBus.AccesoADatos.Orm;
+using FrbaBus.Utilidades;
 
 namespace FrbaBus.CancelarPasajesYEncomiendas
 {
@@ -20,7 +21,14 @@ namespace FrbaBus.CancelarPasajesYEncomiendas
 
         private void buscarPasajesYEncomiendas_Click(object sender, EventArgs e)
         {
-            this.cargarGrilla();
+            if (Validador.esNumericoEnteroPositivo(textBoxIdVenta.Text))
+            {
+                this.cargarGrilla();
+            }
+            else
+            {
+                MessageBox.Show("El valor ingresado debe ser un número positivo");
+            }
         }
 
         private void cargarGrilla()
@@ -45,5 +53,20 @@ namespace FrbaBus.CancelarPasajesYEncomiendas
 
         }
 
+        private void grillaPasajesYEncomiendas_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == grillaPasajesYEncomiendas.Columns.Count - 1)
+            {
+                var fila = grillaPasajesYEncomiendas.Rows[e.RowIndex];
+                confirmarCancelacion modalCancelar = new confirmarCancelacion();
+                modalCancelar.tipo  = Convert.ToString(fila.Cells["Tipo"].Value);
+                modalCancelar.id = Convert.ToInt32(fila.Cells["id"].Value);
+                this.SetVisibleCore(false);
+                modalCancelar.ShowDialog();
+                modalCancelar.Close();
+                this.SetVisibleCore(true);
+                cargarGrilla();
+            }
+        }
     }
 }

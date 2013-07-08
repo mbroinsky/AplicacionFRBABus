@@ -1670,6 +1670,7 @@ BEGIN
 			PAS_precio as 'Precio'
 	FROM NOT_NULL.Pasaje
 	WHERE	PAS_idVenta = @idVenta
+	AND		PAS_cancelado = 0
 	UNION
 	SELECT 'Encomienda' as Tipo,
 			ENC_numEnc as 'id',
@@ -1678,7 +1679,8 @@ BEGIN
 			(SELECT CIU_nombre FROM NOT_NULL.Ciudad, NOT_NULL.Recorrido, NOT_NULL.Viaje WHERE ENC_idViaje = VIA_numViaje AND VIA_codRecorrido = REC_id AND REC_idCiudadDestino = CIU_idCiudad) as 'Destino',
 			ENC_precio as 'Precio'
 	FROM NOT_NULL.Encomienda
-	WHERE	ENC_idVenta = @idVenta				
+	WHERE	ENC_idVenta = @idVenta
+	AND		ENC_cancelada = 0				
 END
 GO
 

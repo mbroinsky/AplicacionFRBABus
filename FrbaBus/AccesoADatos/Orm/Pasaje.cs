@@ -22,10 +22,26 @@ namespace FrbaBus.AccesoADatos.Orm
                 return numero;
 
             }
-            catch
+            catch 
             {
                 return -1;
             }
+        }
+
+        public static bool cancelarPasaje(int idPasaje, String motivo)
+        {
+            try
+            {
+
+                Conector.Datos.EjecutarProcedure("NOT_NULL.CancelarPasaje", idPasaje, motivo, Configuracion.Instance().FechaSistema);
+
+                return true;
+         
+            }
+            catch (Exception e)
+            {
+                return false;
+            }       
         }
     }
 }
