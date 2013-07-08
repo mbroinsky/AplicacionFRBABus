@@ -10,8 +10,6 @@ namespace FrbaBus.AccesoADatos.Orm
 {
     class Venta
     {
-
-
         public static Int64 TraerNumerador()
         {
             try

@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace FrbaBus.AccesoADatos.Orm
 {
-    class Pasaje
+    public class Pasaje
     {
         public static Int64 traerNumerador()
         {

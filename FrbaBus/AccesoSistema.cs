@@ -74,10 +74,36 @@ namespace FrbaBus
 
             idVoucher = Venta.TraerNumerador();
 
+            if(idVoucher < 0)
+            {
+                MessageBox.Show("Ocurrió un error y no se puede continuar con la compra");
+                this.SetVisibleCore(true);
+                return;
+            }
+
+            for (int i = 0; i < cantPasajes; i++)
+            {
+                var pas = new Pasajero();
+
+                pas.ShowDialog();
+
+                if (pas.Cancelado)
+                {
+                    pas.Close();
+                    this.SetVisibleCore(true);
+                    return;
+                }
+            }
+
+            if (cantKilos > 0)
+            {
+ 
+            }
+
             Conector.Datos.IniciarTransaccion();
 
-
-
+            //Butaca.BorrarReservas(idVoucher);
+            
             Conector.Datos.TerminarTransaccion();
 
             this.SetVisibleCore(true);

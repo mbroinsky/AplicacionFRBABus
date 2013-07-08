@@ -136,11 +136,11 @@
       <DependentUpon>CanjeDePuntos.cs</DependentUpon>
     </Compile>
     <Compile Include="AccesoADatos\ORM\Usuario.cs" />
-    <Compile Include="Compra de Pasajes\Cliente.cs">
+    <Compile Include="Compra de Pasajes\Pasajero.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Compra de Pasajes\Cliente.Designer.cs">
-      <DependentUpon>Cliente.cs</DependentUpon>
+    <Compile Include="Compra de Pasajes\Pasajero.Designer.cs">
+      <DependentUpon>Pasajero.cs</DependentUpon>
     </Compile>
     <Compile Include="Compra de Pasajes\Paso1.cs">
       <SubType>Form</SubType>
@@ -223,6 +223,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Canje de Ptos\CanjeDePuntos.resx">
       <DependentUpon>CanjeDePuntos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Compra de Pasajes\Pasajero.resx">
+      <DependentUpon>Pasajero.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Compra de Pasajes\Paso1.resx">
       <DependentUpon>Paso1.cs</DependentUpon>

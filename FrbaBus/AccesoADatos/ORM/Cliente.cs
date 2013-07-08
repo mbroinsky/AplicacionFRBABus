@@ -9,8 +9,56 @@ using System.Windows.Forms;
 
 namespace FrbaBus.AccesoADatos.Orm
 {
-    class Cliente
+    public class Cliente
     {
+        public Int32 Id { get; set; }
+        public Int32 Dni {get; set; }
+        public String Nombre { get; set; }
+        public String Apellido { get; set; }
+        public String Direccion { get; set; }
+        public String Telefono { get; set; }
+        public String Mail { get; set; }
+        public DateTime FecNac { get; set; }
+        public Char Sexo { get; set; }
+
+        public Cliente(Int32 dni)
+        {
+            try
+            {
+                Hashtable parametros = new Hashtable();
+
+                parametros.Add("@dni", dni);
+
+                DataTable dt = Conector.Datos.EjecutarComandoADataTable("select * from NOT_NULL.Cliente " +
+                        " where CLI_dni = @dni;", parametros);
+
+                if (dt.Rows.Count == 1)
+                {
+                    Id = Convert.ToInt16(dt.Rows[0]["CLI_idCliente"]);
+                    Dni = dni;
+                    Nombre = dt.Rows[0]["CLI_nombre"].ToString();
+                    Apellido = dt.Rows[0]["CLI_apellido"].ToString();
+                    Direccion = dt.Rows[0]["CLI_direccion"].ToString();
+                    Telefono = dt.Rows[0]["CLI_telefono"].ToString();
+                    Mail = Convert.ToString(dt.Rows[0]["CLI_mail"] ?? "");
+                    FecNac = Convert.ToDateTime(dt.Rows[0]["CLI_fecNacimiento"]);
+
+                    if (dt.Rows[0]["CLI_sexo"] == DBNull.Value)
+                        Sexo = ' ';
+                    else
+                        Sexo = Convert.ToChar(dt.Rows[0]["CLI_sexo"]);
+                }
+                else
+                {
+                    Id = -1;
+                }
+            }
+            catch (Exception e)
+            {
+                Id = -1;
+            }
+        }
+
         public static DataTable obtenerPuntosCliente(int dni)
         {
             try
@@ -89,5 +137,7 @@ namespace FrbaBus.AccesoADatos.Orm
                 return false;
             }
         }
+
+        
     }
 }
