@@ -263,6 +263,11 @@ BEGIN
 	DROP PROCEDURE NOT_NULL.TraerNumerador;
 END
 
+IF OBJECT_ID(N'NOT_NULL.TraerButacasVacias') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.TraerButacasVacias;
+END
+
 IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'NOT_NULL')
 BEGIN
 	DROP SCHEMA NOT_NULL;
@@ -1715,12 +1720,17 @@ CREATE PROCEDURE NOT_NULL.TraerNumerador
     @numero numeric(15,0) OUTPUT    
 AS 
 BEGIN
+	BEGIN TRANSACTION;
+	
+	SET ISOLATION LEVEL READ UNCOMMITED;
+	
    	SELECT @numero = NUM_numero 
 	FROM NOT_NULL.Numerador
 	WHERE NUM_tabla = @tabla
---	FOR UPDATE;
 	
 	UPDATE NOT_NULL.Numerador SET NUM_numero = NUM_numero + 1 WHERE NUM_tabla = @tabla;
+	
+	COMMIT TRANSACTION;
 END
 GO
 
