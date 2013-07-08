@@ -1301,6 +1301,25 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE NOT_NULL.TraerButacasVacias 
+	@idViaje INT
+AS
+BEGIN
+	BEGIN TRANSACTION;
+	
+	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+    
+	SELECT BUT_piso as Piso, BUT_numeroAsiento as Número, BUT_Tipo as Tipo 
+	FROM Butaca
+	WHERE BUT_numMicro = @idMicro
+	AND (BUT_numeroAsiento, BUT_numMicro) NOT IN 
+		(SELECT PAS_numButaca, PAS_numMicro from Pasaje where PAS_idViaje = @idViaje and PAS_Cancelado = '0');
+
+	COMMIT TRANSACTION;
+END
+GO
+
+
 
 --Creación de SPs de Aplicacion
 CREATE PROCEDURE NOT_NULL.ListarRoles
