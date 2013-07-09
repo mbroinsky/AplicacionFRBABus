@@ -42,7 +42,7 @@ namespace FrbaBus.CancelarPasajesYEncomiendas
             cancelar.Visible = true;
             cancelar.UseColumnTextForButtonValue = true;
 
-            DataTable dt = (DataTable)Venta.traerPasajesYEncomiendas(Convert.ToInt32(textBoxIdVenta.Text));
+            DataTable dt = (DataTable)Venta.TraerPasajesYEncomiendas(Convert.ToInt32(textBoxIdVenta.Text));
 
             if (dt.Rows.Count == 0) { MessageBox.Show("No se encontraron datos para esa venta"); }
             else

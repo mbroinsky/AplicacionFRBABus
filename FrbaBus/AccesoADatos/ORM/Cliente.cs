@@ -173,7 +173,7 @@ namespace FrbaBus.AccesoADatos.Orm
             }
         }
 
-        internal bool Modificar()
+        public bool Modificar()
         {
             try
             {
@@ -203,6 +203,29 @@ namespace FrbaBus.AccesoADatos.Orm
             {
                 return false;
             }
+        }
+
+        public bool tieneViaje()
+        {
+            //TODO: Agregar funcionalidad a la consulta de viaje
+            return false;
+        }
+
+        public bool EsJubilado()
+        {
+            int edad = Configuracion.Instance().FechaSistema.Year - FecNac.Year;
+
+            DateTime cumpleañosActual = FecNac.AddYears(edad);
+ 
+            if (Configuracion.Instance().FechaSistema.CompareTo(cumpleañosActual) > 0)
+                edad--; 
+            
+            if (Sexo == 'M' && edad >= 65)
+                return true;
+            else if (Sexo == 'F' && edad >= 60)
+                return true;
+            else
+                return false;
         }
     }
 }

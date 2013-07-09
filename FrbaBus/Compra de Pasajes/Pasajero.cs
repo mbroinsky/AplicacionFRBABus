@@ -151,6 +151,15 @@ namespace FrbaBus.Compra_de_Pasajes
 
             this.Clie = new Cliente(Convert.ToInt32(dni.Text));
 
+            if (Clie.tieneViaje())
+            {
+                MessageBox.Show("El DNI ingresado ya posee un viaje en la fecha seleccionada");
+                dni.Text = "";
+                dni.Focus();
+                return;
+            }
+
+
             if (Clie.Id == -1)
             {
                 if (MessageBox.Show("El DNI ingresado no existe ¿Desea cargar un nuevo pasajero en el sistema?",

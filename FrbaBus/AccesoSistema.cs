@@ -43,9 +43,11 @@ namespace FrbaBus
             int cantKilos;
             double precioPasaje;
             double precioKilo;
-            Int64 idVenta;
             Int32 idViaje;
             bool hayDiscap = false;
+            Venta ven;
+
+            double totalVenta = 0;
 
             var viaje = new Paso1();
 
@@ -79,18 +81,19 @@ namespace FrbaBus
 
             cantPasajes = selCantidades.CantidadPasajes;
             cantKilos = selCantidades.KilosSeleccionados;
+            
+            Conector.Datos.IniciarTransaccion();
 
-            idVenta = Venta.TraerNumerador();
+            ven = new Venta(Configuracion.Instance().FechaSistema);
 
-            if(idVenta < 0)
+            if (!ven.Insertar())
             {
                 MessageBox.Show("Ocurrió un error y no se puede continuar con la compra");
+                Conector.Datos.AbortarTransaccion();
                 this.SetVisibleCore(true);
                 return;
             }
-
-            Conector.Datos.IniciarTransaccion();
-
+            
             for (int i = 0; i < cantPasajes; i++)
             {
                 var pas = new Pasajero(idViaje, hayDiscap);
@@ -108,8 +111,23 @@ namespace FrbaBus
                 hayDiscap = hayDiscap || pas.HayDiscapacitado;
 
                 var pasaje = new Pasaje();
+                
+                double precio = precioPasaje;
 
-                Pasaje.Insertar();
+                if (pas.Clie.EsJubilado())
+                    precio = precio / 2;
+                   
+                if (!Pasaje.Insertar(ven.IdVenta, idViaje, pas.Clie.Id, pas.NumAsiento, pas.IdMicro, precio))
+                {
+                    MessageBox.Show("Ocurrió un error al cargar el pasaje. Se cancela la operación.");
+                    Conector.Datos.AbortarTransaccion();
+
+                    this.SetVisibleCore(true);
+
+                    return;
+                }
+
+                totalVenta += precio;
             }
 
             if (cantKilos > 0)
@@ -119,11 +137,22 @@ namespace FrbaBus
 
             if (hayDiscap)
             {
+                if (cantPasajes <= 2)
+                    totalVenta = 0;
+                else
+                    totalVenta -= precioPasaje * 2;
             }
-            else
-            { 
-            }
+
+            ven.PrecioTotal = totalVenta;
             
+            if (!ven.Actualizar())
+            {
+                MessageBox.Show("Ocurrió un error y no se puede continuar con la compra");
+                Conector.Datos.AbortarTransaccion();
+                this.SetVisibleCore(true);
+                return;
+            }
+
             Conector.Datos.TerminarTransaccion();
 
             this.SetVisibleCore(true);
