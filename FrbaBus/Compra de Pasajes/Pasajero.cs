@@ -14,14 +14,19 @@ namespace FrbaBus.Compra_de_Pasajes
     public partial class Pasajero : Form
     {
         public Cliente Clie { get; set; }
-        public Pasaje Pas { get; set; }
         public bool Cancelado { get; set; }
+        public Int32 IdViaje { get; set; }
+        public bool HayDiscapacitado { get; set; }
+        public Int16 NumAsiento { get; set; }
+        public Int32 IdMicro { get; set; }
 
-        public Pasajero()
+        public Pasajero(Int32 idViaje, Boolean hayDisc)
         {
             InitializeComponent();
 
             fechaNacimiento.Value = Configuracion.Instance().FechaSistema;
+            this.IdViaje = idViaje;
+            HayDiscapacitado = hayDisc;
 
             Cancelado = false;
         }
@@ -41,7 +46,98 @@ namespace FrbaBus.Compra_de_Pasajes
 
         private void siguiente_Click(object sender, EventArgs e)
         {
+            if (butacasLibres.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Debe seleccionar una butaca");
+                return;
+            }
 
+            if (nombre.Text == "")
+            {
+                MessageBox.Show("Debe ingresar un Nombre válido");
+                return;
+            }        
+
+            if (apellido.Text == "")
+            {
+                MessageBox.Show("Debe ingresar un Apellido válido");
+                return;
+            }
+
+            if (direccion.Text == "")
+            {
+                MessageBox.Show("Debe ingresar una dirección válida");
+                return;
+            }
+
+            if (HayDiscapacitado && esDiscapacitado.Checked)
+            {
+                MessageBox.Show("No se puede cargar más de una persona con capacidades especiales por Compra");
+                return;
+            }
+
+            if (!Validador.esNumericoEnteroPositivo(telefono.Text))
+            {
+                MessageBox.Show("Debe ingresar un teléfono válido");
+                return;
+            }
+
+            if (!Validador.esNumericoEnteroPositivo(dni.Text))
+            {
+                MessageBox.Show("Debe cargar un DNI válido");
+                return;
+            }
+
+            if (mail.Text != "" && !Validador.esEmailValido(mail.Text))
+            {
+                MessageBox.Show("Debe cargar un email válido");
+                return;
+            }
+
+            if (!femenino.Checked && !masculino.Checked)
+            {
+                MessageBox.Show("Debe seleccionar el sexo del pasajero");
+                return;
+            }
+
+            if (fechaNacimiento.Value >= Configuracion.Instance().FechaSistema)
+            {
+                MessageBox.Show("La fecha de nacimiento no puede ser mayor a hoy");
+                return;
+            }
+
+            //Actualizo cliente o inserto uno nuevo
+            this.Clie.Mail = mail.Text;
+            this.Clie.Telefono = telefono.Text;
+            this.Clie.Sexo = femenino.Checked ? 'F' : 'M';
+            this.Clie.Discapacitado = esDiscapacitado.Checked;
+            this.Clie.Nombre = nombre.Text;
+            this.Clie.Apellido = apellido.Text;
+            this.Clie.Dni = Convert.ToInt32(dni.Text);
+            this.Clie.FecNac = fechaNacimiento.Value;
+            this.Clie.Direccion = direccion.Text;
+
+            if (this.Clie.Id == -1)
+            {
+                if(!this.Clie.Insertar())
+                {
+                    MessageBox.Show("Ocurrió un error al agregar el cliente, por favor intente nuevamente");
+                    return;
+                }
+            }
+            else
+            {
+                if (!this.Clie.Modificar())
+                {
+                    MessageBox.Show("Ocurrió un error al actualizar los datos del cliente, por favor intente nuevamente");
+                    return;
+                }
+            }
+
+            NumAsiento = Convert.ToInt16(butacasLibres.SelectedRows[0].Cells["Número"].Value);
+            IdMicro = Convert.ToInt32(butacasLibres.SelectedRows[0].Cells["numMicro"].Value);
+
+            this.Hide();
         }
 
         private void continuar_Click(object sender, EventArgs e)
@@ -65,8 +161,6 @@ namespace FrbaBus.Compra_de_Pasajes
                     dni.Focus();
                     return;
                 }
-
-                datos.Enabled = true;
             }
             else
             {
@@ -81,14 +175,17 @@ namespace FrbaBus.Compra_de_Pasajes
                     masculino.Checked = true;
                 else if (Clie.Sexo == 'S')
                     femenino.Checked = true;
-                
-                datos.Enabled = true;
             }
+
+            datos.Enabled = true;
+            panelDocumento.Enabled = false;
         }
 
         private void butacasDisp_Click(object sender, EventArgs e)
         {
             butaca.Enabled = true;
+            this.butacasLibres.DataSource = Butaca.TraerButacasLibres(this.IdViaje);
+            this.butacasLibres.Columns["numMicro"].Visible = false;
         }
     }
 }

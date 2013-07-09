@@ -38,5 +38,11 @@ namespace FrbaBus.Utilidades
             return regex.IsMatch(text);
         }
 
+        internal static bool esEmailValido(String text)
+        {
+            Regex regex = new Regex("^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$");
+            return regex.IsMatch(text);
+        }
+
     }
 }

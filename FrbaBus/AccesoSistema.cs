@@ -41,24 +41,32 @@ namespace FrbaBus
         {
             int cantPasajes;
             int cantKilos;
-            Int64 idVoucher;
+            double precioPasaje;
+            double precioKilo;
+            Int64 idVenta;
+            Int32 idViaje;
+            bool hayDiscap = false;
 
-            var venta = new Paso1();
+            var viaje = new Paso1();
 
             this.SetVisibleCore(false);
 
-            venta.ShowDialog();
+            viaje.ShowDialog();
 
-            if (venta.Cancelado)
+            if (viaje.Cancelado)
             {
-                venta.Close();
+                viaje.Close();
                 this.SetVisibleCore(true);
                 return;
             }
 
-            var selCantidades = new Paso2(venta.PasajesLibres, venta.KilosLibres);
+            var selCantidades = new Paso2(viaje.PasajesLibres, viaje.KilosLibres);
 
-            venta.Close();
+            idViaje = viaje.IdViaje;
+            precioKilo = viaje.PrecioKilo;
+            precioPasaje = viaje.PrecioPasaje;
+
+            viaje.Close();
 
             selCantidades.ShowDialog();
 
@@ -72,27 +80,36 @@ namespace FrbaBus
             cantPasajes = selCantidades.CantidadPasajes;
             cantKilos = selCantidades.KilosSeleccionados;
 
-            idVoucher = Venta.TraerNumerador();
+            idVenta = Venta.TraerNumerador();
 
-            if(idVoucher < 0)
+            if(idVenta < 0)
             {
                 MessageBox.Show("Ocurrió un error y no se puede continuar con la compra");
                 this.SetVisibleCore(true);
                 return;
             }
 
+            Conector.Datos.IniciarTransaccion();
+
             for (int i = 0; i < cantPasajes; i++)
             {
-                var pas = new Pasajero();
+                var pas = new Pasajero(idViaje, hayDiscap);
 
                 pas.ShowDialog();
 
                 if (pas.Cancelado)
                 {
                     pas.Close();
+                    Conector.Datos.AbortarTransaccion();
                     this.SetVisibleCore(true);
                     return;
                 }
+
+                hayDiscap = hayDiscap || pas.HayDiscapacitado;
+
+                var pasaje = new Pasaje();
+
+                Pasaje.Insertar();
             }
 
             if (cantKilos > 0)
@@ -100,9 +117,12 @@ namespace FrbaBus
  
             }
 
-            Conector.Datos.IniciarTransaccion();
-
-            //Butaca.BorrarReservas(idVoucher);
+            if (hayDiscap)
+            {
+            }
+            else
+            { 
+            }
             
             Conector.Datos.TerminarTransaccion();
 

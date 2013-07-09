@@ -20,6 +20,7 @@ namespace FrbaBus.AccesoADatos.Orm
         public String Mail { get; set; }
         public DateTime FecNac { get; set; }
         public Char Sexo { get; set; }
+        public bool Discapacitado { get; set; }
 
         public Cliente(Int32 dni)
         {
@@ -47,13 +48,15 @@ namespace FrbaBus.AccesoADatos.Orm
                         Sexo = ' ';
                     else
                         Sexo = Convert.ToChar(dt.Rows[0]["CLI_sexo"]);
+
+                    Discapacitado = Convert.ToBoolean(dt.Rows[0]["CLI_discapacitado"]);
                 }
                 else
                 {
                     Id = -1;
                 }
             }
-            catch (Exception e)
+            catch
             {
                 Id = -1;
             }
@@ -138,6 +141,68 @@ namespace FrbaBus.AccesoADatos.Orm
             }
         }
 
-        
+
+
+        internal bool Insertar()
+        {
+            try
+            {
+                Hashtable parametros = new Hashtable();
+
+                parametros.Add("@mail", Mail);
+                parametros.Add("@telefono", Telefono);
+                parametros.Add("@sexo", Sexo);
+                parametros.Add("@discapacitado", Discapacitado);
+                parametros.Add("@nombre", Nombre);
+                parametros.Add("@apellido", Apellido);
+                parametros.Add("@dni", Dni);
+                parametros.Add("@fecNac", FecNac);
+                parametros.Add("@direccion", Direccion);
+
+                Conector.Datos.EjecutarComando("INSERT INTO NOT_NULL.Cliente VALUES (" +
+                    "@nombre, @apellido, @dni, @direccion, @telefono, @mail, @fecNac, @sexo, @discapacitado);",
+                    parametros);
+
+                Id = Conector.Datos.TraerUltimoId();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        internal bool Modificar()
+        {
+            try
+            {
+                Hashtable parametros = new Hashtable();
+
+                parametros.Add("@mail", Mail);
+                parametros.Add("@telefono", Telefono);
+                parametros.Add("@sexo", Sexo);
+                parametros.Add("@discapacitado", Discapacitado);
+                parametros.Add("@nombre", Nombre);
+                parametros.Add("@apellido", Apellido);
+                parametros.Add("@dni", Dni);
+                parametros.Add("@fecNac", FecNac);
+                parametros.Add("@direccion", Direccion);
+                parametros.Add("@id", Id);
+
+                Conector.Datos.EjecutarComando("UPDATE NOT_NULL.Cliente SET " +
+                    "CLI_nombre = @nombre, CLI_apellido = @apellido, CLI_dni = @dni, " +
+                    "CLI_direccion = @direccion, CLI_telefono = @telefono, CLI_mail = @mail, "+
+                    "CLI_fecNacimiento = @fecNac, CLI_sexo = @sexo, CLI_discapacitado = @discapacitado " +
+                    "WHERE CLI_idCliente = @id;",
+                    parametros);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

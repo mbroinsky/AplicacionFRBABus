@@ -17,6 +17,8 @@ namespace FrbaBus.Compra_de_Pasajes
         public int PasajesLibres { get; set; }
         public int KilosLibres { get; set; }
         public bool Cancelado { get; set; }
+        public double PrecioPasaje { get; set; }
+        public double PrecioKilo { get; set; }
 
         public Paso1()
         {
@@ -63,6 +65,8 @@ namespace FrbaBus.Compra_de_Pasajes
             this.IdViaje = Convert.ToInt32(viajesDisponibles.SelectedRows[0].Cells["ID"].Value);
             this.PasajesLibres = Convert.ToInt32(viajesDisponibles.SelectedRows[0].Cells["Butacas libres"].Value);
             this.KilosLibres = Convert.ToInt32(viajesDisponibles.SelectedRows[0].Cells["Kg. libres"].Value);
+            this.PrecioPasaje = Convert.ToDouble(viajesDisponibles.SelectedRows[0].Cells["Precio de pasaje"].Value);
+            this.PrecioKilo = Convert.ToDouble(viajesDisponibles.SelectedRows[0].Cells["Precio Encomienda(x Kg)"].Value);
 
             this.Hide();
         }

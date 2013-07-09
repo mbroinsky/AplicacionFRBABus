@@ -285,7 +285,7 @@ GO
 CREATE TABLE NOT_NULL.Encomienda
 (
 	ENC_numEnc INT NOT NULL IDENTITY(1, 1)
-    ,ENC_idVenta INT NOT NULL
+    ,ENC_idVenta NUMERIC(18,0) NOT NULL
 	,ENC_codigo INT NOT NULL
 	,ENC_idViaje INT NOT NULL
 	,ENC_idCliente INT NOT NULL 
@@ -405,7 +405,7 @@ ALTER TABLE NOT_NULL.Funcionalidad ADD CONSTRAINT PK_Funcionalidad PRIMARY KEY (
 CREATE TABLE NOT_NULL.Pasaje
 (
 	PAS_numPasaje INT NOT NULL IDENTITY(1, 1)
-	,PAS_idVenta INT NOT NULL
+	,PAS_idVenta NUMERIC(18,0) NOT NULL
 	,PAS_codigo INT NOT NULL
 	,PAS_idViaje INT NOT NULL 
 	,PAS_idCliente INT NOT NULL 
@@ -469,6 +469,7 @@ CREATE TABLE NOT_NULL.Cliente
 	,CLI_mail VARCHAR(50)  NULL 
 	,CLI_fecNacimiento DATETIME NOT NULL 
 	,CLI_sexo CHAR NULL
+	,CLI_discapacitado BIT NOT NULL DEFAULT '0'
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Cliente ADD CONSTRAINT PK_Cliente PRIMARY KEY CLUSTERED (CLI_idCliente)
@@ -481,11 +482,10 @@ CREATE INDEX IDX_DNI_CLIENTE ON NOT_NULL.Cliente(CLI_dni)
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Venta
 (
-	VEN_idVenta INT NOT NULL IDENTITY(1, 1)
+	VEN_idVenta NUMERIC(18,0) NOT NULL
 	,VEN_fecVenta DATETIME NOT NULL 
 	,VEN_total DECIMAL(10, 2) NOT NULL 
 	,VEN_idTarjeta INT  NULL 
-	,VEN_discapacitado BIT NOT NULL 
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Venta ADD CONSTRAINT PK_Venta PRIMARY KEY CLUSTERED (VEN_idVenta)
@@ -932,10 +932,31 @@ BEGIN
 				('Viaje a Córdoba para dos personas', 1700, 10);
 				
 	
-	INSERT INTO NOT_NULL.Numerador VALUES 
-				('10000000', 'Pasajes'),
-				('50000000', 'Venta');
+	INSERT INTO NOT_NULL.Numerador VALUES ('50000000', 'Venta');
 	
+	INSERT INTO NOT_NULL.Numerador SELECT MAX(Pasaje_Codigo) + 1, 'Pasaje' FROM gd_esquema.Maestra;
+	
+	INSERT INTO NOT_NULL.Numerador SELECT MAX(Paquete_Codigo) + 1, 'Encomienda' FROM gd_esquema.Maestra; 
+	
+END
+GO
+
+CREATE PROCEDURE NOT_NULL.TraerNumerador
+    @tabla varchar(15),
+    @numero numeric(15,0) OUTPUT    
+AS 
+BEGIN
+	BEGIN TRANSACTION;
+	
+   SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+	
+   	SELECT @numero = NUM_numero 
+	FROM NOT_NULL.Numerador
+	WHERE NUM_tabla = @tabla
+	
+	UPDATE NOT_NULL.Numerador SET NUM_numero = NUM_numero + 1 WHERE NUM_tabla = @tabla;
+	
+	COMMIT TRANSACTION;
 END
 GO
 
@@ -1061,11 +1082,10 @@ FETCH VENTAPASAJESCUR INTO
 		      VIA_numMicro = @microId AND 
 		      VIA_fecSalida = @fechaSalida;
 		      		
+		EXECUTE NOT_NULL.TraerNumerador @tabla = 'Venta', @numero = @idVenta OUTPUT;
 
-		INSERT INTO NOT_NULL.Venta(VEN_fecVenta, VEN_total, VEN_idTarjeta, VEN_discapacitado)
-		VALUES (@pasajeFechaCompra, @pasajePrecio, null, 0)
-		
-		SET @idVenta = @@IDENTITY
+		INSERT INTO NOT_NULL.Venta(VEN_idVenta, VEN_fecVenta, VEN_total, VEN_idTarjeta)
+		VALUES (@idVenta, @pasajeFechaCompra, @pasajePrecio, null)
 		
 		INSERT INTO NOT_NULL.Pasaje(PAS_idVenta, PAS_codigo, PAS_idViaje, PAS_idCliente, PAS_numButaca, PAS_numMicro, PAS_precio)
 		VALUES(@idVenta, @pasajeCodigo,@viajeId ,@clienteId, @numeroButaca, @microId, @pasajePrecio)
@@ -1160,14 +1180,14 @@ FETCH VENTAENCOMIENDACUR INTO
 		WHERE @recorridoCodigo = VIA_codRecorrido AND 
 		      VIA_numMicro = @microId AND 
 		      VIA_fecSalida = @fechaSalida;
+		      
+		EXECUTE NOT_NULL.TraerNumerador @tabla = 'Venta', @numero = @idVenta OUTPUT;
 	
-		INSERT INTO NOT_NULL.Venta(VEN_fecVenta, VEN_total, VEN_idTarjeta, VEN_discapacitado)
-		VALUES (@paqueteFechaCompra, @paquetePrecio, null, 0)
-		
-		SET @idVenta = @@IDENTITY
+		INSERT INTO NOT_NULL.Venta(VEN_idVenta, VEN_fecVenta, VEN_total, VEN_idTarjeta)
+		VALUES (@idVenta, @paqueteFechaCompra, @paquetePrecio, null)
 		
 		INSERT INTO NOT_NULL.Encomienda(ENC_idVenta, ENC_codigo, ENC_idViaje, ENC_idCliente, ENC_kilos, ENC_precio)
-		VALUES(@@IDENTITY, @paqueteCodigo, @viajeId ,@clienteId, @paqueteKG, @paquetePrecio)
+		VALUES(@idVenta, @paqueteCodigo, @viajeId ,@clienteId, @paqueteKG, @paquetePrecio)
 		
 		SET @puntosObtenidos = FLOOR(@paquetePrecio/5)
 		
@@ -1310,15 +1330,23 @@ CREATE PROCEDURE NOT_NULL.TraerButacasVacias
 	@idViaje INT
 AS
 BEGIN
+	DECLARE @numMicro AS INT;
+	
 	BEGIN TRANSACTION;
 	
 	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+	
+	SELECT @numMicro = VIA_numMicro 
+	FROM Viaje
+	WHERE VIA_numViaje = @idViaje;  
     
-	SELECT BUT_piso as Piso, BUT_numeroAsiento as Número, BUT_Tipo as Tipo 
-	FROM Butaca
-	WHERE BUT_numMicro = @idMicro
-	AND (BUT_numeroAsiento, BUT_numMicro) NOT IN 
-		(SELECT PAS_numButaca, PAS_numMicro from Pasaje where PAS_idViaje = @idViaje and PAS_Cancelado = '0');
+	SELECT BUT_numMicro as numMicro, BUT_piso as Piso, BUT_numeroAsiento as Número, BUT_Tipo as Tipo 
+	FROM NOT_NULL.Butaca
+	WHERE BUT_numeroAsiento NOT IN 
+		(SELECT PAS_numButaca from Pasaje where 
+		PAS_idViaje = @idViaje and PAS_Cancelado = '0' 
+		and PAS_numMicro = @numMicro) and BUT_numMicro = @numMicro 
+	ORDER BY BUT_piso, BUT_numeroAsiento, BUT_tipo;
 
 	COMMIT TRANSACTION;
 END
@@ -1717,24 +1745,7 @@ END
 GO	
 
 
-CREATE PROCEDURE NOT_NULL.TraerNumerador
-    @tabla varchar(15),
-    @numero numeric(15,0) OUTPUT    
-AS 
-BEGIN
-	BEGIN TRANSACTION;
-	
-	SET ISOLATION LEVEL READ UNCOMMITED;
-	
-   	SELECT @numero = NUM_numero 
-	FROM NOT_NULL.Numerador
-	WHERE NUM_tabla = @tabla
-	
-	UPDATE NOT_NULL.Numerador SET NUM_numero = NUM_numero + 1 WHERE NUM_tabla = @tabla;
-	
-	COMMIT TRANSACTION;
-END
-GO
+
 
 --FIN
 COMMIT;

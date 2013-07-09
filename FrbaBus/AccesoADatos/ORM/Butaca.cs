@@ -16,9 +16,13 @@ namespace FrbaBus.AccesoADatos.Orm
 
         public bool TraerButacaPorClave(int numero, int microId)
         {
+            Hashtable parametros = new Hashtable();
+
+            parametros.Add("@numero", numero);
+            parametros.Add("@microId", microId);
+
             DataTable dt = Conector.Datos.EjecutarComandoADataTable("select * from NOT_NULL.butaca " +
-                       " where BUT_numeroAsiento = '" + Convert.ToString(numero) + "' AND But_numMicro = '" +
-                        Convert.ToString(microId) + "';");
+                       " where BUT_numeroAsiento = @numero AND But_numMicro = @microId;", parametros);
 
             if (dt.Rows.Count > 0)
             {
@@ -116,17 +120,35 @@ namespace FrbaBus.AccesoADatos.Orm
 
         public static DataTable TraerButacasPorMicro(int microId)
         {
-            //MODIFICAR USANDO HASH TABLE DE PARÁMETROS
+            Hashtable parametros = new Hashtable();
 
-            String query = "SELECT BUT_numMicro as 'idMicro', BUT_piso as 'Piso', BUT_numeroAsiento as 'Nro. Asiento', BUT_tipo as 'Tipo de Asiento' FROM NOT_NULL.Butaca where BUT_numMicro = " + microId;
+            parametros.Add("@microId", microId);
 
-            DataTable dt = Conector.Datos.EjecutarComandoADataTable(query);
+            String query = "SELECT BUT_numMicro as 'idMicro', BUT_piso as 'Piso', "+
+                " BUT_numeroAsiento as 'Nro. Asiento', BUT_tipo as 'Tipo de Asiento' "+
+                " FROM NOT_NULL.Butaca where BUT_numMicro = @microId";
+
+            DataTable dt = Conector.Datos.EjecutarComandoADataTable(query, parametros);
 
             if (dt.Rows.Count > 0)
             {
                 return dt;
             }
             else
+            {
+                return null;
+            }
+        }
+
+        public static DataTable TraerButacasLibres(int viajeId)
+        {
+            try
+            {
+                DataTable dt = Conector.Datos.EjecutarProcedureADataTable("NOT_NULL.TraerButacasVacias", viajeId);
+
+                return dt;
+            }
+            catch
             {
                 return null;
             }
