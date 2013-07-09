@@ -233,17 +233,17 @@ BEGIN
 	DROP PROCEDURE NOT_NULL.BuscarMicros
 END
 
-IF OBJECT_ID(N'NOT_NULL.listarPasajesYEncomiendas') IS NOT NULL
+IF OBJECT_ID(N'NOT_NULL.ListarPasajesYEncomiendas') IS NOT NULL
 BEGIN
-	DROP PROCEDURE NOT_NULL.listarPasajesYEncomiendas
+	DROP PROCEDURE NOT_NULL.ListarPasajesYEncomiendas
 END
 
-IF OBJECT_ID(N'NOT_NULL.cancelarPasaje') IS NOT NULL
+IF OBJECT_ID(N'NOT_NULL.CancelarPasaje') IS NOT NULL
 BEGIN
 	DROP PROCEDURE NOT_NULL.cancelarPasaje
 END
 
-IF OBJECT_ID(N'NOT_NULL.cancelarEncomienda') IS NOT NULL
+IF OBJECT_ID(N'NOT_NULL.CancelarEncomienda') IS NOT NULL
 BEGIN
 	DROP PROCEDURE NOT_NULL.cancelarEncomienda
 END
@@ -623,20 +623,7 @@ CREATE TABLE NOT_NULL.HistoricoMantenimiento
 ALTER TABLE NOT_NULL.HistoricoMantenimiento ADD CONSTRAINT PK_HistoricoMantenimiento PRIMARY KEY (HMAN_id)
 
 
--- Create Table: ReservasButacas
---------------------------------------------------------------------------------
-CREATE TABLE NOT_NULL.ReservasButacas
-(
-	RES_voucherVenta INT NOT NULL,
-	RES_idViaje INT NOT NULL,
-	RES_idMicro INT NOT NULL,
-	RES_nroButaca INT NOT NULL
-)
-ON [PRIMARY]
-ALTER TABLE NOT_NULL.ReservasButacas ADD CONSTRAINT PK_ReservasButacas PRIMARY KEY (RES_idViaje, RES_idMicro, RES_nroButaca)
-
-
--- Create Table: ReservasButacas
+-- Create Table: Numerador
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Numerador
 (
@@ -807,21 +794,6 @@ ON DELETE NO ACTION
 -- Create Foreign Key: HistoricoMantenimiento.HMAN_idMicro -> Micro.MIC_numMicro
 ALTER TABLE NOT_NULL.HistoricoMantenimiento ADD CONSTRAINT FK_HistoricoMantenimiento_HMAN_idMicro_MIC_numMicro
 FOREIGN KEY (HMAN_idMicro) REFERENCES NOT_NULL.Micro (MIC_numMicro)
-ON UPDATE NO ACTION
-ON DELETE NO ACTION
-
-
--- Create Foreign Key: ReservasButacas.RES_idViaje -> Viaje.VIA_numViaje
-ALTER TABLE NOT_NULL.ReservasButacas ADD CONSTRAINT FK_ReservasButacas_RES_idViaje_VIA_numViaje
-FOREIGN KEY (RES_idViaje) REFERENCES NOT_NULL.Viaje (VIA_numViaje)
-ON UPDATE NO ACTION
-ON DELETE NO ACTION
-
-
--- Create Foreign Key: ReservasButacas.RES_nroButaca -> Butaca.BUT_numeroAsiento
---                     ReservasButacas.RES_idMicro   -> Butaca.BUT_numMicro
-ALTER TABLE NOT_NULL.ReservasButacas ADD CONSTRAINT FK_ReservasButacas_RES_idMicro_RES_nroButaca_BUT_numMicro_BUT_numeroAsiento 
-FOREIGN KEY (RES_nroButaca, RES_idMicro) REFERENCES NOT_NULL.Butaca(BUT_numeroAsiento, BUT_numMicro) 
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
@@ -1289,10 +1261,6 @@ BEGIN
 	FROM NOT_NULL.Pasaje
 	WHERE PAS_idViaje = @idViaje AND PAS_cancelado = '0';
 	
-	SELECT @cantidad = @cantidad - COUNT(*)
-	FROM NOT_NULL.ReservasButacas
-	WHERE RES_idMicro = @idMicro;
-	
 	RETURN @cantidad	
 END
 GO
@@ -1317,10 +1285,6 @@ BEGIN
 	SELECT @cantidad = @cantidad - isnull(sum(ENC_kilos), 0)
 	FROM NOT_NULL.Encomienda
 	WHERE ENC_idViaje = @idViaje AND ENC_cancelada = '0';
-	
-	--SELECT @cantidad = @cantidad - sum(ENC_kilos)
-	--FROM NOT_NULL.ReservasEncomiendas
-	--WHERE RES_idMicro = @idMicro;
 	
 	RETURN @cantidad	
 END
