@@ -141,8 +141,6 @@ namespace FrbaBus.AccesoADatos.Orm
             }
         }
 
-
-
         internal bool Insertar()
         {
             try

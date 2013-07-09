@@ -34,6 +34,7 @@
             this.lblKg = new System.Windows.Forms.Label();
             this.siguiente = new System.Windows.Forms.Button();
             this.cancelar = new System.Windows.Forms.Button();
+            this.hayDiscapacitados = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // cantPasajes
@@ -92,12 +93,23 @@
             this.cancelar.UseVisualStyleBackColor = true;
             this.cancelar.Click += new System.EventHandler(this.cancelar_Click);
             // 
+            // hayDiscapacitados
+            // 
+            this.hayDiscapacitados.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.hayDiscapacitados.Location = new System.Drawing.Point(12, 78);
+            this.hayDiscapacitados.Name = "hayDiscapacitados";
+            this.hayDiscapacitados.Size = new System.Drawing.Size(193, 35);
+            this.hayDiscapacitados.TabIndex = 6;
+            this.hayDiscapacitados.Text = "Viaja una persona con capacidades especiales";
+            this.hayDiscapacitados.UseVisualStyleBackColor = true;
+            // 
             // Paso2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(214, 145);
             this.ControlBox = false;
+            this.Controls.Add(this.hayDiscapacitados);
             this.Controls.Add(this.cancelar);
             this.Controls.Add(this.siguiente);
             this.Controls.Add(this.lblKg);
@@ -120,5 +132,6 @@
         private System.Windows.Forms.Label lblKg;
         private System.Windows.Forms.Button siguiente;
         private System.Windows.Forms.Button cancelar;
+        private System.Windows.Forms.CheckBox hayDiscapacitados;
     }
 }

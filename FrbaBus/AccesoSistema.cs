@@ -45,6 +45,7 @@ namespace FrbaBus
             double precioKilo;
             Int32 idViaje;
             bool hayDiscap = false;
+            Int16 cantDiscap = 0;
             Venta ven;
 
             double totalVenta = 0;
@@ -81,6 +82,7 @@ namespace FrbaBus
 
             cantPasajes = selCantidades.CantidadPasajes;
             cantKilos = selCantidades.KilosSeleccionados;
+            hayDiscap = selCantidades.HayDisc;
             
             Conector.Datos.IniciarTransaccion();
 
@@ -96,7 +98,7 @@ namespace FrbaBus
             
             for (int i = 0; i < cantPasajes; i++)
             {
-                var pas = new Pasajero(idViaje, hayDiscap);
+                var pas = new Pasajero(idViaje, hayDiscap, cantDiscap);
 
                 pas.ShowDialog();
 
@@ -108,14 +110,35 @@ namespace FrbaBus
                     return;
                 }
 
-                hayDiscap = hayDiscap || pas.HayDiscapacitado;
-
                 var pasaje = new Pasaje();
                 
                 double precio = precioPasaje;
 
-                if (pas.Clie.EsJubilado())
+                //Si es el primer pasaje y hay un discapacitado, no se cobra
+                if (hayDiscap && i == 0 && !pas.Clie.Discapacitado)
+                {
+                    MessageBox.Show("El pasaje es sin cargo");
+                    precio = 0;
+                }
+                //Si hay un discapacitado y es el pasajero actual, no se cobra 
+                else if (hayDiscap && pas.Clie.Discapacitado)
+                {
+                    MessageBox.Show("El pasaje es sin cargo");
+                    precio = 0;
+                    cantDiscap++;
+                }
+                //Si el primer pasaje fue el del discapacitado, no se cobra el segundo
+                else if (hayDiscap && i == 1 && cantDiscap == 1)
+                {
+                    MessageBox.Show("El pasaje es sin cargo");
+                    precio = 0;
+                }
+                //Si el pasajero es jubilado, se cobra la mitad del pasaje
+                else if (pas.Clie.EsJubilado())
+                {
+                    MessageBox.Show("El pasaje es a mitad de precio por ser jubilado/a");
                     precio = precio / 2;
+                }
                    
                 if (!Pasaje.Insertar(ven.IdVenta, idViaje, pas.Clie.Id, pas.NumAsiento, pas.IdMicro, precio))
                 {
@@ -130,17 +153,20 @@ namespace FrbaBus
                 totalVenta += precio;
             }
 
+            if (cantDiscap == 0)
+            {
+                MessageBox.Show("Seleccionó que viaja una persona con capacidades especiales pero no la cargo.\n" +
+                    "Se cancela la compra.");
+                Conector.Datos.AbortarTransaccion();
+
+                this.SetVisibleCore(true);
+
+                return;
+            }
+
             if (cantKilos > 0)
             {
  
-            }
-
-            if (hayDiscap)
-            {
-                if (cantPasajes <= 2)
-                    totalVenta = 0;
-                else
-                    totalVenta -= precioPasaje * 2;
             }
 
             ven.PrecioTotal = totalVenta;

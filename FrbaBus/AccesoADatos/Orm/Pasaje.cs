@@ -65,7 +65,7 @@ namespace FrbaBus.AccesoADatos.Orm
 
                 return true;
             }
-            catch (Exception e)
+            catch
             {
                 return false;
             }

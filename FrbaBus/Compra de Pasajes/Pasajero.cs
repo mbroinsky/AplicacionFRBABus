@@ -16,17 +16,19 @@ namespace FrbaBus.Compra_de_Pasajes
         public Cliente Clie { get; set; }
         public bool Cancelado { get; set; }
         public Int32 IdViaje { get; set; }
-        public bool HayDiscapacitado { get; set; }
+        private bool HayDiscapacitado { get; set; }
+        private Int16 CantDiscapacitados { get; set; }
         public Int16 NumAsiento { get; set; }
         public Int32 IdMicro { get; set; }
 
-        public Pasajero(Int32 idViaje, Boolean hayDisc)
+        public Pasajero(Int32 idViaje, Boolean hayDisc, Int16 cantDiscap)
         {
             InitializeComponent();
 
             fechaNacimiento.Value = Configuracion.Instance().FechaSistema;
             this.IdViaje = idViaje;
             HayDiscapacitado = hayDisc;
+            CantDiscapacitados = cantDiscap;
 
             Cancelado = false;
         }
@@ -70,11 +72,16 @@ namespace FrbaBus.Compra_de_Pasajes
                 return;
             }
 
-            if (HayDiscapacitado && esDiscapacitado.Checked)
+            if (!HayDiscapacitado && esDiscapacitado.Checked)
             {
-                MessageBox.Show("No se puede cargar más de una persona con capacidades especiales por Compra");
+                MessageBox.Show("No se puede cargar una persona con capacidades especiales porque no lo especificó al comenzar la compra.");
                 return;
-            }
+            } 
+            else if (CantDiscapacitados > 0 && esDiscapacitado.Checked)
+            {
+                MessageBox.Show("No se puede cargar más de una persona con capacidades especiales por compra.");
+                return;
+            } 
 
             if (!Validador.esNumericoEnteroPositivo(telefono.Text))
             {

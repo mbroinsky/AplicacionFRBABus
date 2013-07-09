@@ -16,6 +16,7 @@ namespace FrbaBus.Compra_de_Pasajes
         private int KilosDisponibles;
         public int KilosSeleccionados {get; set; }
         public int CantidadPasajes{get; set;}
+        public bool HayDisc { get; set; }
 
         public Paso2(int pasajesLibres, int kilosLibres)
         {
@@ -64,8 +65,13 @@ namespace FrbaBus.Compra_de_Pasajes
                 return;
             }
 
+            if (hayDiscapacitados.Checked)
+                MessageBox.Show("Ud. seleccionó que viaja un pasajero con capacidades especiales.\n" +
+                    "El primer pasaje que cargue y el de la persona con capacidades especiales serán sin costo.");
+
             this.CantidadPasajes = Convert.ToInt32(cantPasajes.Text);
             this.KilosSeleccionados = Convert.ToInt32(cantKilos.Text);
+            this.HayDisc = hayDiscapacitados.Checked;
             this.Hide();
         }
     }
