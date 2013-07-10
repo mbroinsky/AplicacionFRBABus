@@ -10,15 +10,15 @@ using FrbaBus.Utilidades;
 
 namespace FrbaBus.Compra_de_Pasajes
 {
-    public partial class Paso2 : Form
+    public partial class SeleccionDeCantidad : Form
     {
         public bool Cancelado { get; set; }
-        private int KilosDisponibles;
-        public int KilosSeleccionados {get; set; }
+        private Double KilosDisponibles;
+        public Double KilosSeleccionados {get; set; }
         public int CantidadPasajes{get; set;}
         public bool HayDisc { get; set; }
 
-        public Paso2(int pasajesLibres, int kilosLibres)
+        public SeleccionDeCantidad(int pasajesLibres, Double kilosLibres)
         {
             InitializeComponent();
 
@@ -46,20 +46,20 @@ namespace FrbaBus.Compra_de_Pasajes
 
         private void siguiente_Click(object sender, EventArgs e)
         {
-            if (!Validador.esNumericoEnteroPositivo(cantKilos.Text))
+            if (!Validador.esNumeroReal(cantKilos.Text))
             {
                 MessageBox.Show("La cantidad de kilos está mal ingresada");
                 return;
             }
 
-            if (Convert.ToInt32(cantKilos.Text) > KilosDisponibles)
+            if (Convert.ToDouble(cantKilos.Text) > KilosDisponibles)
             {
                 MessageBox.Show("La cantidad disponible de kilos es " + Convert.ToString(KilosDisponibles) + 
                     "Kg. Por favor ingrese una cantidad menor");
                 return;
             }
 
-            if (Convert.ToInt32(cantKilos.Text) == 0 && Convert.ToInt32(cantPasajes.Text) == 0)
+            if (Convert.ToDouble(cantKilos.Text) == 0 && Convert.ToInt32(cantPasajes.Text) == 0)
             {
                 MessageBox.Show("Si no desea comprar nada, por favor presione el botón 'Cancelar'");
                 return;
@@ -70,7 +70,7 @@ namespace FrbaBus.Compra_de_Pasajes
                     "El primer pasaje que cargue y el de la persona con capacidades especiales serán sin costo.");
 
             this.CantidadPasajes = Convert.ToInt32(cantPasajes.Text);
-            this.KilosSeleccionados = Convert.ToInt32(cantKilos.Text);
+            this.KilosSeleccionados = Convert.ToDouble(cantKilos.Text);
             this.HayDisc = hayDiscapacitados.Checked;
             this.Hide();
         }

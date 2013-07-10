@@ -1,6 +1,6 @@
 ﻿namespace FrbaBus.Compra_de_Pasajes
 {
-    partial class Paso1
+    partial class SeleccionDeViaje
     {
         /// <summary>
         /// Required designer variable.
@@ -138,7 +138,7 @@
             this.viajesDisponibles.ReadOnly = true;
             this.viajesDisponibles.RowHeadersVisible = false;
             this.viajesDisponibles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.viajesDisponibles.Size = new System.Drawing.Size(763, 232);
+            this.viajesDisponibles.Size = new System.Drawing.Size(571, 232);
             this.viajesDisponibles.TabIndex = 22;
             // 
             // cancelar
@@ -154,7 +154,7 @@
             // 
             // siguiente
             // 
-            this.siguiente.Location = new System.Drawing.Point(690, 348);
+            this.siguiente.Location = new System.Drawing.Point(498, 348);
             this.siguiente.Name = "siguiente";
             this.siguiente.Size = new System.Drawing.Size(75, 23);
             this.siguiente.TabIndex = 24;
@@ -167,7 +167,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelar;
-            this.ClientSize = new System.Drawing.Size(768, 375);
+            this.ClientSize = new System.Drawing.Size(578, 375);
             this.ControlBox = false;
             this.Controls.Add(this.siguiente);
             this.Controls.Add(this.cancelar);

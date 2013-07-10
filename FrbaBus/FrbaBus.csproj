@@ -111,6 +111,7 @@
     <Compile Include="AccesoADatos\Orm\Butaca.cs" />
     <Compile Include="AccesoADatos\Orm\Ciudad.cs" />
     <Compile Include="AccesoADatos\Orm\Cliente.cs" />
+    <Compile Include="AccesoADatos\Orm\Tarjeta.cs" />
     <Compile Include="AccesoADatos\Orm\Encomienda.cs" />
     <Compile Include="AccesoADatos\Orm\Listado.cs" />
     <Compile Include="AccesoADatos\Orm\Pasaje.cs" />
@@ -142,23 +143,35 @@
       <DependentUpon>CanjeDePuntos.cs</DependentUpon>
     </Compile>
     <Compile Include="AccesoADatos\ORM\Usuario.cs" />
+    <Compile Include="Compra de Pasajes\DatosPago.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Compra de Pasajes\DatosPago.Designer.cs">
+      <DependentUpon>DatosPago.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Compra de Pasajes\DatosEncomienda.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Compra de Pasajes\DatosEncomienda.Designer.cs">
+      <DependentUpon>DatosEncomienda.cs</DependentUpon>
+    </Compile>
     <Compile Include="Compra de Pasajes\Pasajero.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Compra de Pasajes\Pasajero.Designer.cs">
       <DependentUpon>Pasajero.cs</DependentUpon>
     </Compile>
-    <Compile Include="Compra de Pasajes\Paso1.cs">
+    <Compile Include="Compra de Pasajes\SeleccionDeViaje.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Compra de Pasajes\Paso1.Designer.cs">
-      <DependentUpon>Paso1.cs</DependentUpon>
+    <Compile Include="Compra de Pasajes\SeleccionDeViaje.Designer.cs">
+      <DependentUpon>SeleccionDeViaje.cs</DependentUpon>
     </Compile>
-    <Compile Include="Compra de Pasajes\Paso2.cs">
+    <Compile Include="Compra de Pasajes\SeleccionDeCantidad.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Compra de Pasajes\Paso2.Designer.cs">
-      <DependentUpon>Paso2.cs</DependentUpon>
+    <Compile Include="Compra de Pasajes\SeleccionDeCantidad.Designer.cs">
+      <DependentUpon>SeleccionDeCantidad.cs</DependentUpon>
     </Compile>
     <Compile Include="Configuracion.cs" />
     <Compile Include="Consulta Puntos Adquiridos\ConsultaDePuntos.cs">
@@ -233,14 +246,20 @@
     <EmbeddedResource Include="Canje de Ptos\CanjeDePuntos.resx">
       <DependentUpon>CanjeDePuntos.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Compra de Pasajes\DatosPago.resx">
+      <DependentUpon>DatosPago.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Compra de Pasajes\DatosEncomienda.resx">
+      <DependentUpon>DatosEncomienda.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Compra de Pasajes\Pasajero.resx">
       <DependentUpon>Pasajero.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Compra de Pasajes\Paso1.resx">
-      <DependentUpon>Paso1.cs</DependentUpon>
+    <EmbeddedResource Include="Compra de Pasajes\SeleccionDeViaje.resx">
+      <DependentUpon>SeleccionDeViaje.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Compra de Pasajes\Paso2.resx">
-      <DependentUpon>Paso2.cs</DependentUpon>
+    <EmbeddedResource Include="Compra de Pasajes\SeleccionDeCantidad.resx">
+      <DependentUpon>SeleccionDeCantidad.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Consulta Puntos Adquiridos\ConsultaDePuntos.resx">
       <DependentUpon>ConsultaDePuntos.cs</DependentUpon>
@@ -284,6 +303,7 @@
     <Compile Include="Registrar LLegada Micro\RegistrarLlegada.Designer.cs">
       <DependentUpon>RegistrarLlegada.cs</DependentUpon>
     </Compile>
+    <Compile Include="Compra de Pasajes\GenerarVenta.cs" />
     <Compile Include="Utilidades\Validador.cs" />
   </ItemGroup>
   <ItemGroup>

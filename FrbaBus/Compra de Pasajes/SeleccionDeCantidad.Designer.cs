@@ -1,6 +1,6 @@
 ﻿namespace FrbaBus.Compra_de_Pasajes
 {
-    partial class Paso2
+    partial class SeleccionDeCantidad
     {
         /// <summary>
         /// Required designer variable.

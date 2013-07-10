@@ -11,7 +11,7 @@ namespace FrbaBus.AccesoADatos.Orm
 {
     public class Pasaje
     {
-        public static Int64 traerNumerador()
+        public static Int64 TraerNumerador()
         {
             try
             {
@@ -28,7 +28,7 @@ namespace FrbaBus.AccesoADatos.Orm
             }
         }
 
-        public static bool cancelarPasaje(int idPasaje, String motivo)
+        public static bool CancelarPasaje(int idPasaje, String motivo)
         {
             try
             {
@@ -44,11 +44,11 @@ namespace FrbaBus.AccesoADatos.Orm
             }       
         }
 
-        internal static bool Insertar(Int64 idVenta, Int32 idViaje, Int32 idCliente, Int32 nroButaca, Int32 nroMicro, Double precio)
+        public static bool Insertar(Int64 idVenta, Int32 idViaje, Int32 idCliente, Int32 nroButaca, Int32 nroMicro, Double precio)
         {
             try
             {
-                Int64 codigo = traerNumerador();
+                Int64 codigo = TraerNumerador();
 
                 Hashtable parametros = new Hashtable();
 

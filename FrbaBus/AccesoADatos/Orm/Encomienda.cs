@@ -28,7 +28,7 @@ namespace FrbaBus.AccesoADatos.Orm
             }
         }
 
-        public static bool cancelarEncomienda(int idPasaje, String motivo)
+        public static bool CancelarEncomienda(int idPasaje, String motivo)
         {
             try
             {
@@ -37,6 +37,32 @@ namespace FrbaBus.AccesoADatos.Orm
 
                 return true;
          
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool Insertar(Int64 idVenta, Int32 idViaje, Int32 idCliente, Double cantKilos, Double precio)
+        {
+            try
+            {
+                Int64 codigo = TraerNumerador();
+
+                Hashtable parametros = new Hashtable();
+
+                parametros.Add("@idVenta", idVenta);
+                parametros.Add("@codigo", codigo);
+                parametros.Add("@idViaje", idViaje);
+                parametros.Add("@idCliente", idCliente);
+                parametros.Add("@cantKilos", cantKilos);
+                parametros.Add("@precio", precio);
+
+                Conector.Datos.EjecutarSql("insert into NOT_NULL.encomienda VALUES (@idVenta, @codigo, " +
+                    "@idViaje, @idCliente, @cantKilos, @precio, '0');", parametros);
+
+                return true;
             }
             catch
             {

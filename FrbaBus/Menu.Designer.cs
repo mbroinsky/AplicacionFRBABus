@@ -38,6 +38,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.CancelarPasjEnc = new System.Windows.Forms.Button();
+            this.vender = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ABMMicro
@@ -62,7 +63,7 @@
             // 
             // Salir
             // 
-            this.Salir.Location = new System.Drawing.Point(338, 92);
+            this.Salir.Location = new System.Drawing.Point(338, 149);
             this.Salir.Name = "Salir";
             this.Salir.Size = new System.Drawing.Size(75, 44);
             this.Salir.TabIndex = 2;
@@ -140,12 +141,23 @@
             this.CancelarPasjEnc.UseVisualStyleBackColor = true;
             this.CancelarPasjEnc.Click += new System.EventHandler(this.button3_Click);
             // 
+            // vender
+            // 
+            this.vender.Location = new System.Drawing.Point(338, 92);
+            this.vender.Name = "vender";
+            this.vender.Size = new System.Drawing.Size(75, 44);
+            this.vender.TabIndex = 10;
+            this.vender.Text = "Vender Pas/Enc";
+            this.vender.UseVisualStyleBackColor = true;
+            this.vender.Click += new System.EventHandler(this.vender_Click);
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(423, 149);
+            this.ClientSize = new System.Drawing.Size(423, 205);
             this.ControlBox = false;
+            this.Controls.Add(this.vender);
             this.Controls.Add(this.CancelarPasjEnc);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -176,5 +188,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button CancelarPasjEnc;
+        private System.Windows.Forms.Button vender;
     }
 }

@@ -11,16 +11,16 @@ using FrbaBus.AccesoADatos.Orm;
 
 namespace FrbaBus.Compra_de_Pasajes
 {
-    public partial class Paso1 : Form
+    public partial class SeleccionDeViaje : Form
     {
         public Int32 IdViaje { get; set; }
         public int PasajesLibres { get; set; }
-        public int KilosLibres { get; set; }
+        public double KilosLibres { get; set; }
         public bool Cancelado { get; set; }
         public double PrecioPasaje { get; set; }
         public double PrecioKilo { get; set; }
 
-        public Paso1()
+        public SeleccionDeViaje()
         {
             InitializeComponent();
 
@@ -64,7 +64,7 @@ namespace FrbaBus.Compra_de_Pasajes
 
             this.IdViaje = Convert.ToInt32(viajesDisponibles.SelectedRows[0].Cells["ID"].Value);
             this.PasajesLibres = Convert.ToInt32(viajesDisponibles.SelectedRows[0].Cells["Butacas libres"].Value);
-            this.KilosLibres = Convert.ToInt32(viajesDisponibles.SelectedRows[0].Cells["Kg. libres"].Value);
+            this.KilosLibres = Convert.ToDouble(viajesDisponibles.SelectedRows[0].Cells["Kg. libres"].Value);
             this.PrecioPasaje = Convert.ToDouble(viajesDisponibles.SelectedRows[0].Cells["Precio de pasaje"].Value);
             this.PrecioKilo = Convert.ToDouble(viajesDisponibles.SelectedRows[0].Cells["Precio Encomienda(x Kg)"].Value);
 

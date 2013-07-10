@@ -29,11 +29,11 @@ namespace FrbaBus.CancelarPasajesYEncomiendas
                 {
                     if (tipo == "Pasaje")
                     {
-                        Pasaje.cancelarPasaje(id, motivo.Text);
+                        Pasaje.CancelarPasaje(id, motivo.Text);
                     }
                     else
                     {
-                        Encomienda.cancelarEncomienda(id, motivo.Text);
+                        Encomienda.CancelarEncomienda(id, motivo.Text);
                     }
 
                     this.SetVisibleCore(false);
