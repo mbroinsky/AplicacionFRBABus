@@ -922,6 +922,18 @@ BEGIN
 	
 	INSERT INTO NOT_NULL.Numerador SELECT MAX(Paquete_Codigo) + 1, 'Encomienda' FROM gd_esquema.Maestra; 
 	
+	INSERT INTO NOT_NULL.TipoTarjeta VALUES 
+		('Visa (1 Pago)'), 
+		('Visa (3 Pagos)'), 
+		('Visa (6 Pagos)'), 
+		('Visa (9 Pagos)'),
+		('Visa (12 Pagos)'),
+		('American Express (1 Pago)'), 
+		('American Express (3 Pagos)'), 
+		('American Express (6 Pagos)'),
+		('Mastercard (1 Pago)'), 
+		('Mastercard (3 Pagos)'), 
+		('Nativa (1 Pago)');
 END
 GO
 
