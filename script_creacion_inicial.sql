@@ -500,6 +500,17 @@ ON [PRIMARY]
 ALTER TABLE NOT_NULL.Tarjeta ADD CONSTRAINT PK_Tarjeta PRIMARY KEY (TAR_idTarjeta)
 
 
+-- Create Table: TipoTarjeta
+--------------------------------------------------------------------------------
+CREATE TABLE NOT_NULL.TipoTarjeta
+(
+	TIPT_idTipoTarjeta INT NOT NULL IDENTITY(1, 1)
+	,TIPT_descripcion VARCHAR(30) NOT NULL 
+)
+ON [PRIMARY]
+ALTER TABLE NOT_NULL.Tarjeta ADD CONSTRAINT PK_Tarjeta PRIMARY KEY (TIPT_idTipoTarjeta)
+
+
 -- Create Table: DevolucionVenta
 --------------------------------------------------------------------------------
 CREATE TABLE NOT_NULL.Devolucion
@@ -823,6 +834,12 @@ ON DELETE NO ACTION
 --- Create Foreign Key: DevXPas.DXP_idPasaje -> Pasaje.PAS_numPasaje
 ALTER TABLE NOT_NULL.DevXPas ADD CONSTRAINT FK_DevXPas_DXP_idPasaje_Pasaje_PAS_numPasaje
 FOREIGN KEY (DXP_idPasaje) REFERENCES NOT_NULL.Pasaje(PAS_numPasaje)
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
+
+--- Create Foreign Key: Tarjeta.TAR_idTipo -> TipoTarjeta.TIPT_idTipoTarjeta
+ALTER TABLE NOT_NULL.Tarjeta ADD CONSTRAINT FK_Tarjeta_TAR_idTipo_TipoTarjeta_TIPT_idTipoTarjeta
+FOREIGN KEY (TAR_idTipo) REFERENCES NOT_NULL.TipoTarjeta(TIPT_idTipoTarjeta)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
