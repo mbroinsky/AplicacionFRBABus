@@ -39,7 +39,7 @@ namespace FrbaBus.Abm_Micro
 
             InitializeComponent();
             cargarDropDowns();
-
+            agregarButacas.Visible = false;
             cargarValoresMicro();
         }
 
@@ -70,7 +70,7 @@ namespace FrbaBus.Abm_Micro
         {
             if (Validador.esPantenteValida(patente.Text))
             {
-                if (Validador.esNumericoEnteroPositivo(capacidad.Text))
+                if (Validador.esNumeroReal(capacidad.Text))
                 {
                     if (micro.Butacas.Rows.Count > 1)
                     {

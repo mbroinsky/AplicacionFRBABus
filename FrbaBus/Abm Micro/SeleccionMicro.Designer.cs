@@ -180,6 +180,7 @@
             this.Micros.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.Micros.Location = new System.Drawing.Point(21, 82);
             this.Micros.Name = "Micros";
+            this.Micros.ReadOnly = true;
             this.Micros.RowHeadersVisible = false;
             this.Micros.Size = new System.Drawing.Size(771, 267);
             this.Micros.TabIndex = 29;
@@ -195,7 +196,7 @@
             this.salir.Text = "Salir";
             this.salir.UseVisualStyleBackColor = true;
             // 
-            // ABMMicro
+            // SeleccionMicro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -206,7 +207,7 @@
             this.Controls.Add(this.Micros);
             this.Controls.Add(this.agregar);
             this.Controls.Add(this.groupBox1);
-            this.Name = "ABMMicro";
+            this.Name = "SeleccionMicro";
             this.Text = "Gestión de Micros";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

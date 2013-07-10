@@ -875,7 +875,7 @@ BEGIN
 	INSERT INTO Funcionalidad(FNC_nombre, FNC_formAsoc) VALUES
 				('ABM de Rol', 'ABMRol'),
 				('Listado de Roles', 'SeleccionRol'),
-				('ABM Micro', 'ABMMicro'),
+				('ABM Micro', 'SeleccionMicro'),
 				('Generar Viaje', 'GenerarViaje'),
 				('Registrar Llegadas', 'RegistrarLlegada'),
 				('Listado de Recorridos', 'SeleccionRecorrido'),

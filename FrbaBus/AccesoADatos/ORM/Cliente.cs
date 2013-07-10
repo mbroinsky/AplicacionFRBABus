@@ -76,15 +76,17 @@ namespace FrbaBus.AccesoADatos.Orm
                              "FROM	NOT_NULL.Puntos, NOT_NULL.Cliente " +
                              "WHERE	CLI_dni = @dni " +
                              "AND PTS_idCliente = CLI_idCliente " +
-                             "AND PTS_fecVencimiento > @fecha " +
-                             "UNION " +
-                             "SELECT (PRO_puntos*CNJ_cantidad) as Puntos, 'Canjes' as 'Descripcion' " +
+                             "AND PTS_fecVencimiento > @fecha ";
+
+                dt = Conector.Datos.EjecutarComandoADataTable(sql, parametros);
+                         
+                sql = "SELECT PRO_puntos as Puntos, 'Canjes' as 'Descripcion' " +
                              "FROM NOT_NULL.Cliente, NOT_NULL.Canje, NOT_NULL.Producto " +
                              "WHERE CLI_dni = @dni " +
                              "AND CNJ_idCliente = CLI_idCliente " +
-                             "AND PRO_idProd = CNJ_idProducto";
+                             "AND CNJ_idProducto = PRO_idProd";
 
-                dt = Conector.Datos.EjecutarComandoADataTable(sql, parametros);
+                dt.Merge(Conector.Datos.EjecutarComandoADataTable(sql, parametros));
 
                 return dt;
 

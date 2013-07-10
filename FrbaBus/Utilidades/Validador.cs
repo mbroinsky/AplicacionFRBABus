@@ -10,7 +10,7 @@ namespace FrbaBus.Utilidades
     {
         internal static bool esNumericoEnteroPositivo(String text)
         {
-            Regex regex = new Regex("[0-9]");
+            Regex regex = new Regex("^[0-9]+$");
             return regex.IsMatch(text);
         }
 
