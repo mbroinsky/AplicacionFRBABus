@@ -128,6 +128,11 @@ BEGIN
     DROP TABLE NOT_NULL.Numerador
 END
 
+IF OBJECT_ID(N'NOT_NULL.TipoTarjeta') IS NOT NULL
+BEGIN
+    DROP TABLE NOT_NULL.TipoTarjeta
+END
+
 IF OBJECT_ID(N'NOT_NULL.ListarRoles') IS NOT NULL
 BEGIN
     DROP PROCEDURE NOT_NULL.ListarRoles
@@ -508,7 +513,7 @@ CREATE TABLE NOT_NULL.TipoTarjeta
 	,TIPT_descripcion VARCHAR(30) NOT NULL 
 )
 ON [PRIMARY]
-ALTER TABLE NOT_NULL.Tarjeta ADD CONSTRAINT PK_Tarjeta PRIMARY KEY (TIPT_idTipoTarjeta)
+ALTER TABLE NOT_NULL.TipoTarjeta ADD CONSTRAINT PK_TipoTarjeta PRIMARY KEY (TIPT_idTipoTarjeta)
 
 
 -- Create Table: DevolucionVenta
@@ -838,8 +843,8 @@ ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
 --- Create Foreign Key: Tarjeta.TAR_idTipo -> TipoTarjeta.TIPT_idTipoTarjeta
-ALTER TABLE NOT_NULL.Tarjeta ADD CONSTRAINT FK_Tarjeta_TAR_idTipo_TipoTarjeta_TIPT_idTipoTarjeta
-FOREIGN KEY (TAR_idTipo) REFERENCES NOT_NULL.TipoTarjeta(TIPT_idTipoTarjeta)
+ALTER TABLE NOT_NULL.Tarjeta ADD CONSTRAINT FK_Tarjeta_TAR_tipo_TipoTarjeta_TIPT_idTipoTarjeta
+FOREIGN KEY (TAR_tipo) REFERENCES NOT_NULL.TipoTarjeta(TIPT_idTipoTarjeta)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
