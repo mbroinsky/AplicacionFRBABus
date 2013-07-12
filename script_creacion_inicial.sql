@@ -485,7 +485,8 @@ CREATE TABLE NOT_NULL.Venta
 	VEN_idVenta NUMERIC(18,0) NOT NULL
 	,VEN_fecVenta DATETIME NOT NULL 
 	,VEN_total DECIMAL(10, 2) NOT NULL 
-	,VEN_idTarjeta INT  NULL 
+	,VEN_idTarjeta INT NULL
+	,VEN_idPagador INT NULL 
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Venta ADD CONSTRAINT PK_Venta PRIMARY KEY CLUSTERED (VEN_idVenta)
@@ -497,7 +498,7 @@ CREATE TABLE NOT_NULL.Tarjeta
 (
 	TAR_idTarjeta INT NOT NULL IDENTITY(1, 1)
 	,TAR_nroTarjeta VARCHAR(20) NOT NULL 
-	,TAR_fecVencimiento DATETIME NOT NULL 
+	,TAR_fecVencimiento VARCHAR(4) NOT NULL 
 	,TAR_tipo INT NOT NULL 
 	,TAR_codSeg SMALLINT NOT NULL 
 )
@@ -728,6 +729,12 @@ ON DELETE NO ACTION
 -- Create Foreign Key: Venta.VEN_idTarjeta -> Tarjeta.TAR_idTarjeta
 ALTER TABLE NOT_NULL.Venta ADD CONSTRAINT FK_Venta_VEN_idTarjeta_Tarjeta_TAR_idTarjeta
 FOREIGN KEY ( VEN_idTarjeta) REFERENCES NOT_NULL.Tarjeta ( TAR_idTarjeta)
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
+
+-- Create Foreign Key: Venta.VEN_idPagador -> Cliente.CLI_idCliente
+ALTER TABLE NOT_NULL.Venta ADD CONSTRAINT FK_Venta_VEN_idPagador_Cliente_CLI_idCliente
+FOREIGN KEY ( VEN_idPagador) REFERENCES NOT_NULL.Cliente ( CLI_idCliente)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
@@ -1085,8 +1092,8 @@ FETCH VENTAPASAJESCUR INTO
 		      		
 		EXECUTE NOT_NULL.TraerNumerador @tabla = 'Venta', @numero = @idVenta OUTPUT;
 
-		INSERT INTO NOT_NULL.Venta(VEN_idVenta, VEN_fecVenta, VEN_total, VEN_idTarjeta)
-		VALUES (@idVenta, @pasajeFechaCompra, @pasajePrecio, null)
+		INSERT INTO NOT_NULL.Venta(VEN_idVenta, VEN_fecVenta, VEN_total, VEN_idTarjeta, VEN_idPagador)
+		VALUES (@idVenta, @pasajeFechaCompra, @pasajePrecio, null, @clienteId)
 		
 		INSERT INTO NOT_NULL.Pasaje(PAS_idVenta, PAS_codigo, PAS_idViaje, PAS_idCliente, PAS_numButaca, PAS_numMicro, PAS_precio)
 		VALUES(@idVenta, @pasajeCodigo,@viajeId ,@clienteId, @numeroButaca, @microId, @pasajePrecio)
@@ -1184,8 +1191,8 @@ FETCH VENTAENCOMIENDACUR INTO
 		      
 		EXECUTE NOT_NULL.TraerNumerador @tabla = 'Venta', @numero = @idVenta OUTPUT;
 	
-		INSERT INTO NOT_NULL.Venta(VEN_idVenta, VEN_fecVenta, VEN_total, VEN_idTarjeta)
-		VALUES (@idVenta, @paqueteFechaCompra, @paquetePrecio, null)
+		INSERT INTO NOT_NULL.Venta(VEN_idVenta, VEN_fecVenta, VEN_total, VEN_idTarjeta, VEN_idPagador)
+		VALUES (@idVenta, @paqueteFechaCompra, @paquetePrecio, null, @clienteId)
 		
 		INSERT INTO NOT_NULL.Encomienda(ENC_idVenta, ENC_codigo, ENC_idViaje, ENC_idCliente, ENC_kilos, ENC_precio)
 		VALUES(@idVenta, @paqueteCodigo, @viajeId ,@clienteId, @paqueteKG, @paquetePrecio)

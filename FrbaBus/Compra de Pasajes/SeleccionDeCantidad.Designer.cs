@@ -52,7 +52,7 @@
             this.cantKilos.Name = "cantKilos";
             this.cantKilos.Size = new System.Drawing.Size(58, 20);
             this.cantKilos.TabIndex = 1;
-            this.cantKilos.Text = "0";
+            this.cantKilos.Text = "0.00";
             this.cantKilos.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // lblPasajes
@@ -103,7 +103,7 @@
             this.hayDiscapacitados.Text = "Viaja una persona con capacidades especiales";
             this.hayDiscapacitados.UseVisualStyleBackColor = true;
             // 
-            // Paso2
+            // SeleccionDeCantidad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -116,7 +116,7 @@
             this.Controls.Add(this.lblPasajes);
             this.Controls.Add(this.cantKilos);
             this.Controls.Add(this.cantPasajes);
-            this.Name = "Paso2";
+            this.Name = "SeleccionDeCantidad";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cantidad a comprar";
             this.ResumeLayout(false);

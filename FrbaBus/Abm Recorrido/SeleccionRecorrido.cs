@@ -92,6 +92,9 @@ namespace FrbaBus.Abm_Recorrido
 
         private void Roles_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (recorridos.SelectedRows.Count < 1)
+                return;
+
             if (e.ColumnIndex == recorridos.Columns["Modificar"].Index)
             {
                 var fila = recorridos.SelectedRows[0];

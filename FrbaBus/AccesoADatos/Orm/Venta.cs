@@ -14,12 +14,14 @@ namespace FrbaBus.AccesoADatos.Orm
         public DateTime FechaVenta { get; set; }
         public Double PrecioTotal { get; set; }
         public Int32 IdTarjeta { get; set; }
+        public Int32 IdPagador { get; set; }
 
         public Venta(DateTime fechaVenta)
         {
             PrecioTotal = 0;
             FechaVenta = fechaVenta;
             IdTarjeta = -1;
+            IdPagador = -1;
         }
 
         public static Int64 TraerNumerador()
@@ -78,6 +80,16 @@ namespace FrbaBus.AccesoADatos.Orm
                     sql += ",null";
                 }
 
+                if (IdPagador > -1)
+                {
+                    parametros.Add("@idPagador", IdPagador);
+                    sql += ",@idPagador";
+                }
+                else
+                {
+                    sql += ",null";
+                }
+
                 sql += ");";
 
                 Conector.Datos.EjecutarSql(sql, parametros);
@@ -96,19 +108,23 @@ namespace FrbaBus.AccesoADatos.Orm
 
             try
             {
+                if (IdPagador == -1)
+                    return false;
+
                 Hashtable parametros = new Hashtable();
 
                 parametros.Add("@idVenta", IdVenta);
                 parametros.Add("@fecVenta", FechaVenta);
                 parametros.Add("@total", PrecioTotal);
+                parametros.Add("@idPagador", IdPagador);
 
                 sql = "update NOT_NULL.Venta set VEN_fecVenta = @fecVenta, " +
-                    "VEN_total = @total ";
+                    "VEN_total = @total, VEN_idPagador = @idPagador ";
 
                 if (IdTarjeta > -1)
                 {
                     parametros.Add("@idTarjeta", IdTarjeta);
-                    sql += " VEN_idTarjeta = @idTarjeta";
+                    sql += ", VEN_idTarjeta = @idTarjeta";
                 }
 
                 sql += " WHERE VEN_idVenta = @idVenta;";

@@ -197,7 +197,7 @@ namespace FrbaBus.AccesoADatos.Orm
             {
                 Hashtable parametros = new Hashtable();
 
-                parametros.Add("@idTipoServ", idTipoServ);
+                parametros.Add("@idTipoServicio", idTipoServ);
                 parametros.Add("@idCiuOri", idCiuOri);
                 parametros.Add("@idCiuDest", idCiuDest);
 
@@ -208,7 +208,7 @@ namespace FrbaBus.AccesoADatos.Orm
 
                 return (cant > 0);
             }
-            catch
+            catch (Exception e)
             {
                 //Ante un error, por las dudas asumo que existe un recorrido
                 return true;

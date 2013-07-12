@@ -163,15 +163,10 @@ namespace FrbaBus.Compra_de_Pasajes
                 return;
             }
 
-            if (!pago.Efectivo)
-            {
-                //if (!Tarjeta.Insertar(ven.IdVenta, idViaje, pago, cantKilos, precio))
-                //{
-                //    MessageBox.Show("Ocurrió un error al cargar el pasaje. Se cancela la operación.");
-                //    Conector.Datos.AbortarTransaccion();
-                //    return;
-                //}
-            }
+            if (pago.Tar.Id > -1)
+                ven.IdTarjeta = pago.Tar.Id;
+
+            ven.IdPagador = pago.Clie.Id;
 
             pago.Close();
 
