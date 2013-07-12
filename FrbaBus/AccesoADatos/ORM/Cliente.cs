@@ -205,10 +205,27 @@ namespace FrbaBus.AccesoADatos.Orm
             }
         }
 
-        public bool tieneViaje()
+        public bool TieneViaje(DateTime fechaViaje)
         {
-            //TODO: Agregar funcionalidad a la consulta de viaje
-            return false;
+            try
+            {
+                int cant;
+                
+                Hashtable parametros = new Hashtable();
+
+                parametros.Add("@fechaViaje", fechaViaje);
+                parametros.Add("@idCliente", Id);
+
+                cant = Conector.Datos.EjecutarComandoAEscalar("select count(*) from NOT_NULL.Pasaje, NOT_NULL.Viaje " +
+                        " where PAS_idCliente = @idCliente VIA_numViaje = PAS_idViaje and ABS(DATEDIFF(hour, VIA_fecSalida, @fechaViaje)) < 24;", parametros);
+                
+                return (cant > 0);
+            }
+            catch
+            {
+                //Si falla la consulta se asume que tiene pasajes comprados
+                return true;
+            }
         }
 
         public bool EsJubilado()
