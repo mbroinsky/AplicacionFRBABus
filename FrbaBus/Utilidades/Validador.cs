@@ -22,7 +22,7 @@ namespace FrbaBus.Utilidades
 
         internal static bool esNumeroReal(String text)
         {
-            Regex regex = new Regex("^\\d+\\.?\\d{1,2}$" );
+            Regex regex = new Regex("^\\d+(\\.\\d{1,2}){0,1}$" );
             return regex.IsMatch(text);
         }
         
