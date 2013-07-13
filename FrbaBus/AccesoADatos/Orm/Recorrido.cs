@@ -208,7 +208,7 @@ namespace FrbaBus.AccesoADatos.Orm
 
                 return (cant > 0);
             }
-            catch (Exception e)
+            catch
             {
                 //Ante un error, por las dudas asumo que existe un recorrido
                 return true;

@@ -213,12 +213,13 @@ namespace FrbaBus.AccesoADatos.Orm
                 
                 Hashtable parametros = new Hashtable();
 
-                parametros.Add("@idViaje", fechaViaje);
+                parametros.Add("@idViaje", idViaje);
                 parametros.Add("@idCliente", Id);
 
-                cant = Conector.Datos.EjecutarComandoAEscalar("select count(*) from NOT_NULL.Pasaje, NOT_NULL.Viaje as a " +
-                        " where PAS_idCliente = @idCliente and  PAS_idViaje = VIA_numViaje and PAS_idViaje in " + 
-                        " (SELECT VIA_IDVIAJE FROM NOT_NULL.Viaje WHERE ABS(DATEDIFF(hour, VIA_fecSalida, a.VIA_fecSalida)) < 24);", parametros);
+                cant = Convert.ToInt32(Conector.Datos.TraerEscalarDeComando("select count(*) from NOT_NULL.Pasaje " +
+                        "where PAS_idCliente = @idCliente and  PAS_idViaje in (SELECT b.VIA_numViaje " +
+                        " FROM NOT_NULL.Viaje as a, NOT_NULL.Viaje as b WHERE " +
+                        "ABS(DATEDIFF(hour, b.VIA_fecSalida, a.VIA_fecSalida)) < 24 and a.VIA_numViaje = '10547');", parametros));
                 
                 return (cant > 0);
             }
