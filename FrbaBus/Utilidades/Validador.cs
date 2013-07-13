@@ -22,7 +22,7 @@ namespace FrbaBus.Utilidades
 
         internal static bool esNumeroReal(String text)
         {
-            Regex regex = new Regex("^\\d+\\.?\\d{1,2}$" );
+            Regex regex = new Regex("^\\d+(\\.\\d{1,2}){0,1}$" );
             return regex.IsMatch(text);
         }
         
@@ -44,5 +44,16 @@ namespace FrbaBus.Utilidades
             return regex.IsMatch(text);
         }
 
+        internal static bool esTarjetaValida(String text)
+        {
+            Regex regex = new Regex("^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$");
+            return regex.IsMatch(text);
+        }
+
+        internal static bool esVencTarjValido(String text)
+        {
+            Regex regex = new Regex("^([0][1-9]|[1][0-2])([1][3-9]|[2][0-9])$");
+            return regex.IsMatch(text);
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace FrbaBus.Compra_de_Pasajes
         public bool Cancelado { get; set; }
         private Double TotalAPagar;
         public bool Efectivo { get; set; }
+        public Tarjeta Tar { get; set; }
 
         public DatosPago(Double valorTotal, Boolean habEfectivo)
         {
@@ -29,6 +30,8 @@ namespace FrbaBus.Compra_de_Pasajes
                 efectivo.Visible = true;
             else
                 efectivo.Visible = false;
+
+            Tarjeta.LlenarComboTipos(tipos);
         }
 
         private void cancelar_Click(object sender, EventArgs e)
@@ -94,6 +97,40 @@ namespace FrbaBus.Compra_de_Pasajes
                 return;
             }
 
+            if (!efectivo.Checked)
+            {
+                if (!Validador.esVencTarjValido(vencimiento.Text))
+                {
+                    MessageBox.Show("El vencimiento de la tarjeta no es válido");
+                    return;
+                }
+
+                if (!Validador.esTarjetaValida(numero.Text))
+                {
+                    MessageBox.Show("El número de la tarjeta no es válido");
+                    return;
+                }
+
+                if (!Validador.esNumericoEnteroPositivo(codigo.Text) || codigo.TextLength < 3)
+                {
+                    MessageBox.Show("El código de seguridad de la tarjeta no es válido");
+                    return;
+                }
+
+                Tar = new Tarjeta(numero.Text, vencimiento.Text, Convert.ToInt32(tipos.SelectedValue), Convert.ToInt16(codigo.Text));
+
+                if (!Tar.Insertar())
+                {
+                    MessageBox.Show("Ocurrió un error al cargar la tarjeta, por favor intente nuevamente");
+                    return;
+                }
+            }
+            else
+            {
+                Tar = new Tarjeta();
+            }
+
+
             //Actualizo cliente o inserto uno nuevo
             this.Clie.Mail = mail.Text;
             this.Clie.Telefono = telefono.Text;
@@ -121,8 +158,6 @@ namespace FrbaBus.Compra_de_Pasajes
                     return;
                 }
             }
-
-            Efectivo = efectivo.Checked;
 
             this.Hide();
         }
@@ -170,6 +205,14 @@ namespace FrbaBus.Compra_de_Pasajes
                 datosTarjeta.Enabled = true;
             
             panelDocumento.Enabled = false;
+        }
+
+        private void efectivo_CheckedChanged(object sender, EventArgs e)
+        {
+            if (efectivo.Checked)
+                datosTarjeta.Enabled = false;
+            else
+                datosTarjeta.Enabled = true;
         }
     }
 }

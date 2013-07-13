@@ -197,7 +197,7 @@ namespace FrbaBus.AccesoADatos.Orm
             {
                 Hashtable parametros = new Hashtable();
 
-                parametros.Add("@idTipoServ", idTipoServ);
+                parametros.Add("@idTipoServicio", idTipoServ);
                 parametros.Add("@idCiuOri", idCiuOri);
                 parametros.Add("@idCiuDest", idCiuDest);
 

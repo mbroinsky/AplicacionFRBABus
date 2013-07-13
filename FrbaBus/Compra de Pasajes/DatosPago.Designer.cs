@@ -54,14 +54,23 @@
             this.lblTotalAPagar = new System.Windows.Forms.Label();
             this.datosTarjeta = new System.Windows.Forms.GroupBox();
             this.efectivo = new System.Windows.Forms.CheckBox();
+            this.tipos = new System.Windows.Forms.ComboBox();
+            this.lblTipos = new System.Windows.Forms.Label();
+            this.numero = new System.Windows.Forms.TextBox();
+            this.lblNumero = new System.Windows.Forms.Label();
+            this.vencimiento = new System.Windows.Forms.TextBox();
+            this.lblFecVenc = new System.Windows.Forms.Label();
+            this.lblCodigo = new System.Windows.Forms.Label();
+            this.codigo = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.datos.SuspendLayout();
             this.panelDocumento.SuspendLayout();
+            this.datosTarjeta.SuspendLayout();
             this.SuspendLayout();
             // 
             // cancelar
             // 
-            this.cancelar.Location = new System.Drawing.Point(13, 502);
+            this.cancelar.Location = new System.Drawing.Point(5, 526);
             this.cancelar.Name = "cancelar";
             this.cancelar.Size = new System.Drawing.Size(75, 23);
             this.cancelar.TabIndex = 12;
@@ -170,7 +179,7 @@
             // 
             // siguiente
             // 
-            this.siguiente.Location = new System.Drawing.Point(292, 502);
+            this.siguiente.Location = new System.Drawing.Point(292, 526);
             this.siguiente.Name = "siguiente";
             this.siguiente.Size = new System.Drawing.Size(75, 23);
             this.siguiente.TabIndex = 13;
@@ -294,10 +303,18 @@
             // 
             // datosTarjeta
             // 
+            this.datosTarjeta.Controls.Add(this.codigo);
+            this.datosTarjeta.Controls.Add(this.lblCodigo);
+            this.datosTarjeta.Controls.Add(this.lblFecVenc);
+            this.datosTarjeta.Controls.Add(this.vencimiento);
+            this.datosTarjeta.Controls.Add(this.lblNumero);
+            this.datosTarjeta.Controls.Add(this.numero);
+            this.datosTarjeta.Controls.Add(this.lblTipos);
+            this.datosTarjeta.Controls.Add(this.tipos);
             this.datosTarjeta.Enabled = false;
             this.datosTarjeta.Location = new System.Drawing.Point(6, 408);
             this.datosTarjeta.Name = "datosTarjeta";
-            this.datosTarjeta.Size = new System.Drawing.Size(366, 88);
+            this.datosTarjeta.Size = new System.Drawing.Size(366, 112);
             this.datosTarjeta.TabIndex = 22;
             this.datosTarjeta.TabStop = false;
             this.datosTarjeta.Text = "Datos Tarjeta";
@@ -312,12 +329,82 @@
             this.efectivo.TabIndex = 23;
             this.efectivo.Text = "Paga en Efectivo";
             this.efectivo.UseVisualStyleBackColor = true;
+            this.efectivo.CheckedChanged += new System.EventHandler(this.efectivo_CheckedChanged);
+            // 
+            // tipos
+            // 
+            this.tipos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.tipos.FormattingEnabled = true;
+            this.tipos.Location = new System.Drawing.Point(101, 19);
+            this.tipos.Name = "tipos";
+            this.tipos.Size = new System.Drawing.Size(256, 21);
+            this.tipos.TabIndex = 0;
+            // 
+            // lblTipos
+            // 
+            this.lblTipos.AutoSize = true;
+            this.lblTipos.Location = new System.Drawing.Point(12, 22);
+            this.lblTipos.Name = "lblTipos";
+            this.lblTipos.Size = new System.Drawing.Size(75, 13);
+            this.lblTipos.TabIndex = 1;
+            this.lblTipos.Text = "Tipo de tarjeta";
+            // 
+            // numero
+            // 
+            this.numero.Location = new System.Drawing.Point(101, 47);
+            this.numero.MaxLength = 19;
+            this.numero.Name = "numero";
+            this.numero.Size = new System.Drawing.Size(256, 20);
+            this.numero.TabIndex = 2;
+            // 
+            // lblNumero
+            // 
+            this.lblNumero.AutoSize = true;
+            this.lblNumero.Location = new System.Drawing.Point(12, 50);
+            this.lblNumero.Name = "lblNumero";
+            this.lblNumero.Size = new System.Drawing.Size(44, 13);
+            this.lblNumero.TabIndex = 3;
+            this.lblNumero.Text = "Numero";
+            // 
+            // vencimiento
+            // 
+            this.vencimiento.Location = new System.Drawing.Point(101, 73);
+            this.vencimiento.MaxLength = 4;
+            this.vencimiento.Name = "vencimiento";
+            this.vencimiento.Size = new System.Drawing.Size(100, 20);
+            this.vencimiento.TabIndex = 4;
+            // 
+            // lblFecVenc
+            // 
+            this.lblFecVenc.AutoSize = true;
+            this.lblFecVenc.Location = new System.Drawing.Point(12, 76);
+            this.lblFecVenc.Name = "lblFecVenc";
+            this.lblFecVenc.Size = new System.Drawing.Size(65, 13);
+            this.lblFecVenc.TabIndex = 5;
+            this.lblFecVenc.Text = "Vencimiento";
+            // 
+            // lblCodigo
+            // 
+            this.lblCodigo.AutoSize = true;
+            this.lblCodigo.Location = new System.Drawing.Point(211, 76);
+            this.lblCodigo.Name = "lblCodigo";
+            this.lblCodigo.Size = new System.Drawing.Size(65, 13);
+            this.lblCodigo.TabIndex = 6;
+            this.lblCodigo.Text = "Código Seg.";
+            // 
+            // codigo
+            // 
+            this.codigo.Location = new System.Drawing.Point(282, 73);
+            this.codigo.MaxLength = 3;
+            this.codigo.Name = "codigo";
+            this.codigo.Size = new System.Drawing.Size(75, 20);
+            this.codigo.TabIndex = 7;
             // 
             // DatosPago
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(379, 537);
+            this.ClientSize = new System.Drawing.Size(379, 561);
             this.ControlBox = false;
             this.Controls.Add(this.efectivo);
             this.Controls.Add(this.datosTarjeta);
@@ -335,6 +422,8 @@
             this.datos.PerformLayout();
             this.panelDocumento.ResumeLayout(false);
             this.panelDocumento.PerformLayout();
+            this.datosTarjeta.ResumeLayout(false);
+            this.datosTarjeta.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -368,5 +457,13 @@
         private System.Windows.Forms.Label lblTotalAPagar;
         private System.Windows.Forms.GroupBox datosTarjeta;
         private System.Windows.Forms.CheckBox efectivo;
+        private System.Windows.Forms.ComboBox tipos;
+        private System.Windows.Forms.Label lblNumero;
+        private System.Windows.Forms.TextBox numero;
+        private System.Windows.Forms.Label lblTipos;
+        private System.Windows.Forms.Label lblCodigo;
+        private System.Windows.Forms.Label lblFecVenc;
+        private System.Windows.Forms.TextBox vencimiento;
+        private System.Windows.Forms.TextBox codigo;
     }
 }

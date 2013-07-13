@@ -128,6 +128,11 @@ BEGIN
     DROP TABLE NOT_NULL.Numerador
 END
 
+IF OBJECT_ID(N'NOT_NULL.TipoTarjeta') IS NOT NULL
+BEGIN
+    DROP TABLE NOT_NULL.TipoTarjeta
+END
+
 IF OBJECT_ID(N'NOT_NULL.ListarRoles') IS NOT NULL
 BEGIN
     DROP PROCEDURE NOT_NULL.ListarRoles
@@ -480,7 +485,8 @@ CREATE TABLE NOT_NULL.Venta
 	VEN_idVenta NUMERIC(18,0) NOT NULL
 	,VEN_fecVenta DATETIME NOT NULL 
 	,VEN_total DECIMAL(10, 2) NOT NULL 
-	,VEN_idTarjeta INT  NULL 
+	,VEN_idTarjeta INT NULL
+	,VEN_idPagador INT NULL 
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Venta ADD CONSTRAINT PK_Venta PRIMARY KEY CLUSTERED (VEN_idVenta)
@@ -492,12 +498,23 @@ CREATE TABLE NOT_NULL.Tarjeta
 (
 	TAR_idTarjeta INT NOT NULL IDENTITY(1, 1)
 	,TAR_nroTarjeta VARCHAR(20) NOT NULL 
-	,TAR_fecVencimiento DATETIME NOT NULL 
+	,TAR_fecVencimiento VARCHAR(4) NOT NULL 
 	,TAR_tipo INT NOT NULL 
 	,TAR_codSeg SMALLINT NOT NULL 
 )
 ON [PRIMARY]
 ALTER TABLE NOT_NULL.Tarjeta ADD CONSTRAINT PK_Tarjeta PRIMARY KEY (TAR_idTarjeta)
+
+
+-- Create Table: TipoTarjeta
+--------------------------------------------------------------------------------
+CREATE TABLE NOT_NULL.TipoTarjeta
+(
+	TIPT_idTipoTarjeta INT NOT NULL IDENTITY(1, 1)
+	,TIPT_descripcion VARCHAR(30) NOT NULL 
+)
+ON [PRIMARY]
+ALTER TABLE NOT_NULL.TipoTarjeta ADD CONSTRAINT PK_TipoTarjeta PRIMARY KEY (TIPT_idTipoTarjeta)
 
 
 -- Create Table: DevolucionVenta
@@ -715,6 +732,12 @@ FOREIGN KEY ( VEN_idTarjeta) REFERENCES NOT_NULL.Tarjeta ( TAR_idTarjeta)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
+-- Create Foreign Key: Venta.VEN_idPagador -> Cliente.CLI_idCliente
+ALTER TABLE NOT_NULL.Venta ADD CONSTRAINT FK_Venta_VEN_idPagador_Cliente_CLI_idCliente
+FOREIGN KEY ( VEN_idPagador) REFERENCES NOT_NULL.Cliente ( CLI_idCliente)
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
+
 
 -- Create Foreign Key: Puntos.PTS_idCliente -> Cliente.CLI_idCliente
 ALTER TABLE NOT_NULL.Puntos ADD CONSTRAINT FK_Puntos_PTS_idCliente_Cliente_CLI_idCliente
@@ -826,6 +849,12 @@ FOREIGN KEY (DXP_idPasaje) REFERENCES NOT_NULL.Pasaje(PAS_numPasaje)
 ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
+--- Create Foreign Key: Tarjeta.TAR_idTipo -> TipoTarjeta.TIPT_idTipoTarjeta
+ALTER TABLE NOT_NULL.Tarjeta ADD CONSTRAINT FK_Tarjeta_TAR_tipo_TipoTarjeta_TIPT_idTipoTarjeta
+FOREIGN KEY (TAR_tipo) REFERENCES NOT_NULL.TipoTarjeta(TIPT_idTipoTarjeta)
+ON UPDATE NO ACTION
+ON DELETE NO ACTION
+
 GO
 
 --Creación de SPs de Migración
@@ -905,6 +934,18 @@ BEGIN
 	
 	INSERT INTO NOT_NULL.Numerador SELECT MAX(Paquete_Codigo) + 1, 'Encomienda' FROM gd_esquema.Maestra; 
 	
+	INSERT INTO NOT_NULL.TipoTarjeta VALUES 
+		('Visa (1 Pago)'), 
+		('Visa (3 Pagos)'), 
+		('Visa (6 Pagos)'), 
+		('Visa (9 Pagos)'),
+		('Visa (12 Pagos)'),
+		('American Express (1 Pago)'), 
+		('American Express (3 Pagos)'), 
+		('American Express (6 Pagos)'),
+		('Mastercard (1 Pago)'), 
+		('Mastercard (3 Pagos)'), 
+		('Nativa (1 Pago)');
 END
 GO
 
@@ -1051,8 +1092,8 @@ FETCH VENTAPASAJESCUR INTO
 		      		
 		EXECUTE NOT_NULL.TraerNumerador @tabla = 'Venta', @numero = @idVenta OUTPUT;
 
-		INSERT INTO NOT_NULL.Venta(VEN_idVenta, VEN_fecVenta, VEN_total, VEN_idTarjeta)
-		VALUES (@idVenta, @pasajeFechaCompra, @pasajePrecio, null)
+		INSERT INTO NOT_NULL.Venta(VEN_idVenta, VEN_fecVenta, VEN_total, VEN_idTarjeta, VEN_idPagador)
+		VALUES (@idVenta, @pasajeFechaCompra, @pasajePrecio, null, @clienteId)
 		
 		INSERT INTO NOT_NULL.Pasaje(PAS_idVenta, PAS_codigo, PAS_idViaje, PAS_idCliente, PAS_numButaca, PAS_numMicro, PAS_precio)
 		VALUES(@idVenta, @pasajeCodigo,@viajeId ,@clienteId, @numeroButaca, @microId, @pasajePrecio)
@@ -1150,8 +1191,8 @@ FETCH VENTAENCOMIENDACUR INTO
 		      
 		EXECUTE NOT_NULL.TraerNumerador @tabla = 'Venta', @numero = @idVenta OUTPUT;
 	
-		INSERT INTO NOT_NULL.Venta(VEN_idVenta, VEN_fecVenta, VEN_total, VEN_idTarjeta)
-		VALUES (@idVenta, @paqueteFechaCompra, @paquetePrecio, null)
+		INSERT INTO NOT_NULL.Venta(VEN_idVenta, VEN_fecVenta, VEN_total, VEN_idTarjeta, VEN_idPagador)
+		VALUES (@idVenta, @paqueteFechaCompra, @paquetePrecio, null, @clienteId)
 		
 		INSERT INTO NOT_NULL.Encomienda(ENC_idVenta, ENC_codigo, ENC_idViaje, ENC_idCliente, ENC_kilos, ENC_precio)
 		VALUES(@idVenta, @paqueteCodigo, @viajeId ,@clienteId, @paqueteKG, @paquetePrecio)
