@@ -97,6 +97,8 @@ namespace FrbaBus.Abm_Micro
 
                     Micro.bajaDefinitiva(Convert.ToInt32(fila.Cells["id"].Value));
 
+                    buscarMicroAlternativo(Convert.ToInt32(fila.Cells["id"].Value));
+
                     Micros.Columns.Clear();
 
                 }
@@ -115,6 +117,18 @@ namespace FrbaBus.Abm_Micro
             if (e.ColumnIndex == Micros.Columns.Count - 3)
             {
                 var fila = Micros.Rows[e.RowIndex];
+                
+                var log = new Abm_Micro.FormularioMantenimiento();
+                log.id = Convert.ToInt32(fila.Cells["id"].Value);
+                this.SetVisibleCore(false);
+                log.ShowDialog();
+                this.SetVisibleCore(true);
+
+                buscarMicroAlternativo(Convert.ToInt32(fila.Cells["id"].Value));
+
+
+                /*
+                var fila = Micros.Rows[e.RowIndex];
 
                 String fechaIni = null;
                 String fechaFin = null;
@@ -125,6 +139,7 @@ namespace FrbaBus.Abm_Micro
                 Micro.cambiarEstado(Convert.ToInt32(fila.Cells["id"].Value), fechaIni, fechaFin);
 
                 Micros.Columns.Clear();
+                */
             }
 
 
@@ -185,6 +200,7 @@ namespace FrbaBus.Abm_Micro
 
                 DataGridViewButtonCell btnEstado = new DataGridViewButtonCell();
                 btnEstado.UseColumnTextForButtonValue = false;
+                btnEstado.Value = "Realizar Mantenimiento";
 
                 DataGridViewButtonCell btnHabilitar = new DataGridViewButtonCell();
                 btnHabilitar.UseColumnTextForButtonValue = false;
@@ -192,15 +208,6 @@ namespace FrbaBus.Abm_Micro
                 DataGridViewButtonCell btnBajaDefinitiva = new DataGridViewButtonCell();
                 btnBajaDefinitiva.UseColumnTextForButtonValue = false;
                 btnBajaDefinitiva.Value = "Baja definitiva";
-
-                if (DBNull.Value.Equals(row.Cells["Ini. Mantenimiento"].Value) || (!DBNull.Value.Equals(row.Cells["Ini. Mantenimiento"].Value) && !DBNull.Value.Equals(row.Cells["Fin Mantenimiento"].Value)))
-                {
-                    btnEstado.Value = "Enviar a Mant.";
-                }
-                else
-                {
-                    btnEstado.Value = "Reincorporar";
-                }
 
                 if (Convert.ToInt32(row.Cells["Habilitado"].Value) == 0)
                 {
@@ -216,7 +223,6 @@ namespace FrbaBus.Abm_Micro
                 row.Cells["Estado del servicio"] = btnEstado;
                 row.Cells["Habilitar"] = btnHabilitar;
                 row.Cells["Baja Definitiva"] = btnBajaDefinitiva;
-
             }
 
             Micros.ClearSelection();
@@ -225,6 +231,25 @@ namespace FrbaBus.Abm_Micro
         private void idMarca_SelectedIndexChanged(object sender, EventArgs e)
         {
                 cargarComboBoxModelo();
+        }
+
+        private void buscarMicroAlternativo(int idMicro)
+        {
+            DataTable tablaDeViajesYRecorridos = Micro.buscarViajesYRecorridos(idMicro); // Get the data table.
+
+            if (tablaDeViajesYRecorridos != null)
+            {
+                foreach (DataRow row in tablaDeViajesYRecorridos.Rows) // Loop over the rows.
+                {
+                    var log = new Abm_Micro.AlternativaMicro();
+                    log.idViaje = Convert.ToInt32(row[0]);
+                    log.idRecorrido = Convert.ToInt32(row[1]);
+                    log.fechaInicio = Convert.ToDateTime(row[2]);
+                    this.SetVisibleCore(false);
+                    log.ShowDialog();
+                    this.SetVisibleCore(true);
+                }
+            }
         }
     }
 }

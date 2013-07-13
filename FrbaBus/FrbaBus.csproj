@@ -75,6 +75,18 @@
     <Compile Include="Abm Micro\ABMMicro.Designer.cs">
       <DependentUpon>ABMMicro.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Micro\AlternativaMicro.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Micro\AlternativaMicro.Designer.cs">
+      <DependentUpon>AlternativaMicro.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Micro\FormularioMantenimiento.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Micro\FormularioMantenimiento.Designer.cs">
+      <DependentUpon>FormularioMantenimiento.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Micro\SeleccionMicro.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -218,6 +230,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Micro\ABMMicro.resx">
       <DependentUpon>ABMMicro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Micro\AlternativaMicro.resx">
+      <DependentUpon>AlternativaMicro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Micro\FormularioMantenimiento.resx">
+      <DependentUpon>FormularioMantenimiento.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Micro\SeleccionMicro.resx">
       <DependentUpon>SeleccionMicro.cs</DependentUpon>

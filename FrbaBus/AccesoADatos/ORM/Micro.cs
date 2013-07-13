@@ -38,7 +38,7 @@ namespace FrbaBus.AccesoADatos.Orm
         {
             Micro micro = new Micro();
 
-            String query =  "select MIC_numMicro as 'ID', " +
+            String query = "select MIC_numMicro as 'ID', " +
                             "MIC_patente as 'Matricula', " +
                             "MIC_idTipoServicio as 'Tipo de Serv.', " +
                             "MIC_kilosEncomiendas as 'Capacidad', " +
@@ -62,7 +62,7 @@ namespace FrbaBus.AccesoADatos.Orm
             micro.IdModelo = Convert.ToInt16(row["Modelo"].ToString());
             micro.FechaAlta = Convert.ToDateTime(row["Fec. Alta"].ToString());
 
-            micro.Butacas = Orm.Butaca.TraerButacasPorMicro(micro.Id);           
+            micro.Butacas = Orm.Butaca.TraerButacasPorMicro(micro.Id);
 
             return micro;
         }
@@ -75,9 +75,9 @@ namespace FrbaBus.AccesoADatos.Orm
             if (idMarca.Length == 0) { idMarca = null; };
             if (idModelo.Length == 0) { idModelo = null; };
             if (capacidad.Length == 0) { capacidad = null; };
-            
-            
-            DataSet ds = Conector.Datos.EjecutarProcedure("NOT_NULL.BuscarMicros", patenteABuscar, idtipoDeServicio, idMarca, idModelo, capacidad );
+
+
+            DataSet ds = Conector.Datos.EjecutarProcedure("NOT_NULL.BuscarMicros", patenteABuscar, idtipoDeServicio, idMarca, idModelo, capacidad);
 
             DataTable dt = ds.Tables[0];
 
@@ -116,7 +116,7 @@ namespace FrbaBus.AccesoADatos.Orm
 
                 parametros.Add("@idRecorrido", idRecorrido);
                 parametros.Add("@fecSalida", fecSalida.ToString("yyyy-MM-dd HH:mm:ss"));
-                
+
                 micros.DataSource = Conector.Datos.EjecutarComandoADataTable(sql, parametros);
                 micros.ValueMember = "id";
                 micros.DisplayMember = "MIC_patente";
@@ -170,7 +170,7 @@ namespace FrbaBus.AccesoADatos.Orm
 
                 Conector.Datos.IniciarTransaccion();
 
-                Conector.Datos.EjecutarComando( "insert into NOT_NULL.Micro " +
+                Conector.Datos.EjecutarComando("insert into NOT_NULL.Micro " +
                                                 " (MIC_patente, MIC_idTipoServicio, MIC_kilosEncomiendas, MIC_habilitado, MIC_idMarca, MIC_idModelo, MIC_fechaAlta) " +
                                                 " values (@Patente, @IdTipoServicio, @KilosEncomiendas, @Habilitado, @IdMarca, @IdModelo, @FechaAlta)", parametros);
 
@@ -203,7 +203,7 @@ namespace FrbaBus.AccesoADatos.Orm
                     Conector.Datos.EjecutarComando("UPDATE NOT_NULL.Micro SET MIC_habilitado = 0 where MIC_numMicro = @numMicro", parametros);
                 }
 
-                 return true;
+                return true;
             }
             catch
             {
@@ -211,24 +211,16 @@ namespace FrbaBus.AccesoADatos.Orm
             }
         }
 
-        public static bool cambiarEstado(int numMicro, String inicioMantenimiento, String finMantenimiento)
+        public static bool registarMantenimiento(int numMicro, String inicioMantenimiento, String finMantenimiento)
         {
             try
             {
                 Hashtable parametros = new Hashtable();
                 parametros.Add("@numMicro", numMicro);
-                parametros.Add("@fecha", Configuracion.Instance().FechaSistema);
-                
+                parametros.Add("@inicioMan", inicioMantenimiento);
+                parametros.Add("@finMan", finMantenimiento);
 
-                if (inicioMantenimiento == null || (inicioMantenimiento != null && finMantenimiento != null))
-                {
-                    Conector.Datos.EjecutarComando("INSERT INTO NOT_NULL.HistoricoMantenimiento (HMAN_idMicro, HMAN_fecInicio, HMAN_fecFin) VALUES ( @numMicro, @fecha, NULL)", parametros);
-                }
-                else
-                {
-                    parametros.Add("@inicioMan", inicioMantenimiento);
-                    Conector.Datos.EjecutarComando("UPDATE NOT_NULL.HistoricoMantenimiento SET HMAN_fecFin = @fecha WHERE HMAN_idMicro = @numMicro and HMAN_id = (SELECT MAX(HMAN_id) FROM NOT_NULL.HistoricoMantenimiento WHERE HMAN_idMicro = @numMicro)", parametros);
-                }            
+                Conector.Datos.EjecutarComando("INSERT INTO NOT_NULL.HistoricoMantenimiento (HMAN_idMicro, HMAN_fecInicio, HMAN_fecFin) VALUES ( @numMicro, @inicioMan, @finMan)", parametros);
 
                 return true;
             }
@@ -240,11 +232,11 @@ namespace FrbaBus.AccesoADatos.Orm
 
         internal static void bajaDefinitiva(int numMicro)
         {
-          Hashtable parametros = new Hashtable();
-          parametros.Add("@fecha", Configuracion.Instance().FechaSistema);
-          parametros.Add("@numMicro", numMicro);
+            Hashtable parametros = new Hashtable();
+            parametros.Add("@fecha", Configuracion.Instance().FechaSistema);
+            parametros.Add("@numMicro", numMicro);
 
-          Conector.Datos.EjecutarComando("UPDATE NOT_NULL.Micro SET MIC_fecBaja = @fecha where MIC_numMicro = @numMicro", parametros);
+            Conector.Datos.EjecutarComando("UPDATE NOT_NULL.Micro SET MIC_fecBaja = @fecha where MIC_numMicro = @numMicro", parametros);
         }
 
         internal bool Modificar(int idMicro)
@@ -269,6 +261,21 @@ namespace FrbaBus.AccesoADatos.Orm
             catch
             {
                 return false;
+            }
+        }
+
+        internal static DataTable buscarViajesYRecorridos(int idMicro)
+        {
+            try
+            {
+                Hashtable parametros = new Hashtable();
+                parametros.Add("@IdMicro", idMicro);
+                return Conector.Datos.EjecutarComando("SELECT VIA_numViaje, VIA_codRecorrido, VIA_fecSalida FROM NOT_NULL.Viaje WHERE VIA_numMicro = @IdMicro", parametros).Tables[0];
+            }
+
+            catch
+            {
+                return null;
             }
         }
     }
