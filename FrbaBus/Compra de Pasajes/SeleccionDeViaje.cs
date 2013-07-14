@@ -34,7 +34,7 @@ namespace FrbaBus.Compra_de_Pasajes
 
         private void buscar_Click(object sender, EventArgs e)
         {
-            if (fechaViaje.Value.ToString("dd/MM/yyyy").CompareTo(Configuracion.Instance().FechaSistema.ToString("dd/MM/yyyy")) < 0)
+            if (fechaViaje.Value.ToString("yyyy-MM-dd").CompareTo(Configuracion.Instance().FechaSistema.ToString("yyyy-MM-dd")) < 0)
             {
                 MessageBox.Show("La fecha de viaje no es válida");
                 return;
