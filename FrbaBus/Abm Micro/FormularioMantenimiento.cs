@@ -13,10 +13,17 @@ namespace FrbaBus.Abm_Micro
     public partial class FormularioMantenimiento : Form
     {
         public int id;
+        public bool result;
+        public DateTime fechaInicio;
+        public DateTime fechaFin;
 
         public FormularioMantenimiento()
         {
             InitializeComponent();
+
+            fechaDeAlta.Value = Configuracion.Instance().FechaSistema;
+
+            fechaDeBaja.Value = Configuracion.Instance().FechaSistema;
         }
 
         private void aceptar_Click(object sender, EventArgs e)
@@ -34,6 +41,10 @@ namespace FrbaBus.Abm_Micro
             }
 
             Micro.registarMantenimiento(id, Convert.ToString(fechaDeBaja.Value), Convert.ToString(fechaDeAlta.Value));
+
+            result = true;
+            fechaInicio = fechaDeBaja.Value;
+            fechaFin = fechaDeAlta.Value; 
 
             this.Close();
 

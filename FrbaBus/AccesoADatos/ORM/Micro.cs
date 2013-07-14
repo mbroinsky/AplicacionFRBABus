@@ -264,13 +264,20 @@ namespace FrbaBus.AccesoADatos.Orm
             }
         }
 
-        internal static DataTable buscarViajesYRecorridos(int idMicro)
+        internal static DataTable buscarViajesYRecorridosEnPeriodo(int idMicro, DateTime fechaInicio, DateTime fechaFin)
         {
             try
             {
                 Hashtable parametros = new Hashtable();
                 parametros.Add("@IdMicro", idMicro);
-                return Conector.Datos.EjecutarComando("SELECT VIA_numViaje, VIA_codRecorrido, VIA_fecSalida FROM NOT_NULL.Viaje WHERE VIA_numMicro = @IdMicro", parametros).Tables[0];
+                parametros.Add("@fechaInicio", fechaInicio);
+                parametros.Add("@fechaFin", fechaFin);
+                return Conector.Datos.EjecutarComando(
+                    "SELECT VIA_numViaje, VIA_codRecorrido, VIA_fecSalida " +
+                    "FROM NOT_NULL.Viaje " +
+                    "WHERE VIA_numMicro = @IdMicro AND "+
+                    "(VIA_fecLlegadaEstimada >= @fechaInicio AND VIA_fecLlegadaEstimada <= @fechaFin) OR" +
+                    "(VIA_fecSalida >= @fechaInicio AND VIA_fecSalida <= @fechaFin)", parametros).Tables[0];
             }
 
             catch
