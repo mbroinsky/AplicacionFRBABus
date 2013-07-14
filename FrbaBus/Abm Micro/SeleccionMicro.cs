@@ -109,7 +109,7 @@ namespace FrbaBus.Abm_Micro
             {
                 var fila = Micros.Rows[e.RowIndex];
 
-                Micro.cambiarHabilitado(Convert.ToInt32(fila.Cells["id"].Value), Convert.ToInt32(fila.Cells["Ini. Mantenimiento"].Value));
+                Micro.cambiarHabilitado(Convert.ToInt32(fila.Cells["id"].Value), Convert.ToInt32(fila.Cells["Habilitado"].Value));
 
                 Micros.Columns.Clear();
             }

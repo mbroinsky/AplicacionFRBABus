@@ -268,6 +268,11 @@ BEGIN
 	DROP PROCEDURE NOT_NULL.TraerButacasVacias;
 END
 
+IF OBJECT_ID(N'NOT_NULL.CancelarTodosLosPasajesYEncomiendasDeUnViaje') IS NOT NULL
+BEGIN
+	DROP PROCEDURE NOT_NULL.CancelarTodosLosPasajesYEncomiendasDeUnViaje;
+END
+
 IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'NOT_NULL')
 BEGIN
 	DROP SCHEMA NOT_NULL;
@@ -1745,13 +1750,13 @@ END
 GO	
 
 CREATE PROCEDURE NOT_NULL.CancelarTodosLosPasajesYEncomiendasDeUnViaje
-	@idViaje int = null,
-	@fechaDev datetime,
-	@idDevolucion int
+	@idViaje int,
+	@fechaDev datetime
 AS
 BEGIN
 
 	/*CANCELACION DE ENCOMIENDAS*/
+	DECLARE @idDevolucion int
 
 	IF EXISTS (SELECT TOP 1 * FROM  NOT_NULL.Encomienda WHERE ENC_idViaje = @idViaje) 
 	BEGIN
