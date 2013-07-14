@@ -33,7 +33,7 @@ namespace FrbaBus.AccesoADatos.Orm
                 parametros.Add("@NumMicro", NumMicro);
                 parametros.Add("@IdRecorrido", IdRecorrido);
                 parametros.Add("@FechaSalida", FechaSalida.ToString("yyyy-MM-dd HH:mm:ss"));
-                
+
                 Conector.Datos.EjecutarComando("insert into NOT_NULL.Viaje " +
                        " (VIA_numMicro, VIA_codRecorrido, VIA_fecSalida, VIA_fecLlegadaEstimada) " +
                        " Select @NumMicro, @IdRecorrido, @FechaSalida, " +
@@ -80,13 +80,13 @@ namespace FrbaBus.AccesoADatos.Orm
                 }
                 else
                     parametros.Add("@fecViaje", fecViaje);
-                
+
                 sql += "@idOrigen = REC_idCiudadOrigen AND @idDestino = REC_idCiudadDestino AND VIA_habilitado = '1'" +
                     "order by 2;";
 
                 parametros.Add("@idOrigen", idOrigen);
                 parametros.Add("@idDestino", idDestino);
- 
+
                 DataTable dt = Conector.Datos.EjecutarComandoADataTable(sql, parametros);
 
                 return dt;
@@ -98,7 +98,48 @@ namespace FrbaBus.AccesoADatos.Orm
                 return null;
             }
         }
+
+
+        public static bool actualizarViaje(int idViaje, int microId)
+        {
+            try
+            {
+                Hashtable parametros = new Hashtable();
+
+                parametros.Add("@idViaje", idViaje);
+                parametros.Add("@idMicro", microId);
+
+                Conector.Datos.EjecutarComando("UPDATE NOT_NULL.Viaje SET VIA_numMicro = @idMicro where VIA_numViaje = @idViaje", parametros);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        internal static bool CancelarTodosLosPasajesYEncomiendas(int idViaje, DateTime fechaDeCancelacion)
+        {
+            try
+            {
+                Hashtable parametros = new Hashtable();
+
+                parametros.Add("@idViaje", idViaje);
+                parametros.Add("@fechaDeCancelacion", fechaDeCancelacion);
+
+                Conector.Datos.EjecutarProcedure("NOT_NULL.CancelarTodosLosPasajesYEncomiendasDeUnViaje", parametros);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+
+
+            }
+        }
     }
 
-
 }
+

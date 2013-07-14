@@ -34,7 +34,8 @@
             this.asignarNuevoMicro = new System.Windows.Forms.Button();
             this.cancelarPasajes = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
+            this.campoViaje = new System.Windows.Forms.MaskedTextBox();
+            this.buscarMicros = new System.Windows.Forms.Button();
             this.grpMicros.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,7 +52,7 @@
             // 
             this.grpMicros.Controls.Add(this.microsDisp);
             this.grpMicros.Enabled = false;
-            this.grpMicros.Location = new System.Drawing.Point(12, 86);
+            this.grpMicros.Location = new System.Drawing.Point(12, 126);
             this.grpMicros.Name = "grpMicros";
             this.grpMicros.Size = new System.Drawing.Size(185, 191);
             this.grpMicros.TabIndex = 12;
@@ -71,21 +72,23 @@
             // 
             // asignarNuevoMicro
             // 
-            this.asignarNuevoMicro.Location = new System.Drawing.Point(12, 312);
+            this.asignarNuevoMicro.Location = new System.Drawing.Point(12, 352);
             this.asignarNuevoMicro.Name = "asignarNuevoMicro";
             this.asignarNuevoMicro.Size = new System.Drawing.Size(185, 23);
             this.asignarNuevoMicro.TabIndex = 13;
             this.asignarNuevoMicro.Text = "Asignar nuevo micro";
             this.asignarNuevoMicro.UseVisualStyleBackColor = true;
+            this.asignarNuevoMicro.Click += new System.EventHandler(this.asignarNuevoMicro_Click);
             // 
             // cancelarPasajes
             // 
-            this.cancelarPasajes.Location = new System.Drawing.Point(12, 283);
+            this.cancelarPasajes.Location = new System.Drawing.Point(12, 323);
             this.cancelarPasajes.Name = "cancelarPasajes";
             this.cancelarPasajes.Size = new System.Drawing.Size(185, 23);
             this.cancelarPasajes.TabIndex = 14;
             this.cancelarPasajes.Text = "Cancelar Pasajes/Encomiendas";
             this.cancelarPasajes.UseVisualStyleBackColor = true;
+            this.cancelarPasajes.Click += new System.EventHandler(this.cancelarPasajes_Click);
             // 
             // label2
             // 
@@ -96,20 +99,31 @@
             this.label2.TabIndex = 15;
             this.label2.Text = "Viaje ID:";
             // 
-            // maskedTextBox1
+            // campoViaje
             // 
-            this.maskedTextBox1.Enabled = false;
-            this.maskedTextBox1.Location = new System.Drawing.Point(65, 58);
-            this.maskedTextBox1.Name = "maskedTextBox1";
-            this.maskedTextBox1.Size = new System.Drawing.Size(132, 20);
-            this.maskedTextBox1.TabIndex = 16;
+            this.campoViaje.Enabled = false;
+            this.campoViaje.Location = new System.Drawing.Point(65, 58);
+            this.campoViaje.Name = "campoViaje";
+            this.campoViaje.Size = new System.Drawing.Size(132, 20);
+            this.campoViaje.TabIndex = 16;
+            // 
+            // buscarMicros
+            // 
+            this.buscarMicros.Location = new System.Drawing.Point(12, 84);
+            this.buscarMicros.Name = "buscarMicros";
+            this.buscarMicros.Size = new System.Drawing.Size(185, 23);
+            this.buscarMicros.TabIndex = 17;
+            this.buscarMicros.Text = "Buscar Micros";
+            this.buscarMicros.UseVisualStyleBackColor = true;
+            this.buscarMicros.Click += new System.EventHandler(this.buscarMicros_Click);
             // 
             // AlternativaMicro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(207, 349);
-            this.Controls.Add(this.maskedTextBox1);
+            this.ClientSize = new System.Drawing.Size(207, 387);
+            this.Controls.Add(this.buscarMicros);
+            this.Controls.Add(this.campoViaje);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cancelarPasajes);
             this.Controls.Add(this.asignarNuevoMicro);
@@ -131,6 +145,7 @@
         private System.Windows.Forms.Button asignarNuevoMicro;
         private System.Windows.Forms.Button cancelarPasajes;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.MaskedTextBox maskedTextBox1;
+        private System.Windows.Forms.MaskedTextBox campoViaje;
+        private System.Windows.Forms.Button buscarMicros;
     }
 }

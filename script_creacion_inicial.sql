@@ -1744,6 +1744,32 @@ BEGIN
 END
 GO	
 
+CREATE PROCEDURE NOT_NULL.CancelarTodosLosPasajesYEncomiendasDeUnViaje
+	@idViaje int = null,
+	@fechaDev datetime,
+	@idDevolucion int
+AS
+BEGIN
+
+	/*CANCELACION DE ENCOMIENDAS*/
+
+	IF EXISTS (SELECT TOP 1 * FROM  NOT_NULL.Encomienda WHERE ENC_idViaje = @idViaje) 
+	BEGIN
+		UPDATE NOT_NULL.Encomienda SET ENC_cancelada = 1 WHERE ENC_idViaje = @idViaje
+		INSERT INTO NOT_NULL.Devolucion(DEV_fecha, DEV_motivo) VALUES (@fechaDev, 'Micro no disponible')
+		SET @idDevolucion = @@IDENTITY
+		INSERT INTO NOT_NULL.DevXEnc(DXE_idDevolucion, DXE_idEncomienda) (SELECT  @idDevolucion, ENC_numEnc FROM NOT_NULL.Encomienda WHERE ENC_cancelada = 1 AND ENC_idViaje = @idViaje)
+	END
+	/*CANCELACION DE PASAJES*/
+	IF EXISTS (SELECT TOP 1 * FROM  NOT_NULL.Pasaje WHERE PAS_idViaje = @idViaje) 
+	BEGIN
+		UPDATE NOT_NULL.Pasaje SET PAS_cancelado = 1 WHERE PAS_idViaje = @idViaje
+		INSERT INTO NOT_NULL.Devolucion(DEV_fecha, DEV_motivo) VALUES (@fechaDev, 'Micro no disponible')
+		SET @idDevolucion = @@IDENTITY
+		INSERT INTO NOT_NULL.DevXPas(DXP_idDevolucion, DXP_idPasaje) (SELECT  @idDevolucion, PAS_numPasaje FROM NOT_NULL.Pasaje WHERE PAS_cancelado = 1 AND PAS_idViaje = @idViaje)
+	END	
+END
+GO	
 
 
 

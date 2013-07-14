@@ -97,7 +97,7 @@ namespace FrbaBus.Abm_Micro
 
                     Micro.bajaDefinitiva(Convert.ToInt32(fila.Cells["id"].Value));
 
-                    buscarMicroAlternativo(Convert.ToInt32(fila.Cells["id"].Value));
+                    buscarMicroAlternativo(Convert.ToInt32(fila.Cells["id"].Value), Configuracion.Instance().FechaSistema, Configuracion.Instance().FechaSistema);
 
                     Micros.Columns.Clear();
 
@@ -122,11 +122,9 @@ namespace FrbaBus.Abm_Micro
                 log.id = Convert.ToInt32(fila.Cells["id"].Value);
                 this.SetVisibleCore(false);
                 log.ShowDialog();
+                if (log.result) {
+                    buscarMicroAlternativo(Convert.ToInt32(fila.Cells["id"].Value), log.fechaInicio, log.fechaFin);};
                 this.SetVisibleCore(true);
-
-                buscarMicroAlternativo(Convert.ToInt32(fila.Cells["id"].Value));
-
-
                 /*
                 var fila = Micros.Rows[e.RowIndex];
 
@@ -233,18 +231,15 @@ namespace FrbaBus.Abm_Micro
                 cargarComboBoxModelo();
         }
 
-        private void buscarMicroAlternativo(int idMicro)
+        private void buscarMicroAlternativo(int idMicro, DateTime fechaInicio, DateTime fechaFin)
         {
-            DataTable tablaDeViajesYRecorridos = Micro.buscarViajesYRecorridos(idMicro); // Get the data table.
+            DataTable tablaDeViajesYRecorridos = Micro.buscarViajesYRecorridosEnPeriodo(idMicro, fechaInicio, fechaFin); 
 
             if (tablaDeViajesYRecorridos != null)
             {
-                foreach (DataRow row in tablaDeViajesYRecorridos.Rows) // Loop over the rows.
+                foreach (DataRow row in tablaDeViajesYRecorridos.Rows) 
                 {
-                    var log = new Abm_Micro.AlternativaMicro();
-                    log.idViaje = Convert.ToInt32(row[0]);
-                    log.idRecorrido = Convert.ToInt32(row[1]);
-                    log.fechaInicio = Convert.ToDateTime(row[2]);
+                    var log = new Abm_Micro.AlternativaMicro(Convert.ToInt32(row[0]), Convert.ToInt32(row[1]), Convert.ToDateTime(row[2]));
                     this.SetVisibleCore(false);
                     log.ShowDialog();
                     this.SetVisibleCore(true);
