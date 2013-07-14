@@ -97,7 +97,7 @@ namespace FrbaBus.Abm_Micro
 
                     Micro.bajaDefinitiva(Convert.ToInt32(fila.Cells["id"].Value));
 
-                    buscarMicroAlternativo(Convert.ToInt32(fila.Cells["id"].Value), Configuracion.Instance().FechaSistema, Configuracion.Instance().FechaSistema);
+                    buscarMicroAlternativo(Convert.ToInt32(fila.Cells["id"].Value), Configuracion.Instance().FechaSistema, DateTime.MaxValue);
 
                     Micros.Columns.Clear();
 

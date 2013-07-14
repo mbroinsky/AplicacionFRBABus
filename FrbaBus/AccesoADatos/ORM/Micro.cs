@@ -272,14 +272,23 @@ namespace FrbaBus.AccesoADatos.Orm
                 parametros.Add("@IdMicro", idMicro);
                 parametros.Add("@fechaInicio", fechaInicio);
                 parametros.Add("@fechaFin", fechaFin);
-                return Conector.Datos.EjecutarComando(
+                DataSet ds = Conector.Datos.EjecutarComando(
                     "SELECT VIA_numViaje, VIA_codRecorrido, VIA_fecSalida " +
                     "FROM NOT_NULL.Viaje " +
-                    "WHERE VIA_numMicro = @IdMicro AND "+
-                    "(VIA_fecLlegadaEstimada >= @fechaInicio AND VIA_fecLlegadaEstimada <= @fechaFin) OR" +
-                    "(VIA_fecSalida >= @fechaInicio AND VIA_fecSalida <= @fechaFin)", parametros).Tables[0];
-            }
+                    "WHERE VIA_numMicro = @IdMicro AND " +
+                    "((VIA_fecLlegadaEstimada >= @fechaInicio AND VIA_fecLlegadaEstimada <= @fechaFin) OR" +
+                    "(VIA_fecSalida >= @fechaInicio AND VIA_fecSalida <= @fechaFin))", parametros);
+                DataTable dt = ds.Tables[0];
 
+                if (dt.Rows.Count > 0)
+                {
+                    return dt;
+                }
+                else
+                {
+                    return null;
+                }
+            }
             catch
             {
                 return null;
