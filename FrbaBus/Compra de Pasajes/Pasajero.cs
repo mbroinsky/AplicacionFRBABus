@@ -189,7 +189,7 @@ namespace FrbaBus.Compra_de_Pasajes
 
                 if (Clie.Sexo == 'M')
                     masculino.Checked = true;
-                else if (Clie.Sexo == 'S')
+                else if (Clie.Sexo == 'F')
                     femenino.Checked = true;
             }
 
