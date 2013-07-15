@@ -123,12 +123,8 @@ namespace FrbaBus.AccesoADatos.Orm
         {
             try
             {
-                Hashtable parametros = new Hashtable();
 
-                parametros.Add("@idViaje", idViaje);
-                parametros.Add("@fechaDeCancelacion", fechaDeCancelacion);
-
-                Conector.Datos.EjecutarProcedure("NOT_NULL.CancelarTodosLosPasajesYEncomiendasDeUnViaje", parametros);
+                Conector.Datos.EjecutarProcedure("NOT_NULL.CancelarTodosLosPasajesYEncomiendasDeUnViaje", idViaje, fechaDeCancelacion);
 
                 return true;
             }
