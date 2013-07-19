@@ -60,7 +60,7 @@
             this.Guardar.Location = new System.Drawing.Point(155, 293);
             this.Guardar.Name = "Guardar";
             this.Guardar.Size = new System.Drawing.Size(75, 23);
-            this.Guardar.TabIndex = 1;
+            this.Guardar.TabIndex = 7;
             this.Guardar.Text = "Guardar";
             this.Guardar.UseVisualStyleBackColor = true;
             this.Guardar.Click += new System.EventHandler(this.Guardar_Click);
@@ -71,16 +71,17 @@
             this.Cancelar.Location = new System.Drawing.Point(246, 293);
             this.Cancelar.Name = "Cancelar";
             this.Cancelar.Size = new System.Drawing.Size(75, 23);
-            this.Cancelar.TabIndex = 2;
+            this.Cancelar.TabIndex = 8;
             this.Cancelar.Text = "Cancelar";
             this.Cancelar.UseVisualStyleBackColor = true;
             // 
             // codigo
             // 
             this.codigo.Location = new System.Drawing.Point(100, 15);
+            this.codigo.MaxLength = 18;
             this.codigo.Name = "codigo";
             this.codigo.Size = new System.Drawing.Size(156, 20);
-            this.codigo.TabIndex = 9;
+            this.codigo.TabIndex = 0;
             // 
             // lblDestino
             // 
@@ -116,7 +117,7 @@
             this.tipoServicio.Location = new System.Drawing.Point(100, 52);
             this.tipoServicio.Name = "tipoServicio";
             this.tipoServicio.Size = new System.Drawing.Size(207, 21);
-            this.tipoServicio.TabIndex = 13;
+            this.tipoServicio.TabIndex = 1;
             // 
             // ciudadDestino
             // 
@@ -125,7 +126,7 @@
             this.ciudadDestino.Location = new System.Drawing.Point(100, 125);
             this.ciudadDestino.Name = "ciudadDestino";
             this.ciudadDestino.Size = new System.Drawing.Size(207, 21);
-            this.ciudadDestino.TabIndex = 12;
+            this.ciudadDestino.TabIndex = 3;
             // 
             // ciudadOrigen
             // 
@@ -134,21 +135,25 @@
             this.ciudadOrigen.Location = new System.Drawing.Point(100, 89);
             this.ciudadOrigen.Name = "ciudadOrigen";
             this.ciudadOrigen.Size = new System.Drawing.Size(207, 21);
-            this.ciudadOrigen.TabIndex = 11;
+            this.ciudadOrigen.TabIndex = 2;
             // 
             // precioBase
             // 
             this.precioBase.Location = new System.Drawing.Point(108, 161);
+            this.precioBase.MaxLength = 11;
             this.precioBase.Name = "precioBase";
             this.precioBase.Size = new System.Drawing.Size(100, 20);
-            this.precioBase.TabIndex = 17;
+            this.precioBase.TabIndex = 4;
+            this.precioBase.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // precioKilo
             // 
             this.precioKilo.Location = new System.Drawing.Point(108, 198);
+            this.precioKilo.MaxLength = 11;
             this.precioKilo.Name = "precioKilo";
             this.precioKilo.Size = new System.Drawing.Size(100, 20);
-            this.precioKilo.TabIndex = 18;
+            this.precioKilo.TabIndex = 5;
+            this.precioKilo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // lblPrecioBase
             // 
@@ -174,7 +179,7 @@
             this.tiempoViaje.MaxLength = 5;
             this.tiempoViaje.Name = "tiempoViaje";
             this.tiempoViaje.Size = new System.Drawing.Size(100, 20);
-            this.tiempoViaje.TabIndex = 21;
+            this.tiempoViaje.TabIndex = 6;
             // 
             // lblTiempo
             // 

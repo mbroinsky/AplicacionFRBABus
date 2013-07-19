@@ -81,6 +81,8 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.ComprarPasajes);
             this.Controls.Add(this.label1);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "AccesoSistema";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FRBA Bus";

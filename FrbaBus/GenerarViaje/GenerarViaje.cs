@@ -30,9 +30,11 @@ namespace FrbaBus.GenerarViaje
                 return;
             }
 
-            if (fechaSalida.Value <= Configuracion.Instance().FechaSistema)
+            //Se controla que la fecha de viaje no sea inferior a hoy dentro de 3 horas
+            //Esto es para que haya tiempo para vender pasajes
+            if (fechaSalida.Value < Configuracion.Instance().FechaSistema.AddHours(3))
             {
-                MessageBox.Show("Debe seleccionar una fecha mayor a hoy");
+                MessageBox.Show("Debe seleccionar una fecha mayor hoy. El viaje debe salir en 3 hs como mínimo.");
                 return;
             }
 

@@ -110,9 +110,9 @@ namespace FrbaBus.AccesoADatos.Orm
                     " where MIC_idTipoServicio = REC_idTipoServicio AND " +
                     " REC_id = @idRecorrido AND " +
                     " MIC_Habilitado = 1 AND " +
-                    " MIC_numMicro NOT IN (SELECT HMAN_idMicro FROM NOT_NULL.HistoricoMantenimiento WHERE @fecSalida BETWEEN HMAN_fecInicio AND HMAN_fecFin) AND" +
+                    " MIC_numMicro NOT IN (SELECT HMAN_idMicro FROM NOT_NULL.HistoricoMantenimiento WHERE @fecSalida BETWEEN HMAN_fecInicio AND HMAN_fecFin) AND " +
                     " MIC_numMicro NOT IN (SELECT VIA_numMicro from NOT_NULL.Viaje WHERE " +
-                    " datediff(hour, VIA_fecLlegadaEstimada, @fecSalida) < 24)";
+                    " datediff(hour, convert(varchar(19), VIA_fecLlegadaEstimada, 120), @fecSalida) < 24)";
 
                 parametros.Add("@idRecorrido", idRecorrido);
                 parametros.Add("@fecSalida", fecSalida.ToString("yyyy-MM-dd HH:mm:ss"));

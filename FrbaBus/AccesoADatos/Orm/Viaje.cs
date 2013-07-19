@@ -68,21 +68,21 @@ namespace FrbaBus.AccesoADatos.Orm
                     "NOT_NULL.KilogramosDisponibles(VIA_numViaje) as 'Kg. libres' " +
                     "FROM NOT_NULL.Viaje, NOT_NULL.Recorrido, NOT_NULL.TipoServicio " +
                     "WHERE VIA_codRecorrido = REC_id AND REC_idTipoServicio = SRV_idTipoServicio AND " +
-                    "convert(varchar, VIA_fecSalida, 103) = convert(varchar, @fecViaje, 103) AND ";
+                    "convert(varchar, VIA_fecSalida, 112) = convert(varchar, @fecViaje, 112) AND ";
 
                 Hashtable parametros = new Hashtable();
 
-                if (fecViaje.ToString("dd/MM/yyyy").CompareTo(Configuracion.Instance().FechaSistema.ToString("dd/MM/yyyy")) == 0)
+                if (fecViaje.ToString("yyyy-MM-dd").CompareTo(Configuracion.Instance().FechaSistema.ToString("yyyy-MM-dd")) == 0)
                 {
-                    sql += "VIA_fecSalida >= dateadd(hour, 1, @fecViaje) AND ";
+                    sql += " convert(varchar, VIA_fecSalida, 120) >= dateadd(hour, 1, convert(varchar,@fecViaje, 120)) AND ";
 
                     parametros.Add("@fecViaje", Configuracion.Instance().FechaSistema);
                 }
                 else
                     parametros.Add("@fecViaje", fecViaje);
 
-                sql += "@idOrigen = REC_idCiudadOrigen AND @idDestino = REC_idCiudadDestino AND VIA_habilitado = '1'" +
-                    "order by 2;";
+                sql += " @idOrigen = REC_idCiudadOrigen AND @idDestino = REC_idCiudadDestino AND VIA_habilitado = '1' " +
+                    " order by 2;";
 
                 parametros.Add("@idOrigen", idOrigen);
                 parametros.Add("@idDestino", idDestino);

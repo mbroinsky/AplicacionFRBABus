@@ -50,7 +50,7 @@
             this.ciudadDestino.Location = new System.Drawing.Point(59, 72);
             this.ciudadDestino.Name = "ciudadDestino";
             this.ciudadDestino.Size = new System.Drawing.Size(207, 21);
-            this.ciudadDestino.TabIndex = 14;
+            this.ciudadDestino.TabIndex = 2;
             // 
             // ciudadOrigen
             // 
@@ -59,7 +59,7 @@
             this.ciudadOrigen.Location = new System.Drawing.Point(59, 45);
             this.ciudadOrigen.Name = "ciudadOrigen";
             this.ciudadOrigen.Size = new System.Drawing.Size(207, 21);
-            this.ciudadOrigen.TabIndex = 13;
+            this.ciudadOrigen.TabIndex = 1;
             // 
             // lblDestino
             // 
@@ -86,7 +86,7 @@
             this.fechaViaje.Location = new System.Drawing.Point(59, 19);
             this.fechaViaje.Name = "fechaViaje";
             this.fechaViaje.Size = new System.Drawing.Size(108, 20);
-            this.fechaViaje.TabIndex = 19;
+            this.fechaViaje.TabIndex = 0;
             this.fechaViaje.Value = new System.DateTime(2013, 7, 2, 0, 0, 0, 0);
             // 
             // label1
@@ -109,7 +109,7 @@
             this.groupBox1.Controls.Add(this.lblOrigen);
             this.groupBox1.Location = new System.Drawing.Point(2, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(443, 100);
+            this.groupBox1.Size = new System.Drawing.Size(598, 100);
             this.groupBox1.TabIndex = 21;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos del viaje";
@@ -119,7 +119,7 @@
             this.buscar.Location = new System.Drawing.Point(300, 70);
             this.buscar.Name = "buscar";
             this.buscar.Size = new System.Drawing.Size(135, 23);
-            this.buscar.TabIndex = 21;
+            this.buscar.TabIndex = 3;
             this.buscar.Text = "Buscar disponibilidad";
             this.buscar.UseVisualStyleBackColor = true;
             this.buscar.Click += new System.EventHandler(this.buscar_Click);
@@ -138,7 +138,7 @@
             this.viajesDisponibles.ReadOnly = true;
             this.viajesDisponibles.RowHeadersVisible = false;
             this.viajesDisponibles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.viajesDisponibles.Size = new System.Drawing.Size(571, 232);
+            this.viajesDisponibles.Size = new System.Drawing.Size(598, 232);
             this.viajesDisponibles.TabIndex = 22;
             // 
             // cancelar
@@ -147,34 +147,34 @@
             this.cancelar.Location = new System.Drawing.Point(2, 348);
             this.cancelar.Name = "cancelar";
             this.cancelar.Size = new System.Drawing.Size(75, 23);
-            this.cancelar.TabIndex = 23;
+            this.cancelar.TabIndex = 4;
             this.cancelar.Text = "Cancelar";
             this.cancelar.UseVisualStyleBackColor = true;
             this.cancelar.Click += new System.EventHandler(this.cancelar_Click);
             // 
             // siguiente
             // 
-            this.siguiente.Location = new System.Drawing.Point(498, 348);
+            this.siguiente.Location = new System.Drawing.Point(525, 348);
             this.siguiente.Name = "siguiente";
             this.siguiente.Size = new System.Drawing.Size(75, 23);
-            this.siguiente.TabIndex = 24;
+            this.siguiente.TabIndex = 5;
             this.siguiente.Text = "Siguiente >";
             this.siguiente.UseVisualStyleBackColor = true;
             this.siguiente.Click += new System.EventHandler(this.siguiente_Click);
             // 
-            // Paso1
+            // SeleccionDeViaje
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelar;
-            this.ClientSize = new System.Drawing.Size(578, 375);
+            this.ClientSize = new System.Drawing.Size(602, 375);
             this.ControlBox = false;
             this.Controls.Add(this.siguiente);
             this.Controls.Add(this.cancelar);
             this.Controls.Add(this.viajesDisponibles);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Name = "Paso1";
+            this.Name = "SeleccionDeViaje";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Compra de pasajes";
             this.groupBox1.ResumeLayout(false);

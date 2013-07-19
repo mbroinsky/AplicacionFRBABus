@@ -39,6 +39,7 @@
             // Usuario
             // 
             this.Usuario.Location = new System.Drawing.Point(85, 30);
+            this.Usuario.MaxLength = 20;
             this.Usuario.Name = "Usuario";
             this.Usuario.Size = new System.Drawing.Size(195, 20);
             this.Usuario.TabIndex = 0;
@@ -64,17 +65,18 @@
             // Password
             // 
             this.Password.Location = new System.Drawing.Point(85, 68);
+            this.Password.MaxLength = 100;
             this.Password.Name = "Password";
             this.Password.PasswordChar = '*';
             this.Password.Size = new System.Drawing.Size(195, 20);
-            this.Password.TabIndex = 3;
+            this.Password.TabIndex = 1;
             // 
             // Acceder
             // 
             this.Acceder.Location = new System.Drawing.Point(52, 103);
             this.Acceder.Name = "Acceder";
             this.Acceder.Size = new System.Drawing.Size(75, 23);
-            this.Acceder.TabIndex = 4;
+            this.Acceder.TabIndex = 2;
             this.Acceder.Text = "Acceder";
             this.Acceder.UseVisualStyleBackColor = true;
             this.Acceder.Click += new System.EventHandler(this.Acceder_Click);
@@ -85,7 +87,7 @@
             this.Volver.Location = new System.Drawing.Point(169, 103);
             this.Volver.Name = "Volver";
             this.Volver.Size = new System.Drawing.Size(75, 23);
-            this.Volver.TabIndex = 5;
+            this.Volver.TabIndex = 3;
             this.Volver.Text = "Volver";
             this.Volver.UseVisualStyleBackColor = true;
             this.Volver.Click += new System.EventHandler(this.Volver_Click);
@@ -104,6 +106,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Usuario);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Formulario";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
