@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using FrbaBus.AccesoADatos.Orm;
+using FrbaBus.AccesoADatos;
 
 namespace FrbaBus.Abm_Micro
 {
@@ -127,26 +128,24 @@ namespace FrbaBus.Abm_Micro
             {
                 var fila = Micros.Rows[e.RowIndex];
                 
-                var log = new Abm_Micro.FormularioMantenimiento();
+                var log = new FormularioMantenimiento();
+                
                 log.id = Convert.ToInt32(fila.Cells["id"].Value);
+                
                 this.SetVisibleCore(false);
+
+                Conector.Datos.IniciarTransaccion();
+
                 log.ShowDialog();
-                if (log.result) {
-                    buscarMicroAlternativo(Convert.ToInt32(fila.Cells["id"].Value), log.fechaInicio, log.fechaFin);};
+                
+                if (log.result) 
+                {
+                    buscarMicroAlternativo(Convert.ToInt32(fila.Cells["id"].Value), log.fechaInicio, log.fechaFin);
+                };
+                
                 this.SetVisibleCore(true);
-                /*
-                var fila = Micros.Rows[e.RowIndex];
 
-                String fechaIni = null;
-                String fechaFin = null;
-
-                if (!DBNull.Value.Equals(fila.Cells["Ini. Mantenimiento"].Value)) { fechaIni = Convert.ToString(fila.Cells["Ini. Mantenimiento"].Value); };
-                if (!DBNull.Value.Equals(fila.Cells["Fin Mantenimiento"].Value)) { fechaFin = Convert.ToString(fila.Cells["Fin Mantenimiento"].Value); };
-
-                Micro.cambiarEstado(Convert.ToInt32(fila.Cells["id"].Value), fechaIni, fechaFin);
-
-                Micros.Columns.Clear();
-                */
+                Conector.Datos.TerminarTransaccion();
             }
 
             if (e.ColumnIndex == Micros.Columns.Count - 4)

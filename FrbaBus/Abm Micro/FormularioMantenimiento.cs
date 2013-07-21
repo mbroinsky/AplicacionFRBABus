@@ -28,9 +28,9 @@ namespace FrbaBus.Abm_Micro
 
         private void aceptar_Click(object sender, EventArgs e)
         {
-            if (fechaDeBaja.Value.ToString("yyyy-MM-dd").CompareTo(Configuracion.Instance().FechaSistema.ToString("yyyy-MM-dd")) < 0)
+            if (fechaDeBaja.Value.ToString("yyyy-MM-dd").CompareTo(Configuracion.Instance().FechaSistema.ToString("yyyy-MM-dd")) <= 0)
             {
-                MessageBox.Show("La fecha de ingreso a mantenimiento debe ser igual o mayor a hoy");
+                MessageBox.Show("La fecha de ingreso a mantenimiento debe ser mayor a hoy");
                 return;
             }
 
@@ -47,7 +47,6 @@ namespace FrbaBus.Abm_Micro
             fechaFin = fechaDeAlta.Value; 
 
             this.Close();
-
         }
     }
 }

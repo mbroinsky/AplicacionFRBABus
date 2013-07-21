@@ -73,12 +73,6 @@ namespace FrbaBus.Compra_de_Pasajes
 
         private void cancelar_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("¿Seguro que desea cancelar la compra?",
-                "Cancelación",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Exclamation) == DialogResult.No)
-                return;
-
             this.Cancelado = true;
             
             this.Hide();

@@ -152,23 +152,30 @@ namespace FrbaBus.Compra_de_Pasajes
                 enc.Close();
             }
 
-            var pago = new DatosPago(totalVenta, efectivo);
-
-            pago.ShowDialog();
-
-            if (pago.Cancelado)
+            if (totalVenta > 0)
             {
+                var pago = new DatosPago(totalVenta, efectivo);
+
+                pago.ShowDialog();
+
+                if (pago.Cancelado)
+                {
+                    pago.Close();
+                    Conector.Datos.AbortarTransaccion();
+                    return;
+                }
+
+                if (!pago.Efectivo)
+                    ven.IdTarjeta = pago.Tar.Id;
+
+                ven.IdPagador = pago.Clie.Id;
+
                 pago.Close();
-                Conector.Datos.AbortarTransaccion();
-                return;
             }
-
-            if (!pago.Efectivo)
-                ven.IdTarjeta = pago.Tar.Id;
-
-            ven.IdPagador = pago.Clie.Id;
-
-            pago.Close();
+            else
+            {
+                MessageBox.Show("Su compra no tiene costo.");
+            }
 
             ven.PrecioTotal = totalVenta;
 

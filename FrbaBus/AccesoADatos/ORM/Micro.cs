@@ -283,17 +283,17 @@ namespace FrbaBus.AccesoADatos.Orm
                 Hashtable parametros = new Hashtable();
                 
                 parametros.Add("@IdMicro", idMicro);
-                parametros.Add("@fechaInicio", fechaInicio);
-                parametros.Add("@fechaFin", fechaFin);
+                parametros.Add("@fechaInicio", fechaInicio.ToString("yyyy-MM-dd HH:mm:ss"));
+                parametros.Add("@fechaFin", fechaFin.ToString("yyyy-MM-dd HH:mm:ss"));
                 
                 DataTable dt = Conector.Datos.EjecutarComandoADataTable(
                     "SELECT VIA_numViaje, VIA_codRecorrido, VIA_fecSalida " +
                     "FROM NOT_NULL.Viaje " +
                     "WHERE VIA_numMicro = @IdMicro AND " +
-                    "((convert(varchar, VIA_fecLlegadaEstimada, 120) >= convert(varchar, @fechaInicio, 120) AND " + 
-                    "convert(varchar, VIA_fecLlegadaEstimada, 120) <= convert(varchar, @fechaFin, 120)) OR " +
-                    "(convert(varchar, VIA_fecSalida, 120) >= convert(varchar, @fechaInicio, 120) AND " + 
-                    "convert(varchar, VIA_fecSalida, 120) <= convert(varchar, @fechaFin, 120)))", parametros);
+                    "((convert(varchar, VIA_fecLlegadaEstimada, 120) >= @fechaInicio AND " + 
+                    "convert(varchar, VIA_fecLlegadaEstimada, 120) <= @fechaFin) OR " +
+                    "(convert(varchar, VIA_fecSalida, 120) >= @fechaInicio AND " + 
+                    "convert(varchar, VIA_fecSalida, 120) <= @fechaFin))", parametros);
 
                 if (dt.Rows.Count > 0)
                 {

@@ -53,6 +53,9 @@
             this.panelDocumento = new System.Windows.Forms.GroupBox();
             this.lblTotalAPagar = new System.Windows.Forms.Label();
             this.datosTarjeta = new System.Windows.Forms.GroupBox();
+            this.lblFormatoCodSeg = new System.Windows.Forms.Label();
+            this.lblFormatoFecVenc = new System.Windows.Forms.Label();
+            this.lblFormatoTarjeta = new System.Windows.Forms.Label();
             this.codigo = new System.Windows.Forms.TextBox();
             this.lblCodigo = new System.Windows.Forms.Label();
             this.lblFecVenc = new System.Windows.Forms.Label();
@@ -62,9 +65,6 @@
             this.lblTipos = new System.Windows.Forms.Label();
             this.tipos = new System.Windows.Forms.ComboBox();
             this.efectivo = new System.Windows.Forms.CheckBox();
-            this.lblFormatoTarjeta = new System.Windows.Forms.Label();
-            this.lblFormatoFecVenc = new System.Windows.Forms.Label();
-            this.lblFormatoCodSeg = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.datos.SuspendLayout();
             this.panelDocumento.SuspendLayout();
@@ -119,6 +119,7 @@
             // nombre
             // 
             this.nombre.Location = new System.Drawing.Point(111, 19);
+            this.nombre.MaxLength = 30;
             this.nombre.Name = "nombre";
             this.nombre.Size = new System.Drawing.Size(162, 20);
             this.nombre.TabIndex = 1;
@@ -126,6 +127,7 @@
             // apellido
             // 
             this.apellido.Location = new System.Drawing.Point(111, 60);
+            this.apellido.MaxLength = 30;
             this.apellido.Name = "apellido";
             this.apellido.Size = new System.Drawing.Size(162, 20);
             this.apellido.TabIndex = 2;
@@ -142,6 +144,7 @@
             // direccion
             // 
             this.direccion.Location = new System.Drawing.Point(111, 103);
+            this.direccion.MaxLength = 50;
             this.direccion.Name = "direccion";
             this.direccion.Size = new System.Drawing.Size(233, 20);
             this.direccion.TabIndex = 3;
@@ -149,6 +152,7 @@
             // telefono
             // 
             this.telefono.Location = new System.Drawing.Point(111, 145);
+            this.telefono.MaxLength = 15;
             this.telefono.Name = "telefono";
             this.telefono.Size = new System.Drawing.Size(96, 20);
             this.telefono.TabIndex = 4;
@@ -270,6 +274,7 @@
             // mail
             // 
             this.mail.Location = new System.Drawing.Point(111, 225);
+            this.mail.MaxLength = 50;
             this.mail.Name = "mail";
             this.mail.Size = new System.Drawing.Size(233, 20);
             this.mail.TabIndex = 8;
@@ -324,6 +329,33 @@
             this.datosTarjeta.TabIndex = 22;
             this.datosTarjeta.TabStop = false;
             this.datosTarjeta.Text = "Datos Tarjeta";
+            // 
+            // lblFormatoCodSeg
+            // 
+            this.lblFormatoCodSeg.AutoSize = true;
+            this.lblFormatoCodSeg.Location = new System.Drawing.Point(283, 121);
+            this.lblFormatoCodSeg.Name = "lblFormatoCodSeg";
+            this.lblFormatoCodSeg.Size = new System.Drawing.Size(34, 13);
+            this.lblFormatoCodSeg.TabIndex = 10;
+            this.lblFormatoCodSeg.Text = "(###)";
+            // 
+            // lblFormatoFecVenc
+            // 
+            this.lblFormatoFecVenc.AutoSize = true;
+            this.lblFormatoFecVenc.Location = new System.Drawing.Point(101, 121);
+            this.lblFormatoFecVenc.Name = "lblFormatoFecVenc";
+            this.lblFormatoFecVenc.Size = new System.Drawing.Size(45, 13);
+            this.lblFormatoFecVenc.TabIndex = 9;
+            this.lblFormatoFecVenc.Text = "(MMAA)";
+            // 
+            // lblFormatoTarjeta
+            // 
+            this.lblFormatoTarjeta.AutoSize = true;
+            this.lblFormatoTarjeta.Location = new System.Drawing.Point(101, 74);
+            this.lblFormatoTarjeta.Name = "lblFormatoTarjeta";
+            this.lblFormatoTarjeta.Size = new System.Drawing.Size(134, 13);
+            this.lblFormatoTarjeta.TabIndex = 8;
+            this.lblFormatoTarjeta.Text = "(####-####-####-####)";
             // 
             // codigo
             // 
@@ -404,33 +436,6 @@
             this.efectivo.Text = "Paga en Efectivo";
             this.efectivo.UseVisualStyleBackColor = true;
             this.efectivo.CheckedChanged += new System.EventHandler(this.efectivo_CheckedChanged);
-            // 
-            // lblFormatoTarjeta
-            // 
-            this.lblFormatoTarjeta.AutoSize = true;
-            this.lblFormatoTarjeta.Location = new System.Drawing.Point(101, 74);
-            this.lblFormatoTarjeta.Name = "lblFormatoTarjeta";
-            this.lblFormatoTarjeta.Size = new System.Drawing.Size(134, 13);
-            this.lblFormatoTarjeta.TabIndex = 8;
-            this.lblFormatoTarjeta.Text = "(####-####-####-####)";
-            // 
-            // lblFormatoFecVenc
-            // 
-            this.lblFormatoFecVenc.AutoSize = true;
-            this.lblFormatoFecVenc.Location = new System.Drawing.Point(101, 121);
-            this.lblFormatoFecVenc.Name = "lblFormatoFecVenc";
-            this.lblFormatoFecVenc.Size = new System.Drawing.Size(45, 13);
-            this.lblFormatoFecVenc.TabIndex = 9;
-            this.lblFormatoFecVenc.Text = "(MMAA)";
-            // 
-            // lblFormatoCodSeg
-            // 
-            this.lblFormatoCodSeg.AutoSize = true;
-            this.lblFormatoCodSeg.Location = new System.Drawing.Point(283, 121);
-            this.lblFormatoCodSeg.Name = "lblFormatoCodSeg";
-            this.lblFormatoCodSeg.Size = new System.Drawing.Size(34, 13);
-            this.lblFormatoCodSeg.TabIndex = 10;
-            this.lblFormatoCodSeg.Text = "(###)";
             // 
             // DatosPago
             // 

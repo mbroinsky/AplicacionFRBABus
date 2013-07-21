@@ -50,7 +50,7 @@ namespace FrbaBus.AccesoADatos.Orm
 
         public static void RegistrarLlegada(DateTime fecLlegada, int idMicro, int idOrigen, int idDestino)
         {
-            Conector.Datos.EjecutarProcedure("NOT_NULL.RegistrarLlegadas", fecLlegada,
+            Conector.Datos.EjecutarProcedure("NOT_NULL.RegistrarLlegadas", fecLlegada.ToString("yyyy-MM-dd HH:mm:ss"),
                         idMicro, idOrigen, idDestino);
 
             return;
@@ -60,7 +60,7 @@ namespace FrbaBus.AccesoADatos.Orm
         {
             try
             {
-                string sql = "select VIA_numviaje as ID, convert(TIME, VIA_FecSalida, 108) as Horario, " +
+                string sql = "select VIA_numviaje as ID, convert(TIME, VIA_FecSalida, 108) as Salida, " +
                     "convert(time, VIA_fecllegadaEstimada, 108) as Llegada, SRV_nombreServicio as Servicio, " +
                     "convert(decimal(10,2), REC_precioBase + (REC_precioBase * SRV_porcentajeAdic) / 100) as 'Precio de pasaje', " +
                     "REC_precioKilo as 'Precio Encomienda(x Kg)', " +
@@ -68,22 +68,22 @@ namespace FrbaBus.AccesoADatos.Orm
                     "NOT_NULL.KilogramosDisponibles(VIA_numViaje) as 'Kg. libres' " +
                     "FROM NOT_NULL.Viaje, NOT_NULL.Recorrido, NOT_NULL.TipoServicio " +
                     "WHERE VIA_codRecorrido = REC_id AND REC_idTipoServicio = SRV_idTipoServicio AND " +
-                    "convert(varchar, VIA_fecSalida, 112) = convert(varchar, @fecViaje, 112) AND ";
+                    "convert(varchar, VIA_fecSalida, 112) = @fecViaje AND ";
 
                 Hashtable parametros = new Hashtable();
 
+                //Si la fecha de viaje es hoy, me tengo que fijar que la hora de salida sea mayor a la actual. 
                 if (fecViaje.ToString("yyyy-MM-dd").CompareTo(Configuracion.Instance().FechaSistema.ToString("yyyy-MM-dd")) == 0)
                 {
-                    sql += " convert(varchar, VIA_fecSalida, 120) >= dateadd(hour, 1, convert(varchar,@fecViaje, 120)) AND ";
+                    sql += " convert(varchar, VIA_fecSalida, 108) > @horaActual AND ";
 
-                    parametros.Add("@fecViaje", Configuracion.Instance().FechaSistema.ToString("yyyy-MM-dd HH:mm:ss"));
+                    parametros.Add("@horaActual", Configuracion.Instance().FechaSistema.ToString("HH:mm:ss"));
                 }
-                else
-                    parametros.Add("@fecViaje", fecViaje.ToString("yyyy-MM-dd HH:mm:ss"));
-
+                       
                 sql += " @idOrigen = REC_idCiudadOrigen AND @idDestino = REC_idCiudadDestino AND VIA_habilitado = '1' " +
                     " order by 2;";
 
+                parametros.Add("@fecViaje", fecViaje.ToString("yyyyMMdd"));
                 parametros.Add("@idOrigen", idOrigen);
                 parametros.Add("@idDestino", idDestino);
 

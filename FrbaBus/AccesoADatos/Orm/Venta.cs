@@ -108,18 +108,20 @@ namespace FrbaBus.AccesoADatos.Orm
 
             try
             {
-                if (IdPagador == -1)
-                    return false;
-
                 Hashtable parametros = new Hashtable();
 
                 parametros.Add("@idVenta", IdVenta);
-                parametros.Add("@fecVenta", FechaVenta);
+                parametros.Add("@fecVenta", FechaVenta.ToString("yyyy-MM-dd HH:mm:ss"));
                 parametros.Add("@total", PrecioTotal);
-                parametros.Add("@idPagador", IdPagador);
-
+                
                 sql = "update NOT_NULL.Venta set VEN_fecVenta = @fecVenta, " +
-                    "VEN_total = @total, VEN_idPagador = @idPagador ";
+                    "VEN_total = @total ";
+
+                if (IdPagador > -1)
+                {
+                    parametros.Add("@idPagador", IdPagador);
+                    sql += ", VEN_idPagador = @idPagador";
+                }
 
                 if (IdTarjeta > -1)
                 {

@@ -1449,7 +1449,9 @@ BEGIN
 	SELECT @idViaje = VIA_numViaje FROM
 		NOT_NULL.Viaje WHERE VIA_numMicro = @idMicro AND
 		VIA_codRecorrido = @idRecorrido AND
-		VIA_fecLlegada IS NULL AND DATEDIFF(day, convert(varchar, VIA_fecSalida, 120) , convert(varchar, @fecLlegada, 120)) < 1;
+		VIA_fecLlegada IS NULL AND
+		VIA_habilitado = '1' AND 
+		DATEDIFF(hour, convert(varchar, VIA_fecSalida, 120) , convert(varchar, @fecLlegada, 120)) < 24;
 	
 	IF @idViaje IS NOT NULL
 	BEGIN
@@ -1699,7 +1701,9 @@ BEGIN
 	SET @SQL = @SQL + 'MIC_idMarca = MAR_idMarca and ' 
 	SET @SQL = @SQL + 'MIC_idModelo = MOD_idMarca and ' 
 	SET @SQL = @SQL + 'MIC_fecBaja IS NULL and ' 
-	SET @SQL = @SQL + 'MIC_idTipoServicio = SRV_idTipoServicio'
+	SET @SQL = @SQL + 'MIC_idTipoServicio = SRV_idTipoServicio '
+	SET @SQL = @SQL + 'ORDER BY MIC_patente'
+
 
 	EXEC (@SQL);
 END
