@@ -30,12 +30,13 @@ namespace FrbaBus.Abm_Micro
         public ABMButacas(DataTable butacasMicro)
         {
             InitializeComponent();
-            butacas = new DataTable(); 
             this.butacas = butacasMicro;
             prepararGrilla();
-           
-            Butacas.Columns[0].Visible = false;
 
+            if (butacas.Rows.Count == 0)
+                piso.Text = "1";
+            else
+                piso.Text = Convert.ToString(Convert.ToInt32(butacas.Rows[butacas.Rows.Count - 1][1]) + 1);
         }
 
         private void agregar_Click(object sender, EventArgs e)
@@ -45,10 +46,17 @@ namespace FrbaBus.Abm_Micro
                 if (cantidad.Text.Length > 0 && piso.Text.Length > 0)
                 {
                     int asientos;
-                    for (asientos = 1; asientos <= Convert.ToInt32(cantidad.Text); asientos++)
+
+                    if (butacas.Rows.Count == 0)
+                        asientos = 1;
+                    else
+                        asientos = Convert.ToInt32(butacas.Rows[butacas.Rows.Count - 1][2]) + 1;
+
+                    for (int agregar = 1; agregar <= Convert.ToInt32(cantidad.Text); asientos++, agregar++)
                     {
                         butacas.Rows.Add(new object[] { 0, Convert.ToInt32(piso.Text), asientos, "Pasillo" });
                     }
+
                     piso.Text = Convert.ToString(Convert.ToInt32(piso.Text)+1);
                 }
                 else
@@ -65,13 +73,9 @@ namespace FrbaBus.Abm_Micro
         }
 
         private void limpiar_Click(object sender, EventArgs e)
-         {
-            butacas.Clear();
-        }
-
-        private void piso_TextChanged(object sender, EventArgs e)
         {
-
+            butacas.Clear();
+            piso.Text = "1";
         }
 
         private void aceptar_Click(object sender, EventArgs e)
@@ -81,10 +85,9 @@ namespace FrbaBus.Abm_Micro
 
         private void prepararGrilla()
         {
-
             Butacas.Columns.Clear();
 
-            DataGridViewColumn cMicro = new DataGridViewTextBoxColumn();;
+            DataGridViewColumn cMicro = new DataGridViewTextBoxColumn(); ;
             cMicro.HeaderText = "idMicro";
             cMicro.DataPropertyName = "idMicro";
 
@@ -100,14 +103,16 @@ namespace FrbaBus.Abm_Micro
             var tipo = new List<string>() { "Pasillo", "Ventanilla" };
             cTipoDeAsiento.DataSource = tipo;
             cTipoDeAsiento.HeaderText = "Tipo de Asiento";
-            cTipoDeAsiento.DataPropertyName = "Tipo de Asiento";         
+            cTipoDeAsiento.DataPropertyName = "Tipo de Asiento";
 
             Butacas.Columns.AddRange(cMicro, cPiso, cNroAsiento, cTipoDeAsiento);
             Butacas.Columns[0].Visible = false;
+            Butacas.Columns[0].ReadOnly = true;
+            Butacas.Columns[1].ReadOnly = true;
+            Butacas.Columns[2].ReadOnly = true;
+            Butacas.Columns[3].ReadOnly = false;
 
             Butacas.DataSource = butacas;
-           
         }
-
     }
 }

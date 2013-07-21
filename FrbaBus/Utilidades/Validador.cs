@@ -55,5 +55,11 @@ namespace FrbaBus.Utilidades
             Regex regex = new Regex("^([0][1-9]|[1][0-2])([1][3-9]|[2][0-9])$");
             return regex.IsMatch(text);
         }
+
+        internal static bool esAlfanumerico(String text)
+        {
+            Regex regex = new Regex("^([0-9]|[A-Z]|[a-z])+$");
+            return regex.IsMatch(text);
+        }
     }
 }

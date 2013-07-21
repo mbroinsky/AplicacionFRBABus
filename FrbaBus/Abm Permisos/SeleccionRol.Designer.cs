@@ -74,7 +74,6 @@
             this.nombre.Name = "nombre";
             this.nombre.Size = new System.Drawing.Size(134, 20);
             this.nombre.TabIndex = 2;
-            this.nombre.TextChanged += new System.EventHandler(this.Nombre_TextChanged);
             // 
             // groupBox1
             // 

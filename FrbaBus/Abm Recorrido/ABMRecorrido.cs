@@ -77,9 +77,9 @@ namespace FrbaBus.Abm_Recorrido
                 return;
             }
 
-            if (!Validador.esNumericoEnteroPositivo(codigo.Text))
+            if (!Validador.esAlfanumerico(codigo.Text))
             {
-                MessageBox.Show("El codigo debe ser numérico");
+                MessageBox.Show("El codigo debe ser alfanumérico");
                 return;
             }
 

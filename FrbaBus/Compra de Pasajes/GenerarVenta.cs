@@ -163,7 +163,7 @@ namespace FrbaBus.Compra_de_Pasajes
                 return;
             }
 
-            if (pago.Tar.Id > -1)
+            if (!pago.Efectivo)
                 ven.IdTarjeta = pago.Tar.Id;
 
             ven.IdPagador = pago.Clie.Id;

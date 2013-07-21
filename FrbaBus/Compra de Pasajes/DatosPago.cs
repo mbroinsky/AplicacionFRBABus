@@ -91,7 +91,7 @@ namespace FrbaBus.Compra_de_Pasajes
                 return;
             }
 
-            if (fechaNacimiento.Value >= Configuracion.Instance().FechaSistema)
+            if (fechaNacimiento.Value.ToString("yyyy-MM-dd").CompareTo(Configuracion.Instance().FechaSistema.ToString("yyyy-MM-dd")) > 0)
             {
                 MessageBox.Show("La fecha de nacimiento no puede ser mayor a hoy");
                 return;
@@ -158,6 +158,8 @@ namespace FrbaBus.Compra_de_Pasajes
                     return;
                 }
             }
+
+            this.Efectivo = efectivo.Checked;
 
             this.Hide();
         }

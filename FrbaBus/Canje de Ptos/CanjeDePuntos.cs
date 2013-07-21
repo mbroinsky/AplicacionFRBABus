@@ -23,6 +23,7 @@ namespace FrbaBus.Canje_de_Ptos
         private void listarProductos_Click(object sender, EventArgs e)
         {
             grillaProductos.Columns.Clear();
+            
             if (Validador.esNumericoEnteroPositivo(campoDNICliente.Text))
             {
                 cargarGilla();
@@ -35,6 +36,9 @@ namespace FrbaBus.Canje_de_Ptos
 
         private void grillaPuntos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            //Por si toca en el header del boton
+            if (grillaProductos.SelectedRows.Count == 0)
+                return;
 
             if (e.ColumnIndex == grillaProductos.Columns.Count - 1)
             {
@@ -62,18 +66,20 @@ namespace FrbaBus.Canje_de_Ptos
 
             dni = Convert.ToInt32(campoDNICliente.Text);
 
-            DataGridViewButtonColumn canjearPuntos = new DataGridViewButtonColumn();
-            canjearPuntos.HeaderText = "Canjear";
-            canjearPuntos.Name = "Canjear";
-            canjearPuntos.Text = "Canjear";
-            canjearPuntos.Visible = true;
-            canjearPuntos.UseColumnTextForButtonValue = true;
-
             DataTable dt = (DataTable)Cliente.productosDisponiblesParaCliente(Convert.ToInt32(campoDNICliente.Text));
 
-            if (dt.Rows.Count == 0) { MessageBox.Show("No se encontraron datos para ese cliente"); }
+            if (dt.Rows.Count == 0)
+            { 
+                MessageBox.Show("No se encontraron productos disponibles para el cliente"); 
+            }
             else
             {
+                DataGridViewButtonColumn canjearPuntos = new DataGridViewButtonColumn();
+                canjearPuntos.HeaderText = "Canjear";
+                canjearPuntos.Name = "Canjear";
+                canjearPuntos.Text = "Canjear";
+                canjearPuntos.Visible = true;
+                canjearPuntos.UseColumnTextForButtonValue = true;
 
                 grillaProductos.DataSource = dt;
                 grillaProductos.Columns["id"].Visible = false;

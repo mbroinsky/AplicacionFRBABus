@@ -21,16 +21,16 @@ namespace FrbaBus.Abm_Micro
         {
             InitializeComponent();
 
-            fechaDeAlta.Value = Configuracion.Instance().FechaSistema;
+            fechaDeAlta.Value = Convert.ToDateTime(Configuracion.Instance().FechaSistema.ToString("dd/MM/yyyy"));
 
-            fechaDeBaja.Value = Configuracion.Instance().FechaSistema;
+            fechaDeBaja.Value = Convert.ToDateTime(Configuracion.Instance().FechaSistema.ToString("dd/MM/yyyy"));
         }
 
         private void aceptar_Click(object sender, EventArgs e)
         {
-            if (fechaDeBaja.Value < Configuracion.Instance().FechaSistema)
+            if (fechaDeBaja.Value.ToString("yyyy-MM-dd").CompareTo(Configuracion.Instance().FechaSistema.ToString("yyyy-MM-dd")) < 0)
             {
-                MessageBox.Show("Debe seleccionar igual o mayor a la de hoy");
+                MessageBox.Show("La fecha de ingreso a mantenimiento debe ser igual o mayor a hoy");
                 return;
             }
 
@@ -40,7 +40,7 @@ namespace FrbaBus.Abm_Micro
                 return;
             }
 
-            Micro.registarMantenimiento(id, Convert.ToString(fechaDeBaja.Value), Convert.ToString(fechaDeAlta.Value));
+            Micro.registarMantenimiento(id, fechaDeBaja.Value, fechaDeAlta.Value);
 
             result = true;
             fechaInicio = fechaDeBaja.Value;

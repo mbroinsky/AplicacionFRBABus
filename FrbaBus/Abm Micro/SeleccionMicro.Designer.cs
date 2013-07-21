@@ -43,6 +43,7 @@
             this.agregar = new System.Windows.Forms.Button();
             this.Micros = new System.Windows.Forms.DataGridView();
             this.salir = new System.Windows.Forms.Button();
+            this.limpiar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Micros)).BeginInit();
             this.SuspendLayout();
@@ -58,6 +59,7 @@
             // 
             // idServicio
             // 
+            this.idServicio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.idServicio.FormattingEnabled = true;
             this.idServicio.Location = new System.Drawing.Point(300, 12);
             this.idServicio.Name = "idServicio";
@@ -92,6 +94,7 @@
             // 
             // idModelo
             // 
+            this.idModelo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.idModelo.FormattingEnabled = true;
             this.idModelo.Location = new System.Drawing.Point(300, 37);
             this.idModelo.Name = "idModelo";
@@ -125,6 +128,7 @@
             // 
             // idMarca
             // 
+            this.idMarca.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.idMarca.FormattingEnabled = true;
             this.idMarca.Location = new System.Drawing.Point(62, 38);
             this.idMarca.Name = "idMarca";
@@ -134,6 +138,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.limpiar);
             this.groupBox1.Controls.Add(this.buscar);
             this.groupBox1.Controls.Add(this.idMarca);
             this.groupBox1.Controls.Add(this.label4);
@@ -179,9 +184,11 @@
             this.Micros.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.Micros.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.Micros.Location = new System.Drawing.Point(21, 82);
+            this.Micros.MultiSelect = false;
             this.Micros.Name = "Micros";
             this.Micros.ReadOnly = true;
             this.Micros.RowHeadersVisible = false;
+            this.Micros.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.Micros.Size = new System.Drawing.Size(771, 267);
             this.Micros.TabIndex = 29;
             this.Micros.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Micros_CellContentClick);
@@ -196,6 +203,16 @@
             this.salir.Text = "Salir";
             this.salir.UseVisualStyleBackColor = true;
             // 
+            // limpiar
+            // 
+            this.limpiar.Location = new System.Drawing.Point(644, 13);
+            this.limpiar.Name = "limpiar";
+            this.limpiar.Size = new System.Drawing.Size(64, 45);
+            this.limpiar.TabIndex = 28;
+            this.limpiar.Text = "Limpiar";
+            this.limpiar.UseVisualStyleBackColor = true;
+            this.limpiar.Click += new System.EventHandler(this.limpiar_Click);
+            // 
             // SeleccionMicro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -208,6 +225,7 @@
             this.Controls.Add(this.agregar);
             this.Controls.Add(this.groupBox1);
             this.Name = "SeleccionMicro";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Gestión de Micros";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -233,5 +251,6 @@
         private System.Windows.Forms.Button buscar;
         private System.Windows.Forms.DataGridView Micros;
         private System.Windows.Forms.Button salir;
+        private System.Windows.Forms.Button limpiar;
     }
 }

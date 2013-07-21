@@ -57,7 +57,7 @@
             // 
             // Guardar
             // 
-            this.Guardar.Location = new System.Drawing.Point(155, 293);
+            this.Guardar.Location = new System.Drawing.Point(87, 293);
             this.Guardar.Name = "Guardar";
             this.Guardar.Size = new System.Drawing.Size(75, 23);
             this.Guardar.TabIndex = 7;
@@ -68,7 +68,7 @@
             // Cancelar
             // 
             this.Cancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancelar.Location = new System.Drawing.Point(246, 293);
+            this.Cancelar.Location = new System.Drawing.Point(181, 293);
             this.Cancelar.Name = "Cancelar";
             this.Cancelar.Size = new System.Drawing.Size(75, 23);
             this.Cancelar.TabIndex = 8;
@@ -116,7 +116,7 @@
             this.tipoServicio.FormattingEnabled = true;
             this.tipoServicio.Location = new System.Drawing.Point(100, 52);
             this.tipoServicio.Name = "tipoServicio";
-            this.tipoServicio.Size = new System.Drawing.Size(207, 21);
+            this.tipoServicio.Size = new System.Drawing.Size(156, 21);
             this.tipoServicio.TabIndex = 1;
             // 
             // ciudadDestino
@@ -125,7 +125,7 @@
             this.ciudadDestino.FormattingEnabled = true;
             this.ciudadDestino.Location = new System.Drawing.Point(100, 125);
             this.ciudadDestino.Name = "ciudadDestino";
-            this.ciudadDestino.Size = new System.Drawing.Size(207, 21);
+            this.ciudadDestino.Size = new System.Drawing.Size(156, 21);
             this.ciudadDestino.TabIndex = 3;
             // 
             // ciudadOrigen
@@ -134,12 +134,12 @@
             this.ciudadOrigen.FormattingEnabled = true;
             this.ciudadOrigen.Location = new System.Drawing.Point(100, 89);
             this.ciudadOrigen.Name = "ciudadOrigen";
-            this.ciudadOrigen.Size = new System.Drawing.Size(207, 21);
+            this.ciudadOrigen.Size = new System.Drawing.Size(156, 21);
             this.ciudadOrigen.TabIndex = 2;
             // 
             // precioBase
             // 
-            this.precioBase.Location = new System.Drawing.Point(108, 161);
+            this.precioBase.Location = new System.Drawing.Point(155, 161);
             this.precioBase.MaxLength = 11;
             this.precioBase.Name = "precioBase";
             this.precioBase.Size = new System.Drawing.Size(100, 20);
@@ -148,7 +148,7 @@
             // 
             // precioKilo
             // 
-            this.precioKilo.Location = new System.Drawing.Point(108, 198);
+            this.precioKilo.Location = new System.Drawing.Point(155, 198);
             this.precioKilo.MaxLength = 11;
             this.precioKilo.Name = "precioKilo";
             this.precioKilo.Size = new System.Drawing.Size(100, 20);
@@ -175,11 +175,12 @@
             // 
             // tiempoViaje
             // 
-            this.tiempoViaje.Location = new System.Drawing.Point(108, 235);
+            this.tiempoViaje.Location = new System.Drawing.Point(155, 235);
             this.tiempoViaje.MaxLength = 5;
             this.tiempoViaje.Name = "tiempoViaje";
             this.tiempoViaje.Size = new System.Drawing.Size(100, 20);
             this.tiempoViaje.TabIndex = 6;
+            this.tiempoViaje.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // lblTiempo
             // 
@@ -195,7 +196,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancelar;
-            this.ClientSize = new System.Drawing.Size(328, 328);
+            this.ClientSize = new System.Drawing.Size(263, 328);
             this.ControlBox = false;
             this.Controls.Add(this.lblTiempo);
             this.Controls.Add(this.tiempoViaje);

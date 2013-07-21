@@ -126,10 +126,5 @@ namespace FrbaBus.Abm_Permisos
             roles.DataSource = null;
             roles.Columns.Clear();
         }
-
-        private void Nombre_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

@@ -97,11 +97,11 @@ namespace FrbaBus.AccesoADatos.Orm
             }
         }
 
-        internal static object productosDisponiblesParaCliente(int dni)
+        public static object productosDisponiblesParaCliente(int dni)
         {
             try
             {
-                DataTable dt = Conector.Datos.EjecutarProcedureADataTable("NOT_NULL.productosDisponibleCliente", dni);
+                DataTable dt = Conector.Datos.EjecutarProcedureADataTable("NOT_NULL.ProductosDisponibleCliente", dni);
 
                 return dt;
             }

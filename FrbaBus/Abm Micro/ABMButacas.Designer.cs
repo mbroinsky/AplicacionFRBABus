@@ -68,7 +68,6 @@
             this.piso.Name = "piso";
             this.piso.Size = new System.Drawing.Size(26, 20);
             this.piso.TabIndex = 2;
-            this.piso.TextChanged += new System.EventHandler(this.piso_TextChanged);
             // 
             // label2
             // 
@@ -104,12 +103,15 @@
             // 
             this.Butacas.AllowUserToAddRows = false;
             this.Butacas.AllowUserToDeleteRows = false;
-            this.Butacas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.Butacas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.Butacas.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.Butacas.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.Butacas.Location = new System.Drawing.Point(12, 72);
+            this.Butacas.MultiSelect = false;
             this.Butacas.Name = "Butacas";
             this.Butacas.RowHeadersVisible = false;
             this.Butacas.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.Butacas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.Butacas.Size = new System.Drawing.Size(325, 250);
             this.Butacas.TabIndex = 30;
             // 
@@ -150,12 +152,16 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelar;
             this.ClientSize = new System.Drawing.Size(349, 366);
+            this.ControlBox = false;
             this.Controls.Add(this.limpiar);
             this.Controls.Add(this.cancelar);
             this.Controls.Add(this.aceptar);
             this.Controls.Add(this.Butacas);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ABMButacas";
+            this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Butacas";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

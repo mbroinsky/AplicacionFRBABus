@@ -33,7 +33,7 @@ namespace FrbaBus.Registrar_LLegada_Micro
                 return;
             }
 
-            if (fechaLlegada.Value > Configuracion.Instance().FechaSistema)
+            if (fechaLlegada.Value.ToString("yyyy-MM-dd HH:mm:ss").CompareTo(Configuracion.Instance().FechaSistema.ToString("yyyy-MM-dd HH:mm:ss")) > 0)
             {
                 MessageBox.Show("La fecha de arribo no puede ser superior a hoy");
                 return;

@@ -105,15 +105,20 @@
             this.button2.Text = "Cancelar";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // formularioMantenimiento
+            // FormularioMantenimiento
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(267, 142);
+            this.ControlBox = false;
             this.Controls.Add(this.button2);
             this.Controls.Add(this.aceptar);
             this.Controls.Add(this.groupBox1);
-            this.Name = "formularioMantenimiento";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.Name = "FormularioMantenimiento";
+            this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Enviar a Mantenimeinto";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

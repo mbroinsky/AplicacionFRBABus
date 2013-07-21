@@ -64,7 +64,7 @@ namespace FrbaBus.AccesoADatos.Orm
                 Hashtable parametros = new Hashtable();
 
                 parametros.Add("@idVenta", IdVenta);
-                parametros.Add("@fecVenta", FechaVenta);
+                parametros.Add("@fecVenta", FechaVenta.ToString("yyyy-MM-dd HH:mm:ss"));
                 parametros.Add("@total", PrecioTotal);
 
                 sql = "insert into NOT_NULL.Venta VALUES (@idVenta, @fecVenta, " +

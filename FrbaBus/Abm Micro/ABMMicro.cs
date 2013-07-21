@@ -26,8 +26,7 @@ namespace FrbaBus.Abm_Micro
 
             cargarDropDowns();
 
-            if (esModificacion) { cargarValoresMicro(); };
-
+            //if (esModificacion) { cargarValoresMicro(); };
         }
 
         public ABMMicro(Micro microAModificar)
@@ -88,7 +87,10 @@ namespace FrbaBus.Abm_Micro
                         }
                         else
                         {
-                            if (micro.Insertar()) { this.Close(); }
+                            if (micro.Insertar()) 
+                            { 
+                                this.Close(); 
+                            }
                             else { MessageBox.Show("Se produjo un error al insertar el Micro"); }
                         }
 
@@ -112,8 +114,11 @@ namespace FrbaBus.Abm_Micro
         private void agregarButacas_Click(object sender, EventArgs e)
         {
             ABMButacas log;
-            if (esModificacion) { log = new Abm_Micro.ABMButacas(micro.Butacas); }
-            else { log = new Abm_Micro.ABMButacas(); };
+            //if (esModificacion) { log = new Abm_Micro.ABMButacas(micro.Butacas); }
+            //else { log = new Abm_Micro.ABMButacas(); };
+
+            log = new Abm_Micro.ABMButacas(micro.Butacas);
+            
             this.SetVisibleCore(false);
             log.ShowDialog();
             this.micro.Butacas = (DataTable)log.Butacas.DataSource;

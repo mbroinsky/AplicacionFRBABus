@@ -16,7 +16,6 @@ namespace FrbaBus.Abm_Micro
         {
             InitializeComponent();
 
-
             DataTable comboServicios = Servicio.ListarComboServicio();
             DataRow rowServicios = comboServicios.NewRow();
             rowServicios[0] = DBNull.Value;
@@ -36,32 +35,41 @@ namespace FrbaBus.Abm_Micro
             idMarca.ValueMember = ((DataTable)idMarca.DataSource).Columns[0].ColumnName;
             idMarca.DisplayMember = ((DataTable)idMarca.DataSource).Columns[1].ColumnName;
 
-            cargarComboBoxModelo();
+            //cargarComboBoxModelo();
 
-            DataTable butacas = new DataTable();
+            idServicio.SelectedIndex = idServicio.Items.Count - 1;
+            idMarca.SelectedIndex = idMarca.Items.Count - 1;
+
+            //DataTable butacas = new DataTable();
 
         }
 
         private void cargarComboBoxModelo()
         {
-                DataTable comboModelo = new DataTable();
-                if (!DBNull.Value.Equals(idMarca.SelectedValue))
-                {
-                    comboModelo = Modelo.ListarComboModelo(Convert.ToInt32(idMarca.SelectedIndex+1));
-                }
-                else
-                {
-                    comboModelo.Columns.Add("id", typeof(int));
-                    comboModelo.Columns.Add("Modelo", typeof(string));
-                }
-                DataRow rowModelo = comboModelo.NewRow();
-                rowModelo[0] = DBNull.Value;
-                rowModelo[1] = "-TODOS-";
-                comboModelo.Rows.Add(rowModelo);
-                idModelo.DataSource = comboModelo;
-                idModelo.ValueMember = ((DataTable)idModelo.DataSource).Columns[0].ColumnName;
-                idModelo.DisplayMember = ((DataTable)idModelo.DataSource).Columns[1].ColumnName;
+            DataTable comboModelo = new DataTable();
+            
+            if (!DBNull.Value.Equals(idMarca.SelectedValue))
+            {
+                comboModelo = Modelo.ListarComboModelo(Convert.ToInt32(idMarca.SelectedIndex+1));
+            }
+            else
+            {
+                comboModelo.Columns.Add("id", typeof(int));
+                comboModelo.Columns.Add("Modelo", typeof(string));
+            }
 
+            DataRow rowModelo = comboModelo.NewRow();
+            
+            rowModelo[0] = DBNull.Value;
+            rowModelo[1] = "-TODOS-";
+            
+            comboModelo.Rows.Add(rowModelo);
+            
+            idModelo.DataSource = comboModelo;
+            idModelo.ValueMember = ((DataTable)idModelo.DataSource).Columns[0].ColumnName;
+            idModelo.DisplayMember = ((DataTable)idModelo.DataSource).Columns[1].ColumnName;
+
+            idModelo.SelectedIndex = idModelo.Items.Count - 1;
         }
 
         private void buscar_Click(object sender, EventArgs e)
@@ -88,6 +96,9 @@ namespace FrbaBus.Abm_Micro
         private void Micros_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+            if (Micros.SelectedRows.Count == 0)
+                return;
+
             if (e.ColumnIndex == Micros.Columns.Count - 1)
             {
 
@@ -100,9 +111,7 @@ namespace FrbaBus.Abm_Micro
                     buscarMicroAlternativo(Convert.ToInt32(fila.Cells["id"].Value), Configuracion.Instance().FechaSistema, DateTime.MaxValue);
 
                     Micros.Columns.Clear();
-
                 }
-
             }
 
             if (e.ColumnIndex == Micros.Columns.Count - 2)
@@ -140,7 +149,6 @@ namespace FrbaBus.Abm_Micro
                 */
             }
 
-
             if (e.ColumnIndex == Micros.Columns.Count - 4)
             {
                 var fila = Micros.Rows[e.RowIndex];
@@ -162,6 +170,9 @@ namespace FrbaBus.Abm_Micro
             Micros.Columns.Clear();
             Micros.DataSource = Micro.BuscarMicro(campoMatricula.Text, Convert.ToString(idServicio.SelectedValue), Convert.ToString(idMarca.SelectedValue), Convert.ToString(idModelo.SelectedValue), capacidad.Text);
             /*Columnas para los botones*/
+
+            if (Micros.Rows.Count == 0)
+                return;
 
             DataGridViewColumn Modificar = new DataGridViewButtonColumn();
             Modificar.HeaderText = "Modificar";
@@ -228,7 +239,7 @@ namespace FrbaBus.Abm_Micro
 
         private void idMarca_SelectedIndexChanged(object sender, EventArgs e)
         {
-                cargarComboBoxModelo();
+            cargarComboBoxModelo();
         }
 
         private void buscarMicroAlternativo(int idMicro, DateTime fechaInicio, DateTime fechaFin)
@@ -245,6 +256,14 @@ namespace FrbaBus.Abm_Micro
                     this.SetVisibleCore(true);
                 }
             }
+        }
+
+        private void limpiar_Click(object sender, EventArgs e)
+        {
+            campoMatricula.Text = "";
+            idServicio.SelectedIndex = idServicio.Items.Count - 1;
+            idMarca.SelectedIndex = idMarca.Items.Count - 1;
+            capacidad.Text = "";
         }
     }
 }

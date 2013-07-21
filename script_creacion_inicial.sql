@@ -613,7 +613,7 @@ ALTER TABLE NOT_NULL.Canje ADD CONSTRAINT PK_Canje PRIMARY KEY (CNJ_idCanje)
 CREATE TABLE NOT_NULL.Recorrido
 (
 	REC_id INT NOT NULL IDENTITY(1, 1)
-    ,REC_codigo NUMERIC(18,0) NOT NULL
+    ,REC_codigo VARCHAR(18) NOT NULL
     ,REC_idTipoServicio INT NOT NULL 
 	,REC_idCiudadOrigen INT NOT NULL 
 	,REC_idCiudadDestino INT NOT NULL
@@ -678,7 +678,7 @@ ON UPDATE NO ACTION
 ON DELETE NO ACTION
 
 
--- Create Foreign Key: Viaje.VIA_codRecorrido -> Recorrido.REC_codigo
+-- Create Foreign Key: Viaje.VIA_codRecorrido -> Recorrido.REC_id
 ALTER TABLE NOT_NULL.Viaje ADD CONSTRAINT FK_Viaje_VIA_codRecorrido_Recorrido_REC_id
 FOREIGN KEY (VIA_codRecorrido) REFERENCES NOT_NULL.Recorrido(REC_id)
 ON UPDATE NO ACTION
@@ -1449,7 +1449,7 @@ BEGIN
 	SELECT @idViaje = VIA_numViaje FROM
 		NOT_NULL.Viaje WHERE VIA_numMicro = @idMicro AND
 		VIA_codRecorrido = @idRecorrido AND
-		VIA_fecLlegada IS NULL AND DATEDIFF(day, VIA_fecSalida, @fecLlegada) < 1;
+		VIA_fecLlegada IS NULL AND DATEDIFF(day, convert(varchar, VIA_fecSalida, 120) , convert(varchar, @fecLlegada, 120)) < 1;
 	
 	IF @idViaje IS NOT NULL
 	BEGIN
@@ -1461,12 +1461,12 @@ BEGIN
 			
 			-- Inserta Puntos
 			INSERT INTO NOT_NULL.Puntos (PTS_idCliente, PTS_puntos, PTS_fecVencimiento) 
-			SELECT PAS_idCliente, FLOOR(PAS_precio/5), DATEADD(YEAR, 1, @fecLlegada)	 
+			SELECT PAS_idCliente, FLOOR(PAS_precio/5), DATEADD(YEAR, 1, convert(varchar, @fecLlegada, 120))	 
 			FROM NOT_NULL.Pasaje
 			WHERE PAS_idViaje = @idViaje AND PAS_cancelado <> 1;
 			
 			INSERT INTO NOT_NULL.Puntos (PTS_idCliente, PTS_puntos, PTS_fecVencimiento) 
-			SELECT ENC_idCliente, FLOOR(ENC_precio / 5), DATEADD(YEAR, 1, @fecLlegada)	 
+			SELECT ENC_idCliente, FLOOR(ENC_precio / 5), DATEADD(YEAR, 1, convert(varchar, @fecLlegada, 120))	 
 			FROM NOT_NULL.Encomienda
 			WHERE ENC_idViaje = @idViaje AND ENC_cancelada <> 1;
 			
@@ -1485,11 +1485,12 @@ CREATE PROCEDURE NOT_NULL.DeshabilitarRecorrido
 AS 
 BEGIN
 	DECLARE @idViaje INT
+	DECLARE @idDevolucion INT
 	DECLARE VIAJES CURSOR FOR
 	SELECT VIA_numViaje 
 	FROM NOT_NULL.Viaje
 	WHERE VIA_codRecorrido = @idRecorrido
-	AND VIA_fecSalida > @fecHoy
+	AND convert(varchar, VIA_fecSalida, 120) > convert(varchar, @fecHoy, 120)
 	AND VIA_habilitado = '1';
 
 	OPEN VIAJES
@@ -1503,7 +1504,15 @@ BEGIN
 		BEGIN
 			UPDATE NOT_NULL.Viaje SET VIA_habilitado = '0' WHERE VIA_numViaje = @idViaje
 			
-			UPDATE NOT_NULL.Encomienda SET ENC_cancelada = '1' WHERE ENC_idViaje = @idViaje;
+			INSERT INTO NOT_NULL.Devolucion VALUES (GETDATE(), 'Deshabilitación del recorrido')
+			
+			SET @idDevolucion = @@IDENTITY
+			
+			INSERT INTO NOT_NULL.DevXEnc SELECT @idDevolucion, ENC_numEnc from NOT_NULL.Encomienda WHERE ENC_idViaje = @idViaje AND ENC_cancelada <> '1';
+			
+			UPDATE NOT_NULL.Encomienda SET ENC_cancelada = '1' WHERE ENC_idViaje = @idViaje AND ENC_cancelada <> '1';
+			
+			INSERT INTO NOT_NULL.DevXPas SELECT @idDevolucion, PAS_numPasaje from NOT_NULL.Pasaje WHERE PAS_idViaje = @idViaje AND PAS_cancelado <> '1';
 			
 			UPDATE NOT_NULL.Pasaje SET PAS_cancelado = '1' WHERE PAS_idViaje = @idViaje;
 			
@@ -1531,7 +1540,8 @@ AS
 BEGIN
 	SELECT TOP 5 CIU_nombre as Destino, COUNT(*) as 'Cantidad Pasajes'
 	FROM Ciudad, Recorrido, Viaje, Pasaje
-	WHERE REC_idCiudadDestino = CIU_idCiudad AND VIA_codRecorrido = REC_id AND VIA_fecSalida BETWEEN @fecInicio AND @fecFin
+	WHERE REC_idCiudadDestino = CIU_idCiudad AND VIA_codRecorrido = REC_id AND 
+		convert(varchar, VIA_fecSalida, 120) BETWEEN convert(varchar, @fecInicio, 120) AND convert(varchar, @fecFin, 120)
 		AND PAS_idVIaje = VIA_numViaje
 	GROUP BY CIU_idCiudad, CIU_nombre
 	ORDER BY COUNT(*) DESC;	 
@@ -1545,7 +1555,8 @@ AS
 BEGIN
 	SELECT TOP 5 CIU_nombre as Destino, COUNT(*) as 'Pasajes cancelados'
 	FROM Viaje, Recorrido, Ciudad, Pasaje 
-	WHERE REC_idCiudadDestino = CIU_idCiudad AND VIA_codRecorrido = REC_id AND VIA_fecSalida BETWEEN @fecInicio AND @fecFin
+	WHERE REC_idCiudadDestino = CIU_idCiudad AND VIA_codRecorrido = REC_id 
+		AND convert(varchar, VIA_fecSalida, 120) BETWEEN convert(varchar, @fecInicio, 120) AND convert(varchar, @fecFin, 120)
 		AND PAS_idViaje = VIA_numViaje AND PAS_cancelado = 1
 	GROUP BY CIU_idCiudad, CIU_nombre
 	ORDER BY COUNT(*) DESC;	 
@@ -1560,7 +1571,7 @@ BEGIN
 	SELECT TOP 5 CLI_nombre as Nombre, SUM(PTS_puntos) as 'Puntos Acumulados'
 	FROM Cliente, Puntos 
 	WHERE PTS_idCliente = CLI_idCliente AND 
-		dateadd(year, -1, PTS_fecVencimiento) BETWEEN @fecInicio AND @fecFin
+		dateadd(year, -1, convert(varchar, PTS_fecVencimiento, 120)) BETWEEN convert(varchar, @fecInicio, 120) AND convert(varchar, @fecFin, 120)
 	GROUP BY CLI_idCLiente, CLI_nombre
 	ORDER BY SUM(PTS_puntos) DESC;	 
 END
@@ -1579,7 +1590,7 @@ BEGIN
 			VIA_fecSalida as 'Fecha viaje'
 	FROM NOT_NULL.Viaje, NOT_NULL.Recorrido, NOT_NULL.Micro, NOT_NULL.Ciudad, NOT_NULL.Butaca  
 	WHERE REC_idCiudadDestino = CIU_idCiudad AND VIA_codRecorrido = REC_id 
-		AND VIA_fecSalida BETWEEN @fecInicio AND @fecFin
+		AND convert(varchar, VIA_fecSalida, 120) BETWEEN convert(varchar, @fecInicio, 120) AND convert(varchar, @fecFin, 120)
 		AND MIC_numMicro = VIA_numMicro AND VIA_numMicro = BUT_numMicro AND 
 		BUT_numeroAsiento not in (select PAS_numButaca from NOT_NULL.Pasaje where 
 		PAS_numMicro = VIA_numMicro AND PAS_idViaje = VIA_numViaje)
@@ -1594,13 +1605,16 @@ CREATE PROCEDURE NOT_NULL.RankingMicrosFueraServ
 AS 
 BEGIN
 	SELECT TOP 5 MIC_Patente as Destino, 
-		SUM(CASE WHEN HMAN_fecInicio >= @fecInicio AND HMAN_fecFin <= @fecFin THEN
-				datediff(day, HMAN_fecFin, HMAN_fecInicio) 
-		    WHEN HMAN_fecInicio >= @fecInicio THEN datediff(day, @fecFin, HMAN_fecInicio)
-		    ELSE datediff(day, HMAN_fecFin, @fecInicio) END) as 'Días mantenimiento'	
+		SUM(CASE WHEN convert(varchar, HMAN_fecInicio, 120) >= convert(varchar, @fecInicio, 120) 
+		AND convert(varchar, HMAN_fecFin, 120) <= convert(varchar, @fecFin, 120) THEN
+		datediff(day, convert(varchar,HMAN_fecFin, 120), convert(varchar,HMAN_fecInicio, 120)) 
+	    WHEN convert(varchar, HMAN_fecInicio, 120) >= convert(varchar, @fecInicio, 120) THEN 
+	    datediff(day, convert(varchar, @fecFin, 120), convert(varchar, HMAN_fecInicio, 120))
+	    ELSE datediff(day, convert(varchar, HMAN_fecFin, 120), convert(varchar, @fecInicio, 120)) END) as 'Días mantenimiento'	
 	FROM NOT_NULL.Micro, NOT_NULL.HistoricoMantenimiento
 	WHERE MIC_numMicro = HMAN_idMicro 
-		AND HMAN_fecInicio >= @fecInicio OR HMAN_fecFin <= @fecFin
+		AND convert(varchar, HMAN_fecInicio, 120) >= convert(varchar, @fecInicio, 120) 
+		OR convert(varchar, HMAN_fecFin, 120) <= convert(varchar, @fecFin, 120)
 	GROUP BY MIC_numMicro, MIC_patente
 	ORDER BY 2 DESC;
 END

@@ -129,7 +129,12 @@
             this.Controls.Add(this.asignarNuevoMicro);
             this.Controls.Add(this.grpMicros);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "AlternativaMicro";
+            this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Micro con viajes";
             this.grpMicros.ResumeLayout(false);
             this.ResumeLayout(false);

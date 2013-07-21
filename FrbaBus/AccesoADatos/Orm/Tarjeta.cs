@@ -19,7 +19,7 @@ namespace FrbaBus.AccesoADatos.Orm
 
         public Tarjeta()
         {
-            Id = 0;
+            Id = -1;
         }
         
         public Tarjeta(String numero, String fecVenc, Int32 tipo, Int16 codSeg)

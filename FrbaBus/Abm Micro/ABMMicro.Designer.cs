@@ -67,11 +67,13 @@
             // 
             // servicio
             // 
+            this.servicio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.servicio.FormattingEnabled = true;
             this.servicio.Location = new System.Drawing.Point(170, 74);
             this.servicio.Name = "servicio";
             this.servicio.Size = new System.Drawing.Size(121, 21);
             this.servicio.TabIndex = 2;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -89,6 +91,7 @@
             this.label2.Size = new System.Drawing.Size(85, 13);
             this.label2.TabIndex = 4;
             this.label2.Text = "Capacidad (KG):";
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -127,6 +130,7 @@
             // 
             // modelo
             // 
+            this.modelo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.modelo.FormattingEnabled = true;
             this.modelo.Location = new System.Drawing.Point(155, 179);
             this.modelo.Name = "modelo";
@@ -135,6 +139,7 @@
             // 
             // marca
             // 
+            this.marca.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.marca.FormattingEnabled = true;
             this.marca.Location = new System.Drawing.Point(155, 150);
             this.marca.Name = "marca";
@@ -193,13 +198,14 @@
             this.agregarButacas.UseVisualStyleBackColor = true;
             this.agregarButacas.Click += new System.EventHandler(this.agregarButacas_Click);
             // 
-            // AM_Micro
+            // ABMMicro
             // 
             this.AcceptButton = this.aceptar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelar;
             this.ClientSize = new System.Drawing.Size(367, 297);
+            this.ControlBox = false;
             this.Controls.Add(this.cancelar);
             this.Controls.Add(this.aceptar);
             this.Controls.Add(this.capacidad);
@@ -212,7 +218,10 @@
             this.Controls.Add(this.patente);
             this.Controls.Add(this.groupBox1);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Name = "AM_Micro";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Name = "ABMMicro";
+            this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Administración de Micros";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

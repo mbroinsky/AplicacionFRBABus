@@ -76,10 +76,10 @@ namespace FrbaBus.AccesoADatos.Orm
                 {
                     sql += " convert(varchar, VIA_fecSalida, 120) >= dateadd(hour, 1, convert(varchar,@fecViaje, 120)) AND ";
 
-                    parametros.Add("@fecViaje", Configuracion.Instance().FechaSistema);
+                    parametros.Add("@fecViaje", Configuracion.Instance().FechaSistema.ToString("yyyy-MM-dd HH:mm:ss"));
                 }
                 else
-                    parametros.Add("@fecViaje", fecViaje);
+                    parametros.Add("@fecViaje", fecViaje.ToString("yyyy-MM-dd HH:mm:ss"));
 
                 sql += " @idOrigen = REC_idCiudadOrigen AND @idDestino = REC_idCiudadDestino AND VIA_habilitado = '1' " +
                     " order by 2;";
