@@ -142,12 +142,6 @@
     <Compile Include="CancelarPasajesYEncomiendas\CancelarPasajesYEncomiendas.Designer.cs">
       <DependentUpon>CancelarPasajesYEncomiendas.cs</DependentUpon>
     </Compile>
-    <Compile Include="CancelarPasajesYEncomiendas\confirmarCancelacion.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CancelarPasajesYEncomiendas\confirmarCancelacion.Designer.cs">
-      <DependentUpon>confirmarCancelacion.cs</DependentUpon>
-    </Compile>
     <Compile Include="Canje de Ptos\CanjeDePuntos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -257,9 +251,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CancelarPasajesYEncomiendas\CancelarPasajesYEncomiendas.resx">
       <DependentUpon>CancelarPasajesYEncomiendas.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CancelarPasajesYEncomiendas\confirmarCancelacion.resx">
-      <DependentUpon>confirmarCancelacion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Canje de Ptos\CanjeDePuntos.resx">
       <DependentUpon>CanjeDePuntos.cs</DependentUpon>

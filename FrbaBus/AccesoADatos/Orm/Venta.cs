@@ -101,6 +101,29 @@ namespace FrbaBus.AccesoADatos.Orm
                 return false;
             }
         }
+
+        public static Int32 GeneraDevolucion(String motivo, DateTime fecha)
+        {
+            String sql;
+
+            try
+            {
+                Hashtable parametros = new Hashtable();
+
+                parametros.Add("@fecha", fecha.ToString("yyyy-MM-dd HH:mm:ss"));
+                parametros.Add("@motivo", motivo);
+
+                sql = "insert into NOT_NULL.Devolucion VALUES (@fecha, @motivo)";
+
+                Conector.Datos.EjecutarSql(sql, parametros);
+
+                return Conector.Datos.TraerUltimoId();
+            }
+            catch
+            {
+                return -1;
+            }
+        }
         
         public bool Actualizar()
         {

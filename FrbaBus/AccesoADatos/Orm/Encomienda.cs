@@ -70,6 +70,25 @@ namespace FrbaBus.AccesoADatos.Orm
             }
         }
 
-    }
+        public static bool Devolver(Int32 idDev, Int32 idEnc)
+        {
+            try
+            {
+                Hashtable parametros = new Hashtable();
 
+                parametros.Add("@idDev", idDev);
+                parametros.Add("@idEnc", idEnc);
+
+                Conector.Datos.EjecutarSql("update not_null.encomienda set ENC_cancelada = '1' where ENC_numEnc = @idEnc", parametros);
+               
+                Conector.Datos.EjecutarSql("insert into NOT_NULL.devxenc VALUES (@idDev, @idEnc);", parametros);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
 }

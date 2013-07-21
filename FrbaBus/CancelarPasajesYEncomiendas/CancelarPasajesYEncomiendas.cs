@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using FrbaBus.AccesoADatos.Orm;
 using FrbaBus.Utilidades;
+using FrbaBus.AccesoADatos;
 
 namespace FrbaBus.CancelarPasajesYEncomiendas
 {
@@ -35,38 +36,71 @@ namespace FrbaBus.CancelarPasajesYEncomiendas
         {
             grillaPasajesYEncomiendas.Columns.Clear();
 
-            DataGridViewButtonColumn cancelar = new DataGridViewButtonColumn();
-            cancelar.HeaderText = "Cancelar";
-            cancelar.Name = "Cancelar";
-            cancelar.Text = "Cancelar";
-            cancelar.Visible = true;
-            cancelar.UseColumnTextForButtonValue = true;
+            DataTable dt = Venta.TraerPasajesYEncomiendas(Convert.ToInt32(textBoxIdVenta.Text));
 
-            DataTable dt = (DataTable)Venta.TraerPasajesYEncomiendas(Convert.ToInt32(textBoxIdVenta.Text));
-
-            if (dt.Rows.Count == 0) { MessageBox.Show("No se encontraron datos para esa venta"); }
+            if (dt.Rows.Count == 0) 
+            { 
+                MessageBox.Show("No se encontraron datos para esa venta"); 
+            }
             else
             {
                 grillaPasajesYEncomiendas.DataSource = dt;
-                grillaPasajesYEncomiendas.Columns.Add(cancelar);
             }
-
         }
 
-        private void grillaPasajesYEncomiendas_CellContentClick(object sender, DataGridViewCellEventArgs e)
+
+        private void cancelarPasEnc_Click(object sender, EventArgs e)
         {
-            if (e.ColumnIndex == grillaPasajesYEncomiendas.Columns.Count - 1)
+            if (grillaPasajesYEncomiendas.SelectedRows.Count == 0)
             {
-                var fila = grillaPasajesYEncomiendas.Rows[e.RowIndex];
-                confirmarCancelacion modalCancelar = new confirmarCancelacion();
-                modalCancelar.tipo  = Convert.ToString(fila.Cells["Tipo"].Value);
-                modalCancelar.id = Convert.ToInt32(fila.Cells["id"].Value);
-                this.SetVisibleCore(false);
-                modalCancelar.ShowDialog();
-                modalCancelar.Close();
-                this.SetVisibleCore(true);
-                cargarGrilla();
+                MessageBox.Show("No seleccionó pasajes para cancelar");
+                return;
             }
+
+            if (motivo.Text == "")
+            {
+                MessageBox.Show("Debe informar el motivo de la cancelación");
+                return;
+            }
+
+            Conector.Datos.IniciarTransaccion();
+
+            var idDev = Venta.GeneraDevolucion(motivo.Text, Configuracion.Instance().FechaSistema);
+
+            if (idDev == -1)
+            {
+                MessageBox.Show("Falló la devolución");
+                Conector.Datos.AbortarTransaccion();
+                return;
+            }
+
+            foreach (DataGridViewRow fila in grillaPasajesYEncomiendas.SelectedRows)
+            {
+                if (fila.Cells["Tipo"].Value.ToString() == "Pasaje")
+                {
+                    if (!Pasaje.Devolver(idDev, Convert.ToInt32(fila.Cells["Id"].Value)))
+                    {
+                        MessageBox.Show("Falló la devolución");
+                        Conector.Datos.AbortarTransaccion();
+                        return;
+                    }
+                }
+                else
+                {
+                    if (!Encomienda.Devolver(idDev, Convert.ToInt32(fila.Cells["Id"].Value)))
+                    {
+                        MessageBox.Show("Falló la devolución");
+                        Conector.Datos.AbortarTransaccion();
+                        return;
+                    }
+                }
+            }
+
+            Conector.Datos.TerminarTransaccion();
+
+            MessageBox.Show("La devolución se realizo con éxito");
+
+            this.Close();
         }
     }
 }

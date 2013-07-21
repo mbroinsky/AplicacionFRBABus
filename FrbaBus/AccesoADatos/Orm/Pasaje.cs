@@ -70,5 +70,26 @@ namespace FrbaBus.AccesoADatos.Orm
                 return false;
             }
         }
+
+        public static bool Devolver(Int32 idDev, Int32 idPas)
+        {
+            try
+            {
+                Hashtable parametros = new Hashtable();
+
+                parametros.Add("@idDev", idDev);
+                parametros.Add("@idPas", idPas);
+
+                Conector.Datos.EjecutarSql("update not_null.pasaje set PAS_cancelado = '1' where PAS_numPasaje = @idPas", parametros);
+               
+                Conector.Datos.EjecutarSql("insert into NOT_NULL.devxpas VALUES (@idDev, @idPas);", parametros);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

@@ -1543,7 +1543,7 @@ BEGIN
 	SELECT TOP 5 CIU_nombre as Destino, COUNT(*) as 'Cantidad Pasajes'
 	FROM Ciudad, Recorrido, Viaje, Pasaje
 	WHERE REC_idCiudadDestino = CIU_idCiudad AND VIA_codRecorrido = REC_id AND 
-		convert(varchar, VIA_fecSalida, 120) BETWEEN convert(varchar, @fecInicio, 120) AND convert(varchar, @fecFin, 120)
+		convert(varchar, VIA_fecSalida, 112) BETWEEN convert(varchar, @fecInicio, 112) AND convert(varchar, @fecFin, 112)
 		AND PAS_idVIaje = VIA_numViaje
 	GROUP BY CIU_idCiudad, CIU_nombre
 	ORDER BY COUNT(*) DESC;	 
@@ -1558,7 +1558,7 @@ BEGIN
 	SELECT TOP 5 CIU_nombre as Destino, COUNT(*) as 'Pasajes cancelados'
 	FROM Viaje, Recorrido, Ciudad, Pasaje 
 	WHERE REC_idCiudadDestino = CIU_idCiudad AND VIA_codRecorrido = REC_id 
-		AND convert(varchar, VIA_fecSalida, 120) BETWEEN convert(varchar, @fecInicio, 120) AND convert(varchar, @fecFin, 120)
+		AND convert(varchar, VIA_fecSalida, 112) BETWEEN convert(varchar, @fecInicio, 112) AND convert(varchar, @fecFin, 112)
 		AND PAS_idViaje = VIA_numViaje AND PAS_cancelado = 1
 	GROUP BY CIU_idCiudad, CIU_nombre
 	ORDER BY COUNT(*) DESC;	 
@@ -1573,7 +1573,7 @@ BEGIN
 	SELECT TOP 5 CLI_nombre as Nombre, SUM(PTS_puntos) as 'Puntos Acumulados'
 	FROM Cliente, Puntos 
 	WHERE PTS_idCliente = CLI_idCliente AND 
-		dateadd(year, -1, convert(varchar, PTS_fecVencimiento, 120)) BETWEEN convert(varchar, @fecInicio, 120) AND convert(varchar, @fecFin, 120)
+		dateadd(year, -1, convert(varchar, PTS_fecVencimiento, 112)) BETWEEN convert(varchar, @fecInicio, 112) AND convert(varchar, @fecFin, 112)
 	GROUP BY CLI_idCLiente, CLI_nombre
 	ORDER BY SUM(PTS_puntos) DESC;	 
 END
@@ -1592,7 +1592,7 @@ BEGIN
 			VIA_fecSalida as 'Fecha viaje'
 	FROM NOT_NULL.Viaje, NOT_NULL.Recorrido, NOT_NULL.Micro, NOT_NULL.Ciudad, NOT_NULL.Butaca  
 	WHERE REC_idCiudadDestino = CIU_idCiudad AND VIA_codRecorrido = REC_id 
-		AND convert(varchar, VIA_fecSalida, 120) BETWEEN convert(varchar, @fecInicio, 120) AND convert(varchar, @fecFin, 120)
+		AND convert(varchar, VIA_fecSalida, 112) BETWEEN convert(varchar, @fecInicio, 112) AND convert(varchar, @fecFin, 112)
 		AND MIC_numMicro = VIA_numMicro AND VIA_numMicro = BUT_numMicro AND 
 		BUT_numeroAsiento not in (select PAS_numButaca from NOT_NULL.Pasaje where 
 		PAS_numMicro = VIA_numMicro AND PAS_idViaje = VIA_numViaje)
@@ -1606,17 +1606,19 @@ CREATE PROCEDURE NOT_NULL.RankingMicrosFueraServ
     @fecFin SMALLDATETIME
 AS 
 BEGIN
-	SELECT TOP 5 MIC_Patente as Destino, 
-		SUM(CASE WHEN convert(varchar, HMAN_fecInicio, 120) >= convert(varchar, @fecInicio, 120) 
-		AND convert(varchar, HMAN_fecFin, 120) <= convert(varchar, @fecFin, 120) THEN
-		datediff(day, convert(varchar,HMAN_fecFin, 120), convert(varchar,HMAN_fecInicio, 120)) 
-	    WHEN convert(varchar, HMAN_fecInicio, 120) >= convert(varchar, @fecInicio, 120) THEN 
-	    datediff(day, convert(varchar, @fecFin, 120), convert(varchar, HMAN_fecInicio, 120))
-	    ELSE datediff(day, convert(varchar, HMAN_fecFin, 120), convert(varchar, @fecInicio, 120)) END) as 'Días mantenimiento'	
+	SELECT TOP 5 MIC_Patente as Patente, 
+		SUM(CASE WHEN convert(varchar, HMAN_fecInicio, 112) >= convert(varchar, @fecInicio, 112) 
+		AND convert(varchar, HMAN_fecFin, 112) <= convert(varchar, @fecFin, 112) THEN
+		datediff(day, convert(varchar,HMAN_fecInicio, 112), convert(varchar,HMAN_fecFin, 112)) 
+	    WHEN convert(varchar, HMAN_fecInicio, 112) >= convert(varchar, @fecInicio, 112) THEN 
+	    datediff(day, convert(varchar, HMAN_fecInicio, 112), convert(varchar, @fecFin, 112))
+	    ELSE datediff(day, convert(varchar, @fecInicio, 112), convert(varchar, HMAN_fecFin, 112)) END) as 'Días mantenimiento'	
 	FROM NOT_NULL.Micro, NOT_NULL.HistoricoMantenimiento
 	WHERE MIC_numMicro = HMAN_idMicro 
-		AND convert(varchar, HMAN_fecInicio, 120) >= convert(varchar, @fecInicio, 120) 
-		OR convert(varchar, HMAN_fecFin, 120) <= convert(varchar, @fecFin, 120)
+		AND ((convert(varchar, HMAN_fecInicio, 112) >= convert(varchar, @fecInicio, 112) 
+		AND convert(varchar, HMAN_fecInicio, 112) <= convert(varchar, @fecFin, 112))
+		OR (convert(varchar, HMAN_fecFin, 112) <= convert(varchar, @fecFin, 112)) and
+		CONVERT(varchar, HMAN_fecFin, 112) >= convert(varchar, @fecInicio, 112))
 	GROUP BY MIC_numMicro, MIC_patente
 	ORDER BY 2 DESC;
 END
@@ -1714,7 +1716,7 @@ CREATE PROCEDURE NOT_NULL.ListarPasajesYEncomiendas
 AS
 BEGIN
 	SELECT 'Pasaje' as Tipo,
-			PAS_numPasaje as 'id',
+			PAS_numPasaje as 'Id',
 			PAS_codigo as 'Codigo',
 			(SELECT CIU_nombre FROM NOT_NULL.Ciudad, NOT_NULL.Recorrido, NOT_NULL.Viaje WHERE PAS_idViaje = VIA_numViaje AND VIA_codRecorrido = REC_id AND REC_idCiudadOrigen = CIU_idCiudad) as 'Origen',
 			(SELECT CIU_nombre FROM NOT_NULL.Ciudad, NOT_NULL.Recorrido, NOT_NULL.Viaje WHERE PAS_idViaje = VIA_numViaje AND VIA_codRecorrido = REC_id AND REC_idCiudadDestino = CIU_idCiudad) as 'Destino',
@@ -1724,7 +1726,7 @@ BEGIN
 	AND		PAS_cancelado = 0
 	UNION
 	SELECT 'Encomienda' as Tipo,
-			ENC_numEnc as 'id',
+			ENC_numEnc as 'Id',
 			ENC_codigo as 'Codigo',
 			(SELECT CIU_nombre FROM NOT_NULL.Ciudad, NOT_NULL.Recorrido, NOT_NULL.Viaje WHERE ENC_idViaje = VIA_numViaje AND VIA_codRecorrido = REC_id AND REC_idCiudadOrigen = CIU_idCiudad) as 'Origen',
 			(SELECT CIU_nombre FROM NOT_NULL.Ciudad, NOT_NULL.Recorrido, NOT_NULL.Viaje WHERE ENC_idViaje = VIA_numViaje AND VIA_codRecorrido = REC_id AND REC_idCiudadDestino = CIU_idCiudad) as 'Destino',
